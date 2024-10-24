@@ -6,27 +6,27 @@
         xmlns:local="clr-namespace:CronogramaMe"
         mc:Ignorable="d"
         Title="Horario" Height="450" Width="800" ResizeMode="NoResize">
-    <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="255,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="338"><Run Language="es-es" Text="El horario del curso es:"/></TextBlock>
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="255,120,0,0" HorizontalAlignment="Left" Width="338" Height="91" VerticalAlignment="Top"/>
-        <Button x:Name="AnyadirDia" Content="Quiero añadir este día" HorizontalAlignment="Left" Margin="255,230,0,0" VerticalAlignment="Top" Width="150" Height="25" BorderThickness="1,1,1,1" Background="#FF8EE8FF">
+    <Canvas Background="{DynamicResource CanvasBackground2}">
+        <TextBlock TextWrapping="Wrap" Height="30" Width="338" HorizontalAlignment="Left" Canvas.Left="255" Canvas.Top="90" VerticalAlignment="Top"><Run Language="es-es" Text="El horario del curso es:"/></TextBlock>
+        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Width="338" Height="91" HorizontalAlignment="Left" Canvas.Left="255" Canvas.Top="120" VerticalAlignment="Top"/>
+        <Button x:Name="AnyadirDia" Content="Quiero añadir este día" Width="150" Height="25" BorderThickness="1,1,1,1" Background="#FF8EE8FF" HorizontalAlignment="Left" Canvas.Left="255" Canvas.Top="230" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Button x:Name="QuitarDia" Content="Quiero quitar este día" HorizontalAlignment="Left" Margin="255,267,0,0" VerticalAlignment="Top" Width="150" Height="25" BorderThickness="1,1,1,1" Background="#FFFFDAC8">
+        <Button x:Name="QuitarDia" Content="Quiero quitar este día" Width="150" Height="25" BorderThickness="1,1,1,1" Background="#FFFFDAC8" HorizontalAlignment="Left" Canvas.Left="255" Canvas.Top="267" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <ComboBox x:Name="DiaAnyadir" HorizontalAlignment="Left" Margin="421,232,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0">
+        <ComboBox x:Name="DiaAnyadir" Width="88" SelectedIndex="0" HorizontalAlignment="Left" Canvas.Left="421" Canvas.Top="232" VerticalAlignment="Top">
             <ComboBoxItem Content="Lunes"/>
             <ComboBoxItem Content="Martes"/>
             <ComboBoxItem Content="Miércoles"/>
             <ComboBoxItem Content="Jueves"/>
             <ComboBoxItem Content="Viernes"/>
         </ComboBox>
-        <ComboBox x:Name="HorasAnyadir" HorizontalAlignment="Left" Margin="513,232,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0" Height="22">
+        <ComboBox x:Name="HorasAnyadir" Width="80" SelectedIndex="0" Height="22" HorizontalAlignment="Left" Canvas.Left="513" Canvas.Top="232" VerticalAlignment="Top">
             <ComboBoxItem Content="1 hora"/>
             <ComboBoxItem Content="2 horas"/>
             <ComboBoxItem Content="3 horas"/>
@@ -38,19 +38,19 @@
             <ComboBoxItem Content="9 horas"/>
             <ComboBoxItem Content="10 horas"/>
         </ComboBox>
-        <ComboBox x:Name="DiaQuitar" HorizontalAlignment="Left" Margin="421,267,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0">
+        <ComboBox x:Name="DiaQuitar" Width="88" SelectedIndex="0" HorizontalAlignment="Left" Canvas.Left="421" Canvas.Top="267" VerticalAlignment="Top">
             <ComboBoxItem Content="Lunes"/>
             <ComboBoxItem Content="Martes"/>
             <ComboBoxItem Content="Miércoles"/>
             <ComboBoxItem Content="Jueves"/>
             <ComboBoxItem Content="Viernes"/>
         </ComboBox>
-        <TextBlock HorizontalAlignment="Left" Margin="301,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="41" Width="280" FontFamily="Monotype Corsiva" FontSize="36"><Run Text="Define el "/><Run Language="es-es" Text="horario"/></TextBlock>
-        <Button x:Name="Cerrar" Content="Ya está" HorizontalAlignment="Left" Margin="349,342,0,0" VerticalAlignment="Top" Width="150" Height="37" BorderThickness="1,1,1,1" Background="#FFF5DFFF" Click="Cerrar_Click">
+        <TextBlock TextWrapping="Wrap" Height="41" Width="280" FontFamily="Monotype Corsiva" FontSize="36" HorizontalAlignment="Left" Canvas.Left="301" Canvas.Top="28" VerticalAlignment="Top"><Run Text="Define el "/><Run Language="es-es" Text="horario"/></TextBlock>
+        <Button x:Name="Cerrar" Content="Ya está" Width="150" Height="37" BorderThickness="1,1,1,1" Background="#FFF5DFFF" Click="Cerrar_Click" HorizontalAlignment="Left" Canvas.Left="349" Canvas.Top="342" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
 
-    </Grid>
+    </Canvas>
 </Window>

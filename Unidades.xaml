@@ -5,21 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CronogramaMe"
         mc:Ignorable="d"
-        Title="Unidades" Height="450" Width="800">
-    <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="204,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="338"><Run Language="es-es" Text="Las unidades de mi curso son:"/></TextBlock>
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="204,120,0,0" HorizontalAlignment="Left" Width="490" Height="91" VerticalAlignment="Top"/>
-        <Button x:Name="AnyadirDia" Content="Quiero añadir esta unidad" HorizontalAlignment="Left" Margin="204,238,0,0" VerticalAlignment="Top" Width="151" Height="25" BorderThickness="1,1,1,1" Background="#FF8EE8FF">
+        Title="Unidades" Height="450" Width="800" Background="{DynamicResource CanvasBackground2}">
+    <Canvas>
+        <TextBlock TextWrapping="Wrap" Height="22" Width="338" HorizontalAlignment="Left" Canvas.Left="164" Canvas.Top="87" VerticalAlignment="Top"><Run Language="es-es" Text="Las unidades de mi curso son:"/></TextBlock>
+        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Width="476" Height="78" HorizontalAlignment="Left" Canvas.Left="162" Canvas.Top="109" VerticalAlignment="Top"/>
+        <Button x:Name="AnyadirDia" Content="Quiero añadir esta unidad" Width="152" Height="24" BorderThickness="1,1,1,1" Background="#FF8EE8FF" HorizontalAlignment="Left" Canvas.Left="162" Canvas.Top="204" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Button x:Name="QuitarDia" Content="Quiero quitar esta unidad" HorizontalAlignment="Left" Margin="205,280,0,0" VerticalAlignment="Top" Width="150" Height="25" BorderThickness="1,1,1,1" Background="#FFFFDAC8">
+        <Button x:Name="QuitarDia" Content="Quiero quitar esta unidad" Width="150" Height="26" BorderThickness="1,1,1,1" Background="#FFFFDAC8" HorizontalAlignment="Left" Canvas.Left="164" Canvas.Top="245" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <ComboBox x:Name="DiaAnyadir" HorizontalAlignment="Center" Margin="0,240,0,0" VerticalAlignment="Top" Width="58" SelectedIndex="0">
+        <ComboBox x:Name="DiaAnyadir" Width="58" SelectedIndex="0" HorizontalAlignment="Left" Canvas.Left="329" Canvas.Top="206" VerticalAlignment="Top">
             <ComboBoxItem Content="1"/>
             <ComboBoxItem Content="2"/>
             <ComboBoxItem Content="3"/>
@@ -31,11 +31,10 @@
             <ComboBoxItem Content="9"/>
             <ComboBoxItem Content="10"/>
         </ComboBox>
-        <TextBlock HorizontalAlignment="Left" Margin="301,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="41" Width="280" FontFamily="Monotype Corsiva" FontSize="36"><Run Text="Define "/><Run Language="es-es" Text="las unidades"/></TextBlock>
-        <TextBox HorizontalAlignment="Left" Margin="437,242,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="153"/>
-        <TextBox HorizontalAlignment="Left" Margin="595,242,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="56"/>
-        <TextBlock HorizontalAlignment="Left" Margin="656,240,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="38"><Run Language="es-es" Text="Horas"/></TextBlock>
-        <ComboBox x:Name="DiaAnyadir_Copy" HorizontalAlignment="Center" Margin="0,282,0,0" VerticalAlignment="Top" Width="58" SelectedIndex="0">
+        <TextBlock TextWrapping="Wrap" Height="41" Width="280" FontFamily="Monotype Corsiva" FontSize="36" HorizontalAlignment="Left" Canvas.Left="278" Canvas.Top="20" VerticalAlignment="Top"><Run Text="Define "/><Run Language="es-es" Text="las unidades"/></TextBlock>
+        <TextBox TextWrapping="Wrap" Width="152" HorizontalAlignment="Left" Canvas.Left="394" Canvas.Top="208" VerticalAlignment="Top"/>
+        <TextBox TextWrapping="Wrap" Width="67" HorizontalAlignment="Left" Canvas.Left="558" Canvas.Top="208" VerticalAlignment="Top"/>
+        <ComboBox x:Name="DiaAnyadir_Copy" Width="58" SelectedIndex="0" HorizontalAlignment="Left" Canvas.Left="329" Canvas.Top="247" VerticalAlignment="Top">
             <ComboBoxItem Content="1"/>
             <ComboBoxItem Content="2"/>
             <ComboBoxItem Content="3"/>
@@ -47,11 +46,11 @@
             <ComboBoxItem Content="9"/>
             <ComboBoxItem Content="10"/>
         </ComboBox>
-        <Button x:Name="Cerrar" Content="Ya está" HorizontalAlignment="Left" Margin="349,342,0,0" VerticalAlignment="Top" Width="150" Height="37" BorderThickness="1,1,1,1" Background="#FFF5DFFF" Click="Cerrar_Click">
+        <Button x:Name="Cerrar" Content="Ya está" Width="150" Height="37" BorderThickness="1,1,1,1" Background="#FFF5DFFF" Click="Cerrar_Click" HorizontalAlignment="Left" Canvas.Left="338" Canvas.Top="322" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-
-    </Grid>
+        <TextBlock TextWrapping="Wrap" Height="18" Width="38" Text="h" HorizontalAlignment="Left" Canvas.Left="632" Canvas.Top="208" VerticalAlignment="Top"/>
+    </Canvas>
 </Window>

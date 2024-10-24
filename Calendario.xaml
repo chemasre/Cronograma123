@@ -6,31 +6,31 @@
         xmlns:local="clr-namespace:CronogramaMe"
         mc:Ignorable="d"
         Title="Calendario" Height="562" Width="800" ResizeMode="NoResize">
-    <Grid>
-        <DatePicker x:Name="DiaInicio" HorizontalAlignment="Left" Margin="400,107,0,0" VerticalAlignment="Top" Width="129"/>
-        <TextBlock HorizontalAlignment="Left" Margin="260,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="es-es" Text="El primer día de clase es"/></TextBlock>
-        <DatePicker x:Name="DiaFin" HorizontalAlignment="Left" Margin="400,140,0,0" VerticalAlignment="Top" Width="129"/>
-        <TextBlock HorizontalAlignment="Left" Margin="260,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="El último día "/><Run Language="es-es" Text="de clase es"/><LineBreak/><Run/></TextBlock>
-        <TextBlock HorizontalAlignment="Left" Margin="260,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30"><Run Language="es-es" Text="Tengo estos festivos"/></TextBlock>
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,210,271,0" HorizontalAlignment="Right" Width="269" Height="106" VerticalAlignment="Top"/>
-        <Button x:Name="AnyadirFestivo" Content="Quiero añadir este festivo" HorizontalAlignment="Left" Margin="258,334,0,0" VerticalAlignment="Top" Width="150" Height="25" BorderThickness="1,1,1,1" Background="#FF8EE8FF">
+    <Canvas Background="{DynamicResource CanvasBackground2}">
+        <DatePicker x:Name="DiaInicio" Width="129" HorizontalAlignment="Left" Canvas.Left="400" Canvas.Top="107" VerticalAlignment="Top"/>
+        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" Canvas.Left="260" Canvas.Top="107" VerticalAlignment="Top"><Run Language="es-es" Text="El primer día de clase es"/></TextBlock>
+        <DatePicker x:Name="DiaFin" Width="129" HorizontalAlignment="Left" Canvas.Left="400" Canvas.Top="140" VerticalAlignment="Top"/>
+        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" Canvas.Left="260" Canvas.Top="140" VerticalAlignment="Top"><Run Text="El último día "/><Run Language="es-es" Text="de clase es"/><LineBreak/><Run/></TextBlock>
+        <TextBlock TextWrapping="Wrap" Height="30" HorizontalAlignment="Left" Canvas.Left="260" Canvas.Top="180" VerticalAlignment="Top"><Run Language="es-es" Text="Tengo estos festivos"/></TextBlock>
+        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Width="269" Height="106" HorizontalAlignment="Right" Canvas.Left="260" Canvas.Top="210" VerticalAlignment="Top"/>
+        <Button x:Name="AnyadirFestivo" Content="Quiero añadir este festivo" Width="150" Height="25" BorderThickness="1,1,1,1" Background="#FF8EE8FF" HorizontalAlignment="Left" Canvas.Left="258" Canvas.Top="334" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <DatePicker x:Name="FestivoAnyadir" HorizontalAlignment="Left" Margin="425,335,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="QuitarFestivo" Content="Quiero quitar este festivo" HorizontalAlignment="Left" Margin="258,371,0,0" VerticalAlignment="Top" Width="150" Height="25" BorderThickness="1,1,1,1" Background="#FFFFDAC8">
+        <DatePicker x:Name="FestivoAnyadir" HorizontalAlignment="Left" Canvas.Left="425" Canvas.Top="335" VerticalAlignment="Top"/>
+        <Button x:Name="QuitarFestivo" Content="Quiero quitar este festivo" Width="150" Height="25" BorderThickness="1,1,1,1" Background="#FFFFDAC8" HorizontalAlignment="Left" Canvas.Left="258" Canvas.Top="371" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <DatePicker x:Name="FestivoQuitar" HorizontalAlignment="Left" Margin="425,371,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="Cerrar" Content="Ya está" HorizontalAlignment="Left" Margin="323,444,0,0" VerticalAlignment="Top" Width="150" Height="36" BorderThickness="1,1,1,1" Background="#FFF5DFFF" Click="Cerrar_Click">
+        <DatePicker x:Name="FestivoQuitar" HorizontalAlignment="Left" Canvas.Left="425" Canvas.Top="371" VerticalAlignment="Top"/>
+        <Button x:Name="Cerrar" Content="Ya está" Width="150" Height="36" BorderThickness="1,1,1,1" Background="#FFF5DFFF" Click="Cerrar_Click" HorizontalAlignment="Left" Canvas.Left="323" Canvas.Top="444" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <TextBlock HorizontalAlignment="Center" Margin="0,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="41" Width="280" FontFamily="Monotype Corsiva" FontSize="36"><Run Language="es-es" Text="Define el calendario"/></TextBlock>
+        <TextBlock TextWrapping="Wrap" Height="41" Width="280" FontFamily="Monotype Corsiva" FontSize="36" HorizontalAlignment="Left" Canvas.Left="260" Canvas.Top="37" VerticalAlignment="Top"><Run Language="es-es" Text="Define el calendario"/></TextBlock>
 
-    </Grid>
+    </Canvas>
 </Window>
