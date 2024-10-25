@@ -11,15 +11,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Cronogramador;
 
 namespace CronogramaMe
 {
     /// <summary>
-    /// Interaction logic for Horario.xaml
+    /// Interaction logic for Unidades.xaml
     /// </summary>
-    public partial class Horario : Window
+    public partial class Unidades : Window
     {
-        public Horario()
+        public Unidades(Asignatura asignatura)
         {
             InitializeComponent();
         }
