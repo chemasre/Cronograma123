@@ -1,0 +1,22 @@
+﻿<Window x:Class="CronogramaMe.Interfaz.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CronogramaMe.Interfaz"
+        mc:Ignorable="d"
+        Title="About" Height="250" Width="500" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Topmost="True" ShowInTaskbar="False">
+    <Canvas>
+        <Image Height="100" Canvas.Left="42" Canvas.Top="23" Width="100" Source="/Interfaz/About.png" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Image.Effect>
+                <DropShadowEffect/>
+            </Image.Effect>
+        </Image>
+        <Button x:Name="Cerrar" Content="Cerrar" Width="124" Height="32" BorderThickness="1,1,1,1" Background="#FF9CFF8E" Canvas.Left="188" Canvas.Top="150" Click="Aceptar_Click" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <TextBlock x:Name="Texto" TextWrapping="Wrap" Height="92" Width="308" Canvas.Left="159" Canvas.Top="31" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+    </Canvas>
+</Window>

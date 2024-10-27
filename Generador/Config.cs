@@ -7,36 +7,49 @@ using System.Threading.Tasks;
 
 namespace Cronogramador
 {
-    class Config
+    public class Config
     {
-        public const int filaTituloAsignatura = 2;
-        public const int columnaTituloAsignatura = 3;
-        public const int tamanyoTituloAsignatura = 24;
-        public static XlRgbColor colorTituloAsignatura = XlRgbColor.rgbSteelBlue;
-        public static XlRgbColor colorTextoTituloAsignatura = XlRgbColor.rgbWhite;
+        public int filaTituloAsignatura { get; set; } = 2;
+        public int columnaTituloAsignatura { get; set; } = 3;
+        public int tamanyoTituloAsignatura { get; set; } = 24;
+        public XlRgbColor colorTituloAsignatura { get; set; } = XlRgbColor.rgbSteelBlue;
+        public XlRgbColor colorTextoTituloAsignatura { get; set; } = XlRgbColor.rgbWhite;
 
 
-        public const int filaInicioMeses = 4;
-        public const int columnaInicioMeses = 3;
+        public int filaInicioMeses { get; set; } = 4;
+        public int columnaInicioMeses { get; set; } = 3;
 
-        public const int tamanyoTituloMes = 16;
-        public static XlRgbColor colorTituloMes = XlRgbColor.rgbSteelBlue;
-        public static XlRgbColor colorTextoTituloMes = XlRgbColor.rgbWhite;
+        public int tamanyoTituloMes { get; set; } = 16;
+        public XlRgbColor colorTituloMes { get; set; } = XlRgbColor.rgbSteelBlue;
+        public XlRgbColor colorTextoTituloMes { get; set; }  = XlRgbColor.rgbWhite;
 
-        public static XlRgbColor colorDiaSemana = XlRgbColor.rgbLightSteelBlue;
+        public XlRgbColor colorDiaSemana { get; set; } = XlRgbColor.rgbLightSteelBlue;
 
-        public static XlRgbColor[] coloresUFs = new XlRgbColor[] { XlRgbColor.rgbSkyBlue,
-                                                                   XlRgbColor.rgbTeal,
-                                                                   XlRgbColor.rgbLimeGreen,
-                                                                   XlRgbColor.rgbOliveDrab,
-                                                                   XlRgbColor.rgbSlateBlue,
+        public XlRgbColor[] coloresUFs { get; set; } = new XlRgbColor[] { XlRgbColor.rgbNavyBlue,
                                                                    XlRgbColor.rgbDarkOrange,
-                                                                   XlRgbColor.rgbGold
-                                                                 };
-        public static XlRgbColor colorFestivos = XlRgbColor.rgbRed;
-        public static XlRgbColor colorFinesDeSemana = XlRgbColor.rgbSilver;
+                                                                   XlRgbColor.rgbDarkGreen,
+                                                                   XlRgbColor.rgbDarkRed,
+                                                                   XlRgbColor.rgbDarkSlateGrey,
+                                                                   XlRgbColor.rgbIndigo,
+                                                                   XlRgbColor.rgbOlive,
+                                                                   XlRgbColor.rgbBlack,
+                                                                   XlRgbColor.rgbTeal,
+                                                                   XlRgbColor.rgbDeepPink
 
-        public const int filaInicioUFs = 5;
-        public const int columnaInicioUFs = 11;
+                                                                 };
+
+        public XlRgbColor colorTextoUFs { get; set; } = XlRgbColor.rgbWhite;
+        public XlRgbColor colorFestivos { get; set; } = XlRgbColor.rgbRed;
+        public XlRgbColor colorTextoFestivos { get; set; } = XlRgbColor.rgbWhite;
+        public XlRgbColor colorFinesDeSemana { get; set; } = XlRgbColor.rgbGray;
+        public XlRgbColor colorTextoFinesDeSemana { get; set; } = XlRgbColor.rgbDarkGray;
+
+        public int filaInicioUFs { get; set; } = 5;
+        public int columnaInicioUFs { get; set; } = 11;
+
+        public int anchoColumnaTitulosUFs { get; set; } = 35;
+
+        public bool empezarUfsEnDiaNuevo { get; set; } = false;
+        public bool estiloContinuo { get; set; } = false;
     }
 }

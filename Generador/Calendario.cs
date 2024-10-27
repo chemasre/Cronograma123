@@ -10,6 +10,13 @@ namespace Cronogramador
 {
     public class Calendario
     {
+        public enum Completitud
+        {
+            completa,
+            fechaInicioPosteriorAFin,
+            festivoFueraCalendario
+        };
+
         class Data
         {
             public DateTime diaInicio { get; set; }
@@ -77,27 +84,39 @@ namespace Cronogramador
         public DateTime ObtenDiaInicio() { return diaInicio; }
         public DateTime ObtenDiaFin() { return diaFin; }
 
-        public bool CompruebaCorrecto()
+        public Completitud CompruebaCompleta()
         {
-            bool correcto = true;
+            Completitud completitud = Completitud.completa;
 
-            if (diaInicio > diaFin) { Console.WriteLine("La fecha de inicio no puede ser posterior a la fecha de fin"); correcto = false; }
+            if (diaInicio > diaFin)
+            {
+                Console.WriteLine("La fecha de inicio no puede ser posterior a la fecha de fin");
+                completitud = Completitud.fechaInicioPosteriorAFin;
+                return completitud;
+            }
 
             int i = 0;
             var listaFestivos = new List<DateTime>(festivos);
 
-            while (correcto && i < listaFestivos.Count)
+            while (completitud == Completitud.completa && i < listaFestivos.Count)
             {
                 if (listaFestivos[i] > diaFin || listaFestivos[i] < diaInicio)
                 {
-                    Utils.MuestraError("El festivo " + listaFestivos[i].ToString("dd/MM/yyyy") + " esta fuera del calendario");
-                    correcto = false;
+                    //Utils.MuestraError("El festivo " + listaFestivos[i].ToString("dd/MM/yyyy") + " esta fuera del calendario");
+                    completitud = Completitud.festivoFueraCalendario;
                 }
 
                 i++;
             }
 
-            return correcto;
+            return completitud;
+        }
+
+        public void Reinicia()
+        {
+            diaInicio = new DateTime();
+            diaFin = new DateTime();
+            festivos.Clear();
         }
 
         public void Guarda(string nombreFichero)
@@ -112,7 +131,9 @@ namespace Cronogramador
             data.diaFin = diaFin;
             data.festivos = festivos;
 
-            writer.Write(JsonSerializer.Serialize<Data>(data));
+            JsonSerializerOptions options = new JsonSerializerOptions(JsonSerializerOptions.Default);
+            options.WriteIndented = true;
+            writer.Write(JsonSerializer.Serialize<Data>(data, options));
             writer.Close();
         }
 

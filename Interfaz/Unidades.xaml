@@ -5,21 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CronogramaMe"
         mc:Ignorable="d"
-        Title="Unidades" Height="450" Width="800" Background="{DynamicResource CanvasBackground2}">
+        Title="Curso" Height="560" Width="800" Background="{DynamicResource CanvasBackground2}" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Topmost="True">
     <Canvas>
-        <TextBlock TextWrapping="Wrap" Height="22" Width="338" HorizontalAlignment="Left" Canvas.Left="164" Canvas.Top="87" VerticalAlignment="Top"><Run Language="es-es" Text="Las unidades de mi curso son:"/></TextBlock>
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Width="476" Height="78" HorizontalAlignment="Left" Canvas.Left="162" Canvas.Top="109" VerticalAlignment="Top"/>
-        <Button x:Name="AnyadirDia" Content="Quiero añadir esta unidad" Width="152" Height="24" BorderThickness="1,1,1,1" Background="#FF8EE8FF" HorizontalAlignment="Left" Canvas.Left="162" Canvas.Top="204" VerticalAlignment="Top">
+        <TextBlock TextWrapping="Wrap" Height="22" Width="338" HorizontalAlignment="Center" Canvas.Left="154" Canvas.Top="157" VerticalAlignment="Top"><Run Language="es-es" Text="Las unidades de mi curso son:"/></TextBlock>
+        <TextBlock TextWrapping="Wrap" Height="22" Width="108" HorizontalAlignment="Left" Canvas.Left="154" Canvas.Top="123" VerticalAlignment="Center"><Run Language="es-es" Text="Mi curso se llama"/></TextBlock>
+        <ListBox x:Name="ListaUnidades" d:ItemsSource="{d:SampleData ItemCount=5}" Width="508" Height="78" HorizontalAlignment="Center" Canvas.Left="152" Canvas.Top="179" VerticalAlignment="Top" SelectionChanged="ListaUnidades_SelectionChanged"/>
+        <Button x:Name="AnyadirUnidad" Content="Quiero añadir esta unidad" Width="152" Height="24" BorderThickness="1,1,1,1" Background="#FF8EE8FF" HorizontalAlignment="Center" Canvas.Left="152" Canvas.Top="274" VerticalAlignment="Top" Click="AnyadirUnidad_Click">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Button x:Name="QuitarDia" Content="Quiero quitar esta unidad" Width="150" Height="26" BorderThickness="1,1,1,1" Background="#FFFFDAC8" HorizontalAlignment="Left" Canvas.Left="164" Canvas.Top="245" VerticalAlignment="Top">
+        <Button x:Name="QuitarUnidad" Content="Quiero quitar esta unidad" Width="150" Height="26" BorderThickness="1,1,1,1" Background="#FFFFDAC8" HorizontalAlignment="Center" Canvas.Left="154" Canvas.Top="315" VerticalAlignment="Top" Click="QuitarUnidad_Click">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <ComboBox x:Name="DiaAnyadir" Width="58" SelectedIndex="0" HorizontalAlignment="Left" Canvas.Left="329" Canvas.Top="206" VerticalAlignment="Top">
+        <ComboBox x:Name="UnidadAnyadir" Width="58" SelectedIndex="0" HorizontalAlignment="Center" Canvas.Left="319" Canvas.Top="276" VerticalAlignment="Top">
             <ComboBoxItem Content="1"/>
             <ComboBoxItem Content="2"/>
             <ComboBoxItem Content="3"/>
@@ -31,10 +32,10 @@
             <ComboBoxItem Content="9"/>
             <ComboBoxItem Content="10"/>
         </ComboBox>
-        <TextBlock TextWrapping="Wrap" Height="41" Width="280" FontFamily="Monotype Corsiva" FontSize="36" HorizontalAlignment="Left" Canvas.Left="278" Canvas.Top="20" VerticalAlignment="Top"><Run Text="Define "/><Run Language="es-es" Text="las unidades"/></TextBlock>
-        <TextBox TextWrapping="Wrap" Width="152" HorizontalAlignment="Left" Canvas.Left="394" Canvas.Top="208" VerticalAlignment="Top"/>
-        <TextBox TextWrapping="Wrap" Width="67" HorizontalAlignment="Left" Canvas.Left="558" Canvas.Top="208" VerticalAlignment="Top"/>
-        <ComboBox x:Name="DiaAnyadir_Copy" Width="58" SelectedIndex="0" HorizontalAlignment="Left" Canvas.Left="329" Canvas.Top="247" VerticalAlignment="Top">
+        <TextBlock TextWrapping="Wrap" Height="41" Width="280" FontFamily="Monotype Corsiva" FontSize="36" HorizontalAlignment="Center" Canvas.Left="278" Canvas.Top="54" VerticalAlignment="Top"><Run Text="Define "/><Run Language="es-es" Text="el curso"/></TextBlock>
+        <TextBox x:Name="TituloUnidadAnyadir" TextWrapping="Wrap" Width="174" HorizontalAlignment="Center" Canvas.Left="384" Canvas.Top="278" VerticalAlignment="Top" Text="Título unidad"/>
+        <TextBox x:Name="HorasUnidadAnyadir" TextWrapping="Wrap" Width="50" HorizontalAlignment="Center" Canvas.Left="565" Canvas.Top="278" VerticalAlignment="Top" Text="10"/>
+        <ComboBox x:Name="UnidadQuitar" Width="58" SelectedIndex="0" HorizontalAlignment="Center" Canvas.Left="319" Canvas.Top="317" VerticalAlignment="Top">
             <ComboBoxItem Content="1"/>
             <ComboBoxItem Content="2"/>
             <ComboBoxItem Content="3"/>
@@ -46,11 +47,12 @@
             <ComboBoxItem Content="9"/>
             <ComboBoxItem Content="10"/>
         </ComboBox>
-        <Button x:Name="Cerrar" Content="Ya está" Width="150" Height="37" BorderThickness="1,1,1,1" Background="#FFF5DFFF" Click="Cerrar_Click" HorizontalAlignment="Left" Canvas.Left="338" Canvas.Top="322" VerticalAlignment="Top">
+        <Button x:Name="Cerrar" Content="Ya está" Width="150" Height="37" BorderThickness="1,1,1,1" Background="#FFF5DFFF" Click="Cerrar_Click" HorizontalAlignment="Center" Canvas.Left="338" Canvas.Top="392" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <TextBlock TextWrapping="Wrap" Height="18" Width="38" Text="h" HorizontalAlignment="Left" Canvas.Left="632" Canvas.Top="208" VerticalAlignment="Top"/>
+        <TextBlock TextWrapping="Wrap" Height="18" Width="38" HorizontalAlignment="Center" Canvas.Left="622" Canvas.Top="278" VerticalAlignment="Top"><Run Text="h"/><Run Language="es-es" Text="oras"/></TextBlock>
+        <TextBox x:Name="NombreCurso" Canvas.Left="267" TextWrapping="Wrap" Text="Nombre del curso" Canvas.Top="123" Width="393" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="NombreCurso_TextChanged"/>
     </Canvas>
 </Window>

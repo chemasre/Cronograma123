@@ -7,7 +7,19 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <EnableNETAnalyzers>False</EnableNETAnalyzers>
+    <ApplicationIcon>Interfaz\Assets\Icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Interfaz\About.png" />
+    <None Remove="Interfaz\Error.png" />
+    <None Remove="Interfaz\Info.png" />
+    <None Remove="Interfaz\Question.png" />
+    <None Remove="Interfaz\Reset.png" />
+    <None Remove="Interfaz\Tutorial.png" />
+    <None Remove="Interfaz\Warning.png" />
+    <None Remove="Interfaz\WWW.png" />
+  </ItemGroup>
 
 
 	<ItemGroup>
@@ -20,6 +32,23 @@
 			<Isolated>false</Isolated>
 			<EmbedInteropTypes>true</EmbedInteropTypes>
 		</COMReference>
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Content Include="Interfaz\Assets\Icon.ico" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Resource Include="Interfaz\About.png" />
+	  <Resource Include="Interfaz\Error.png" />
+	  <Resource Include="Interfaz\Info.png" />
+	  <Resource Include="Interfaz\Question.png" />
+	  <Resource Include="Interfaz\Reset.png" />
+	  <Resource Include="Interfaz\Tutorial.png" />
+	  <Resource Include="Interfaz\Warning.png" />
+	  <Resource Include="Interfaz\WWW.png" />
 	</ItemGroup>
 
 </Project>

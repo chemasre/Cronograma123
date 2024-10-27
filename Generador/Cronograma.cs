@@ -3,14 +3,26 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Cronogramador
 {
     public class Cronograma
     {
+        Config config;
+
+        public enum Resultado
+        {
+            exito,
+            hayDiasMasAllaDelFinal,
+            excelNoInstalado,
+            errorAlGuardarFichero
+        };
+
         public enum TipoDia
         {
             lectivo,
@@ -33,28 +45,89 @@ namespace Cronogramador
         Calendario calendario;
         Asignatura asignatura;
 
-        bool empezarUFsEnDiaNuevo;
-        bool estiloContinuo;
+        bool errorGuardado;
 
-        public Cronograma(Calendario _calendario, Asignatura _asignatura, bool _empezarUfsEnDiaNuevo, bool _estiloContinuo)
+
+        public Cronograma(Calendario _calendario, Asignatura _asignatura)
         {
             calendario = _calendario;
             asignatura = _asignatura;
-            empezarUFsEnDiaNuevo = _empezarUfsEnDiaNuevo;
-            estiloContinuo = _estiloContinuo;
+
+            config = new Config();
         }
 
-        public bool CompruebaCorrecto()
+        public Config ObtenConfiguracion()
         {
-            bool correcto = true;
+            return config;
+        }
+
+        public void ReiniciaConfiguracion()
+        {
+            config = new Config();
+        }
+
+
+        public void GuardaConfiguracion(string nombreFichero)
+        {
+            var stream = new FileStream(nombreFichero, FileMode.Create, FileAccess.Write);
+
+            var writer = new StreamWriter(stream);
+
+            JsonSerializerOptions options = new JsonSerializerOptions(JsonSerializerOptions.Default);
+            options.WriteIndented = true;
+            writer.Write(JsonSerializer.Serialize<Config>(config, options));
+            writer.Close();
+        }
+
+        public void CargaConfiguracion(string nombreFichero)
+        {
+            var stream = new FileStream(nombreFichero, FileMode.Open, FileAccess.Read);
+
+            var reader = new StreamReader(stream);
+
+            string text = reader.ReadToEnd();
+
+            config = JsonSerializer.Deserialize<Config>(text);
+
+            reader.Close();
+        }
+
+        public bool CompruebaExcelDisponible()
+        {
+            Application excel;
+            excel = new Application();
+            if (excel == null)
+            {
+                return false;
+            }
+            else
+            {
+                excel.Quit();
+                Marshal.ReleaseComObject(excel);
+                return true;
+
+            }
+        }
+
+        public Resultado CompruebaResultado()
+        {
+            Resultado completa = Resultado.exito;
 
             Dictionary<DateTime, ContenidoDia> contenido = ObtenContenido();
 
-            foreach(DateTime d in contenido.Keys) { if(d > calendario.ObtenDiaFin()) { correcto = false; } }
+            if (errorGuardado)
+            {
+                completa = Resultado.errorAlGuardarFichero;
+            }
 
-            if(!correcto) { Utils.MuestraError("El cronograma va más allá del último día del calendario"); }
+            if (completa != Resultado.exito) { return completa; }
 
-            return correcto;
+            foreach (DateTime d in contenido.Keys)
+            {
+                if (d > calendario.ObtenDiaFin()) { completa = Resultado.hayDiasMasAllaDelFinal; break; }
+            }
+
+            return completa;
 
         }
 
@@ -89,17 +162,12 @@ namespace Cronogramador
             Worksheet hoja;
             object nulo = System.Reflection.Missing.Value;
 
-            int cursorFila = Config.filaInicioMeses;
-            int cursorColumna = Config.columnaInicioMeses;
+            int cursorFila = config.filaInicioMeses;
+            int cursorColumna = config.columnaInicioMeses;
 
             excel =  new Application();
 
-            if (excel == null)
-            {
-                throw new Exception("Excel no esta instalado en el sistema");
-            }
-
-             excel.DisplayAlerts = false;
+            excel.DisplayAlerts = false;
 
             libros = excel.Workbooks;
             libro = libros.Add(nulo);
@@ -107,12 +175,12 @@ namespace Cronogramador
 
             // Ponemos el titulo
 
-            hoja.Cells[Config.filaTituloAsignatura, Config.columnaTituloAsignatura] = asignatura.ObtenNombre();
-            hoja.Cells[Config.filaTituloAsignatura, Config.columnaTituloAsignatura].Font.Size = Config.tamanyoTituloAsignatura;
-            hoja.Cells[Config.filaTituloAsignatura, Config.columnaTituloAsignatura].Style.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            hoja.Cells[Config.filaTituloAsignatura, Config.columnaTituloAsignatura].Interior.Color = Config.colorTituloAsignatura;
-            hoja.Cells[Config.filaTituloAsignatura, Config.columnaTituloAsignatura].Font.Color = Config.colorTextoTituloAsignatura;
-            hoja.Range[hoja.Cells[Config.filaTituloAsignatura, Config.columnaTituloAsignatura], hoja.Cells[Config.filaTituloAsignatura, Config.columnaTituloAsignatura + 6]].Merge();
+            hoja.Cells[config.filaTituloAsignatura, config.columnaTituloAsignatura] = asignatura.ObtenNombre();
+            hoja.Cells[config.filaTituloAsignatura, config.columnaTituloAsignatura].Font.Size = config.tamanyoTituloAsignatura;
+            hoja.Cells[config.filaTituloAsignatura, config.columnaTituloAsignatura].Style.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            hoja.Cells[config.filaTituloAsignatura, config.columnaTituloAsignatura].Interior.Color = config.colorTituloAsignatura;
+            hoja.Cells[config.filaTituloAsignatura, config.columnaTituloAsignatura].Font.Color = config.colorTextoTituloAsignatura;
+            hoja.Range[hoja.Cells[config.filaTituloAsignatura, config.columnaTituloAsignatura], hoja.Cells[config.filaTituloAsignatura, config.columnaTituloAsignatura + 6]].Merge();
 
             // Rellenamos los meses
 
@@ -126,14 +194,14 @@ namespace Cronogramador
                 DateTime primerDia = new DateTime(anyo, mes, 1);
                 DateTime ultimoDia = primerDia.AddDays(DateTime.DaysInMonth(anyo, mes) - 1);
 
-                cursorColumna = Config.columnaInicioMeses;
+                cursorColumna = config.columnaInicioMeses;
 
                 hoja.Cells[cursorFila, cursorColumna] = Utils.TraduceMes(mes) + " " + anyo;
-                hoja.Cells[cursorFila, cursorColumna].Font.Size = Config.tamanyoTituloMes;
+                hoja.Cells[cursorFila, cursorColumna].Font.Size = config.tamanyoTituloMes;
                 hoja.Cells[cursorFila, cursorColumna].Font.Bold = true;
                 hoja.Cells[cursorFila, cursorColumna].Style.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                hoja.Cells[cursorFila, cursorColumna].Interior.Color = Config.colorTituloMes;
-                hoja.Cells[cursorFila, cursorColumna].Font.Color = Config.colorTextoTituloMes;
+                hoja.Cells[cursorFila, cursorColumna].Interior.Color = config.colorTituloMes;
+                hoja.Cells[cursorFila, cursorColumna].Font.Color = config.colorTextoTituloMes;
                 hoja.Range[hoja.Cells[cursorFila, cursorColumna], hoja.Cells[cursorFila, cursorColumna + 6]].Merge();
 
 
@@ -142,7 +210,7 @@ namespace Cronogramador
                 for(int j = 1; j <= 7; j ++)
                 {
                     hoja.Cells[cursorFila, cursorColumna] = Utils.TraduceDiaSemana(Utils.IndiceADiaSemana(j), true);
-                    hoja.Cells[cursorFila, cursorColumna].Interior.Color = Config.colorDiaSemana;
+                    hoja.Cells[cursorFila, cursorColumna].Interior.Color = config.colorDiaSemana;
                     hoja.Cells[cursorFila, cursorColumna].Font.Bold = true;
                     hoja.Cells[cursorFila, cursorColumna].Style.HorizontalAlignment = XlHAlign.xlHAlignCenter;
 
@@ -156,7 +224,7 @@ namespace Cronogramador
 
                 for(DateTime dia = primerDia; dia <= ultimoDia; dia = dia.AddDays(1))
                 {
-                    cursorColumna = Config.columnaInicioMeses + Utils.DiaSemanaAIndice(dia.DayOfWeek) - 1;
+                    cursorColumna = config.columnaInicioMeses + Utils.DiaSemanaAIndice(dia.DayOfWeek) - 1;
 
                     hoja.Cells[cursorFila, cursorColumna] = dia.Day;
                     hoja.Cells[cursorFila, cursorColumna].Borders.LineStyle = XlLineStyle.xlContinuous;
@@ -164,9 +232,11 @@ namespace Cronogramador
 
 
                     XlRgbColor color = XlRgbColor.rgbWhite;
+                    XlRgbColor colorTexto = XlRgbColor.rgbWhite;
                     uint colorRGB = 0;
 
                     bool ponerColor = false;
+                    bool ponerColorTexto = false;
                     bool ponerColorRGB = false;
 
                     List<XlRgbColor> coloresGradiente = null;
@@ -178,13 +248,17 @@ namespace Cronogramador
 
                         if (contenidoDia.tipo == TipoDia.festivo)
                         {   
-                            color = Config.colorFestivos;
+                            color = config.colorFestivos;
+                            colorTexto = config.colorTextoFestivos;
                             ponerColor = true;
+                            ponerColorTexto = true;
                         }
                         else if(contenidoDia.tipo == TipoDia.finDeSemana)
                         {   
-                            color = Config.colorFinesDeSemana;
+                            color = config.colorFinesDeSemana;
+                            colorTexto = config.colorTextoFinesDeSemana;
                             ponerColor = true;
+                            ponerColorTexto = true;
                         }
                         else // contenidoDia.tipo == TipoDia.lectivo
                         {
@@ -198,12 +272,20 @@ namespace Cronogramador
 
                             if(horasUF.Count == 0)
                             {
-                                if(estiloContinuo && anteriorUF > 0) { color = Config.coloresUFs[anteriorUF - 1]; ponerColor = true; }
+                                if(config.estiloContinuo && anteriorUF > 0)
+                                {
+                                    color = config.coloresUFs[anteriorUF - 1];
+                                    colorTexto = config.colorTextoUFs;
+                                    ponerColor = true;
+                                    ponerColorTexto = true;
+                                 }
                             }
                             else if (horasUF.Count == 1)
                             {
-                                color = Config.coloresUFs[(horasUF[0].uf - 1) % Config.coloresUFs.Length];
+                                color = config.coloresUFs[(horasUF[0].uf - 1) % config.coloresUFs.Length];
+                                colorTexto = config.colorTextoUFs;
                                 ponerColor = true;
+                                ponerColorTexto = true;
                             }
                             else if (horasUF.Count >= 2)
                             {
@@ -211,13 +293,16 @@ namespace Cronogramador
 
                                 for (int j = 0; j < horasUF.Count; j++)
                                 {
-                                    coloresGradiente.Add(Config.coloresUFs[(horasUF[j].uf - 1) % Config.coloresUFs.Length]);
+                                    coloresGradiente.Add(config.coloresUFs[(horasUF[j].uf - 1) % config.coloresUFs.Length]);
                                 }
 
                                 ponerGradiente = true;
+
+                                colorTexto = config.colorTextoUFs;
+                                ponerColorTexto = true;
                             }
 
-                            if(horasUF.Count > 0) { anteriorUF =  horasUF[horasUF.Count - 1].uf; }
+                            if (horasUF.Count > 0) { anteriorUF =  horasUF[horasUF.Count - 1].uf; }
 
                         }
 
@@ -240,6 +325,11 @@ namespace Cronogramador
 
                     }
 
+                    if(ponerColorTexto)
+                    {
+                        hoja.Cells[cursorFila, cursorColumna].Font.Color = colorTexto;
+                    }
+
                     if (dia.DayOfWeek == DayOfWeek.Sunday) { cursorFila++; }
 
                 }
@@ -250,28 +340,71 @@ namespace Cronogramador
 
             // Rellenamos las UFs
 
-            cursorFila = Config.filaInicioUFs;
-            cursorColumna = Config.columnaInicioUFs;
+            cursorFila = config.filaInicioUFs;
+            cursorColumna = config.columnaInicioUFs;
+
+            hoja.Columns[cursorColumna + 1].ColumnWidth = config.anchoColumnaTitulosUFs;
 
             for(int i = 0; i < asignatura.ObtenNumUFs(); i ++)
             {
                 int uf = asignatura.ObtenUFPorIndice(i);
-                hoja.Cells[cursorFila, cursorColumna] = "UF" + uf;
-                hoja.Cells[cursorFila, cursorColumna].Interior.Color = Config.coloresUFs[(uf - 1) % Config.coloresUFs.Length];
+                hoja.Cells[cursorFila, cursorColumna] = uf;
+                hoja.Cells[cursorFila, cursorColumna].Interior.Color = config.coloresUFs[(uf - 1) % config.coloresUFs.Length];
+                hoja.Cells[cursorFila, cursorColumna].Font.Color = config.colorTextoUFs;
                 hoja.Cells[cursorFila, cursorColumna].Style.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                hoja.Cells[cursorFila, cursorColumna + 1] = asignatura.ObtenHorasUF(uf) + "h";
+                hoja.Cells[cursorFila, cursorColumna + 1] = asignatura.ObtenTituloUF(uf);
+                hoja.Cells[cursorFila, cursorColumna + 1].Style.HorizontalAlignment = XlHAlign.xlHAlignCenter;
                 hoja.Cells[cursorFila, cursorColumna + 1].Borders.LineStyle = XlLineStyle.xlContinuous;
+                hoja.Cells[cursorFila, cursorColumna + 2] = asignatura.ObtenHorasUF(uf) + "h";
+                hoja.Cells[cursorFila, cursorColumna + 2].Borders.LineStyle = XlLineStyle.xlContinuous;
 
                 cursorFila ++;
 
             }
 
+            // Rellenamos la leyenda
+
+            cursorFila++;
+
+            hoja.Cells[cursorFila, cursorColumna] = "";
+            hoja.Cells[cursorFila, cursorColumna].Interior.Color = config.colorFinesDeSemana;
+            hoja.Cells[cursorFila, cursorColumna].Font.Color = config.colorTextoFinesDeSemana;
+            hoja.Cells[cursorFila, cursorColumna].Style.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            hoja.Cells[cursorFila, cursorColumna + 1].Style.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            hoja.Cells[cursorFila, cursorColumna + 1] = "Fin de semana";
+            hoja.Cells[cursorFila, cursorColumna + 1].Borders.LineStyle = XlLineStyle.xlContinuous;
+
+            if (calendario.ObtenFestivos().Count > 0)
+            {
+                cursorFila ++;
+
+                hoja.Cells[cursorFila, cursorColumna] = "";
+                hoja.Cells[cursorFila, cursorColumna].Interior.Color = config.colorFestivos;
+                hoja.Cells[cursorFila, cursorColumna].Font.Color = config.colorTextoFestivos;
+                hoja.Cells[cursorFila, cursorColumna].Style.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                hoja.Cells[cursorFila, cursorColumna + 1] = "Festivo";
+                hoja.Cells[cursorFila, cursorColumna + 1].Borders.LineStyle = XlLineStyle.xlContinuous;
+            }
+
+
             // Guardamos el fichero
 
-            libro.SaveAs(Directory.GetCurrentDirectory() +  "\\" + nombreFichero,
-                        XlFileFormat.xlOpenXMLWorkbook, nulo,
-                        nulo, nulo, nulo, XlSaveAsAccessMode.xlExclusive,
-                        nulo, nulo, nulo, nulo, nulo);
+            errorGuardado = false;
+
+            try
+            {
+                libro.SaveAs(nombreFichero,
+                            XlFileFormat.xlOpenXMLWorkbook, nulo,
+                            nulo, nulo, nulo, XlSaveAsAccessMode.xlExclusive,
+                            nulo, nulo, nulo, nulo, nulo);
+            }
+            catch (Exception e)
+            {
+                errorGuardado = true;
+                libros.Close();
+                excel.Quit();
+                return;
+            }
 
             // Cerramos excel
 
@@ -331,7 +464,7 @@ namespace Cronogramador
                         var horasUF = new HorasUF() { uf = asignatura.ObtenUFPorIndice(indiceUF), horas = horasNoAsignadasUF };
                         contenidoDia.horasUF.Add(horasUF);
 
-                        if (empezarUFsEnDiaNuevo)
+                        if (config.empezarUfsEnDiaNuevo)
                         {
                             horasDia = 0;
                         }
@@ -379,5 +512,6 @@ namespace Cronogramador
 
             return contenido;
         }
+
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CronogramaMe"
         mc:Ignorable="d"
-        Title="Cronograma123 v0.1" Height="450" Width="800" WindowStyle="ToolWindow">
+        Title="Cronograma123 v0.1" Height="558" Width="800" WindowStyle="ToolWindow" Closed="VentanaPrincipal_Closed" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <LinearGradientBrush x:Key="CanvasDayBackground" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF96EF1C" Offset="1"/>
@@ -14,33 +14,54 @@
         </LinearGradientBrush>
     </Window.Resources>
     <Canvas Background="{DynamicResource CanvasBackground2}">
-        <Button x:Name="Calendario" Content="Define el calendario" Width="150" Height="45" BorderThickness="1,1,1,1" Background="#FFFFC1F7" Click="Calendario_Click" HorizontalAlignment="Center" Canvas.Left="229" Canvas.Top="99" VerticalAlignment="Top">
+        <Button x:Name="Calendario" Content="Define el calendario" Width="150" Height="45" BorderThickness="1,1,1,1" Background="#FFFFC1F7" Click="Calendario_Click" HorizontalAlignment="Center" Canvas.Left="229" Canvas.Top="135" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <TextBlock x:Name="TipCalendario" TextWrapping="Wrap" Height="45" Width="184" Text="Introduce la fecha de inicio y fin del curso, así como los días festivos previstos" HorizontalAlignment="Center" Canvas.Left="400" Canvas.Top="102" VerticalAlignment="Top"/>
-        <TextBlock TextWrapping="Wrap" Height="45" Width="55" FontFamily="Monotype Corsiva" FontSize="48" HorizontalAlignment="Center" Canvas.Left="174" Canvas.Top="102" VerticalAlignment="Top"><Run Language="es-es" Text="1"/></TextBlock>
-        <Button x:Name="Horario" Content="Define el horario" Width="150" Height="45" BorderThickness="1,1,1,1" Background="#FFE0FFE6" Click="Horario_Click" HorizontalAlignment="Center" Canvas.Left="229" Canvas.Top="169" VerticalAlignment="Top">
+        <TextBlock x:Name="TipCalendario" TextWrapping="Wrap" Height="45" Width="184" Text="Introduce la fecha de inicio y fin del curso, así como los días festivos previstos" HorizontalAlignment="Center" Canvas.Left="400" Canvas.Top="138" VerticalAlignment="Top"/>
+        <TextBlock TextWrapping="Wrap" Height="45" Width="55" FontFamily="Monotype Corsiva" FontSize="48" HorizontalAlignment="Center" Canvas.Left="174" Canvas.Top="138" VerticalAlignment="Top"><Run Language="es-es" Text="1"/></TextBlock>
+        <Button x:Name="Horario" Content="Define el horario" Width="150" Height="45" BorderThickness="1,1,1,1" Background="#FFE0FFE6" Click="Horario_Click" HorizontalAlignment="Center" Canvas.Left="229" Canvas.Top="205" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <TextBlock x:Name="TipHorario" TextWrapping="Wrap" Height="45" Width="184" HorizontalAlignment="Center" Canvas.Left="400" Canvas.Top="169" VerticalAlignment="Top"><Run Language="es-es" Text="Especifica qué dias de la semana vas a dar clase y cuántas horas darás cada día"/></TextBlock>
-        <TextBlock TextWrapping="Wrap" Height="45" Width="55" FontFamily="Monotype Corsiva" FontSize="48" HorizontalAlignment="Center" Canvas.Left="174" Canvas.Top="169" VerticalAlignment="Top"><Run Language="es-es" Text="2"/></TextBlock>
-        <Button x:Name="Genera" Content="Genera el cronograma!" Width="355" Height="45" BorderThickness="1,1,1,1" Background="#FF8EE8FF" HorizontalAlignment="Center" Canvas.Left="229" Canvas.Top="317" VerticalAlignment="Top">
+        <TextBlock x:Name="TipHorario" TextWrapping="Wrap" Height="45" Width="184" HorizontalAlignment="Center" Canvas.Left="400" Canvas.Top="205" VerticalAlignment="Top"><Run Language="es-es" Text="Especifica qué dias de la semana vas a dar clase y cuántas horas darás cada día"/></TextBlock>
+        <TextBlock TextWrapping="Wrap" Height="45" Width="55" FontFamily="Monotype Corsiva" FontSize="48" HorizontalAlignment="Center" Canvas.Left="174" Canvas.Top="205" VerticalAlignment="Top"><Run Language="es-es" Text="2"/></TextBlock>
+        <Button x:Name="Genera" Content="Genera el cronograma!" Width="355" Height="45" BorderThickness="1,1,1,1" Background="#FF8EE8FF" HorizontalAlignment="Left" Canvas.Left="229" Canvas.Top="353" VerticalAlignment="Center" Click="Genera_Click">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <TextBlock TextWrapping="Wrap" Height="45" Width="55" FontFamily="Monotype Corsiva" FontSize="48" HorizontalAlignment="Center" Canvas.Left="174" Canvas.Top="238" VerticalAlignment="Top"><Run Language="es-es" Text="3"/></TextBlock>
-        <TextBlock TextWrapping="Wrap" Height="57" Width="454" FontFamily="Monotype Corsiva" FontSize="48" HorizontalAlignment="Center" Canvas.Left="229" Canvas.Top="9" VerticalAlignment="Top" FontWeight="Bold"><Run Text="Cronogra"/><Run Text="ma"/><Run Language="es-es" Text="123"/></TextBlock>
-        <Button x:Name="Unidades" Content="Define las unidades" Width="150" Height="45" BorderThickness="1,1,1,1" Background="#FFF3FFC1" Click="Unidades_Click" HorizontalAlignment="Center" Canvas.Left="229" Canvas.Top="238" VerticalAlignment="Top">
+        <TextBlock TextWrapping="Wrap" Height="45" Width="55" FontFamily="Monotype Corsiva" FontSize="48" HorizontalAlignment="Center" Canvas.Left="174" Canvas.Top="274" VerticalAlignment="Top"><Run Language="es-es" Text="3"/></TextBlock>
+        <TextBlock x:Name="Titulo" TextWrapping="Wrap" Height="57" Width="454" FontFamily="Monotype Corsiva" FontSize="48" HorizontalAlignment="Center" Canvas.Left="229" Canvas.Top="45" VerticalAlignment="Top" FontWeight="Bold"><Run Text="Cronogra"/><Run Text="ma"/><Run Language="es-es" Text="123"/></TextBlock>
+        <Button x:Name="Unidades" Content="Define el curso" Width="150" Height="45" BorderThickness="1,1,1,1" Background="#FFF3FFC1" Click="Unidades_Click" HorizontalAlignment="Center" Canvas.Left="229" Canvas.Top="274" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <TextBlock x:Name="TipUnidades" TextWrapping="Wrap" Height="45" Width="184" Text="Establece las unidades en que se dividirá tu curso y cuántas horas quieres dedicar a cada una" HorizontalAlignment="Center" Canvas.Left="400" Canvas.Top="241" VerticalAlignment="Top"/>
+        <TextBlock x:Name="TipCronograma" TextWrapping="Wrap" Height="45" Width="184" Text="Establece el nombre tu curso, en cuántas unidades se dividirá y la duración de cada una" HorizontalAlignment="Center" Canvas.Left="400" Canvas.Top="277" VerticalAlignment="Top"/>
+        <Image x:Name="WWW" Height="56" Canvas.Left="643" Canvas.Top="447" Width="56" Source="/Interfaz/WWW.png" MouseDown="WWW_MouseDown" HorizontalAlignment="Center" VerticalAlignment="Top" Cursor="Hand">
+            <Image.Effect>
+                <DropShadowEffect/>
+            </Image.Effect>
+        </Image>
+        <Image x:Name="About" Height="56" Canvas.Left="702" Canvas.Top="446" Width="56" Source="/Interfaz/About.png" MouseDown="About_MouseDown" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand">
+            <Image.Effect>
+                <DropShadowEffect/>
+            </Image.Effect>
+        </Image>
+        <Image x:Name="Tutorial" Height="56" Canvas.Left="578" Canvas.Top="445" Width="56" Source="/Interfaz/Tutorial.png" MouseDown="Tutorial_MouseDown" Cursor="Hand" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Image.Effect>
+                <DropShadowEffect/>
+            </Image.Effect>
+        </Image>
+        <Image x:Name="Reset" Height="48" Canvas.Left="521" Canvas.Top="451" Width="56" Source="/Interfaz/Reset.png" Cursor="Hand" MouseDown="Reset_MouseDown">
+            <Image.Effect>
+                <DropShadowEffect/>
+            </Image.Effect>
+        </Image>
+        <Border x:Name="Overlay" BorderBrush="Black" BorderThickness="1" Height="542" Width="800" Background="#99FFFFFF" Visibility="Hidden"/>
 
     </Canvas>
 </Window>

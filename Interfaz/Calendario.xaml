@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CronogramaMe"
         mc:Ignorable="d"
-        Title="Calendario" Height="562" Width="800" ResizeMode="NoResize">
+        Title="Calendario" Height="560" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Topmost="True">
     <Canvas Background="{DynamicResource CanvasBackground2}">
-        <DatePicker x:Name="DiaInicio" Width="129" HorizontalAlignment="Left" Canvas.Left="400" Canvas.Top="107" VerticalAlignment="Top" SelectedDateChanged="DiaInicioChanged"/>
+        <DatePicker x:Name="DiaInicio" Width="129" HorizontalAlignment="Left" Canvas.Left="400" Canvas.Top="107" VerticalAlignment="Top" SelectedDateChanged="DiaInicioChanged" FirstDayOfWeek="Monday"/>
         <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" Canvas.Left="260" Canvas.Top="107" VerticalAlignment="Top"><Run Language="es-es" Text="El primer día de clase es"/></TextBlock>
-        <DatePicker x:Name="DiaFin" Width="129" HorizontalAlignment="Left" Canvas.Left="400" Canvas.Top="140" VerticalAlignment="Top" SelectedDateChanged="DiaFinChanged"/>
+        <DatePicker x:Name="DiaFin" Width="129" HorizontalAlignment="Left" Canvas.Left="400" Canvas.Top="140" VerticalAlignment="Top" SelectedDateChanged="DiaFinChanged" FirstDayOfWeek="Monday" IsTodayHighlighted="False">
+        </DatePicker>
         <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" Canvas.Left="260" Canvas.Top="140" VerticalAlignment="Top"><Run Text="El último día "/><Run Language="es-es" Text="de clase es"/><LineBreak/><Run/></TextBlock>
         <TextBlock TextWrapping="Wrap" Height="30" HorizontalAlignment="Left" Canvas.Left="260" Canvas.Top="180" VerticalAlignment="Center" Width="269"><Run Text="Mis "/><Run Text="festivos"/><Run Language="es-es" Text=","/><Run Text=" además de los fines de semana"/><Run Language="es-es" Text=", so"/><Run Text="n"/></TextBlock>
         <ListBox x:Name="ListaFestivos" d:ItemsSource="{d:SampleData ItemCount=5}" Width="269" Height="106" HorizontalAlignment="Right" Canvas.Left="260" Canvas.Top="210" VerticalAlignment="Top" SelectionChanged="ListaFestivos_SelectionChanged"/>
@@ -18,13 +19,21 @@
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <DatePicker x:Name="FestivoAnyadir" HorizontalAlignment="Left" Canvas.Left="425" Canvas.Top="335" VerticalAlignment="Top"/>
+        <DatePicker x:Name="FestivoAnyadir" HorizontalAlignment="Left" Canvas.Left="425" Canvas.Top="335" VerticalAlignment="Top" FirstDayOfWeek="Monday" IsTodayHighlighted="False">
+            <DatePicker.CalendarStyle>
+                <Style/>
+            </DatePicker.CalendarStyle>
+        </DatePicker>
         <Button x:Name="QuitarFestivo" Content="Quiero quitar este festivo" Width="150" Height="25" BorderThickness="1,1,1,1" Background="#FFFFDAC8" HorizontalAlignment="Left" Canvas.Left="258" Canvas.Top="371" VerticalAlignment="Top" Click="QuitarFestivo_Click">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <DatePicker x:Name="FestivoQuitar" HorizontalAlignment="Left" Canvas.Left="425" Canvas.Top="371" VerticalAlignment="Top"/>
+        <DatePicker x:Name="FestivoQuitar" HorizontalAlignment="Left" Canvas.Left="425" Canvas.Top="371" VerticalAlignment="Top" FirstDayOfWeek="Monday" IsTodayHighlighted="False">
+            <DatePicker.CalendarStyle>
+                <Style/>
+            </DatePicker.CalendarStyle>
+        </DatePicker>
         <Button x:Name="Cerrar" Content="Ya está" Width="150" Height="36" BorderThickness="1,1,1,1" Background="#FFF5DFFF" Click="Cerrar_Click" HorizontalAlignment="Left" Canvas.Left="323" Canvas.Top="444" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>

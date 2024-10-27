@@ -5,28 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CronogramaMe"
         mc:Ignorable="d"
-        Title="Horario" Height="450" Width="800" ResizeMode="NoResize">
+        Title="Horario" Height="557" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" Topmost="True">
     <Canvas Background="{DynamicResource CanvasBackground2}">
-        <TextBlock TextWrapping="Wrap" Height="30" Width="338" HorizontalAlignment="Left" Canvas.Left="255" Canvas.Top="90" VerticalAlignment="Top"><Run Language="es-es" Text="El horario del curso es:"/></TextBlock>
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Width="338" Height="91" HorizontalAlignment="Left" Canvas.Left="255" Canvas.Top="120" VerticalAlignment="Top"/>
-        <Button x:Name="AnyadirDia" Content="Quiero añadir este día" Width="150" Height="25" BorderThickness="1,1,1,1" Background="#FF8EE8FF" HorizontalAlignment="Left" Canvas.Left="255" Canvas.Top="230" VerticalAlignment="Top">
+        <TextBlock TextWrapping="Wrap" Height="30" Width="338" HorizontalAlignment="Center" Canvas.Left="255" Canvas.Top="138" VerticalAlignment="Top"><Run Language="es-es" Text="El horario del curso es:"/></TextBlock>
+        <ListBox x:Name="ListaDias" d:ItemsSource="{d:SampleData ItemCount=5}" Width="338" Height="108" HorizontalAlignment="Center" Canvas.Left="255" Canvas.Top="168" VerticalAlignment="Top" SelectionChanged="ListaDias_SelectionChanged"/>
+        <Button x:Name="AnyadirDia" Content="Quiero poner este día" Width="150" Height="25" BorderThickness="1,1,1,1" Background="#FF8EE8FF" HorizontalAlignment="Center" Canvas.Left="255" Canvas.Top="291" VerticalAlignment="Top" Click="AnyadirDia_Click">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Button x:Name="QuitarDia" Content="Quiero quitar este día" Width="150" Height="25" BorderThickness="1,1,1,1" Background="#FFFFDAC8" HorizontalAlignment="Left" Canvas.Left="255" Canvas.Top="267" VerticalAlignment="Top">
+        <Button x:Name="QuitarDia" Content="Quiero quitar este día" Width="150" Height="25" BorderThickness="1,1,1,1" Background="#FFFFDAC8" HorizontalAlignment="Center" Canvas.Left="255" Canvas.Top="328" VerticalAlignment="Top" Click="QuitarDia_Click">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <ComboBox x:Name="DiaAnyadir" Width="88" SelectedIndex="0" HorizontalAlignment="Left" Canvas.Left="421" Canvas.Top="232" VerticalAlignment="Top">
+        <ComboBox x:Name="DiaAnyadir" Width="88" SelectedIndex="0" HorizontalAlignment="Center" Canvas.Left="421" Canvas.Top="293" VerticalAlignment="Top">
             <ComboBoxItem Content="Lunes"/>
             <ComboBoxItem Content="Martes"/>
             <ComboBoxItem Content="Miércoles"/>
             <ComboBoxItem Content="Jueves"/>
             <ComboBoxItem Content="Viernes"/>
         </ComboBox>
-        <ComboBox x:Name="HorasAnyadir" Width="80" SelectedIndex="0" Height="22" HorizontalAlignment="Left" Canvas.Left="513" Canvas.Top="232" VerticalAlignment="Top">
+        <ComboBox x:Name="HorasAnyadir" Width="80" SelectedIndex="0" Height="22" HorizontalAlignment="Center" Canvas.Left="513" Canvas.Top="293" VerticalAlignment="Top">
             <ComboBoxItem Content="1 hora"/>
             <ComboBoxItem Content="2 horas"/>
             <ComboBoxItem Content="3 horas"/>
@@ -38,15 +38,15 @@
             <ComboBoxItem Content="9 horas"/>
             <ComboBoxItem Content="10 horas"/>
         </ComboBox>
-        <ComboBox x:Name="DiaQuitar" Width="88" SelectedIndex="0" HorizontalAlignment="Left" Canvas.Left="421" Canvas.Top="267" VerticalAlignment="Top">
+        <ComboBox x:Name="DiaQuitar" Width="88" SelectedIndex="0" HorizontalAlignment="Center" Canvas.Left="421" Canvas.Top="328" VerticalAlignment="Top">
             <ComboBoxItem Content="Lunes"/>
             <ComboBoxItem Content="Martes"/>
             <ComboBoxItem Content="Miércoles"/>
             <ComboBoxItem Content="Jueves"/>
             <ComboBoxItem Content="Viernes"/>
         </ComboBox>
-        <TextBlock TextWrapping="Wrap" Height="41" Width="280" FontFamily="Monotype Corsiva" FontSize="36" HorizontalAlignment="Left" Canvas.Left="301" Canvas.Top="28" VerticalAlignment="Top"><Run Text="Define el "/><Run Language="es-es" Text="horario"/></TextBlock>
-        <Button x:Name="Cerrar" Content="Ya está" Width="150" Height="37" BorderThickness="1,1,1,1" Background="#FFF5DFFF" Click="Cerrar_Click" HorizontalAlignment="Left" Canvas.Left="349" Canvas.Top="342" VerticalAlignment="Top">
+        <TextBlock TextWrapping="Wrap" Height="41" Width="280" FontFamily="Monotype Corsiva" FontSize="36" HorizontalAlignment="Center" Canvas.Left="301" Canvas.Top="76" VerticalAlignment="Top"><Run Text="Define el "/><Run Language="es-es" Text="horario"/></TextBlock>
+        <Button x:Name="Cerrar" Content="Ya está" Width="150" Height="37" BorderThickness="1,1,1,1" Background="#FFF5DFFF" Click="Cerrar_Click" HorizontalAlignment="Center" Canvas.Left="349" Canvas.Top="390" VerticalAlignment="Top">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
