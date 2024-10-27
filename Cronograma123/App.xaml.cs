@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using Cronogramador;
+using System.Configuration;
 using System.Data;
 using System.Windows;
 
@@ -9,6 +10,8 @@ namespace CronogramaMe
     /// </summary>
     public partial class App : Application
     {
+
+
     }
 
 }

@@ -30,7 +30,7 @@ namespace CronogramaMe
 
         public const string companyName = "Sinestesia Game Design";
         public const string projectName = "Cronograma123";
-        public const string projectUrl = @"https:\\sinestesiagamedesign.es\cronogramador";
+        public const string projectUrl = @"https:\\sinestesiagamedesign.es\cronograma123";
         public const string projectVersion = "0.9";
         public const string projectYear = "2024";
         public const string projectLicense = "CC BY-NC-ND";
@@ -40,6 +40,8 @@ namespace CronogramaMe
         Cronogramador.Asignatura asignatura;
 
         string dataPath;
+
+        bool ventanaAbiertaPorPrimeraVez = true;
 
         public MainWindow()
         {
@@ -82,60 +84,9 @@ namespace CronogramaMe
             if (!File.Exists(dataPath + "\\" + "configInterfaz.json")) { GuardaConfiguracion(dataPath + "\\" + "configInterfaz.json"); }
             CargaConfiguracion(dataPath + "\\" + "configInterfaz.json");
 
-            Message m2 = null;
-
-            if (config.compruebaExcelDisponibleAlIniciar)
-            {
-
-                ShowOverlay();
-
-                m2 = new Message(Message.Type.info, "A continuación comprobaremos si tienes una versión compatible de Excel instalada en el sistema");
-                m2.ShowDialog();
-
-                if (!cronograma.CompruebaExcelDisponible())
-                {
-                    m2 = new Message(Message.Type.alert, "No se ha encontrado una versión compatible de Excel instalada. La aplicación se tiene que cerrar ahora");
-                    m2.ShowDialog();
-                    Close();
-                    return;
-                }
-                else
-                {
-                    m2 = new Message(Message.Type.info, "¡Felicidades! Se ha encontrado una versión compatible de Excel instalada");
-                    m2.ShowDialog();
-                }
-
-                m2 = new Message(Message.Type.question, "¿Quieres comprobar si excel está disponible la próxima vez que inicies el programa?");
-                m2.ShowDialog();
-
-                if(!m2.result) { config.compruebaExcelDisponibleAlIniciar = false; }
-
-
-                HideOverlay();
-            }
-
-
-            if (config.primeraEjecucion)
-            {
-                m2 = new Message(Message.Type.question, "Parece que es la primera vez que ejecutas el programa ¿quieres ver el tutorial?");
-                m2.ShowDialog();
-
-                if (m2.result)
-                {
-                    OpenTutorial();
-                }
-                else
-                {
-                    m2 = new Message(Message.Type.info, "Recuerda que tienes el tutorial disponible en la ventana principal del programa");
-                    m2.ShowDialog();
-                }
-
-                config.primeraEjecucion = false;
-            }
-
-
-
         }
+
+
 
         public void GuardaConfiguracion(string nombreFichero)
         {
@@ -314,7 +265,7 @@ namespace CronogramaMe
         {
             bool limpiarCalendario = false;
             bool limpiarHorario = false;
-            bool limpiarCurso = false;
+            bool limpiarContenidos = false;
             bool limpiarTodo = false;
 
             Message m = new Message(Message.Type.question, "¿Quieres dejar el programa como si lo acabaras de instalar?");
@@ -331,9 +282,9 @@ namespace CronogramaMe
                 m.ShowDialog();
                 limpiarHorario = m.result;
 
-                m = new Message(Message.Type.question, "¿Quieres reiniciar el curso?");
+                m = new Message(Message.Type.question, "¿Quieres reiniciar los contenidos?");
                 m.ShowDialog();
-                limpiarCurso = m.result;
+                limpiarContenidos = m.result;
             }
 
             if(limpiarTodo)
@@ -366,16 +317,82 @@ namespace CronogramaMe
                 
             }
 
-            if (limpiarCurso || limpiarTodo)
+            if (limpiarContenidos || limpiarTodo)
             {
                 asignatura.PonNombre("Nombre de mi asignatura");
                 asignatura.ReiniciaUFs();
             }
 
-            if(limpiarTodo || limpiarHorario || limpiarCurso)
+            if(limpiarTodo || limpiarHorario || limpiarContenidos)
             {
                 asignatura.Guarda(dataPath + "\\" + "asignatura.json");
             }
+        }
+
+
+        private void VentanaPrincipal_Loaded(object sender, RoutedEventArgs e)
+        {
+            if(!ventanaAbiertaPorPrimeraVez) { return; }
+            else { ventanaAbiertaPorPrimeraVez = false; }
+
+            
+
+            Message m2 = null;
+
+            if (config.compruebaExcelDisponibleAlIniciar)
+            {
+
+                ShowOverlay();
+
+                m2 = new Message(Message.Type.info, "A continuación comprobaremos si tienes una versión compatible de Excel instalada en el sistema");
+                m2.ShowDialog();
+
+                if (!cronograma.CompruebaExcelDisponible())
+                {
+                    m2 = new Message(Message.Type.alert, "No se ha encontrado una versión compatible de Excel instalada. La aplicación se tiene que cerrar ahora");
+                    m2.ShowDialog();
+                    HideOverlay();
+                    Close();
+                    return;
+                }
+                else
+                {
+                    m2 = new Message(Message.Type.info, "¡Felicidades! Se ha encontrado una versión compatible de Excel instalada");
+                    m2.ShowDialog();
+                }
+
+                m2 = new Message(Message.Type.question, "¿Quieres comprobar si excel está disponible la próxima vez que inicies el programa?");
+                m2.ShowDialog();
+
+                if (!m2.result) { config.compruebaExcelDisponibleAlIniciar = false; }
+
+
+                HideOverlay();
+            }
+
+
+            if (config.primeraEjecucion)
+            {
+                ShowOverlay();
+
+                m2 = new Message(Message.Type.question, "Parece que es la primera vez que ejecutas el programa ¿quieres ver el tutorial?");
+                m2.ShowDialog();
+
+                if (m2.result)
+                {
+                    OpenTutorial();
+                }
+                else
+                {
+                    m2 = new Message(Message.Type.info, "Recuerda que tienes el tutorial disponible en la ventana principal del programa");
+                    m2.ShowDialog();
+                }
+
+                config.primeraEjecucion = false;
+
+                HideOverlay();
+            }
+
         }
     }
 }

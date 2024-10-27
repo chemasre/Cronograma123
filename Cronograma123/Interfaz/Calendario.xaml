@@ -39,7 +39,7 @@
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <TextBlock TextWrapping="Wrap" Height="41" Width="280" FontFamily="Monotype Corsiva" FontSize="36" HorizontalAlignment="Left" Canvas.Left="260" Canvas.Top="37" VerticalAlignment="Top"><Run Language="es-es" Text="Define el calendario"/></TextBlock>
+        <TextBlock TextWrapping="Wrap" Height="41" Width="280" FontFamily="Monotype Corsiva" FontSize="36" HorizontalAlignment="Left" Canvas.Left="260" Canvas.Top="37" VerticalAlignment="Top" Foreground="#FF0D4C00"><Run Language="es-es" Text="Define el calendario"/></TextBlock>
 
     </Canvas>
 </Window>

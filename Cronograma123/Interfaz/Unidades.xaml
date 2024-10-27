@@ -32,7 +32,7 @@
             <ComboBoxItem Content="9"/>
             <ComboBoxItem Content="10"/>
         </ComboBox>
-        <TextBlock TextWrapping="Wrap" Height="41" Width="280" FontFamily="Monotype Corsiva" FontSize="36" HorizontalAlignment="Center" Canvas.Left="278" Canvas.Top="54" VerticalAlignment="Top"><Run Text="Define "/><Run Language="es-es" Text="el curso"/></TextBlock>
+        <TextBlock TextWrapping="Wrap" Height="41" Width="280" FontFamily="Monotype Corsiva" FontSize="36" HorizontalAlignment="Center" Canvas.Left="278" Canvas.Top="54" VerticalAlignment="Top" Foreground="#FF0D4C00"><Run Text="Define "/><Run Text="el "/><Run Language="es-es" Text="contenido"/></TextBlock>
         <TextBox x:Name="TituloUnidadAnyadir" TextWrapping="Wrap" Width="174" HorizontalAlignment="Center" Canvas.Left="384" Canvas.Top="278" VerticalAlignment="Top" Text="Título unidad"/>
         <TextBox x:Name="HorasUnidadAnyadir" TextWrapping="Wrap" Width="50" HorizontalAlignment="Center" Canvas.Left="565" Canvas.Top="278" VerticalAlignment="Top" Text="10"/>
         <ComboBox x:Name="UnidadQuitar" Width="58" SelectedIndex="0" HorizontalAlignment="Center" Canvas.Left="319" Canvas.Top="317" VerticalAlignment="Top">
