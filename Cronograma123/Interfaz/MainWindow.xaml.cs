@@ -33,7 +33,7 @@ namespace CronogramaMe
         public const string projectUrl = @"https:\\sinestesiagamedesign.es\cronograma123";
         public const string projectVersion = "0.9";
         public const string projectYear = "2024";
-        public const string projectLicense = "CC BY-NC-ND";
+        public const string projectLicense = "CC BY-ND";
 
         Cronogramador.Cronograma cronograma;
         Cronogramador.Calendario calendario;

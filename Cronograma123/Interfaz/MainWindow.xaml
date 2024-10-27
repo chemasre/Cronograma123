@@ -28,7 +28,7 @@
         </Button>
         <TextBlock x:Name="TipHorario" TextWrapping="Wrap" Height="45" Width="184" HorizontalAlignment="Center" Canvas.Left="400" Canvas.Top="205" VerticalAlignment="Top"><Run Language="es-es" Text="Especifica qué dias de la semana vas a dar clase y cuántas horas darás cada día"/></TextBlock>
         <TextBlock TextWrapping="Wrap" Height="45" Width="55" FontFamily="Monotype Corsiva" FontSize="48" HorizontalAlignment="Center" Canvas.Left="174" Canvas.Top="205" VerticalAlignment="Top" Foreground="#FF0D4C00"><Run Language="es-es" Text="2"/></TextBlock>
-        <Button x:Name="Genera" Content="Genera el cronograma!" Width="355" Height="45" BorderThickness="1,1,1,1" Background="#FF8EE8FF" HorizontalAlignment="Left" Canvas.Left="229" Canvas.Top="353" VerticalAlignment="Center" Click="Genera_Click">
+        <Button x:Name="Genera" Content="¡Genera el cronograma!" Width="355" Height="45" BorderThickness="1,1,1,1" Background="#FF8EE8FF" HorizontalAlignment="Left" Canvas.Left="229" Canvas.Top="353" VerticalAlignment="Center" Click="Genera_Click">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>

@@ -209,7 +209,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Cronograma123"
         "ProductCode" = "8:{003D4A89-7113-46B8-BCE0-DE264D701C49}"
-        "PackageCode" = "8:{597B78C1-A42C-4CD2-9F2A-D143E3854291}"
+        "PackageCode" = "8:{D44D392C-1A3B-4BE6-8746-BF66A23754F1}"
         "UpgradeCode" = "8:{839007C7-F4B5-4198-871A-FADBA79FFED2}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
