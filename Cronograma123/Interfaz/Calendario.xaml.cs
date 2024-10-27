@@ -30,6 +30,8 @@ namespace CronogramaMe
 
             InitializeComponent();
 
+            Owner = Application.Current.MainWindow;
+
             DiaInicio.SelectedDate= calendario.ObtenDiaInicio();
             DiaFin.SelectedDate = calendario.ObtenDiaFin();
             FestivoAnyadir.SelectedDate = calendario.ObtenDiaInicio();

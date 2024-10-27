@@ -39,14 +39,20 @@ namespace CronogramaMe
         Cronogramador.Calendario calendario;
         Cronogramador.Asignatura asignatura;
 
+        string dataPath;
+
         public MainWindow()
         {
             CultureInfo culture = new System.Globalization.CultureInfo("es-ES");
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
 
+            dataPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + projectName;
+
+            if(!Directory.Exists(dataPath)) { Directory.CreateDirectory(dataPath); }
+
             calendario = new Cronogramador.Calendario();
-            if (File.Exists("calendario.json")) { calendario.Carga("calendario.json"); }
+            if (File.Exists(dataPath + "\\" + "calendario.json")) { calendario.Carga(dataPath + "\\" + "calendario.json"); }
             else
             {   DateTime now = DateTime.Now;
                 int d = now.Day;
@@ -59,7 +65,7 @@ namespace CronogramaMe
             }
 
             asignatura = new Cronogramador.Asignatura();
-            if(File.Exists("asignatura.json")) { asignatura.Carga("asignatura.json"); }
+            if(File.Exists(dataPath + "\\" + "asignatura.json")) { asignatura.Carga(dataPath + "\\" + "asignatura.json"); }
             else { asignatura.PonNombre("Nombre de mi asignatura"); }
 
             InitializeComponent();
@@ -69,12 +75,12 @@ namespace CronogramaMe
             RenderOptions.SetBitmapScalingMode(WWW, BitmapScalingMode.HighQuality);
 
             cronograma = new Cronogramador.Cronograma(calendario, asignatura);
-            if (!File.Exists("config.json")) { cronograma.GuardaConfiguracion("config.json"); }
-            cronograma.CargaConfiguracion("config.json");
+            if (!File.Exists(dataPath + "\\" + "config.json")) { cronograma.GuardaConfiguracion(dataPath + "\\" + "config.json"); }
+            cronograma.CargaConfiguracion(dataPath + "\\" + "config.json");
 
             config = new Interfaz.Config();
-            if (!File.Exists("configInterfaz.json")) { GuardaConfiguracion("configInterfaz.json"); }
-            CargaConfiguracion("configInterfaz.json");
+            if (!File.Exists(dataPath + "\\" + "configInterfaz.json")) { GuardaConfiguracion(dataPath + "\\" + "configInterfaz.json"); }
+            CargaConfiguracion(dataPath + "\\" + "configInterfaz.json");
 
             Message m2 = null;
 
@@ -257,10 +263,10 @@ namespace CronogramaMe
 
         private void VentanaPrincipal_Closed(object sender, EventArgs e)
         {
-            GuardaConfiguracion("configInterfaz.json");
-            cronograma.GuardaConfiguracion("config.json");
-            calendario.Guarda("calendario.json");
-            asignatura.Guarda("asignatura.json");
+            GuardaConfiguracion(dataPath + "\\" + "configInterfaz.json");
+            cronograma.GuardaConfiguracion(dataPath + "\\" + "config.json");
+            calendario.Guarda(dataPath + "\\" + "calendario.json");
+            asignatura.Guarda(dataPath + "\\" + "asignatura.json");
         }
 
         private void HideOverlay()
@@ -332,8 +338,8 @@ namespace CronogramaMe
 
             if(limpiarTodo)
             {
-                File.Delete("configInterfaz.json");
-                File.Delete("config.json");
+                File.Delete(dataPath + "\\" + "configInterfaz.json");
+                File.Delete(dataPath + "\\" + "config.json");
 
                 config = new Interfaz.Config();
                 cronograma.ReiniciaConfiguracion();
@@ -351,7 +357,7 @@ namespace CronogramaMe
                 calendario.PonDiaInicio(dia);
                 calendario.PonDiaFin(dia);
 
-                calendario.Guarda("calendario.json");
+                calendario.Guarda(dataPath + "\\" + "calendario.json");
             }
 
             if (limpiarHorario || limpiarTodo)
@@ -368,7 +374,7 @@ namespace CronogramaMe
 
             if(limpiarTodo || limpiarHorario || limpiarCurso)
             {
-                asignatura.Guarda("asignatura.json");
+                asignatura.Guarda(dataPath + "\\" + "asignatura.json");
             }
         }
     }

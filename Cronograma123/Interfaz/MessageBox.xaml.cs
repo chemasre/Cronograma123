@@ -33,6 +33,8 @@ namespace CronogramaMe.Interfaz
         {
             InitializeComponent();
 
+            Owner = Application.Current.MainWindow;
+
             Texto.Text = message;
 
             Alerta.Visibility = type == Type.alert ? Visibility.Visible : Visibility.Hidden;

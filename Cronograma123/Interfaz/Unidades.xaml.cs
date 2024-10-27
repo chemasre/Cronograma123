@@ -30,6 +30,8 @@ namespace CronogramaMe
 
             InitializeComponent();
 
+            Owner = Application.Current.MainWindow;
+
             NombreCurso.Text = a.ObtenNombre();
 
             ActualizaUnidades();

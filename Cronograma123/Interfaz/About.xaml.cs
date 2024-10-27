@@ -23,6 +23,8 @@ namespace CronogramaMe.Interfaz
         {
             InitializeComponent();
 
+            Owner = Application.Current.MainWindow;
+
             Texto.Text = MainWindow.projectName + " v" + MainWindow.projectVersion + "\n";
             Texto.Text += "por " + MainWindow.companyName + " (" + MainWindow.projectYear + ")\n";
             Texto.Text += "------------------------------------\n";

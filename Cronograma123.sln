@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cronograma123", "Cronograma123.csproj", "{5FBB8DC0-BBF2-4527-ACC5-1A682CFF6375}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cronograma123", "Cronograma123\Cronograma123.csproj", "{6BA511AC-2410-4277-959E-BC37B7FE8FF7}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Cronograma123Setup", "Cronograma123Setup\Cronograma123Setup.vdproj", "{FB7E2F4B-16DF-4AD5-A68A-D15329925E74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5FBB8DC0-BBF2-4527-ACC5-1A682CFF6375}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5FBB8DC0-BBF2-4527-ACC5-1A682CFF6375}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5FBB8DC0-BBF2-4527-ACC5-1A682CFF6375}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5FBB8DC0-BBF2-4527-ACC5-1A682CFF6375}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BA511AC-2410-4277-959E-BC37B7FE8FF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BA511AC-2410-4277-959E-BC37B7FE8FF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BA511AC-2410-4277-959E-BC37B7FE8FF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BA511AC-2410-4277-959E-BC37B7FE8FF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB7E2F4B-16DF-4AD5-A68A-D15329925E74}.Debug|Any CPU.ActiveCfg = Debug
+		{FB7E2F4B-16DF-4AD5-A68A-D15329925E74}.Release|Any CPU.ActiveCfg = Release
+		{FB7E2F4B-16DF-4AD5-A68A-D15329925E74}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
