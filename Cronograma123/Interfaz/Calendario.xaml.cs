@@ -150,7 +150,7 @@ namespace CronogramaMe
 
         private void QuitarFestivo_Click(object sender, RoutedEventArgs e)
         {
-            DateTime dia = FestivoAnyadir.SelectedDate.GetValueOrDefault();
+            DateTime dia = FestivoQuitar.SelectedDate.GetValueOrDefault();
             if (!calendario.EsFestivo(dia))
             {
                 Message m = new Message(Message.Type.alert, "No tienes ese festivo en la lista");
