@@ -57,12 +57,17 @@ namespace CronogramaMe
             if (File.Exists(dataPath + "\\" + "calendario.json")) { calendario.Carga(dataPath + "\\" + "calendario.json"); }
             else
             {   DateTime now = DateTime.Now;
-                int d = now.Day;
-                int m = now.Month;
+                int d = 1;
+                int m = 9;
                 int a = now.Year;
                 DateTime dia = new DateTime(a, m, d);
 
                 calendario.PonDiaInicio(dia);
+
+                d = 30;
+                m = 6;
+                a = now.Year + 1;
+                dia = new DateTime(a, m, d);
                 calendario.PonDiaFin(dia);
             }
 
@@ -298,14 +303,18 @@ namespace CronogramaMe
 
             if(limpiarCalendario || limpiarTodo)
             {
-                calendario.Reinicia();
                 DateTime now = DateTime.Now;
-                int d = now.Day;
-                int m2 = now.Month;
+                int d = 1;
+                int m2 = 9;
                 int a = now.Year;
                 DateTime dia = new DateTime(a, m2, d);
 
                 calendario.PonDiaInicio(dia);
+
+                d = 30;
+                m2 = 6;
+                a = now.Year + 1;
+                dia = new DateTime(a, m2, d);
                 calendario.PonDiaFin(dia);
 
                 calendario.Guarda(dataPath + "\\" + "calendario.json");
