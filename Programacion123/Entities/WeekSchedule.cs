@@ -13,6 +13,7 @@ namespace Programacion123
         public WeekSchedule()
         {
             StorageClassId = "weekschedule";
+            Title = "Horario sin título";
         }
 
         public override ValidationResult Validate()
@@ -20,7 +21,8 @@ namespace Programacion123
             int total = 0;
             HoursPerWeekDay.ToList().ForEach(e => total += e.Value);
 
-            if(total <= 0) { return ValidationResult.oneHourMinimum; }
+            if (Title.Trim().Length <= 0) { return ValidationResult.titleEmpty; }
+            else if (total <= 0) { return ValidationResult.oneHourMinimum; }
             else { return ValidationResult.success; }
         }
 
@@ -28,14 +30,19 @@ namespace Programacion123
         {
             WeekScheduleData data = new();
             data.HoursPerWeekDay = new(HoursPerWeekDay.ToList());
+            data.Title = Title;
 
             Storage.SaveData<WeekScheduleData>(StorageId, StorageClassId, data);
         }
 
-        public void Load(string storageId)
+        public override void Load(string storageId)
         {            
             base.Load(storageId);
-            throw new NotImplementedException();
+
+            var data = Storage.LoadData<WeekScheduleData>(storageId, StorageClassId);
+
+            Title = data.Title;
+            HoursPerWeekDay.Set(data.HoursPerWeekDay.ToList());
         }
 
     }

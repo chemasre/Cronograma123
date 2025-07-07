@@ -10,10 +10,14 @@
 
   <ItemGroup>
     <None Remove="BotonNew.png" />
+    <None Remove="ButtonClose.png" />
     <None Remove="ButtonDelete.png" />
     <None Remove="ButtonEdit.png" />
     <None Remove="ButtonNew.png" />
+    <None Remove="ButtonWarning.png" />
     <None Remove="IconEdit.png" />
+    <None Remove="Images\ButtonAccept.png" />
+    <None Remove="Images\ButtonCancel.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +45,13 @@
     <Resource Include="ButtonDelete.png" />
     <Resource Include="ButtonEdit.png" />
     <Resource Include="ButtonNew.png" />
+    <Resource Include="Images\ButtonAccept.png" />
+    <Resource Include="Images\ButtonCancel.png" />
+    <Resource Include="Images\ButtonClose.png" />
+    <Resource Include="Images\ButtonDelete.png" />
+    <Resource Include="Images\ButtonEdit.png" />
+    <Resource Include="Images\ButtonNew.png" />
+    <Resource Include="Images\ButtonWarning.png" />
   </ItemGroup>
 
 </Project>

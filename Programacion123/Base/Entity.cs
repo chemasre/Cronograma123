@@ -25,6 +25,7 @@ namespace Programacion123
         public enum ValidationResult
         {
             success,
+            titleEmpty,
             startDayAfterEndDay, // Calendar
             freeDayOutsideCalendar,
             unitsMissing, // Subject

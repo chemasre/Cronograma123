@@ -69,11 +69,58 @@ namespace Programacion123
 
             weekSchedule = _weekSchedule;
 
+            TextTitle.Text = weekSchedule.Title;
+
             if(_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Monday)) { dataTable.Rows[0]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Monday]; }
             if(_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Tuesday)) { dataTable.Rows[1]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Tuesday]; }
             if(_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Wednesday)) { dataTable.Rows[2]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Wednesday]; }
             if(_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Thursday)) { dataTable.Rows[3]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Thursday]; }
             if(_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Friday)) { dataTable.Rows[4]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Friday]; }
+
+            dataTable.RowChanged += DataTable_RowChanged;
+            Validate();
+        }
+
+        private void DataTable_RowChanged(object sender, DataRowChangeEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void UpdateEntity()
+        {
+            weekSchedule.Title = TextTitle.Text.Trim();
+
+            weekSchedule.HoursPerWeekDay.Clear();
+            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Monday, (int)dataTable.Rows[0]["Horas"]);
+            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Tuesday, (int)dataTable.Rows[1]["Horas"]);
+            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Wednesday, (int)dataTable.Rows[2]["Horas"]);
+            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Thursday, (int)dataTable.Rows[3]["Horas"]);
+            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Friday, (int)dataTable.Rows[4]["Horas"]);
+        }
+
+        private void Validate()
+        {
+            Entity.ValidationResult validation = weekSchedule.Validate();
+
+            if (validation == Entity.ValidationResult.success)
+            {
+                BorderValidation.Background = new SolidColorBrush((Color)Resources["ColorValid"]);
+                TextValidation.Text = "El horario es correcto";
+            }
+            else
+            {
+                BorderValidation.Background = new SolidColorBrush((Color)Resources["ColorInvalid"]);
+
+                if (validation == Entity.ValidationResult.titleEmpty)
+                {                    
+                    TextValidation.Text = "Tienes que escribir un título para el horario";
+                }
+                else // validation == Entity.ValidationResult.oneHourMinimum
+                {
+                    TextValidation.Text = "Tienes que introducir como mínimo una hora en alguno de los días";
+                }
+            }
         }
 
         private void WeekDataGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
@@ -87,35 +134,25 @@ namespace Programacion123
             }
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            weekSchedule.HoursPerWeekDay.Clear();
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Monday, (int)dataTable.Rows[0]["Horas"]);
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Tuesday, (int)dataTable.Rows[1]["Horas"]);
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Wednesday, (int)dataTable.Rows[2]["Horas"]);
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Thursday, (int)dataTable.Rows[3]["Horas"]);
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Friday, (int)dataTable.Rows[4]["Horas"]);
-
-            Entity.ValidationResult validation = weekSchedule.Validate();
-
-            if(validation == Entity.ValidationResult.oneHourMinimum)
-            {
-                MessageBox.Show("Tienes que introducir como mínimo una hora en alguno de los días", "No se puede guardar", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                e.Cancel = true;
-            }
-            else
-            {
-                weekSchedule.Save();
-            }
-            
-        }
-
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-             if (e.ChangedButton == MouseButton.Left)
+            if (e.ChangedButton == MouseButton.Left)
             {
                 DragMove();
             }
+        }
+
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateEntity();
+            weekSchedule.Save();
+            Close();
+        }
+
+        private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
         }
     }
 }

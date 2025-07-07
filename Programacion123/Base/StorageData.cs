@@ -8,8 +8,8 @@ namespace Programacion123
 {
     public class StorageData
     {
-        internal string Title { get; set; }
-        internal string Description { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
     }
 
 }

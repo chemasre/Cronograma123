@@ -31,6 +31,11 @@ namespace Programacion123
             return data;
         }
 
+        public static void DeleteData(string storageId, string storageClassId)
+        {
+            File.Delete(storageId + "." + storageClassId);
+        }
+
         public static List<T> LoadData<T>(string storageClassId) where T : StorageData
         {
             List<T> result = new();
@@ -81,7 +86,7 @@ namespace Programacion123
             List<T> result = new();
             T entity = new T();
 
-            string[] files = Directory.GetFiles("", "*." + entity.StorageClassId);
+            string[] files = Directory.GetFiles(Directory.GetCurrentDirectory(), "*." + entity.StorageClassId);
                
 
             Array.ForEach<string>(files,
