@@ -345,17 +345,17 @@ namespace Programacion123
 
             hoja.Columns[cursorColumna + 1].ColumnWidth = config.unitysTitleColumnWidth;
 
-            for(int i = 0; i < subject.GetUnitsCount(); i ++)
+            for(int i = 0; i < subject.UnitsSequence.Count; i ++)
             {
-                int uf = subject.GetUnitByOrderIndex(i);
+                int uf = subject.UnitsSequence[i].Id;
                 hoja.Cells[cursorFila, cursorColumna] = uf;
                 hoja.Cells[cursorFila, cursorColumna].Interior.Color = config.unitsColor[(uf - 1) % config.unitsColor.Length];
                 hoja.Cells[cursorFila, cursorColumna].Font.Color = config.unitsTextColor;
                 hoja.Cells[cursorFila, cursorColumna].Style.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                hoja.Cells[cursorFila, cursorColumna + 1] = subject.GetUnitTitle(uf);
+                hoja.Cells[cursorFila, cursorColumna + 1] = subject.UnitsById[uf].Title;
                 hoja.Cells[cursorFila, cursorColumna + 1].Style.HorizontalAlignment = XlHAlign.xlHAlignCenter;
                 hoja.Cells[cursorFila, cursorColumna + 1].Borders.LineStyle = XlLineStyle.xlContinuous;
-                hoja.Cells[cursorFila, cursorColumna + 2] = subject.GetUnitHours(uf) + "h";
+                hoja.Cells[cursorFila, cursorColumna + 2] = subject.UnitsById[uf].Hours + "h";
                 hoja.Cells[cursorFila, cursorColumna + 2].Borders.LineStyle = XlLineStyle.xlContinuous;
 
                 cursorFila ++;
@@ -424,12 +424,12 @@ namespace Programacion123
             var contenido = new Dictionary<DateTime, DaySchedule>();
             DaySchedule contenidoDia = new DaySchedule();
 
-            int numUFs = subject.GetUnitsCount();
+            int numUFs = subject.UnitsSequence.Count;
 
             DateTime diaActual = calendar.StartDay;
 
             int indiceUF = 0;
-            int horasNoAsignadasUF = subject.GetUnitHours(subject.GetUnitByOrderIndex(0));
+            int horasNoAsignadasUF = subject.UnitsById[subject.UnitsSequence[0].Id].Hours;
 
             while (indiceUF < numUFs)
             {
@@ -452,7 +452,7 @@ namespace Programacion123
                     contenidoDia.type = DayType.schoolDay;
                     contenidoDia.hoursUnits = new List<HoursUnit>();
 
-                    horasDia = subject.GetWeekDayHours(diaActual.DayOfWeek);
+                    horasDia = subject.WeekSchedule.HoursPerWeekDay[diaActual.DayOfWeek];
                 }
 
                 while (horasDia > 0 && indiceUF < numUFs)
@@ -461,7 +461,7 @@ namespace Programacion123
 
                     if (horasNoAsignadasUF < horasDia)
                     {
-                        var horasUF = new HoursUnit() { unit = subject.GetUnitByOrderIndex(indiceUF), hours = horasNoAsignadasUF };
+                        var horasUF = new HoursUnit() { unit = subject.UnitsSequence[indiceUF].Id, hours = horasNoAsignadasUF };
                         contenidoDia.hoursUnits.Add(horasUF);
 
                         if (config.startUnitsInNewDay)
@@ -480,7 +480,7 @@ namespace Programacion123
                     }
                     else
                     {
-                        var horasUF = new HoursUnit() { unit = subject.GetUnitByOrderIndex(indiceUF), hours = horasDia };
+                        var horasUF = new HoursUnit() { unit = subject.UnitsSequence[indiceUF].Id, hours = horasDia };
                         contenidoDia.hoursUnits.Add(horasUF);
 
                         horasNoAsignadasUF -= horasDia;
@@ -497,7 +497,7 @@ namespace Programacion123
                         indiceUF++;
                         if (indiceUF < numUFs)
                         {
-                            horasNoAsignadasUF = subject.GetUnitHours(subject.GetUnitByOrderIndex(indiceUF));
+                            horasNoAsignadasUF = subject.UnitsById[subject.UnitsSequence[indiceUF].Id].Hours;
                         }
 
                     }

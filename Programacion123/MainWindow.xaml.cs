@@ -16,10 +16,20 @@ namespace Programacion123
     /// </summary>
     public partial class MainWindow : Window
     {
+        WeekSchedule weekSchedule;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            weekSchedule = new WeekSchedule();
         }
 
+
+        private void TestWeekScheduleEditor_Click(object sender, RoutedEventArgs e)
+        {
+            WeekScheduleEditor editor = new(weekSchedule);
+            editor.ShowDialog();
+        }
     }
 }

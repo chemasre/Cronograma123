@@ -10,29 +10,22 @@ namespace Programacion123
 {
     internal class Calendar : Entity
     {
-        class SerializableData
-        {
-            public DateTime startDay { get; set; }
-            public DateTime endDay { get; set; }
-            public HashSet<DateTime> freeDays { get; set; }
-        };
-
         public DateTime StartDay { get; set; }
         public DateTime EndDay { get; set; }
 
-
-        public HashSet<DateTime> FreeDays { get; set; }
+        public SetProperty<DateTime> FreeDays { get; } = new SetProperty<DateTime>();
 
         public Calendar()
         {
             StartDay = new DateTime();
             EndDay = new DateTime();
-            FreeDays = new HashSet<DateTime>();
+
+            StorageClassId = "calendar";
         }
 
         public IReadOnlyList<DateTime> GetOrderedFreedays()
         {
-            var lista = new List<DateTime>(FreeDays);
+            var lista = FreeDays.ToList();
             lista.Sort();
             return lista;
         }
@@ -49,7 +42,7 @@ namespace Programacion123
             }
 
             int i = 0;
-            var listaFestivos = new List<DateTime>(FreeDays);
+            var listaFestivos = FreeDays.ToList();
 
             while (validation == ValidationResult.success && i < listaFestivos.Count)
             {
@@ -72,42 +65,32 @@ namespace Programacion123
             FreeDays.Clear();
         }
 
-        public override void Save(string nombreFichero)
+        public void Load(string storageId)
         {
-            var stream = new FileStream(nombreFichero, FileMode.Create, FileAccess.Write);
+            base.Load(storageId);
 
-            var writer = new StreamWriter(stream);
+            var data = Storage.LoadData<CalendarData>(storageId, StorageClassId);
 
-            var data = new SerializableData();
+            StartDay = data.StartDay;
+            EndDay = data.EndDay;
+            FreeDays.Clear();
+            FreeDays.Add(data.FreeDays.ToList<DateTime>());
 
-            data.startDay = StartDay;
-            data.endDay = EndDay;
-            data.freeDays = FreeDays;
-
-            JsonSerializerOptions options = new JsonSerializerOptions(JsonSerializerOptions.Default);
-            options.WriteIndented = true;
-            writer.Write(JsonSerializer.Serialize<SerializableData>(data, options));
-            writer.Close();
         }
 
-        public override void Load(string nombreFichero)
+        public override void Save()
         {
-            var stream = new FileStream(nombreFichero, FileMode.Open, FileAccess.Read);
+            base.Save();
 
-            var reader = new StreamReader(stream);
+            var data = new CalendarData();
 
-            var data = new SerializableData();
+            data.StartDay = StartDay;
+            data.EndDay = EndDay;
+            data.FreeDays = new HashSet<DateTime>(FreeDays.ToList());
 
-            string text = reader.ReadToEnd();
-
-            data = JsonSerializer.Deserialize<SerializableData>(text);
-
-            StartDay = data.startDay;
-            EndDay = data.endDay;
-            FreeDays = data.freeDays;
-
-            reader.Close();
+            Storage.SaveData<CalendarData>(StorageId, StorageClassId, data);
         }
+
 
         public Calendar Clone()
         {
@@ -115,7 +98,7 @@ namespace Programacion123
 
             otro.StartDay = StartDay;
             otro.EndDay = EndDay;
-            otro.FreeDays = new HashSet<DateTime>(FreeDays);
+            otro.FreeDays.Add(FreeDays.ToList());
 
             return otro;
         }

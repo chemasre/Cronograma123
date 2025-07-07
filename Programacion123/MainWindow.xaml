@@ -121,8 +121,9 @@
         <Label Content="2" HorizontalAlignment="Left" Margin="180,181,0,0" VerticalAlignment="Top" FontFamily="Monotype Corsiva" FontSize="48" Foreground="#FF16541A"/>
         <Label Content="3" HorizontalAlignment="Left" Margin="180,242,0,0" VerticalAlignment="Top" FontFamily="Monotype Corsiva" FontSize="48" Foreground="#FF16541A"/>
         <Label Content="4" HorizontalAlignment="Left" Margin="180,303,0,0" VerticalAlignment="Top" FontFamily="Monotype Corsiva" FontSize="48" Foreground="#FF16541A"/>
-        <Label Content="Elige una programación oficial o define una nueva" HorizontalAlignment="Left" Margin="237,124,0,0" VerticalAlignment="Top"/>
+        <Label Content="Elige unos contenidos oficiales o define unos propios" HorizontalAlignment="Left" Margin="237,124,0,0" VerticalAlignment="Top"/>
         <Label Content="Elige un conjunto de actividades definido o define uno nuevo" HorizontalAlignment="Left" Margin="237,305,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="TestWeekScheduleEditor" Content="Week Schedule" HorizontalAlignment="Left" Margin="49,58,0,0" VerticalAlignment="Top" Width="105" Click="TestWeekScheduleEditor_Click"/>
 
     </Grid>
 </Window>
