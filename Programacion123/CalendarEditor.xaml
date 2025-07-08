@@ -1,0 +1,48 @@
+﻿<Window x:Class="Programacion123.CalendarEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Programacion123"
+        mc:Ignorable="d"
+        Title="CalendarEditor" Height="488" Width="399" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}" Foreground="{x:Null}" MouseDown="Window_MouseDown">
+    <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" Background="#FFC3B7FF" CornerRadius="30" BorderBrush="#FF0370A9" Margin="0,0,10,10" >
+        <Canvas>
+            <Label Content="Calendario" FontSize="48" FontFamily="Segoe Script" FontWeight="Bold" Width="304" HorizontalAlignment="Left" Canvas.Left="13" Canvas.Top="3" VerticalAlignment="Top" Foreground="#7F093AD0"/>
+            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" Click="ButtonClose_Click" HorizontalAlignment="Left" Canvas.Left="323" VerticalAlignment="Center" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/ButtonClose.png"/>
+                </Button.Background>
+            </Button>
+            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="29" Canvas.Top="379" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Width="312" Height="52" HorizontalAlignment="Left" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black"/>
+            </Border>
+            <TextBox x:Name="TextTitle" Canvas.Left="106" TextWrapping="Wrap" Canvas.Top="94" Width="244" HorizontalAlignment="Left" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
+            <Label Content="Título" Canvas.Left="29" Canvas.Top="90" HorizontalAlignment="Left" VerticalAlignment="Top" Width="89"/>
+            <DatePicker x:Name="DateStart" Canvas.Left="169" Canvas.Top="147" HorizontalAlignment="Left" VerticalAlignment="Top" Width="181"/>
+            <Label Content="Primer día del curso" Canvas.Left="29" Canvas.Top="146" Width="154" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <DatePicker x:Name="DateEnd" Canvas.Left="169" Canvas.Top="178" HorizontalAlignment="Left" VerticalAlignment="Top" Width="181"/>
+            <Label Content="Último día del curso" Canvas.Left="29" Canvas.Top="177" Width="126" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Content="Festivos" Canvas.Left="29" Canvas.Top="211" Width="77" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Button x:Name="ButtonFreeDayAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="297" Canvas.Top="212" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ButtonFreeDayAdd_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                </Button.Background>
+                <Button.Foreground>
+                    <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                </Button.Foreground>
+            </Button>
+            <DatePicker x:Name="DateFreeDay" Canvas.Left="170" Canvas.Top="213" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120"/>
+            <Button x:Name="ButtonFreeDayRemove" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="327" Canvas.Top="212" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ButtonFreeDayRemove_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="/ButtonDelete.png"/>
+                </Button.Background>
+                <Button.Foreground>
+                    <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                </Button.Foreground>
+            </Button>
+            <ListBox x:Name="ListBoxFreeDays" Height="112" Width="181" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="169" Canvas.Top="242"/>
+
+        </Canvas>
+    </Border>
+</Window>

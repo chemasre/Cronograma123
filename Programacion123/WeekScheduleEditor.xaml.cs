@@ -18,17 +18,96 @@ namespace Programacion123
     /// <summary>
     /// Lógica de interacción para WeekScheduleEditor.xaml
     /// </summary>
-    public partial class WeekScheduleEditor : Window
+    public partial class WeekScheduleEditor : Window, EntityEditor<WeekSchedule>
     {
-        WeekSchedule weekSchedule;
+        public WeekSchedule WeekSchedule { get { return weekSchedule; }  }
 
         DataTable dataTable;
+        WeekSchedule weekSchedule;
 
-
-        public WeekScheduleEditor(WeekSchedule _weekSchedule)
+        public WeekScheduleEditor()
         {
             InitializeComponent();
+        }
 
+        private void DataTable_RowChanged(object sender, DataRowChangeEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void UpdateEntity()
+        {
+            weekSchedule.Title = TextTitle.Text.Trim();
+
+            weekSchedule.HoursPerWeekDay.Clear();
+            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Monday, (int)dataTable.Rows[0]["Horas"]);
+            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Tuesday, (int)dataTable.Rows[1]["Horas"]);
+            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Wednesday, (int)dataTable.Rows[2]["Horas"]);
+            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Thursday, (int)dataTable.Rows[3]["Horas"]);
+            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Friday, (int)dataTable.Rows[4]["Horas"]);
+        }
+
+        private void Validate()
+        {
+            Entity.ValidationResult validation = weekSchedule.Validate();
+
+            if (validation == Entity.ValidationResult.success)
+            {
+                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
+                TextValidation.Text = "El horario es correcto";
+            }
+            else
+            {
+                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorInvalid"]);
+
+                if (validation == Entity.ValidationResult.titleEmpty)
+                {                    
+                    TextValidation.Text = "Tienes que escribir un título para el horario";
+                }
+                else // validation == Entity.ValidationResult.oneHourMinimum
+                {
+                    TextValidation.Text = "Tienes que introducir como mínimo una hora en alguno de los días";
+                }
+            }
+        }
+
+        private void WeekDataGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            if(WeekDataGrid.SelectedCells.Count == 1)
+            {
+                if(WeekDataGrid.SelectedCells[0].Column.IsReadOnly)
+                {
+                    WeekDataGrid.SelectedCells.Clear();
+                }
+            }
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DragMove();
+            }
+        }
+
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateEntity();
+            weekSchedule.Save();
+            TextTitle.TextChanged -= TextTitle_TextChanged;
+            dataTable.RowChanged -= DataTable_RowChanged;
+            Close();
+        }
+
+        private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        public void SetEntity(WeekSchedule _weekSchedule)
+        {
             dataTable = new DataTable();
             DataColumn column = dataTable.Columns.Add("Día", typeof(string));
             column.ReadOnly = true;
@@ -78,81 +157,13 @@ namespace Programacion123
             if(_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Friday)) { dataTable.Rows[4]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Friday]; }
 
             dataTable.RowChanged += DataTable_RowChanged;
+            TextTitle.TextChanged += TextTitle_TextChanged;
             Validate();
         }
 
-        private void DataTable_RowChanged(object sender, DataRowChangeEventArgs e)
+        public WeekSchedule GetEntity()
         {
-            UpdateEntity();
-            Validate();
-        }
-
-        private void UpdateEntity()
-        {
-            weekSchedule.Title = TextTitle.Text.Trim();
-
-            weekSchedule.HoursPerWeekDay.Clear();
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Monday, (int)dataTable.Rows[0]["Horas"]);
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Tuesday, (int)dataTable.Rows[1]["Horas"]);
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Wednesday, (int)dataTable.Rows[2]["Horas"]);
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Thursday, (int)dataTable.Rows[3]["Horas"]);
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Friday, (int)dataTable.Rows[4]["Horas"]);
-        }
-
-        private void Validate()
-        {
-            Entity.ValidationResult validation = weekSchedule.Validate();
-
-            if (validation == Entity.ValidationResult.success)
-            {
-                BorderValidation.Background = new SolidColorBrush((Color)Resources["ColorValid"]);
-                TextValidation.Text = "El horario es correcto";
-            }
-            else
-            {
-                BorderValidation.Background = new SolidColorBrush((Color)Resources["ColorInvalid"]);
-
-                if (validation == Entity.ValidationResult.titleEmpty)
-                {                    
-                    TextValidation.Text = "Tienes que escribir un título para el horario";
-                }
-                else // validation == Entity.ValidationResult.oneHourMinimum
-                {
-                    TextValidation.Text = "Tienes que introducir como mínimo una hora en alguno de los días";
-                }
-            }
-        }
-
-        private void WeekDataGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
-        {
-            if(WeekDataGrid.SelectedCells.Count == 1)
-            {
-                if(WeekDataGrid.SelectedCells[0].Column.IsReadOnly)
-                {
-                    WeekDataGrid.SelectedCells.Clear();
-                }
-            }
-        }
-
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                DragMove();
-            }
-        }
-
-        private void ButtonClose_Click(object sender, RoutedEventArgs e)
-        {
-            UpdateEntity();
-            weekSchedule.Save();
-            Close();
-        }
-
-        private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            UpdateEntity();
-            Validate();
+            return weekSchedule;
         }
     }
 }

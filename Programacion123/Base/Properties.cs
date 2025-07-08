@@ -9,7 +9,7 @@ using Microsoft.Office.Interop.Word;
 
 namespace Programacion123
 {
-    internal struct SetProperty<T>
+    public struct SetProperty<T>
     {
         public void Add(T value) { set.Add(value); OnAdded?.Invoke(value); }
         public void Add(List<T> other) { foreach(T e in other) { set.Add(e); OnAdded?.Invoke(e); }  }
@@ -39,7 +39,7 @@ namespace Programacion123
     }
 
 
-    internal struct DictionaryProperty<K, T> where K : notnull
+    public struct DictionaryProperty<K, T> where K : notnull
     {
         public void Add(K key, T value) { dictionary.Add(key, value); OnAdded?.Invoke(key, value); }
         public void Add(List<KeyValuePair<K, T>> other) { foreach(KeyValuePair<K, T> e in other) { dictionary.Add(e.Key, e.Value); OnAdded?.Invoke(e.Key, e.Value); }  }
@@ -68,7 +68,7 @@ namespace Programacion123
         }
     }
 
-    internal struct ListProperty<T>
+    public struct ListProperty<T>
     {
         public void Add(T value) { list.Add(value); OnAdded?.Invoke(value); }
         public void Add(List<T> other) { foreach(T e in other) { list.Add(e); OnAdded?.Invoke(e); }  }

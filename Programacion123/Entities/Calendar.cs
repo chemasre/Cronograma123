@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Programacion123
 {
-    internal class Calendar : Entity
+    public class Calendar : Entity
     {
         public DateTime StartDay { get; set; }
         public DateTime EndDay { get; set; }
@@ -17,8 +17,10 @@ namespace Programacion123
 
         public Calendar()
         {
-            StartDay = new DateTime();
-            EndDay = new DateTime();
+            Title = "Calendario sin título";
+            DateTime date = DateTime.Now.Date;
+            StartDay = date;
+            EndDay = date;
 
             StorageClassId = "calendar";
         }
@@ -34,26 +36,32 @@ namespace Programacion123
         {
             ValidationResult validation = ValidationResult.success;
 
-            if (StartDay > EndDay)
+            if(Title.Trim().Length <= 0)
+            {
+                validation = ValidationResult.titleEmpty;
+            }
+            else if (StartDay > EndDay)
             {
                 //Console.WriteLine("La fecha de inicio no puede ser posterior a la fecha de fin");
                 validation = ValidationResult.startDayAfterEndDay;
-                return validation;
             }
-
-            int i = 0;
-            var listaFestivos = FreeDays.ToList();
-
-            while (validation == ValidationResult.success && i < listaFestivos.Count)
+            else
             {
-                if (listaFestivos[i] > EndDay || listaFestivos[i] < StartDay)
-                {
-                    //Utils.MuestraError("El festivo " + listaFestivos[i].ToString("dd/MM/yyyy") + " esta fuera del calendario");
-                    validation = ValidationResult.freeDayOutsideCalendar;
-                }
+                int i = 0;
+                var listaFestivos = FreeDays.ToList();
 
-                i++;
+                while (validation == ValidationResult.success && i < listaFestivos.Count)
+                {
+                    if (listaFestivos[i] > EndDay || listaFestivos[i] < StartDay)
+                    {
+                        //Utils.MuestraError("El festivo " + listaFestivos[i].ToString("dd/MM/yyyy") + " esta fuera del calendario");
+                        validation = ValidationResult.freeDayOutsideCalendar;
+                    }
+
+                    i++;
+                }
             }
+
 
             return validation;
         }
@@ -65,11 +73,13 @@ namespace Programacion123
             FreeDays.Clear();
         }
 
-        public void Load(string storageId)
+        public override void Load(string storageId)
         {
             base.Load(storageId);
 
             var data = Storage.LoadData<CalendarData>(storageId, StorageClassId);
+
+            Title = data.Title;
 
             StartDay = data.StartDay;
             EndDay = data.EndDay;
@@ -83,6 +93,8 @@ namespace Programacion123
             base.Save();
 
             var data = new CalendarData();
+
+            data.Title = Title;
 
             data.StartDay = StartDay;
             data.EndDay = EndDay;
