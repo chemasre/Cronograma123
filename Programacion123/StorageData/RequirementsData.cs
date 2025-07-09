@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Programacion123
 {
-    public class RequirementsStorageData : StorageData
+    public class SubjectStorageData : StorageData
     {
     }
 

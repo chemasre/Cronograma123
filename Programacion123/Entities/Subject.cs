@@ -1,93 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Programacion123
 {
-    internal class Subject : Entity
+    public class Subject : Entity
     {
-        internal ListProperty<Unit> UnitsSequence { get; } = new ListProperty<Unit>();
-        internal DictionaryProperty<int, Unit> UnitsById  { get; } = new DictionaryProperty<int, Unit>();
+        public string ModalityName { get; set; } = "Presencial|remoto";
+        public string SchemeName { get; set; } = "Anual";
+        public CommonText Justification { get; set; }
+        public CommonText MetodologiesIntroduction { get; set; }
+        public ListProperty<CommonText> Metodologies { get; } = new ListProperty<CommonText>();
+        public CommonText SpecificNeedsIntroduction { get; set; }
+        public CommonText SpecificNeedsGeneral { get; set; }
+        public ListProperty<CommonText> SpecificNeedsMeasures{ get; }  = new ListProperty<CommonText>();
+        public CommonText EvaluationGeneral { get; set; }
+        public CommonText EvaluationTypes { get; set; }
+        public CommonText OrdinaryEvaluation { get; set; }
+        public CommonText ExtraordinaryEvaluation { get; set; }
+        public CommonText EvaluationInstrumentsTypesIntroduction { get; set; }
+        public ListProperty<CommonText> EvaluationInstrumentsTypes { get; } = new ListProperty<CommonText>();
+        public CommonText SelfEvaluation { get; set; }
+        public CommonText ResourcesIntroduction { get; set; }
+        public ListProperty<CommonText> SpaceResources { get; } = new ListProperty<CommonText>();
+        public ListProperty<CommonText> MaterialResources { get; } = new ListProperty<CommonText>();
 
-        internal WeekSchedule WeekSchedule { get; set; }
+        public ListProperty<LearningResult> LearningResults { get; } = new ListProperty<LearningResult>();
+        public ListProperty<Content> Contents { get; } = new ListProperty<Content>();
 
+        public ListProperty<Block> Blocks { get; } = new ListProperty<Block>();
 
-        public Subject()
+        internal Subject() : base()
         {
-            UnitsSequence.OnAdded += (Unit e) => { UnitsById.Add(e.Id, e); };
-            UnitsSequence.OnRemoved += (Unit e) => { UnitsById.Remove(e.Id); };
-
             StorageClassId = "subject";
         }
 
         public override ValidationResult Validate()
         {
-
-            ValidationResult completa = ValidationResult.success;
-
-            if (UnitsSequence.Count <= 0) { completa = ValidationResult.unitsMissing; }
-            else if (WeekSchedule.HoursPerWeekDay.Count <= 0) { completa = ValidationResult.weekDayMissing; }
-
-            return completa;
-        }
-
-        public void ResetWeekSchedule()
-        {
-            WeekSchedule.HoursPerWeekDay.Clear();
-        }
-
-        public void ResetUnits()
-        {
-            UnitsSequence.Clear();
-            UnitsById.Clear();
-        }
-
-        public override void Save()
-        {
-            base.Save();
-
-            var stream = new FileStream(StorageId + "." + StorageClassId, FileMode.Create, FileAccess.Write);
-
-            var writer = new StreamWriter(stream);
-
-            var data = new SubjectStorageData();
-
-            data.Title = Title;
-            data.UnitsSequenceStorageIds = Storage.GetStorageIds<Unit>(UnitsSequence.ToList());
-
-            data.WeekScheduleStorageId = WeekSchedule.StorageId;
-            WeekSchedule.Save();
-
-            JsonSerializerOptions options = new JsonSerializerOptions(JsonSerializerOptions.Default);
-            options.WriteIndented = true;
-            writer.Write(JsonSerializer.Serialize<SubjectStorageData>(data, options));
-            writer.Close();
-        }
-
-        public void Load(string storageId)
-        {
-            base.Load(storageId);
-
-            var stream = new FileStream(storageId + "." + StorageClassId, FileMode.Open, FileAccess.Read);
-            var reader = new StreamReader(stream);
-
-            var data = new SubjectStorageData();
-
-            string text = reader.ReadToEnd();
-
-            data = JsonSerializer.Deserialize<SubjectStorageData>(text);
-
-            Title = data.Title;
-            UnitsSequence.Set(Storage.LoadEntities<Unit>(data.UnitsSequenceStorageIds));
-
-            WeekSchedule = Storage.LoadEntity<WeekSchedule>(data.WeekScheduleStorageId);
-
-            reader.Close();
+            throw new NotImplementedException();
         }
     }
-
 }

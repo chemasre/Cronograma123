@@ -43,12 +43,12 @@ namespace Programacion123
         };
 
         Calendar calendar;
-        Subject subject;
+        Activities subject;
 
         bool errorSaving;
 
 
-        public Timeline(Calendar _calendar, Subject _subject)
+        public Timeline(Calendar _calendar, Activities _subject)
         {
             calendar = _calendar;
             subject = _subject;
