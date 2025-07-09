@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -23,9 +24,15 @@ namespace Programacion123
     {
         Calendar calendar;
 
+        HashSet<DateTime> freeDaysSet;
+        List<DateTime> freeDaysList;
+
         public CalendarEditor()
         {
             InitializeComponent();
+
+            freeDaysSet = new HashSet<DateTime>();
+            freeDaysList = new List<DateTime>();
 
         }
 
@@ -43,12 +50,25 @@ namespace Programacion123
             DateStart.SelectedDate = entity.StartDay;
             DateEnd.SelectedDate = entity.EndDay;
 
-            ListBoxFreeDays.Items.Clear();
-            List<DateTime> sortedList = entity.FreeDays.ToList();
-            sortedList.Sort();
-            sortedList.ForEach(e => ListBoxFreeDays.Items.Add(e.ToString()));
+            freeDaysList = calendar.FreeDays.ToList();
+            freeDaysList.Sort();
+            freeDaysSet = new HashSet<DateTime>(freeDaysList);
 
-            DateFreeDay.SelectedDate = entity.StartDay;
+            ListBoxFreeDays.Items.Clear();
+            foreach(DateTime d in freeDaysList) { ListBoxFreeDays.Items.Add(Utils.FormatDate(d)); }
+
+            if(freeDaysSet.Count > 0)
+            {
+                DateFreeDay.SelectedDate = freeDaysSet.First<DateTime>();
+                ListBoxFreeDays.SelectedIndex = 0;
+            }
+            else
+            {
+                DateFreeDay.SelectedDate = calendar.StartDay;
+                ListBoxFreeDays.SelectedIndex = -1;
+            }
+
+            CalendarPreview.SelectedDate = null;
 
             TextTitle.TextChanged += TextTitle_TextChanged;
             DateStart.SelectedDateChanged += DateStart_SelectedDateChanged;
@@ -56,15 +76,24 @@ namespace Programacion123
             DateFreeDay.SelectedDateChanged += DateFreeDay_SelectedDateChanged;
             ListBoxFreeDays.SelectionChanged += ListBoxFreeDays_SelectionChanged;
 
+            CalendarPreview.Loaded += CalendarPreview_Loaded;
+
+            UpdateCalendarPreview();
             Validate();
 
+
+        }
+
+        private void CalendarPreview_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateCalendarPreview();
         }
 
         private void ListBoxFreeDays_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(ListBoxFreeDays.SelectedIndex >= 0)
             {
-                DateFreeDay.SelectedDate = DateTime.Parse(ListBoxFreeDays.SelectedItem.ToString());
+                DateFreeDay.SelectedDate = freeDaysList[ListBoxFreeDays.SelectedIndex];
             }
         }
 
@@ -75,8 +104,7 @@ namespace Programacion123
             calendar.EndDay = DateEnd.SelectedDate.GetValueOrDefault();
 
             calendar.FreeDays.Clear();
-            foreach(var item in ListBoxFreeDays.Items) { calendar.FreeDays.Add(DateTime.Parse(item.ToString())); }
-
+            calendar.FreeDays.Add(freeDaysList);
         }
 
         private void Validate()
@@ -86,7 +114,7 @@ namespace Programacion123
             if (result == Entity.ValidationResult.success)
             {
                 BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
-                TextValidation.Text = "El calendario es correcto";
+                TextValidation.Text = "El calendario es válido";
             }
             else
             {
@@ -96,13 +124,17 @@ namespace Programacion123
                 {                    
                     TextValidation.Text = "Tienes que escribir un título para el calendario";
                 }
-                else if(result == Entity.ValidationResult.freeDayOutsideCalendar)
+                else if(result == Entity.ValidationResult.freeDayBeforeStartOrAfterEnd)
                 {
                     TextValidation.Text = "Todos los días festivos deben situarse entre el primer día del curso y el último (incluidos)";
                 }
-                else // result == Entity.ValidationResult.startDayAfterEndDay
+                else if(result == Entity.ValidationResult.startDayAfterEndDay)
                 {
                     TextValidation.Text = "Tienes que situar el primer día del curso antes o coincidiendo con el último";
+                }
+                else // result == Entity.ValidationResult.noSchoolDays
+                {
+                    TextValidation.Text = "Tiene que existir al menos un día lectivo";
                 }
             }
 
@@ -132,44 +164,76 @@ namespace Programacion123
 
         private void DateFreeDay_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
+            ListBoxFreeDays.SelectedIndex = freeDaysList.FindIndex(e => e == DateFreeDay.SelectedDate);
+            if(DateFreeDay.SelectedDate.HasValue) { CalendarPreview.DisplayDate = DateFreeDay.SelectedDate.Value; }
             UpdateEntity();
             Validate();
         }
 
         private void DateStart_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(DateStart.SelectedDate.HasValue) { CalendarPreview.DisplayDate = DateStart.SelectedDate.Value; }
+            UpdateCalendarPreview();
             UpdateEntity();
             Validate();
         }
 
         private void DateEnd_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(DateEnd.SelectedDate.HasValue) { CalendarPreview.DisplayDate = DateEnd.SelectedDate.Value; }
+            UpdateCalendarPreview();
             UpdateEntity();
             Validate();
         }
 
         private void ButtonFreeDayAdd_Click(object sender, RoutedEventArgs e)
         {
+            Debug.Assert(DateFreeDay.SelectedDate != null, "La fecha seleccionada no puede estar vacía");
+
             if(DateFreeDay.SelectedDate != null)
             {
-                SortedSet<DateTime> set = new();
-                set.Add(DateFreeDay.SelectedDate.Value.Date);
-                foreach(object? item in ListBoxFreeDays.Items) { set.Add(DateTime.Parse(item.ToString())); }
-                ListBoxFreeDays.Items.Clear();
-                foreach(DateTime date in set) { ListBoxFreeDays.Items.Add(date.ToShortDateString()); }
+                freeDaysSet.Add(DateFreeDay.SelectedDate.Value);
+                freeDaysList = freeDaysSet.ToList<DateTime>();
+                freeDaysList.Sort();
 
+                ListBoxFreeDays.Items.Clear();
+                foreach(DateTime d in freeDaysList) { ListBoxFreeDays.Items.Add(Utils.FormatDate(d)); }
+                
                 DateFreeDay.SelectedDate = DateFreeDay.SelectedDate.Value.AddDays(1);
 
+                UpdateCalendarPreview();
                 UpdateEntity();
                 Validate();
+
             }
         }
 
         private void ButtonFreeDayRemove_Click(object sender, RoutedEventArgs e)
         {
-            UpdateEntity();
-            Validate();
+            Debug.Assert(DateFreeDay.SelectedDate != null, "La fecha seleccionada no puede estar vacía");
+
+            if(DateFreeDay.SelectedDate != null)
+            {
+                if(freeDaysSet.Contains(DateFreeDay.SelectedDate.Value))
+                {
+                    freeDaysSet.Remove(DateFreeDay.SelectedDate.Value);
+
+                    freeDaysList = freeDaysSet.ToList<DateTime>();
+                    freeDaysList.Sort();
+
+                    ListBoxFreeDays.Items.Clear();
+                    foreach(DateTime d in freeDaysList) { ListBoxFreeDays.Items.Add(Utils.FormatDate(d)); }
+
+                    DateFreeDay.SelectedDate = DateFreeDay.SelectedDate.Value.AddDays(1);
+
+                    UpdateCalendarPreview();
+                    UpdateEntity();
+                    Validate();
+                }
+
+            }
         }
+
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -177,6 +241,107 @@ namespace Programacion123
             {
                 DragMove();
             }
+        }
+
+        void UpdateCalendarPreview()
+        {
+            // https://solutionfall.com/question/how-can-i-change-the-background-color-of-a-calendardaybutton-in-wpf/
+
+            int month; 
+            DependencyObject monthView;
+
+            month = CalendarPreview.DisplayDate.Month;
+            monthView = FindMonthView(CalendarPreview, month);
+
+            if(monthView == null) { return; }
+
+            int count = VisualTreeHelper.GetChildrenCount(monthView);
+
+            for(int i = 0; i < count; i++)
+            {
+                DependencyObject childView = VisualTreeHelper.GetChild(monthView, i);
+
+                if(childView is CalendarDayButton calendarDayButton)
+                {
+                    DateTime date = (DateTime)calendarDayButton.DataContext;
+
+                    if(freeDaysSet.Contains(date.Date))
+                    {
+                        calendarDayButton.Background =  Brushes.PaleVioletRed;
+                    }
+                    else if(date.Date.DayOfWeek == DayOfWeek.Sunday || date.Date.DayOfWeek == DayOfWeek.Saturday)
+                    {
+                        calendarDayButton.Background =  Brushes.LightBlue;
+                    }
+                    else if(date.Date == DateStart.SelectedDate.GetValueOrDefault())
+                    {
+                        calendarDayButton.Background = Brushes.LightGreen;
+                    }
+                    else if(date.Date == DateEnd.SelectedDate.GetValueOrDefault())
+                    {
+                        calendarDayButton.Background = Brushes.LightGreen;
+                    }
+                    else
+                    {
+                        calendarDayButton.Background = Brushes.Transparent;
+                    }
+                }
+            }
+
+        }
+
+        private DependencyObject? FindMonthView(DependencyObject depObj, int targetMonth)
+        {
+            DependencyObject? result;
+            int childrenCount;
+
+            childrenCount = VisualTreeHelper.GetChildrenCount(depObj);
+
+            for (int i = 0; i < childrenCount; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+
+                if (child is FrameworkElement frameworkElement)
+                {
+                    if(frameworkElement.Name == "PART_MonthView")
+                    {
+                        int month = CalendarPreview.DisplayDate.Month;
+                        if (month == targetMonth)
+                        {
+                            return child;
+                        }
+                    }
+                }
+
+                result = FindMonthView(child, targetMonth);
+
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            return null;
+        }
+
+        private void CalendarPreview_DisplayDateChanged(object sender, CalendarDateChangedEventArgs e)
+        {
+            UpdateCalendarPreview();
+        }
+
+        private void DateStart_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if(DateStart.SelectedDate.HasValue) { CalendarPreview.DisplayDate = DateStart.SelectedDate.Value; }
+        }
+
+        private void DateEnd_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if(DateEnd.SelectedDate.HasValue) { CalendarPreview.DisplayDate = DateEnd.SelectedDate.Value; }
+        }
+
+        private void DateFreeDay_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if(DateFreeDay.SelectedDate.HasValue) { CalendarPreview.DisplayDate = DateFreeDay.SelectedDate.Value; }
         }
     }
 }

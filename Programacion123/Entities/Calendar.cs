@@ -40,12 +40,14 @@ namespace Programacion123
             {
                 validation = ValidationResult.titleEmpty;
             }
-            else if (StartDay > EndDay)
+
+            if (validation == ValidationResult.success && StartDay > EndDay)
             {
                 //Console.WriteLine("La fecha de inicio no puede ser posterior a la fecha de fin");
                 validation = ValidationResult.startDayAfterEndDay;
             }
-            else
+
+            if(validation == ValidationResult.success)
             {
                 int i = 0;
                 var listaFestivos = FreeDays.ToList();
@@ -55,13 +57,27 @@ namespace Programacion123
                     if (listaFestivos[i] > EndDay || listaFestivos[i] < StartDay)
                     {
                         //Utils.MuestraError("El festivo " + listaFestivos[i].ToString("dd/MM/yyyy") + " esta fuera del calendario");
-                        validation = ValidationResult.freeDayOutsideCalendar;
+                        validation = ValidationResult.freeDayBeforeStartOrAfterEnd;
                     }
 
                     i++;
                 }
+
             }
 
+            if(validation == ValidationResult.success)
+            {
+                DateTime d = StartDay;
+                bool foundSchoolDay = false;
+
+                while(d <= EndDay && !foundSchoolDay)
+                {
+                    if(!FreeDays.Contains(d)) { foundSchoolDay = true; }
+                    else { d = d.AddDays(1); }
+                }
+
+                if(!foundSchoolDay) { validation = ValidationResult.noSchoolDays; }
+            }
 
             return validation;
         }

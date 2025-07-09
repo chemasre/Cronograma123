@@ -27,7 +27,8 @@ namespace Programacion123
             success,
             titleEmpty,
             startDayAfterEndDay, // Calendar
-            freeDayOutsideCalendar,
+            freeDayBeforeStartOrAfterEnd,
+            noSchoolDays,
             unitsMissing, // Subject
             weekDayMissing,
             oneHourMinimum // Unit
