@@ -1,0 +1,96 @@
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+
+namespace Programacion123
+{
+    /// <summary>
+    /// Lógica de interacción para CommonTextEditor.xaml
+    /// </summary>
+    public partial class CommonTextEditor : Window, EntityEditor<CommonText>
+    {
+        string? parentStorageId;
+        CommonText entity;
+
+        public CommonTextEditor()
+        {
+            InitializeComponent();
+        }
+
+        public void SetEntity(CommonText _entity, string? _parentStorageId = null)
+        {
+            parentStorageId = _parentStorageId;
+            entity = _entity;
+
+            TextTitle.Text = _entity.Title;
+
+            TextBoxDescription.Document.Blocks.Clear();
+
+            TextTitle.TextChanged += TextTitle_TextChanged;
+            TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
+
+        }
+
+        public CommonText GetEntity()
+        {
+            return entity;
+        }
+
+        void UpdateEntity()
+        {
+            entity.Title = TextTitle.Text.Trim();
+            entity.Description = TextBoxDescription.Document.ToString().Trim();
+        }
+
+        void Validate()
+        {
+            Entity.ValidationResult validation = entity.Validate();
+
+            if (validation == Entity.ValidationResult.success)
+            {
+                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
+                TextValidation.Text = "No se han detectado problemas";
+            }
+            else
+            {
+                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorInvalid"]);
+
+                if (validation == Entity.ValidationResult.titleEmpty)
+                {                    
+                    TextValidation.Text = "Tienes que escribir un título";
+                }
+                else // validation == Entity.ValidationResult.descriptionEmpty
+                {
+                    TextValidation.Text = "La descripción no puede estar vacía";
+                }
+            }
+            
+        }
+
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateEntity();
+            entity.Save(parentStorageId);
+
+            TextTitle.TextChanged -= TextTitle_TextChanged;
+            TextBoxDescription.TextChanged -= TextBoxDescription_TextChanged;
+
+            Close();
+
+        }
+
+        private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void TextBoxDescription_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+
+    }
+}

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Programacion123
 {
@@ -46,9 +41,9 @@ namespace Programacion123
             UnitsById.Clear();
         }
 
-        public override void Save()
+        public override void Save(string? parentStorageId = null)
         {
-            base.Save();
+            base.Save(parentStorageId);
 
             var stream = new FileStream(StorageId + "." + StorageClassId, FileMode.Create, FileAccess.Write);
 
@@ -68,9 +63,9 @@ namespace Programacion123
             writer.Close();
         }
 
-        public void Load(string storageId)
+        public void Load(string storageId, string? parentStorageId = null)
         {
-            base.Load(storageId);
+            base.Load(storageId, parentStorageId);
 
             var stream = new FileStream(storageId + "." + StorageClassId, FileMode.Open, FileAccess.Read);
             var reader = new StreamReader(stream);

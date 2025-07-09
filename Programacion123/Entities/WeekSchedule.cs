@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Programacion123
+﻿namespace Programacion123
 {
     public class WeekSchedule : Entity
     {
@@ -18,28 +12,34 @@ namespace Programacion123
 
         public override ValidationResult Validate()
         {
-            int total = 0;
-            HoursPerWeekDay.ToList().ForEach(e => total += e.Value);
+            ValidationResult validation = base.Validate();
 
-            if (Title.Trim().Length <= 0) { return ValidationResult.titleEmpty; }
-            else if (total <= 0) { return ValidationResult.oneHourMinimum; }
-            else { return ValidationResult.success; }
+            if(validation == ValidationResult.success)
+            {
+                int total = 0;
+                HoursPerWeekDay.ToList().ForEach(e => total += e.Value);
+                if (total <= 0) { validation = ValidationResult.oneHourMinimum; }
+            }
+            
+            return validation;
         }
 
-        public override void Save()
+        public override void Save(string? parentStorageId = null)
         {
+            base.Save(parentStorageId);
+
             WeekScheduleData data = new();
             data.HoursPerWeekDay = new(HoursPerWeekDay.ToList());
             data.Title = Title;
 
-            Storage.SaveData<WeekScheduleData>(StorageId, StorageClassId, data);
+            Storage.SaveData<WeekScheduleData>(StorageId, StorageClassId, data, parentStorageId);
         }
 
-        public override void Load(string storageId)
+        public override void Load(string storageId, string? parentStorageId = null)
         {            
-            base.Load(storageId);
+            base.Load(storageId, parentStorageId);
 
-            var data = Storage.LoadData<WeekScheduleData>(storageId, StorageClassId);
+            var data = Storage.LoadData<WeekScheduleData>(storageId, StorageClassId, parentStorageId);
 
             Title = data.Title;
             HoursPerWeekDay.Set(data.HoursPerWeekDay.ToList());

@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
-using Microsoft.Office.Interop.Word;
-
-namespace Programacion123
+﻿namespace Programacion123
 {
     public struct SetProperty<T>
     {

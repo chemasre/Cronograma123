@@ -1,108 +1,218 @@
-﻿using System.Printing;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Programacion123
 {
     public interface EntityEditor<T>
     {
-        void SetEntity(T entity);
+        void SetEntity(T entity, string? parentStorageId = null);
         T GetEntity();
     }
 
+    public struct EntityBoxConfiguration
+    {
+        public EntityBoxItemsPrefix itemsPrefix;
+        public string? parentStorageId;
+        public List<string> storageIds;
+        public ComboBox? comboBox;            
+        public ListBox? listBox;
+        public Button? buttonNew;
+        public Button? buttonEdit;
+        public Button? buttonDelete;
+        public Button? buttonUp;
+        public Button? buttonDown;
 
-    public class EntityComboController<TEntity, TEditor> where TEntity: Entity, new()
+        public static EntityBoxConfiguration CreateForCombo(ComboBox _combo) { EntityBoxConfiguration c = new(); c.comboBox = _combo; c.storageIds = new(); return c; }
+        public static EntityBoxConfiguration CreateForList(ListBox _list) { EntityBoxConfiguration c = new(); c.listBox = _list; c.storageIds = new(); return c; }
+        public EntityBoxConfiguration WithStorageIds(List<string> _storageIds) { storageIds.AddRange(_storageIds); return this; }
+        public EntityBoxConfiguration WithPrefix(EntityBoxItemsPrefix _prefix) { itemsPrefix = _prefix; return this; }
+        public EntityBoxConfiguration WithNew(Button _buttonNew) { buttonNew = _buttonNew; return this; }
+        public EntityBoxConfiguration WithEdit(Button _buttonEdit) { buttonEdit = _buttonEdit; return this; }
+        public EntityBoxConfiguration WithDelete(Button _buttonDelete) { buttonDelete = _buttonDelete; return this; }
+        public EntityBoxConfiguration WithUpDown(Button _buttonUp, Button _buttonDown) { buttonUp = _buttonUp; buttonDown = _buttonDown; return this; }
+        public EntityBoxConfiguration WithParentStorageId(string _parentStorageId) { parentStorageId = _parentStorageId; return this; }
+    }
+
+    public enum EntityBoxItemsPrefix
+    {
+        none,
+        number,
+        character
+    }
+
+    public class EntityBoxController<TEntity, TEditor> where TEntity: Entity, new()
                                                         where TEditor: Window, EntityEditor<TEntity>, new()
     {
+        public List<string> StorageIds { get { return storageIds; } }
+
         List<string> storageIds;
-        ComboBox comboBox;
-        Button buttonNew;
-        Button buttonEdit;
-        Button buttonDelete;
+        string? parentStorageId;
+        EntityBoxItemsPrefix itemsPrefix;
+        ComboBox? comboBox;
+        ListBox? listBox;
+        Button? buttonNew;
+        Button? buttonEdit;
+        Button? buttonDelete;
+        Button? buttonUp;
+        Button? buttonDown;
         TEditor editor;
 
-        public EntityComboController(ComboBox _combo, Button _new, Button _edit, Button _delete)
+        public EntityBoxController(EntityBoxConfiguration configuration)
         {
-            comboBox = _combo;
-            buttonNew = _new;
-            buttonEdit = _edit;
-            buttonDelete = _delete;
-            storageIds = new List<string>();
+            itemsPrefix = configuration.itemsPrefix;
+            parentStorageId = configuration.parentStorageId;
+            comboBox = configuration.comboBox;
+            listBox = configuration.listBox;
+            buttonNew = configuration.buttonNew;
+            buttonEdit = configuration.buttonEdit;
+            buttonDelete = configuration.buttonDelete;
+            buttonUp = configuration.buttonUp;
+            buttonDown = configuration.buttonDown;
+            storageIds = new List<string>(configuration.storageIds);
 
             buttonNew.Click += ButtonNew_Click;
             buttonEdit.Click += ButtonEdit_Click;
             buttonDelete.Click += ButtonDelete_Click;
+            if(buttonUp != null) { buttonUp.Click += ButtonUp_Click; }
+            if(buttonDown != null) { buttonDown.Click += ButtonDown_Click; }
 
-            UpdateComboBox();
+            UpdateListOrCombo();
+        }
+
+        private void ButtonDown_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ButtonUp_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (comboBox.SelectedIndex >= 0)
+            int index = -1;
+
+            if(comboBox != null)
             {
-                int index = comboBox.SelectedIndex;
+                index = comboBox.SelectedIndex;
+            }
+            else
+            {
+                index = listBox.SelectedIndex;
+            }
+
+            if(index >= 0)
+            {
                 string? previousStorageId = index > 0 ? storageIds[index - 1] : null;
 
-                Storage.DeleteData(storageIds[index], new TEntity().StorageClassId);
-                UpdateComboBox();
+                Storage.DeleteData(storageIds[index], new TEntity().StorageClassId, parentStorageId);
+                storageIds.RemoveAt(index);
+                UpdateListOrCombo();
 
                 if(previousStorageId != null)
                 {
                     SelectStorageId(previousStorageId);
                 }
-            }            
+            }
+
         }
 
         private void ButtonEdit_Click(object sender, RoutedEventArgs e)
         {
-            if(comboBox.SelectedIndex >= 0)
+            bool openEditor = false;
+            int index = -1;
+            
+            if(comboBox != null)
             {
-                var entity = Storage.LoadEntity<TEntity>(storageIds[comboBox.SelectedIndex]);
+                if(comboBox.SelectedIndex >= 0)
+                {
+                    openEditor = true;
+                    index = comboBox.SelectedIndex;
+                }
+            }
+            else
+            {
+                if(listBox.SelectedIndex >= 0)
+                {
+                    openEditor = true;
+                    index = listBox.SelectedIndex;
+                }
+            }
+
+            if(openEditor)
+            {
+                var entity = Storage.LoadEntity<TEntity>(storageIds[index], parentStorageId);
                 editor = new TEditor();
-                editor.SetEntity(entity);
+                editor.SetEntity(entity, parentStorageId);
                 editor.Closed += OnEditorClosed;
                 editor.ShowDialog();
-
             }
+
         }
 
         private void ButtonNew_Click(object sender, RoutedEventArgs e)
         {
+            TEntity entity = new();
+
             editor = new TEditor();
-            editor.SetEntity(new TEntity());
+            editor.SetEntity(entity, parentStorageId);
+            storageIds.Add(entity.StorageId);
             editor.Closed += OnEditorClosed;
             editor.ShowDialog();
         }
 
-        void UpdateComboBox()
+        void UpdateListOrCombo()
         {
-            storageIds.Clear();
-            comboBox.Items.Clear();
-            var entities = Storage.LoadEntities<TEntity>();
-            entities.ForEach((e) => { comboBox.Items.Add(e.Title); storageIds.Add(e.StorageId); });
+            List<TEntity> entities;
 
-            if(comboBox.Items.Count > 0) { comboBox.SelectedIndex = 0;  }
+            entities = Storage.LoadEntities<TEntity>(storageIds, parentStorageId);
+
+            storageIds.Clear();
+
+            if(comboBox != null)
+            {
+                comboBox.Items.Clear();
+
+                int index = 0;
+                entities.ForEach((e) => { comboBox.Items.Add(GetPrefix(index) + e.Title); storageIds.Add(e.StorageId); index ++; });
+                if(comboBox.Items.Count > 0) { comboBox.SelectedIndex = 0;  }
+            }
+            else
+            {
+                listBox.Items.Clear();
+
+                int index = 0;
+                entities.ForEach((e) => { listBox.Items.Add(GetPrefix(index) + e.Title); storageIds.Add(e.StorageId); index ++; });
+                if(listBox.Items.Count > 0) { listBox.SelectedIndex = 0;  }
+            }
+
 
         }
 
         void OnEditorClosed(object? sender, EventArgs e)
         {
-            UpdateComboBox();
+            UpdateListOrCombo();
             SelectStorageId(editor.GetEntity().StorageId);
             editor.Closed -= OnEditorClosed;
         }
 
         void SelectStorageId(string storageId)
         {
-            comboBox.SelectedIndex = storageIds.FindIndex(e => e == storageId);
+            int index = storageIds.FindIndex(e => e == storageId);
+
+            if(comboBox != null) { comboBox.SelectedIndex = index; }
+            else { listBox.SelectedIndex = index; }
+
+        }
+
+        string GetPrefix(int index)
+        {
+            if(itemsPrefix == EntityBoxItemsPrefix.none) { return ""; }
+            else if(itemsPrefix == EntityBoxItemsPrefix.number) { return (index + 1).ToString() + ".- "; }
+            else // itemsPrefix == ItemsPrefix.character
+            { return System.Text.Encoding.ASCII.GetString(new byte[] { (byte)(65 + index) }).ToLower() + ". "; }
         }
 
     }
@@ -116,94 +226,41 @@ namespace Programacion123
         //WeekScheduleEditor weekScheduleEditor;
         //List<string> weekSchedulesStorageIds;
 
-        EntityComboController<WeekSchedule, WeekScheduleEditor> weekSchedulesController;
-        EntityComboController<Calendar, CalendarEditor> calendarsController;
+        EntityBoxController<WeekSchedule, WeekScheduleEditor> weekSchedulesController;
+        EntityBoxController<Calendar, CalendarEditor> calendarsController;
+        EntityBoxController<SubjectTemplate, SubjectTemplateEditor> subjectTemplateController;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            weekSchedulesController = new (ComboWeekSchedules, ButtonWeekScheduleNew, ButtonWeekScheduleEdit, ButtonWeekScheduleDelete);
-            calendarsController = new (ComboBoxCalendars, ButtonCalendarNew, ButtonCalendarEdit, ButtonCalendarDelete);
+            var configWeeks = EntityBoxConfiguration.CreateForCombo(ComboWeekSchedules)
+                                                   .WithStorageIds(Storage.GetStorageIds<WeekSchedule>(Storage.LoadEntities<WeekSchedule>()))
+                                                   .WithNew(ButtonWeekScheduleNew)
+                                                   .WithEdit(ButtonWeekScheduleEdit)
+                                                   .WithDelete(ButtonWeekScheduleDelete);
 
-            //weekSchedulesStorageIds = new List<string>();
+            var configCalendars = EntityBoxConfiguration.CreateForCombo(ComboBoxCalendars)
+                                                   .WithStorageIds(Storage.GetStorageIds<Calendar>(Storage.LoadEntities<Calendar>()))
+                                                   .WithNew(ButtonCalendarNew)
+                                                   .WithEdit(ButtonCalendarEdit)
+                                                   .WithDelete(ButtonCalendarDelete);
 
-            //UpdateWeekSchedulesCombo();
-        }
+            var configTemplates = EntityBoxConfiguration.CreateForCombo(ComboSubjectTemplates)
+                                                   .WithStorageIds(Storage.GetStorageIds<SubjectTemplate>(Storage.LoadEntities<SubjectTemplate>()))
+                                                   .WithNew(ButtonSubjectTemplateNew)
+                                                   .WithEdit(ButtonSubjectTemplateEdit)
+                                                   .WithDelete(ButtonSubjectTemplateDelete);
 
-        //private void WeekScheduleEditor_Closed(object? sender, EventArgs e)
-        //{
-        //    UpdateWeekSchedulesCombo();
-        //    SelectWeekScheduleByStorageId(weekScheduleEditor.WeekSchedule.StorageId);
-        //    weekScheduleEditor.Closed -= WeekScheduleEditor_Closed;
-        //}
-
-        //private void SelectWeekScheduleByStorageId(string storageId)
-        //{
-        //    ComboWeekSchedules.SelectedIndex = weekSchedulesStorageIds.FindIndex(e => e == storageId);
-        //}
-
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                DragMove();
-            }
+            weekSchedulesController = new (configWeeks);
+            calendarsController = new (configCalendars);
+            subjectTemplateController = new (configTemplates);
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
-
-        //private void ButtonWeekScheduleNew_Click(object sender, RoutedEventArgs e)
-        //{
-        //    weekScheduleEditor = new();
-        //    weekScheduleEditor.SetEntity(new WeekSchedule());
-        //    weekScheduleEditor.Closed += WeekScheduleEditor_Closed;
-        //    weekScheduleEditor.ShowDialog();
-        //}
-
-        //private void ButtonWeekScheduleDelete_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (ComboWeekSchedules.SelectedIndex >= 0)
-        //    {
-        //        int index = ComboWeekSchedules.SelectedIndex;
-        //        string? previousStorageId = index > 0 ? weekSchedulesStorageIds[index - 1] : null;
-
-        //        Storage.DeleteData(weekSchedulesStorageIds[index], new WeekSchedule().StorageClassId);
-        //        UpdateWeekSchedulesCombo();
-
-        //        if(previousStorageId != null)
-        //        {
-        //            SelectWeekScheduleByStorageId(previousStorageId);
-        //        }
-        //    }
-        //}
-
-        //private void UpdateWeekSchedulesCombo()
-        //{
-        //    weekSchedulesStorageIds.Clear();
-        //    ComboWeekSchedules.Items.Clear();
-        //    var weekSchedules = Storage.LoadEntities<WeekSchedule>();
-        //    weekSchedules.ForEach((e) => { ComboWeekSchedules.Items.Add(e.Title); weekSchedulesStorageIds.Add(e.StorageId); });
-
-        //    if(ComboWeekSchedules.Items.Count > 0) { ComboWeekSchedules.SelectedIndex = 0;  }
-
-        //}
-
-        //private void ButtonWeekScheduleEdit_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if(ComboWeekSchedules.SelectedIndex >= 0)
-        //    {
-        //        var weekSchedule = Storage.LoadEntity<WeekSchedule>(weekSchedulesStorageIds[ComboWeekSchedules.SelectedIndex]);
-        //        weekScheduleEditor = new();
-        //        weekScheduleEditor.SetEntity(weekSchedule);
-        //        weekScheduleEditor.Closed += WeekScheduleEditor_Closed;
-        //        weekScheduleEditor.ShowDialog();
-
-        //    }
-        //}
 
         private void Window_MouseDown_1(object sender, MouseButtonEventArgs e)
         {

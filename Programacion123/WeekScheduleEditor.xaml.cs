@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Programacion123
 {
@@ -22,10 +11,11 @@ namespace Programacion123
     /// </summary>
     public partial class WeekScheduleEditor : Window, EntityEditor<WeekSchedule>
     {
-        public WeekSchedule WeekSchedule { get { return weekSchedule; }  }
+        public WeekSchedule WeekSchedule { get { return entity; }  }
 
         DataTable dataTable;
-        WeekSchedule weekSchedule;
+        WeekSchedule entity;
+        public string? parentStorageId;
 
         public WeekScheduleEditor()
         {
@@ -40,19 +30,19 @@ namespace Programacion123
 
         private void UpdateEntity()
         {
-            weekSchedule.Title = TextTitle.Text.Trim();
+            entity.Title = TextTitle.Text.Trim();
 
-            weekSchedule.HoursPerWeekDay.Clear();
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Monday, (int)dataTable.Rows[0]["Horas"]);
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Tuesday, (int)dataTable.Rows[1]["Horas"]);
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Wednesday, (int)dataTable.Rows[2]["Horas"]);
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Thursday, (int)dataTable.Rows[3]["Horas"]);
-            weekSchedule.HoursPerWeekDay.Add(DayOfWeek.Friday, (int)dataTable.Rows[4]["Horas"]);
+            entity.HoursPerWeekDay.Clear();
+            entity.HoursPerWeekDay.Add(DayOfWeek.Monday, (int)dataTable.Rows[0]["Horas"]);
+            entity.HoursPerWeekDay.Add(DayOfWeek.Tuesday, (int)dataTable.Rows[1]["Horas"]);
+            entity.HoursPerWeekDay.Add(DayOfWeek.Wednesday, (int)dataTable.Rows[2]["Horas"]);
+            entity.HoursPerWeekDay.Add(DayOfWeek.Thursday, (int)dataTable.Rows[3]["Horas"]);
+            entity.HoursPerWeekDay.Add(DayOfWeek.Friday, (int)dataTable.Rows[4]["Horas"]);
         }
 
         private void Validate()
         {
-            Entity.ValidationResult validation = weekSchedule.Validate();
+            Entity.ValidationResult validation = entity.Validate();
 
             if (validation == Entity.ValidationResult.success)
             {
@@ -66,6 +56,10 @@ namespace Programacion123
                 if (validation == Entity.ValidationResult.titleEmpty)
                 {                    
                     TextValidation.Text = "Tienes que escribir un título para el horario";
+                }
+                else if (validation == Entity.ValidationResult.descriptionEmpty)
+                {                    
+                    TextValidation.Text = "Tienes que escribir una descripción para el calendario";
                 }
                 else // validation == Entity.ValidationResult.oneHourMinimum
                 {
@@ -96,7 +90,7 @@ namespace Programacion123
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
-            weekSchedule.Save();
+            entity.Save(parentStorageId);
             TextTitle.TextChanged -= TextTitle_TextChanged;
             dataTable.RowChanged -= DataTable_RowChanged;
             Close();
@@ -108,8 +102,10 @@ namespace Programacion123
             Validate();
         }
 
-        public void SetEntity(WeekSchedule _weekSchedule)
+        public void SetEntity(WeekSchedule _weekSchedule, string? _parentStorageId)
         {
+            parentStorageId = _parentStorageId;
+
             dataTable = new DataTable();
             DataColumn column = dataTable.Columns.Add("Día", typeof(string));
             column.ReadOnly = true;
@@ -148,9 +144,9 @@ namespace Programacion123
             row["Horas"] = 0;
             dataTable.Rows.Add(row);
 
-            weekSchedule = _weekSchedule;
+            entity = _weekSchedule;
 
-            TextTitle.Text = weekSchedule.Title;
+            TextTitle.Text = entity.Title;
 
             if(_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Monday)) { dataTable.Rows[0]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Monday]; }
             if(_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Tuesday)) { dataTable.Rows[1]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Tuesday]; }
@@ -165,7 +161,7 @@ namespace Programacion123
 
         public WeekSchedule GetEntity()
         {
-            return weekSchedule;
+            return entity;
         }
     }
 }

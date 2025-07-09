@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-
-namespace Programacion123
+﻿namespace Programacion123
 {
     public class Calendar : Entity
     {
@@ -34,12 +26,7 @@ namespace Programacion123
 
         public override ValidationResult Validate()
         {
-            ValidationResult validation = ValidationResult.success;
-
-            if(Title.Trim().Length <= 0)
-            {
-                validation = ValidationResult.titleEmpty;
-            }
+            ValidationResult validation = base.Validate();
 
             if (validation == ValidationResult.success && StartDay > EndDay)
             {
@@ -89,11 +76,11 @@ namespace Programacion123
             FreeDays.Clear();
         }
 
-        public override void Load(string storageId)
+        public override void Load(string storageId, string? parentStorageId = null)
         {
-            base.Load(storageId);
+            base.Load(storageId, parentStorageId);
 
-            var data = Storage.LoadData<CalendarData>(storageId, StorageClassId);
+            var data = Storage.LoadData<CalendarData>(storageId, StorageClassId, parentStorageId);
 
             Title = data.Title;
 
@@ -104,9 +91,9 @@ namespace Programacion123
 
         }
 
-        public override void Save()
+        public override void Save(string? parentStorageId = null)
         {
-            base.Save();
+            base.Save(parentStorageId);
 
             var data = new CalendarData();
 
@@ -116,7 +103,7 @@ namespace Programacion123
             data.EndDay = EndDay;
             data.FreeDays = new HashSet<DateTime>(FreeDays.ToList());
 
-            Storage.SaveData<CalendarData>(StorageId, StorageClassId, data);
+            Storage.SaveData<CalendarData>(StorageId, StorageClassId, data, parentStorageId);
         }
 
 

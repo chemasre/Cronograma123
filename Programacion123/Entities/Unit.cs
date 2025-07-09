@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-
-namespace Programacion123
+﻿namespace Programacion123
 {
     internal class Unit : Entity
     {
@@ -21,9 +13,9 @@ namespace Programacion123
             StorageClassId = "unit";
         }
 
-        public override void Save()
+        public override void Save(string? parentStorageId = null)
         {
-            base.Save();
+            base.Save(parentStorageId);
 
             UnitData data = new();
             data.Id = Id;
@@ -32,10 +24,10 @@ namespace Programacion123
             Storage.SaveData<UnitData>(StorageId, StorageClassId, data);
         }
 
-        public void Load(string storageId)
+        public void Load(string storageId, string? parentStorageId = null)
         {
 
-            base.Load(storageId);
+            base.Load(storageId, parentStorageId);
 
             UnitData data = Storage.LoadData<UnitData>(storageId, StorageClassId);
 

@@ -1,11 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Programacion123
+﻿namespace Programacion123
 {
     public enum StorageState
     {
@@ -26,6 +19,7 @@ namespace Programacion123
         {
             success,
             titleEmpty,
+            descriptionEmpty,
             startDayAfterEndDay, // Calendar
             freeDayBeforeStartOrAfterEnd,
             noSchoolDays,
@@ -41,29 +35,34 @@ namespace Programacion123
 
         public Entity()
         {
-            Title = "";
+            Title = "Sin título";
+            Description = "Sin descripción";
             StorageId = Guid.NewGuid().ToString();
             storageState = StorageState.detached;
         }
 
-        public abstract ValidationResult Validate();
+        public virtual ValidationResult Validate()
+        {
+            if(Title.Trim().Length <= 0) { return ValidationResult.titleEmpty; }
+            else if(Description.Trim().Length <= 0) { return ValidationResult.descriptionEmpty; }
+            else { return ValidationResult.success; }
+        }
 
         public virtual void SetDirty()
         {
             storageState = StorageState.dirty;
         }
 
-        public virtual void Load(string storageId)
+        public virtual void Load(string storageId, string? parentStorageId = null)
         {
             StorageId = storageId;
             storageState = StorageState.saved;
         }
 
-        public virtual void Save()
+        public virtual void Save(string? parentStorageId = null)
         {
             storageState = StorageState.saved;
         }
-
 
 
     }

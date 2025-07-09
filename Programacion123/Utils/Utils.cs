@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media;
-using System.Windows;
-
-namespace Programacion123
+﻿namespace Programacion123
 {
     class Utils
     {
@@ -84,6 +73,7 @@ namespace Programacion123
         {
             return d.ToShortDateString();
         }
+
 
 
     }

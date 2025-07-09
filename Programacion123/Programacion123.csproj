@@ -13,6 +13,8 @@
     <None Remove="ButtonClose.png" />
     <None Remove="ButtonDelete.png" />
     <None Remove="ButtonEdit.png" />
+    <None Remove="ButtonMoveDown.png" />
+    <None Remove="ButtonMoveUp.png" />
     <None Remove="ButtonNew.png" />
     <None Remove="ButtonWarning.png" />
     <None Remove="IconEdit.png" />
@@ -39,6 +41,11 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\ButtonMoveDown.png" />
+    <Resource Include="Images\ButtonMoveUp.png" />
   </ItemGroup>
 
   <ItemGroup>

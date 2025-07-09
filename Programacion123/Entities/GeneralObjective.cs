@@ -1,10 +1,10 @@
 ﻿namespace Programacion123
 {
-    public class EvaluationCriteria : Entity
+    public class GeneralObjective : Entity
     {
-        internal EvaluationCriteria() : base()
+        internal GeneralObjective() : base()
         {
-            StorageClassId = "evaluationcriteria";
+            StorageClassId = "generalobjective";
         }
 
         public override ValidationResult Validate()

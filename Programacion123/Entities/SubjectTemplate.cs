@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Programacion123
+﻿namespace Programacion123
 {
     public class SubjectTemplate : Entity
     {
@@ -19,14 +13,47 @@ namespace Programacion123
         public ListProperty<LearningResult> LearningResults { get; } = new ListProperty<LearningResult>();
         public ListProperty<Content> Contents { get; } = new ListProperty<Content>();
 
-        internal SubjectTemplate() : base()
+        public SubjectTemplate() : base()
         {
             StorageClassId = "subjecttemplate";
+            GeneralObjectivesIntroduction = new CommonText();
         }
 
         public override ValidationResult Validate()
         {
             throw new NotImplementedException();
+        }
+
+        public override void Save(string? parentStorageId = null)
+        {
+            base.Save(parentStorageId);
+
+            SubjectTemplateData data = new();
+
+            data.Title = Title;
+            data.Description = Description;
+            data.GeneralObjectivesIntroductionStorageId = GeneralObjectivesIntroduction.StorageId;
+            GeneralObjectivesIntroduction.Save(StorageId);
+
+            List<CommonText> list = GeneralObjectives.ToList();
+            list.ForEach(e => e.Save(StorageId));            
+            data.GeneralObjectivesStorageIds = Storage.GetStorageIds<CommonText>(list);
+
+            Storage.SaveData<SubjectTemplateData>(StorageId, StorageClassId, data, parentStorageId);
+
+        }
+
+        public override void Load(string storageId, string? parentStorageId = null)
+        {
+            base.Load(storageId, parentStorageId);
+
+            SubjectTemplateData data = Storage.LoadData<SubjectTemplateData>(storageId, StorageClassId, parentStorageId);
+            
+            Title = data.Title;
+            Description = data.Description;
+            GeneralObjectivesIntroduction = Storage.LoadEntity<CommonText>(data.GeneralObjectivesIntroductionStorageId, storageId);
+
+            GeneralObjectives.Set(Storage.LoadEntities<CommonText>(data.GeneralObjectivesStorageIds, storageId));
         }
     }
 }

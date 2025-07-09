@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Programacion123
 {
@@ -22,6 +12,7 @@ namespace Programacion123
     /// </summary>
     public partial class CalendarEditor : Window, EntityEditor<Calendar>
     {
+        string? parentStorageId;
         Calendar calendar;
 
         HashSet<DateTime> freeDaysSet;
@@ -41,8 +32,9 @@ namespace Programacion123
             return calendar;
         }
 
-        public void SetEntity(Calendar entity)
+        public void SetEntity(Calendar entity, string? _parentStorageId = null)
         {
+            parentStorageId = _parentStorageId;
             calendar = entity;
 
             TextTitle.Text = entity.Title;
@@ -124,6 +116,10 @@ namespace Programacion123
                 {                    
                     TextValidation.Text = "Tienes que escribir un título para el calendario";
                 }
+                else if (result == Entity.ValidationResult.descriptionEmpty)
+                {                    
+                    TextValidation.Text = "Tienes que escribir una descripción para el calendario";
+                }
                 else if(result == Entity.ValidationResult.freeDayBeforeStartOrAfterEnd)
                 {
                     TextValidation.Text = "Todos los días festivos deben situarse entre el primer día del curso y el último (incluidos)";
@@ -143,7 +139,7 @@ namespace Programacion123
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
-            calendar.Save();
+            calendar.Save(parentStorageId);
 
             TextTitle.TextChanged -= TextTitle_TextChanged;
             DateStart.SelectedDateChanged -= DateStart_SelectedDateChanged;
