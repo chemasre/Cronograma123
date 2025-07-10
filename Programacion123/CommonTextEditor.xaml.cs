@@ -24,7 +24,8 @@ namespace Programacion123
 
             TextTitle.Text = _entity.Title;
 
-            TextBoxDescription.Document.Blocks.Clear();
+            TextBoxDescription.Text = _entity.Description;
+            //TextBoxDescription.Document.Blocks.Clear();
 
             TextTitle.TextChanged += TextTitle_TextChanged;
             TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
@@ -39,7 +40,8 @@ namespace Programacion123
         void UpdateEntity()
         {
             entity.Title = TextTitle.Text.Trim();
-            entity.Description = TextBoxDescription.Document.ToString().Trim();
+            entity.Description = TextBoxDescription.Text;
+            //entity.Description = TextBoxDescription.Document.ToString().Trim();
         }
 
         void Validate()
@@ -91,6 +93,12 @@ namespace Programacion123
             Validate();
         }
 
+        public void SetTitleEditable(bool editable)
+        {
+            TextTitle.IsReadOnly = !editable;
+            TextTitle.IsReadOnlyCaretVisible = false;
+            TextTitle.Background = Brushes.LightGray;
+        }
 
     }
 }

@@ -27,7 +27,7 @@
         public void Load(string storageId, string? parentStorageId = null)
         {
 
-            base.Load(storageId, parentStorageId);
+            base.LoadOrCreate(storageId, parentStorageId);
 
             UnitData data = Storage.LoadData<UnitData>(storageId, StorageClassId);
 

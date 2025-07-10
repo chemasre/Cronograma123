@@ -65,7 +65,7 @@ namespace Programacion123
 
         public void Load(string storageId, string? parentStorageId = null)
         {
-            base.Load(storageId, parentStorageId);
+            base.LoadOrCreate(storageId, parentStorageId);
 
             var stream = new FileStream(storageId + "." + StorageClassId, FileMode.Open, FileAccess.Read);
             var reader = new StreamReader(stream);

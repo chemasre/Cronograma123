@@ -5,6 +5,26 @@ namespace Programacion123
 {
     internal class Storage
     {
+        public static bool ExistsData<T>(string storageId, string storageClassId, string? parentStorageId = null)  where T: StorageData
+        {
+            bool result = true;
+            string folder;
+
+            if(parentStorageId != null)
+            {   folder = parentStorageId + "\\";
+                if(!Directory.Exists(folder)) { result = false; }
+            }
+            else { folder = ""; }
+
+            if(result)
+            {
+                if(!File.Exists(folder + storageId + "." + storageClassId)) { result = false; }
+            }
+            
+            return result;
+
+        }
+
         public static void SaveData<T>(string storageId, string storageClassId, T data, string? parentStorageId = null) where T: StorageData
         {
             string folder;
@@ -41,6 +61,8 @@ namespace Programacion123
             string folder = (parentStorageId != null ? parentStorageId + "\\" : "");
 
             File.Delete(folder + storageId + "." + storageClassId);
+
+            if(Directory.Exists(folder + storageId)) { Directory.Delete(folder + storageId); }
         }
 
         public static List<T> LoadDatas<T>(string storageClassId, string? parentStorageId = null) where T : StorageData
@@ -67,7 +89,7 @@ namespace Programacion123
             storageIds.ForEach(
                 e =>
                 {   T entity = new T();
-                    entity.Load(e, parentStorageId);
+                    entity.LoadOrCreate(e, parentStorageId);
                     result.Add(entity);
                 });
 
@@ -86,7 +108,7 @@ namespace Programacion123
         public static T LoadEntity<T>(string storageId, string? parentStorageId = null) where T: Entity, new()
         {
             T entity = new T();
-            entity.Load(storageId, parentStorageId);
+            entity.LoadOrCreate(storageId, parentStorageId);
             return entity;
         }
 
@@ -105,7 +127,7 @@ namespace Programacion123
                     (e) =>
                     {
                         T entity = new();
-                        entity.Load(Path.GetFileNameWithoutExtension(e), parentStorageId);
+                        entity.LoadOrCreate(Path.GetFileNameWithoutExtension(e), parentStorageId);
                         result.Add(entity);
                     });
             }

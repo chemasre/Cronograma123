@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Programacion123
 {
@@ -9,6 +10,7 @@ namespace Programacion123
     {
         SubjectTemplate entity;
         string? parentStorageId;
+        EntityFieldController<CommonText, CommonTextEditor> generalObjectivesIntroductionController;
         EntityBoxController<CommonText, CommonTextEditor> generalObjectivesController;
         EntityBoxController<CommonText, CommonTextEditor> generalCompetencesController;
 
@@ -27,6 +29,15 @@ namespace Programacion123
         {
             entity = _subjectTemplate;
             parentStorageId = _parentStorageId;
+
+            var configObjectivesIntroduction = EntityFieldConfiguration.CreateForTextBox(TextGeneralObjectivesIntroduction)
+                                               .WithStorageId(entity.GeneralObjectivesIntroduction.StorageId)
+                                               .WithParentStorageId(entity.StorageId)
+                                               .WithNew(ButtonGeneralObjectivesIntroductionNew)
+                                               .WithEdit(ButtonGeneralObjectivesIntroductionEdit)
+                                               .WithTitleEditable(false);
+
+            generalObjectivesIntroductionController = new(configObjectivesIntroduction);
 
             var configObjectives = EntityBoxConfiguration.CreateForList(ListBoxGeneralObjectives)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
@@ -66,6 +77,12 @@ namespace Programacion123
             entity.Save(parentStorageId);
 
             Close();
+        }
+
+        public void SetTitleEditable(bool editable)
+        {
+            TextTitle.IsReadOnly = !editable;
+            TextTitle.IsReadOnlyCaretVisible = false;
         }
     }
 }

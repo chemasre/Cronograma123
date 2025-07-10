@@ -23,15 +23,24 @@
             Storage.SaveData<CommonTextData>(StorageId, StorageClassId, data, parentStorageId);
         }
 
-        public override void Load(string storageId, string? parentStorageId = null)
+        public override void LoadOrCreate(string storageId, string? parentStorageId = null)
         {
-            base.Load(storageId, parentStorageId);
+            base.LoadOrCreate(storageId, parentStorageId);
+
+            if(!Storage.ExistsData<CommonTextData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
 
             CommonTextData data = Storage.LoadData<CommonTextData>(storageId, StorageClassId, parentStorageId);
 
             Title = data.Title;
             Description = data.Description;
 
+        }
+
+        public override void Delete(string? parentStorageId = null)
+        {
+            base.Delete(parentStorageId);
+
+            Storage.DeleteData(StorageId, StorageClassId, parentStorageId);
         }
     }
 }

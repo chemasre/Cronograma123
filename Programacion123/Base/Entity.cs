@@ -53,7 +53,7 @@
             storageState = StorageState.dirty;
         }
 
-        public virtual void Load(string storageId, string? parentStorageId = null)
+        public virtual void LoadOrCreate(string storageId, string? parentStorageId = null)
         {
             StorageId = storageId;
             storageState = StorageState.saved;
@@ -62,6 +62,11 @@
         public virtual void Save(string? parentStorageId = null)
         {
             storageState = StorageState.saved;
+        }
+
+        public virtual void Delete(string? parentStorageId = null)
+        {
+            storageState = StorageState.detached;
         }
 
 

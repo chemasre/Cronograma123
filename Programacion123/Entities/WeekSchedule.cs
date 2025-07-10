@@ -35,14 +35,23 @@
             Storage.SaveData<WeekScheduleData>(StorageId, StorageClassId, data, parentStorageId);
         }
 
-        public override void Load(string storageId, string? parentStorageId = null)
+        public override void LoadOrCreate(string storageId, string? parentStorageId = null)
         {            
-            base.Load(storageId, parentStorageId);
+            base.LoadOrCreate(storageId, parentStorageId);
+
+            if(!Storage.ExistsData<WeekScheduleData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
 
             var data = Storage.LoadData<WeekScheduleData>(storageId, StorageClassId, parentStorageId);
 
             Title = data.Title;
             HoursPerWeekDay.Set(data.HoursPerWeekDay.ToList());
+        }
+
+        public override void Delete(string? parentStorageId = null)
+        {
+            base.Delete(parentStorageId);
+
+            Storage.DeleteData(StorageId, StorageClassId, parentStorageId);
         }
 
     }

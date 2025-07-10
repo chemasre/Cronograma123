@@ -46,9 +46,11 @@
 
         }
 
-        public override void Load(string storageId, string? parentStorageId = null)
+        public override void LoadOrCreate(string storageId, string? parentStorageId = null)
         {
-            base.Load(storageId, parentStorageId);
+            base.LoadOrCreate(storageId, parentStorageId);
+
+            if(!Storage.ExistsData<SubjectTemplateData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
 
             SubjectTemplateData data = Storage.LoadData<SubjectTemplateData>(storageId, StorageClassId, parentStorageId);
             
@@ -59,6 +61,20 @@
             GeneralObjectives.Set(Storage.LoadEntities<CommonText>(data.GeneralObjectivesStorageIds, storageId));
 
             GeneralCompetences.Set(Storage.LoadEntities<CommonText>(data.GeneralCompetencesStorageIds, storageId));
+        }
+
+        public override void Delete(string? parentStorageId = null)
+        {
+            base.Delete(parentStorageId);
+
+            GeneralObjectivesIntroduction.Delete(StorageId);
+            GeneralObjectives.ToList().ForEach(e => e.Delete(StorageId));
+            GeneralCompetencesIntroduction.Delete(StorageId);
+            GeneralCompetences.ToList().ForEach(e => e.Delete(StorageId));
+
+            Storage.DeleteData(StorageId, StorageClassId, parentStorageId);
+
+
         }
     }
 }

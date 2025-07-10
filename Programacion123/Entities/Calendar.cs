@@ -76,9 +76,11 @@
             FreeDays.Clear();
         }
 
-        public override void Load(string storageId, string? parentStorageId = null)
+        public override void LoadOrCreate(string storageId, string? parentStorageId = null)
         {
-            base.Load(storageId, parentStorageId);
+            base.LoadOrCreate(storageId, parentStorageId);
+
+            if(!Storage.ExistsData<CalendarData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
 
             var data = Storage.LoadData<CalendarData>(storageId, StorageClassId, parentStorageId);
 
@@ -104,6 +106,13 @@
             data.FreeDays = new HashSet<DateTime>(FreeDays.ToList());
 
             Storage.SaveData<CalendarData>(StorageId, StorageClassId, data, parentStorageId);
+        }
+
+        public override void Delete(string? parentStorageId = null)
+        {
+            base.Delete(parentStorageId);
+
+            Storage.DeleteData(StorageId, StorageClassId, parentStorageId);
         }
 
 

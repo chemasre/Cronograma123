@@ -8,7 +8,7 @@
         Title="SubjectTemplateEditor" Height="708" Width="532" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" Background="#FFC3B7FF" CornerRadius="30" BorderBrush="#FF0370A9" Margin="0,0,0,10" >
         <Canvas>
-            <Label Content="Plantilla oficial" FontSize="48" FontFamily="Segoe Script" FontWeight="Bold" Width="448" HorizontalAlignment="Left" Canvas.Left="13" Canvas.Top="3" VerticalAlignment="Center" Foreground="#7F093AD0"/>
+            <Label x:Name="TextEditorTitle" Content="Plantilla oficial" FontSize="48" FontFamily="Segoe Script" FontWeight="Bold" Width="448" HorizontalAlignment="Left" Canvas.Left="13" Canvas.Top="3" VerticalAlignment="Center" Foreground="#7F093AD0"/>
             <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" Click="ButtonClose_Click" HorizontalAlignment="Left" Canvas.Left="461" VerticalAlignment="Center" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
@@ -62,8 +62,8 @@
                     <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                 </Button.Foreground>
             </Button>
-            <TextBox Canvas.Left="200" TextWrapping="Wrap" Text="TextBox" Canvas.Top="134" Width="232" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
-            <Button x:Name="ButtonOfficialDocsEdit_Copiar1" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="437" Canvas.Top="131" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBox x:Name="TextGeneralObjectivesIntroduction" Canvas.Left="200" TextWrapping="Wrap" Text="TextBox" Canvas.Top="134" Width="203" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}" IsReadOnly="True"/>
+            <Button x:Name="ButtonGeneralObjectivesIntroductionEdit" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="437" Canvas.Top="131" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
                 </Button.Background>
@@ -111,6 +111,14 @@
                 </Button.Background>
                 <Button.Foreground>
                     <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                </Button.Foreground>
+            </Button>
+            <Button x:Name="ButtonGeneralObjectivesIntroductionNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="408" Canvas.Top="131" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                </Button.Background>
+                <Button.Foreground>
+                    <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                 </Button.Foreground>
             </Button>
 

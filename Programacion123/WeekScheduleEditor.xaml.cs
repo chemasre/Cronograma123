@@ -163,5 +163,11 @@ namespace Programacion123
         {
             return entity;
         }
+
+        public void SetTitleEditable(bool editable)
+        {
+            TextTitle.IsReadOnly = !editable;
+            TextTitle.IsReadOnlyCaretVisible = false;
+        }
     }
 }
