@@ -155,10 +155,10 @@
                     <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                 </Button.Foreground>
             </Button>
-            <Label Content="Elige un horario previamente definido o define uno nuevo&#xA;" HorizontalAlignment="Left" Canvas.Left="113" Canvas.Top="306" VerticalAlignment="Top" Height="26" FontFamily="Myanmar Text"/>
-            <Label Content="Elige un calendario previamente definido o define uno nuevo" HorizontalAlignment="Center" Canvas.Left="106" Canvas.Top="223" VerticalAlignment="Top" FontFamily="Myanmar Text"/>
-            <Label Content="Elige una plantilla oficial para la programación de la asignatura o define una propia" HorizontalAlignment="Left" Canvas.Left="105" Canvas.Top="143" VerticalAlignment="Top" FontFamily="Myanmar Text"/>
-            <Label Content="Define la programación de la asignatura" HorizontalAlignment="Left" Canvas.Left="115" Canvas.Top="388" VerticalAlignment="Top"/>
+            <Label Content="Elige un horario de la lista o o define uno nuevo" HorizontalAlignment="Left" Canvas.Left="113" Canvas.Top="306" VerticalAlignment="Top" Height="26" FontFamily="Myanmar Text"/>
+            <Label Content="Elige un calendario de la lista o define uno nuevo" HorizontalAlignment="Center" Canvas.Left="106" Canvas.Top="223" VerticalAlignment="Top" FontFamily="Myanmar Text"/>
+            <Label Content="Elige una plantilla de la lista o define una propia" HorizontalAlignment="Left" Canvas.Left="105" Canvas.Top="143" VerticalAlignment="Top" FontFamily="Myanmar Text"/>
+            <Label Content="Elige una programación de la lista o define una nueva" HorizontalAlignment="Left" Canvas.Left="115" Canvas.Top="388" VerticalAlignment="Top"/>
             <Label Content="Programador123" FontSize="48" FontFamily="Segoe Script" FontWeight="Bold" Width="466" Canvas.Left="50" Canvas.Top="31" Foreground="#7F093AD0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Label Content="1" FontSize="48" FontFamily="Segoe Script" FontWeight="Bold" Width="42" Canvas.Left="45" Canvas.Top="132" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="2" FontSize="48" FontFamily="Segoe Script" FontWeight="Bold" Width="42" Canvas.Left="45" Canvas.Top="214" Foreground="#7F093AD0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
