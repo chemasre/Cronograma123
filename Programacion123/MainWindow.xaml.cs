@@ -10,6 +10,22 @@ namespace Programacion123
         T GetEntity();
     }
 
+    public struct EntityFieldConfiguration
+    {
+        public string? parentStorageId;
+        public string? storageId;
+        public TextBox? textBox;
+        public Button? buttonNew;
+        public Button? buttonEdit;
+        public Button? buttonDelete;
+
+        public static EntityFieldConfiguration CreateForTextBox(TextBox _textBox) { EntityFieldConfiguration c = new(); c.textBox = _textBox; return c; }
+        public EntityFieldConfiguration WithStorageId(string _storageId) { storageId = _storageId; return this; }
+        public EntityFieldConfiguration WithNew(Button _buttonNew) { buttonNew = _buttonNew; return this; }
+        public EntityFieldConfiguration WithEdit(Button _buttonEdit) { buttonEdit = _buttonEdit; return this; }
+        public EntityFieldConfiguration WithDelete(Button _buttonDelete) { buttonDelete = _buttonDelete; return this; }
+    }
+
     public struct EntityBoxConfiguration
     {
         public EntityBoxItemsPrefix itemsPrefix;
@@ -32,6 +48,20 @@ namespace Programacion123
         public EntityBoxConfiguration WithDelete(Button _buttonDelete) { buttonDelete = _buttonDelete; return this; }
         public EntityBoxConfiguration WithUpDown(Button _buttonUp, Button _buttonDown) { buttonUp = _buttonUp; buttonDown = _buttonDown; return this; }
         public EntityBoxConfiguration WithParentStorageId(string _parentStorageId) { parentStorageId = _parentStorageId; return this; }
+    }
+
+    public class EntityFieldController<TEntity, TEditor> where TEntity : Entity, new()
+                                                    where TEditor : Window, EntityEditor<TEntity>, new()
+    {
+        public string StorageId { get { return storageId; } }
+
+        string? parentStorageId;
+        string storageId;
+
+        public EntityFieldController(EntityFieldConfiguration configuration)
+        {
+
+        }
     }
 
     public enum EntityBoxItemsPrefix
@@ -82,12 +112,48 @@ namespace Programacion123
 
         private void ButtonDown_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            int selectedIndex;
+
+            if (comboBox != null) { selectedIndex = comboBox.SelectedIndex; }
+            else { selectedIndex = listBox.SelectedIndex; }
+
+            if(selectedIndex < storageIds.Count - 1)
+            {
+                string previousSelectedStorageId = storageIds[selectedIndex];
+
+                string s;
+                s = storageIds[selectedIndex + 1];
+                storageIds[selectedIndex + 1] = storageIds[selectedIndex];
+                storageIds[selectedIndex] = s;
+
+                UpdateListOrCombo();
+
+                SelectStorageId(previousSelectedStorageId);
+            }
+
+
         }
 
         private void ButtonUp_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            int selectedIndex;
+
+            if (comboBox != null) { selectedIndex = comboBox.SelectedIndex; }
+            else { selectedIndex = listBox.SelectedIndex; }
+
+            if (selectedIndex > 0)
+            {
+                string previousSelectedStorageId = storageIds[selectedIndex];
+
+                string s;
+                s = storageIds[selectedIndex - 1];
+                storageIds[selectedIndex - 1] = storageIds[selectedIndex];
+                storageIds[selectedIndex] = s;
+
+                UpdateListOrCombo();
+
+                SelectStorageId(previousSelectedStorageId);
+            }
         }
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)

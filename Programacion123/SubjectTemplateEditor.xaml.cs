@@ -10,6 +10,7 @@ namespace Programacion123
         SubjectTemplate entity;
         string? parentStorageId;
         EntityBoxController<CommonText, CommonTextEditor> generalObjectivesController;
+        EntityBoxController<CommonText, CommonTextEditor> generalCompetencesController;
 
         public SubjectTemplateEditor()
         {
@@ -38,6 +39,17 @@ namespace Programacion123
 
             generalObjectivesController = new(configObjectives);
 
+            var configCompetences = EntityBoxConfiguration.CreateForList(ListBoxGeneralCompetences)
+                                                        .WithParentStorageId(_subjectTemplate.StorageId)
+                                                        .WithStorageIds(Storage.GetStorageIds<CommonText>(_subjectTemplate.GeneralCompetences.ToList()))
+                                                        .WithPrefix(EntityBoxItemsPrefix.character)
+                                                        .WithNew(ButtonGeneralCompetenceNew)
+                                                        .WithEdit(ButtonGeneralCompetenceEdit)
+                                                        .WithDelete(ButtonGeneralCompetenceDelete)
+                                                        .WithUpDown(ButtonGeneralCompetenceUp, ButtonGeneralCompetenceDown);
+
+            generalCompetencesController = new(configCompetences);
+
             TextTitle.Text = _subjectTemplate.Title;
         }
 
@@ -45,6 +57,7 @@ namespace Programacion123
         {
             entity.Title = TextTitle.Text;
             entity.GeneralObjectives.Set(Storage.LoadEntities<CommonText>(generalObjectivesController.StorageIds, entity.StorageId));
+            entity.GeneralCompetences.Set(Storage.LoadEntities<CommonText>(generalCompetencesController.StorageIds, entity.StorageId));
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
