@@ -55,7 +55,7 @@ namespace Programacion123
             data.UnitsSequenceStorageIds = Storage.GetStorageIds<Unit>(UnitsSequence.ToList());
 
             data.WeekScheduleStorageId = WeekSchedule.StorageId;
-            WeekSchedule.Save();
+            WeekSchedule.Save(parentStorageId);
 
             JsonSerializerOptions options = new JsonSerializerOptions(JsonSerializerOptions.Default);
             options.WriteIndented = true;
@@ -79,7 +79,7 @@ namespace Programacion123
             Title = data.Title;
             UnitsSequence.Set(Storage.LoadEntities<Unit>(data.UnitsSequenceStorageIds));
 
-            WeekSchedule = Storage.LoadEntity<WeekSchedule>(data.WeekScheduleStorageId);
+            WeekSchedule = Storage.LoadOrCreateEntity<WeekSchedule>(data.WeekScheduleStorageId);
 
             reader.Close();
         }

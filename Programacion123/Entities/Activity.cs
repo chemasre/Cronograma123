@@ -9,7 +9,7 @@
         public ListProperty<CommonText> Resources;
 
         public bool IsEvaluable;
-        public SetProperty<EvaluationCriteria> EvaluationCriteria;
+        public SetProperty<CommonText> EvaluationCriteria;
         public DictionaryProperty<LearningResult, float> ResultsWeight { get; } = new DictionaryProperty<LearningResult, float>();
 
         internal Activity() : base()

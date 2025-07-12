@@ -105,7 +105,7 @@ namespace Programacion123
             return result;
         }
 
-        public static T LoadEntity<T>(string storageId, string? parentStorageId = null) where T: Entity, new()
+        public static T LoadOrCreateEntity<T>(string storageId, string? parentStorageId = null) where T: Entity, new()
         {
             T entity = new T();
             entity.LoadOrCreate(storageId, parentStorageId);

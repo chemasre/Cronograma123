@@ -47,6 +47,8 @@ namespace Programacion123
 
         TEditor? editor;
 
+        bool deletePreviousOnEditorClose;
+
         public EntityFieldController(EntityFieldConfiguration configuration)
         {
             storageId = configuration.storageId;
@@ -62,28 +64,30 @@ namespace Programacion123
 
             blocker = configuration.blocker;
 
-            if(buttonNew != null) { buttonNew.Click += ButtonNew_Click; }
-            if(buttonEdit != null)  { buttonEdit.Click += ButtonEdit_Click; }
+            if(buttonNew != null) { buttonNew.Click += ButtonNew_Click; buttonNew.ToolTip = "Crear"; }
+            if(buttonEdit != null)  { buttonEdit.Click += ButtonEdit_Click; buttonEdit.ToolTip = "Modificar"; }
 
             UpdateField();
         }
 
         void UpdateField()
         {
-            TEntity entity = Storage.LoadEntity<TEntity>(storageId, parentStorageId);
+            TEntity entity = Storage.LoadOrCreateEntity<TEntity>(storageId, parentStorageId);
 
-            textBox.Text = entity.Description.Trim().Substring(0, 10) + "...";
+            string trimmed = entity.Description.Trim();
+            textBox.Text = trimmed.Substring(0, Math.Min(100, trimmed.Length)) + "...";
         }
 
         void ButtonEdit_Click(object sender, RoutedEventArgs e)
         {
-            var entity = Storage.LoadEntity<TEntity>(storageId, parentStorageId);
+            var entity = Storage.LoadOrCreateEntity<TEntity>(storageId, parentStorageId);
             editor = new TEditor();
             if(titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
             if(editorTitle != null) { editor.SetEditorTitle(editorTitle); }
             if(blocker != null) { blocker.Visibility = Visibility.Visible; }
             editor.SetEntity(entity, parentStorageId);
             editor.Closed += OnEditorClosed;
+            deletePreviousOnEditorClose = false;
             editor.ShowDialog();            
         }
 
@@ -96,14 +100,29 @@ namespace Programacion123
             if(blocker != null) { blocker.Visibility = Visibility.Visible; }
             editor.SetEntity(entity, parentStorageId);
             editor.Closed += OnEditorClosed;
+            deletePreviousOnEditorClose = true;
             editor.ShowDialog();            
         }
 
         void OnEditorClosed(object? sender, EventArgs e)
         {
-            UpdateField();
             if(blocker != null) { blocker.Visibility = Visibility.Hidden; }
+
+            if(deletePreviousOnEditorClose)
+            {
+                if(storageId != null)
+                {
+                    TEntity previous = Storage.LoadOrCreateEntity<TEntity>(storageId, parentStorageId);
+                    previous.Delete(parentStorageId);
+                    storageId = null;
+                }
+
+                deletePreviousOnEditorClose = false;
+            }
+
             storageId = editor.GetEntity().StorageId;
+            UpdateField();
+
             editor.Closed -= OnEditorClosed;
         }
     }

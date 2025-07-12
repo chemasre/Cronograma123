@@ -15,6 +15,10 @@ namespace Programacion123
         EntityBoxController<CommonText, CommonTextEditor> generalObjectivesController;
         EntityFieldController<CommonText, CommonTextEditor> generalCompetencesIntroductionController;
         EntityBoxController<CommonText, CommonTextEditor> generalCompetencesController;
+        EntityFieldController<CommonText, CommonTextEditor> learningResultsIntroductionController;
+        EntityBoxController<CommonText, CommonTextEditor> learningResultsController;
+        EntityFieldController<CommonText, CommonTextEditor> contentsIntroductionController;
+        EntityBoxController<CommonText, CommonTextEditor> contentsController;
 
         public SubjectTemplateEditor()
         {
@@ -80,14 +84,88 @@ namespace Programacion123
 
             generalCompetencesController = new(configCompetences);
 
+            var configLearningResultsIntroduction = EntityFieldConfiguration.CreateForTextBox(TextLearningResultsIntroduction)
+                                               .WithStorageId(entity.LearningResultsIntroduction.StorageId)
+                                               .WithParentStorageId(entity.StorageId)
+                                               .WithNew(ButtonLearningResultsIntroductionNew)
+                                               .WithEdit(ButtonLearningResultsIntroductionEdit)
+                                               .WithTitleEditable(false)
+                                               .WithEditorTitle("Introducción a los resultados de aprendizaje")
+                                               .WithBlocker(Blocker);
+
+            learningResultsIntroductionController = new(configLearningResultsIntroduction);
+
+            var configLearningResults = EntityBoxConfiguration.CreateForList(ListBoxLearningResults)
+                                                        .WithParentStorageId(_subjectTemplate.StorageId)
+                                                        .WithStorageIds(Storage.GetStorageIds<LearningResult>(_subjectTemplate.LearningResults.ToList()))
+                                                        .WithPrefix(EntityBoxItemsPrefix.number)
+                                                        .WithNew(ButtonLearningResultsNew)
+                                                        .WithEdit(ButtonLearningResultsEdit)
+                                                        .WithDelete(ButtonLearningResultsDelete)
+                                                        .WithUpDown(ButtonLearningResultsUp, ButtonLearningResultsDown)
+                                                        .WithEditorTitle("Resultado de aprendizaje")
+                                                        .WithBlocker(Blocker);
+
+            learningResultsController = new(configLearningResults);
+
+            var configContentsIntroduction = EntityFieldConfiguration.CreateForTextBox(TextContentsIntroduction)
+                                               .WithStorageId(entity.ContentsIntroduction.StorageId)
+                                               .WithParentStorageId(entity.StorageId)
+                                               .WithNew(ButtonContentsIntroductionNew)
+                                               .WithEdit(ButtonContentsIntroductionEdit)
+                                               .WithTitleEditable(false)
+                                               .WithEditorTitle("Introducción a los contenidos")
+                                               .WithBlocker(Blocker);
+
+            contentsIntroductionController = new(configContentsIntroduction);
+
+            var configContents = EntityBoxConfiguration.CreateForList(ListBoxContents)
+                                                        .WithParentStorageId(_subjectTemplate.StorageId)
+                                                        .WithStorageIds(Storage.GetStorageIds<Content>(_subjectTemplate.Contents.ToList()))
+                                                        .WithPrefix(EntityBoxItemsPrefix.number)
+                                                        .WithNew(ButtonContentsNew)
+                                                        .WithEdit(ButtonContentsEdit)
+                                                        .WithDelete(ButtonContentsDelete)
+                                                        .WithUpDown(ButtonContentsUp, ButtonContentsDown)
+                                                        .WithEditorTitle("Contenido")
+                                                        .WithBlocker(Blocker);
+
+            contentsController = new(configContents);
+
             TextTitle.Text = _subjectTemplate.Title;
+
+            TextSubjectName.Text = _subjectTemplate.SubjectName;
+            TextSubjectCode.Text = _subjectTemplate.SubjectCode;
+            ComboGradeType.SelectedIndex = (int)_subjectTemplate.GradeType;
+            TextGradeName.Text = _subjectTemplate.GradeName;
+            TextGradeFamilyName.Text = _subjectTemplate.GradeFamilyName;
+            TextGradeClassroomHours.Text = _subjectTemplate.GradeClassroomHours.ToString();
+            TextGradeCompanyHours.Text = _subjectTemplate.GradeCompanyHours.ToString();
         }
 
         private void UpdateEntity()
         {
             entity.Title = TextTitle.Text;
+            entity.GeneralObjectivesIntroduction = Storage.LoadOrCreateEntity<CommonText>(generalObjectivesIntroductionController.StorageId, entity.StorageId);
             entity.GeneralObjectives.Set(Storage.LoadEntities<CommonText>(generalObjectivesController.StorageIds, entity.StorageId));
+            entity.GeneralCompetencesIntroduction = Storage.LoadOrCreateEntity<CommonText>(generalCompetencesIntroductionController.StorageId, entity.StorageId);
             entity.GeneralCompetences.Set(Storage.LoadEntities<CommonText>(generalCompetencesController.StorageIds, entity.StorageId));
+
+            entity.LearningResultsIntroduction = Storage.LoadOrCreateEntity<CommonText>(learningResultsIntroductionController.StorageId, entity.StorageId);
+            entity.LearningResults.Set(Storage.LoadEntities<LearningResult>(learningResultsController.StorageIds, entity.StorageId));
+            entity.ContentsIntroduction = Storage.LoadOrCreateEntity<CommonText>(contentsIntroductionController.StorageId, entity.StorageId);
+            entity.Contents.Set(Storage.LoadEntities<Content>(contentsController.StorageIds, entity.StorageId));
+
+            entity.SubjectName = TextSubjectName.Text;
+            entity.SubjectCode = TextSubjectCode.Text;
+            entity.GradeName = TextGradeName.Text;
+            entity.GradeType = (GradeType)(ComboGradeType.SelectedIndex >= 0 ? ComboGradeType.SelectedIndex : 0);
+            entity.GradeName = TextGradeName.Text;
+            entity.GradeFamilyName = TextGradeFamilyName.Text;
+
+            int number;
+            entity.GradeClassroomHours = Int32.TryParse(TextGradeClassroomHours.Text, out number) ? number : 0;
+            entity.GradeCompanyHours= Int32.TryParse(TextGradeCompanyHours.Text, out number) ? number : 0;
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)

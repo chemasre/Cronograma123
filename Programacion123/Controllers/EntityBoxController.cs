@@ -81,11 +81,11 @@ namespace Programacion123
             editorTitle= configuration.editorTitle;
             blocker = configuration.blocker;
 
-            if(buttonNew != null) { buttonNew.Click += ButtonNew_Click; }
-            if(buttonEdit != null) { buttonEdit.Click += ButtonEdit_Click; }
-            if(buttonDelete != null) { buttonDelete.Click += ButtonDelete_Click; }
-            if(buttonUp != null) { buttonUp.Click += ButtonUp_Click; }
-            if(buttonDown != null) { buttonDown.Click += ButtonDown_Click; }
+            if(buttonNew != null) { buttonNew.Click += ButtonNew_Click; buttonNew.ToolTip = "Crear"; }
+            if(buttonEdit != null) { buttonEdit.Click += ButtonEdit_Click; buttonEdit.ToolTip = "Modificar"; }
+            if(buttonDelete != null) { buttonDelete.Click += ButtonDelete_Click; buttonDelete.ToolTip = "Eliminar"; }
+            if(buttonUp != null) { buttonUp.Click += ButtonUp_Click; buttonUp.ToolTip = "Mover arriba en la lista"; }
+            if(buttonDown != null) { buttonDown.Click += ButtonDown_Click; buttonDown.ToolTip = "Mover abajo en la lista"; }
 
             UpdateListOrCombo();
         }
@@ -138,7 +138,7 @@ namespace Programacion123
 
         void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            int index = -1;
+            int index = -61;
 
             if(comboBox != null)
             {
@@ -153,7 +153,7 @@ namespace Programacion123
             {
                 string? previousStorageId = index > 0 ? storageIds[index - 1] : null;
 
-                Entity entity = Storage.LoadEntity<TEntity>(storageIds[index], parentStorageId);
+                Entity entity = Storage.LoadOrCreateEntity<TEntity>(storageIds[index], parentStorageId);
                 entity.Delete(parentStorageId);
                 storageIds.RemoveAt(index);
                 UpdateListOrCombo();
@@ -190,7 +190,7 @@ namespace Programacion123
 
             if(openEditor)
             {
-                var entity = Storage.LoadEntity<TEntity>(storageIds[index], parentStorageId);
+                var entity = Storage.LoadOrCreateEntity<TEntity>(storageIds[index], parentStorageId);
                 editor = new TEditor();
                 if(titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
                 if(editorTitle != null) { editor.SetEditorTitle(editorTitle); }
@@ -205,7 +205,6 @@ namespace Programacion123
         void ButtonNew_Click(object sender, RoutedEventArgs e)
         {
             TEntity entity = new();
-
             editor = new TEditor();
             if(titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
             if(editorTitle != null) { editor.SetEditorTitle(editorTitle); }
