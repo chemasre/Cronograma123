@@ -83,7 +83,7 @@
                     <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                 </Button.Foreground>
             </Button>
-            <Button x:Name="ButtonCalendarNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" HorizontalAlignment="Left" Canvas.Left="455" Canvas.Top="258" VerticalAlignment="Top" Style="{DynamicResource PushableButton}">
+            <Button x:Name="ButtonCalendarNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" HorizontalAlignment="Left" Canvas.Left="455" Canvas.Top="258" VerticalAlignment="Top" Style="{DynamicResource PushableButton}" Effect="{DynamicResource EffectDropShadow}">
                 <Button.Background>
                     <ImageBrush ImageSource="/ButtonNew.png"/>
                 </Button.Background>
