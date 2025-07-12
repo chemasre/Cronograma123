@@ -16,9 +16,9 @@ namespace Programacion123
         EntityFieldController<CommonText, CommonTextEditor> generalCompetencesIntroductionController;
         EntityBoxController<CommonText, CommonTextEditor> generalCompetencesController;
         EntityFieldController<CommonText, CommonTextEditor> learningResultsIntroductionController;
-        EntityBoxController<CommonText, CommonTextEditor> learningResultsController;
+        EntityBoxController<LearningResult, LearningResultEditor> learningResultsController;
         EntityFieldController<CommonText, CommonTextEditor> contentsIntroductionController;
-        EntityBoxController<CommonText, CommonTextEditor> contentsController;
+        EntityBoxController<Content, ContentEditor> contentsController;
 
         public SubjectTemplateEditor()
         {

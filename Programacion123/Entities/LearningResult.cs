@@ -11,7 +11,7 @@
 
         public override ValidationResult Validate()
         {
-            throw new NotImplementedException();
+            return base.Validate();
         }
 
         public override void Save(string? parentStorageId)
