@@ -21,6 +21,8 @@ namespace Programacion123
         public Button? buttonUp;
         public Button? buttonDown;
         public bool? titleEditable;
+        public string? editorTitle;
+        public UIElement? blocker;
 
         public static EntityBoxConfiguration CreateForCombo(ComboBox _combo) { EntityBoxConfiguration c = new(); c.comboBox = _combo; c.storageIds = new(); return c; }
         public static EntityBoxConfiguration CreateForList(ListBox _list) { EntityBoxConfiguration c = new(); c.listBox = _list; c.storageIds = new(); return c; }
@@ -32,6 +34,8 @@ namespace Programacion123
         public EntityBoxConfiguration WithUpDown(Button _buttonUp, Button _buttonDown) { buttonUp = _buttonUp; buttonDown = _buttonDown; return this; }
         public EntityBoxConfiguration WithParentStorageId(string _parentStorageId) { parentStorageId = _parentStorageId; return this; }
         public EntityBoxConfiguration WithTitleEditable(bool _titleEditable) { titleEditable = _titleEditable; return this; }
+        public EntityBoxConfiguration WithEditorTitle(string _editorTitle) { editorTitle = _editorTitle; return this; }
+        public EntityBoxConfiguration WithBlocker(UIElement? _blocker) { blocker = _blocker; return this; }
     }
 
     public enum EntityBoxItemsPrefix
@@ -57,6 +61,8 @@ namespace Programacion123
         Button? buttonUp;
         Button? buttonDown;
         bool? titleEditable;
+        string? editorTitle;
+        UIElement? blocker;
         TEditor editor;
 
         public EntityBoxController(EntityBoxConfiguration configuration)
@@ -72,6 +78,8 @@ namespace Programacion123
             buttonDown = configuration.buttonDown;
             storageIds = new List<string>(configuration.storageIds);
             titleEditable = configuration.titleEditable;
+            editorTitle= configuration.editorTitle;
+            blocker = configuration.blocker;
 
             if(buttonNew != null) { buttonNew.Click += ButtonNew_Click; }
             if(buttonEdit != null) { buttonEdit.Click += ButtonEdit_Click; }
@@ -184,7 +192,9 @@ namespace Programacion123
             {
                 var entity = Storage.LoadEntity<TEntity>(storageIds[index], parentStorageId);
                 editor = new TEditor();
-                if(titleEditable != null) { editor.SetTitleEditable(titleEditable.Value); }
+                if(titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
+                if(editorTitle != null) { editor.SetEditorTitle(editorTitle); }
+                if(blocker != null) { blocker.Visibility = Visibility.Visible; }
                 editor.SetEntity(entity, parentStorageId);
                 editor.Closed += OnEditorClosed;
                 editor.ShowDialog();
@@ -197,7 +207,9 @@ namespace Programacion123
             TEntity entity = new();
 
             editor = new TEditor();
-            if(titleEditable != null) { editor.SetTitleEditable(titleEditable.Value); }
+            if(titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
+            if(editorTitle != null) { editor.SetEditorTitle(editorTitle); }
+            if(blocker != null) { blocker.Visibility = Visibility.Visible; }
             editor.SetEntity(entity, parentStorageId);
             storageIds.Add(entity.StorageId);
             editor.Closed += OnEditorClosed;
@@ -235,6 +247,7 @@ namespace Programacion123
         void OnEditorClosed(object? sender, EventArgs e)
         {
             UpdateListOrCombo();
+            if(blocker != null) { blocker.Visibility = Visibility.Hidden; }
             SelectStorageId(editor.GetEntity().StorageId);
             editor.Closed -= OnEditorClosed;
         }

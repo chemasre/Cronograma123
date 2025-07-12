@@ -6,6 +6,7 @@
         public string Code { get; set; }
         public string GeneralObjectivesIntroductionStorageId { get; set; }
         public List<string> GeneralObjectivesStorageIds { get; set; } = new List<string>();
+        public string GeneralCompetencesIntroductionStorageId { get; set; }
         public List<string> GeneralCompetencesStorageIds { get; set; } = new List<string>();
     }
 }

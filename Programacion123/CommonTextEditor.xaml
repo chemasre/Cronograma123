@@ -5,10 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="CommonTextEditor" Height="552" Width="506" WindowStyle="None" ResizeMode="NoResize" Background="{x:Null}" Foreground="{x:Null}">
+        Title="CommonTextEditor" Height="552" Width="506" WindowStyle="None" ResizeMode="NoResize" Background="{x:Null}" Foreground="{x:Null}" AllowsTransparency="True" MouseDown="Window_MouseDown" WindowStartupLocation="CenterScreen">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" Background="#FFC3B7FF" CornerRadius="30" BorderBrush="#FF0370A9" >
         <Canvas>
-            <Label x:Name="TextEditorTitle" Content="Entidad" FontSize="48" FontFamily="Segoe Script" FontWeight="Bold" Width="448" HorizontalAlignment="Left" Canvas.Left="13" Canvas.Top="3" VerticalAlignment="Center" Foreground="#7F093AD0"/>
             <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" Click="ButtonClose_Click" HorizontalAlignment="Left" Canvas.Left="440" VerticalAlignment="Center" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
@@ -21,6 +20,15 @@
             <Label Content="Título" Canvas.Left="29" Canvas.Top="93" HorizontalAlignment="Center" VerticalAlignment="Top" Width="89"/>
             <Label Content="Descripción" Canvas.Left="29" Canvas.Top="132" Width="129" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <TextBox x:Name="TextBoxDescription" Canvas.Left="110" TextWrapping="Wrap" Text="TextBox" Canvas.Top="137" Width="352" Height="289" AcceptsReturn="True"/>
+            <Border x:Name="BorderToAlignVerticallyEditorTitle" BorderThickness="1" Height="69" Width="415" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="10" Canvas.Left="20">
+                <TextBlock x:Name="TextEditorTitle" TextWrapping="Wrap" Text="Entidad" FontFamily="Segoe Script" FontSize="24" FontWeight="Bold" LineStackingStrategy="BlockLineHeight" LineHeight="24" Width="414" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#7F093AD0"/>
+                            <GradientStop Color="#7F093AD0" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TextBlock.Foreground></TextBlock>
+            </Border>
 
         </Canvas>
     </Border>

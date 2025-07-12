@@ -6,7 +6,8 @@ namespace Programacion123
 {
     public interface EntityEditor<T>
     {
-        void SetTitleEditable(bool editable);
+        void SetEntityTitleEditable(bool editable);
+        void SetEditorTitle(string title);
         void SetEntity(T entity, string? parentStorageId = null);
         T GetEntity();
     }
@@ -31,19 +32,22 @@ namespace Programacion123
                                                    .WithStorageIds(Storage.GetStorageIds<WeekSchedule>(Storage.LoadEntities<WeekSchedule>()))
                                                    .WithNew(ButtonWeekScheduleNew)
                                                    .WithEdit(ButtonWeekScheduleEdit)
-                                                   .WithDelete(ButtonWeekScheduleDelete);
+                                                   .WithDelete(ButtonWeekScheduleDelete)
+                                                   .WithBlocker(Blocker);
 
             var configCalendars = EntityBoxConfiguration.CreateForCombo(ComboBoxCalendars)
                                                    .WithStorageIds(Storage.GetStorageIds<Calendar>(Storage.LoadEntities<Calendar>()))
                                                    .WithNew(ButtonCalendarNew)
                                                    .WithEdit(ButtonCalendarEdit)
-                                                   .WithDelete(ButtonCalendarDelete);
+                                                   .WithDelete(ButtonCalendarDelete)
+                                                   .WithBlocker(Blocker);
 
             var configTemplates = EntityBoxConfiguration.CreateForCombo(ComboSubjectTemplates)
                                                    .WithStorageIds(Storage.GetStorageIds<SubjectTemplate>(Storage.LoadEntities<SubjectTemplate>()))
                                                    .WithNew(ButtonSubjectTemplateNew)
                                                    .WithEdit(ButtonSubjectTemplateEdit)
-                                                   .WithDelete(ButtonSubjectTemplateDelete);
+                                                   .WithDelete(ButtonSubjectTemplateDelete)
+                                                   .WithBlocker(Blocker);
 
             weekSchedulesController = new (configWeeks);
             calendarsController = new (configCalendars);

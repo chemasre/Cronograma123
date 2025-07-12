@@ -8,7 +8,7 @@
         Title="CalendarEditor" Height="686" Width="401" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}" Foreground="{x:Null}" MouseDown="Window_MouseDown">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" Background="#FFC3B7FF" CornerRadius="30" BorderBrush="#FF0370A9" Margin="0,0,10,10" >
         <Canvas>
-            <Label x:Name="TextEditorTitle" Content="Calendario" FontSize="48" FontFamily="Segoe Script" FontWeight="Bold" Width="304" HorizontalAlignment="Left" Canvas.Left="13" Canvas.Top="3" VerticalAlignment="Top" Foreground="#7F093AD0"/>
+            <Label x:Name="TextEditorTitle" Content="Calendario" FontSize="24" FontFamily="Segoe Script" FontWeight="Bold" Width="304" HorizontalAlignment="Left" Canvas.Left="10" Canvas.Top="10" VerticalAlignment="Top" Foreground="#7F093AD0" Background="{x:Null}"/>
             <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" Click="ButtonClose_Click" HorizontalAlignment="Left" Canvas.Left="323" VerticalAlignment="Center" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>

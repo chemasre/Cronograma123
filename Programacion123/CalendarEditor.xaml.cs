@@ -340,10 +340,15 @@ namespace Programacion123
             if(DateFreeDay.SelectedDate.HasValue) { CalendarPreview.DisplayDate = DateFreeDay.SelectedDate.Value; }
         }
 
-        public void SetTitleEditable(bool editable)
+        public void SetEntityTitleEditable(bool editable)
         {
             TextTitle.IsReadOnly = !editable;
             TextTitle.IsReadOnlyCaretVisible = false;
+        }
+
+        public void SetEditorTitle(string title)
+        {
+            TextEditorTitle.Content = title;
         }
     }
 }

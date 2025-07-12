@@ -31,12 +31,16 @@
 
             data.Title = Title;
             data.Description = Description;
+
             data.GeneralObjectivesIntroductionStorageId = GeneralObjectivesIntroduction.StorageId;
             GeneralObjectivesIntroduction.Save(StorageId);
 
             List<CommonText> list = GeneralObjectives.ToList();
             list.ForEach(e => e.Save(StorageId));            
             data.GeneralObjectivesStorageIds = Storage.GetStorageIds<CommonText>(list);
+
+            data.GeneralCompetencesIntroductionStorageId = GeneralObjectivesIntroduction.StorageId;
+            GeneralCompetencesIntroduction.Save(StorageId);
 
             list = GeneralCompetences.ToList();
             list.ForEach(e => e.Save(StorageId));
@@ -59,6 +63,8 @@
             GeneralObjectivesIntroduction = Storage.LoadEntity<CommonText>(data.GeneralObjectivesIntroductionStorageId, storageId);
 
             GeneralObjectives.Set(Storage.LoadEntities<CommonText>(data.GeneralObjectivesStorageIds, storageId));
+
+            GeneralCompetencesIntroduction = Storage.LoadEntity<CommonText>(data.GeneralCompetencesIntroductionStorageId, storageId);
 
             GeneralCompetences.Set(Storage.LoadEntities<CommonText>(data.GeneralCompetencesStorageIds, storageId));
         }

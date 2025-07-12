@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Programacion123
@@ -29,6 +30,8 @@ namespace Programacion123
 
             TextTitle.TextChanged += TextTitle_TextChanged;
             TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
+
+            Validate();
 
         }
 
@@ -93,12 +96,24 @@ namespace Programacion123
             Validate();
         }
 
-        public void SetTitleEditable(bool editable)
+        public void SetEntityTitleEditable(bool editable)
         {
             TextTitle.IsReadOnly = !editable;
             TextTitle.IsReadOnlyCaretVisible = false;
             TextTitle.Background = Brushes.LightGray;
         }
 
+        public void SetEditorTitle(string title)
+        {
+            TextEditorTitle.Text = title;
+        }
+
+        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DragMove();
+            }
+        }
     }
 }

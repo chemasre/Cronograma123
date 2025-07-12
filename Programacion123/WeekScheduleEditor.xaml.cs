@@ -164,10 +164,15 @@ namespace Programacion123
             return entity;
         }
 
-        public void SetTitleEditable(bool editable)
+        public void SetEntityTitleEditable(bool editable)
         {
             TextTitle.IsReadOnly = !editable;
             TextTitle.IsReadOnlyCaretVisible = false;
+        }
+
+        public void SetEditorTitle(string title)
+        {
+            TextEditorTitle.Content = title;
         }
     }
 }

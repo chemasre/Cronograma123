@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Programacion123
@@ -12,6 +13,7 @@ namespace Programacion123
         string? parentStorageId;
         EntityFieldController<CommonText, CommonTextEditor> generalObjectivesIntroductionController;
         EntityBoxController<CommonText, CommonTextEditor> generalObjectivesController;
+        EntityFieldController<CommonText, CommonTextEditor> generalCompetencesIntroductionController;
         EntityBoxController<CommonText, CommonTextEditor> generalCompetencesController;
 
         public SubjectTemplateEditor()
@@ -35,7 +37,9 @@ namespace Programacion123
                                                .WithParentStorageId(entity.StorageId)
                                                .WithNew(ButtonGeneralObjectivesIntroductionNew)
                                                .WithEdit(ButtonGeneralObjectivesIntroductionEdit)
-                                               .WithTitleEditable(false);
+                                               .WithTitleEditable(false)
+                                               .WithEditorTitle("Introducción a los objetivos generales")
+                                               .WithBlocker(Blocker);
 
             generalObjectivesIntroductionController = new(configObjectivesIntroduction);
 
@@ -46,9 +50,22 @@ namespace Programacion123
                                                         .WithNew(ButtonGeneralObjectiveNew)
                                                         .WithEdit(ButtonGeneralObjectiveEdit)
                                                         .WithDelete(ButtonGeneralObjectiveDelete)
-                                                        .WithUpDown(ButtonGeneralObjectiveUp, ButtonGeneralObjectiveDown);
+                                                        .WithUpDown(ButtonGeneralObjectiveUp, ButtonGeneralObjectiveDown)
+                                                        .WithEditorTitle("Objetivo general")
+                                                        .WithBlocker(Blocker);
 
             generalObjectivesController = new(configObjectives);
+
+            var configCompetencesIntroduction = EntityFieldConfiguration.CreateForTextBox(TextGeneralCompetencesIntroduction)
+                                               .WithStorageId(entity.GeneralCompetencesIntroduction.StorageId)
+                                               .WithParentStorageId(entity.StorageId)
+                                               .WithNew(ButtonGeneralCompetencesIntroductionNew)
+                                               .WithEdit(ButtonGeneralCompetencesIntroductionEdit)
+                                               .WithTitleEditable(false)
+                                               .WithEditorTitle("Introducción a las competencias generales")
+                                               .WithBlocker(Blocker);
+
+            generalCompetencesIntroductionController = new(configCompetencesIntroduction);
 
             var configCompetences = EntityBoxConfiguration.CreateForList(ListBoxGeneralCompetences)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
@@ -57,7 +74,9 @@ namespace Programacion123
                                                         .WithNew(ButtonGeneralCompetenceNew)
                                                         .WithEdit(ButtonGeneralCompetenceEdit)
                                                         .WithDelete(ButtonGeneralCompetenceDelete)
-                                                        .WithUpDown(ButtonGeneralCompetenceUp, ButtonGeneralCompetenceDown);
+                                                        .WithUpDown(ButtonGeneralCompetenceUp, ButtonGeneralCompetenceDown)
+                                                        .WithEditorTitle("Competencia general")
+                                                        .WithBlocker(Blocker);
 
             generalCompetencesController = new(configCompetences);
 
@@ -79,10 +98,23 @@ namespace Programacion123
             Close();
         }
 
-        public void SetTitleEditable(bool editable)
+        public void SetEntityTitleEditable(bool editable)
         {
             TextTitle.IsReadOnly = !editable;
             TextTitle.IsReadOnlyCaretVisible = false;
+        }
+
+        public void SetEditorTitle(string title)
+        {
+            TextEditorTitle.Content = title;
+        }
+
+        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DragMove();
+            }
         }
     }
 }
