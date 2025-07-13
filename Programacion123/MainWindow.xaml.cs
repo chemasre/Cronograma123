@@ -28,6 +28,8 @@ namespace Programacion123
         {
             InitializeComponent();
 
+            Storage.Init();
+
             var configWeeks = EntityBoxConfiguration.CreateForCombo(ComboWeekSchedules)
                                                    .WithStorageIds(Storage.GetStorageIds<WeekSchedule>(Storage.LoadEntities<WeekSchedule>()))
                                                    .WithNew(ButtonWeekScheduleNew)

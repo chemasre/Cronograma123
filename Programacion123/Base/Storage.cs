@@ -5,6 +5,13 @@ namespace Programacion123
 {
     internal class Storage
     {
+        const string basePath = "Storage\\";
+
+        public static void Init()
+        {
+            if(!Directory.Exists(basePath)) { Directory.CreateDirectory(basePath); }
+        }
+
         public static bool ExistsData<T>(string storageId, string storageClassId, string? parentStorageId = null)  where T: StorageData
         {
             bool result = true;
@@ -12,13 +19,13 @@ namespace Programacion123
 
             if(parentStorageId != null)
             {   folder = parentStorageId + "\\";
-                if(!Directory.Exists(folder)) { result = false; }
+                if(!Directory.Exists(basePath + folder)) { result = false; }
             }
             else { folder = ""; }
 
             if(result)
             {
-                if(!File.Exists(folder + storageId + "." + storageClassId)) { result = false; }
+                if(!File.Exists(basePath + folder + storageId + "." + storageClassId)) { result = false; }
             }
             
             return result;
@@ -31,11 +38,11 @@ namespace Programacion123
 
             if(parentStorageId != null)
             {   folder = parentStorageId + "\\";
-                if(!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
+                if(!Directory.Exists(basePath + folder)) { Directory.CreateDirectory(basePath + folder); }
             }
             else { folder = ""; }
 
-            var stream = new FileStream(folder + storageId + "." + storageClassId, FileMode.Create, FileAccess.Write);
+            var stream = new FileStream(basePath + folder + storageId + "." + storageClassId, FileMode.Create, FileAccess.Write);
             var writer = new StreamWriter(stream);
             JsonSerializerOptions options = new JsonSerializerOptions(JsonSerializerOptions.Default);
             options.WriteIndented = true;
@@ -47,7 +54,7 @@ namespace Programacion123
         {
             string folder = (parentStorageId != null ? parentStorageId + "\\" : "");
 
-            var stream = new FileStream(folder + storageId + "." + storageClassId, FileMode.Open, FileAccess.Read);
+            var stream = new FileStream(basePath + folder + storageId + "." + storageClassId, FileMode.Open, FileAccess.Read);
             var reader = new StreamReader(stream);
             string text = reader.ReadToEnd();
             T data = JsonSerializer.Deserialize<T>(text);
@@ -60,9 +67,9 @@ namespace Programacion123
         {
             string folder = (parentStorageId != null ? parentStorageId + "\\" : "");
 
-            File.Delete(folder + storageId + "." + storageClassId);
+            File.Delete(basePath + folder + storageId + "." + storageClassId);
 
-            if(Directory.Exists(folder + storageId)) { Directory.Delete(folder + storageId); }
+            if(Directory.Exists(basePath + folder + storageId)) { Directory.Delete(basePath + folder + storageId); }
         }
 
         public static List<T> LoadDatas<T>(string storageClassId, string? parentStorageId = null) where T : StorageData
@@ -70,7 +77,7 @@ namespace Programacion123
             string folder = (parentStorageId != null ? parentStorageId + "\\" : "");
 
             List<T> result = new();
-            string[] files = Directory.GetFiles(folder + "", "*." + storageClassId);
+            string[] files = Directory.GetFiles(basePath + folder + "", "*." + storageClassId);
 
             Array.ForEach<string>(files, 
             (string e) =>
@@ -114,14 +121,14 @@ namespace Programacion123
 
         public static List<T> LoadEntities<T>(string? parentStorageId = null) where T : Entity, new()
         {
-            string folder = (parentStorageId != null ? "\\" + parentStorageId: "");
+            string folder = (parentStorageId != null ? parentStorageId: "");
 
             List<T> result = new();
             T entity = new T();
 
-            if(Directory.Exists(Directory.GetCurrentDirectory() + folder))
+            if(Directory.Exists(Directory.GetCurrentDirectory() + "\\" + basePath + folder))
             {
-                string[] files = Directory.GetFiles(Directory.GetCurrentDirectory() + folder, "*." + entity.StorageClassId);
+                string[] files = Directory.GetFiles(Directory.GetCurrentDirectory() + "\\" + basePath + folder, "*." + entity.StorageClassId);
                
                 Array.ForEach<string>(files,
                     (e) =>
