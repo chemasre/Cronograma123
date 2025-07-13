@@ -10,7 +10,7 @@ namespace Programacion123
     /// <summary>
     /// Lógica de interacción para CalendarEditor.xaml
     /// </summary>
-    public partial class CalendarEditor : Window, EntityEditor<Calendar>
+    public partial class CalendarEditor : Window, IEntityEditor<Calendar>
     {
         string? parentStorageId;
         Calendar calendar;

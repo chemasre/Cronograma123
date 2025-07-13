@@ -53,6 +53,11 @@
             storageState = StorageState.dirty;
         }
 
+        public virtual bool Exists(string storageId, string? parentStorageId)
+        {
+            return false;
+        }
+
         public virtual void LoadOrCreate(string storageId, string? parentStorageId = null)
         {
             StorageId = storageId;

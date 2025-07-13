@@ -93,6 +93,11 @@
 
         }
 
+        public override bool Exists(string storageId, string? parentStorageId)
+        {
+            return Storage.ExistsData<CalendarData>(storageId, StorageClassId, parentStorageId);
+        }
+
         public override void Save(string? parentStorageId = null)
         {
             base.Save(parentStorageId);

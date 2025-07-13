@@ -24,6 +24,11 @@
             return validation;
         }
 
+        public override bool Exists(string storageId, string? parentStorageId)
+        {
+            return Storage.ExistsData<WeekScheduleData>(storageId, StorageClassId, parentStorageId);
+        }
+
         public override void Save(string? parentStorageId = null)
         {
             base.Save(parentStorageId);
@@ -36,15 +41,18 @@
         }
 
         public override void LoadOrCreate(string storageId, string? parentStorageId = null)
-        {            
+        {   
             base.LoadOrCreate(storageId, parentStorageId);
 
-            if(!Storage.ExistsData<WeekScheduleData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
+            bool created = false;
+
+            if(!Storage.ExistsData<WeekScheduleData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); created = true; }
 
             var data = Storage.LoadData<WeekScheduleData>(storageId, StorageClassId, parentStorageId);
 
             Title = data.Title;
             HoursPerWeekDay.Set(data.HoursPerWeekDay.ToList());
+
         }
 
         public override void Delete(string? parentStorageId = null)

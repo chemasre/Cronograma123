@@ -41,6 +41,12 @@ namespace Programacion123
             UnitsById.Clear();
         }
 
+        public override bool Exists(string storageId, string? parentStorageId)
+        {
+            return Storage.ExistsData<ActivitiesStorageData>(storageId, StorageClassId, parentStorageId);
+        }
+
+
         public override void Save(string? parentStorageId = null)
         {
             base.Save(parentStorageId);
@@ -79,7 +85,7 @@ namespace Programacion123
             Title = data.Title;
             UnitsSequence.Set(Storage.LoadEntities<Unit>(data.UnitsSequenceStorageIds));
 
-            WeekSchedule = Storage.LoadOrCreateEntity<WeekSchedule>(data.WeekScheduleStorageId);
+            WeekSchedule = Storage.LoadOrCreateEntity<WeekSchedule>(data.WeekScheduleStorageId, null);
 
             reader.Close();
         }

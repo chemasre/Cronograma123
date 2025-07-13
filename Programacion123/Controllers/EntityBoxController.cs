@@ -8,11 +8,12 @@ using System.Windows;
 
 namespace Programacion123
 {
-    public struct EntityBoxConfiguration
+    public struct EntityBoxConfiguration<TEntity>
     {
         public EntityBoxItemsPrefix itemsPrefix;
         public string? parentStorageId;
         public List<string> storageIds;
+        public Action<TEntity>? entityInitializer;
         public ComboBox? comboBox;            
         public ListBox? listBox;
         public Button? buttonNew;
@@ -24,18 +25,19 @@ namespace Programacion123
         public string? editorTitle;
         public UIElement? blocker;
 
-        public static EntityBoxConfiguration CreateForCombo(ComboBox _combo) { EntityBoxConfiguration c = new(); c.comboBox = _combo; c.storageIds = new(); return c; }
-        public static EntityBoxConfiguration CreateForList(ListBox _list) { EntityBoxConfiguration c = new(); c.listBox = _list; c.storageIds = new(); return c; }
-        public EntityBoxConfiguration WithStorageIds(List<string> _storageIds) { storageIds.AddRange(_storageIds); return this; }
-        public EntityBoxConfiguration WithPrefix(EntityBoxItemsPrefix _prefix) { itemsPrefix = _prefix; return this; }
-        public EntityBoxConfiguration WithNew(Button _buttonNew) { buttonNew = _buttonNew; return this; }
-        public EntityBoxConfiguration WithEdit(Button _buttonEdit) { buttonEdit = _buttonEdit; return this; }
-        public EntityBoxConfiguration WithDelete(Button _buttonDelete) { buttonDelete = _buttonDelete; return this; }
-        public EntityBoxConfiguration WithUpDown(Button _buttonUp, Button _buttonDown) { buttonUp = _buttonUp; buttonDown = _buttonDown; return this; }
-        public EntityBoxConfiguration WithParentStorageId(string _parentStorageId) { parentStorageId = _parentStorageId; return this; }
-        public EntityBoxConfiguration WithTitleEditable(bool _titleEditable) { titleEditable = _titleEditable; return this; }
-        public EntityBoxConfiguration WithEditorTitle(string _editorTitle) { editorTitle = _editorTitle; return this; }
-        public EntityBoxConfiguration WithBlocker(UIElement? _blocker) { blocker = _blocker; return this; }
+        public static EntityBoxConfiguration<TEntity> CreateForCombo(ComboBox _combo) { EntityBoxConfiguration<TEntity> c = new(); c.comboBox = _combo; c.storageIds = new(); return c; }
+        public static EntityBoxConfiguration<TEntity> CreateForList(ListBox _list) { EntityBoxConfiguration<TEntity> c = new(); c.listBox = _list; c.storageIds = new(); return c; }
+        public EntityBoxConfiguration<TEntity> WithStorageIds(List<string> _storageIds) { storageIds.AddRange(_storageIds); return this; }
+        public EntityBoxConfiguration<TEntity> WithEntityInitializer(Action<TEntity> _entityInitializer) { entityInitializer = _entityInitializer; return this; }
+        public EntityBoxConfiguration<TEntity> WithPrefix(EntityBoxItemsPrefix _prefix) { itemsPrefix = _prefix; return this; }
+        public EntityBoxConfiguration<TEntity> WithNew(Button _buttonNew) { buttonNew = _buttonNew; return this; }
+        public EntityBoxConfiguration<TEntity> WithEdit(Button _buttonEdit) { buttonEdit = _buttonEdit; return this; }
+        public EntityBoxConfiguration<TEntity> WithDelete(Button _buttonDelete) { buttonDelete = _buttonDelete; return this; }
+        public EntityBoxConfiguration<TEntity> WithUpDown(Button _buttonUp, Button _buttonDown) { buttonUp = _buttonUp; buttonDown = _buttonDown; return this; }
+        public EntityBoxConfiguration<TEntity> WithParentStorageId(string _parentStorageId) { parentStorageId = _parentStorageId; return this; }
+        public EntityBoxConfiguration<TEntity> WithTitleEditable(bool _titleEditable) { titleEditable = _titleEditable; return this; }
+        public EntityBoxConfiguration<TEntity> WithEditorTitle(string _editorTitle) { editorTitle = _editorTitle; return this; }
+        public EntityBoxConfiguration<TEntity> WithBlocker(UIElement? _blocker) { blocker = _blocker; return this; }
     }
 
     public enum EntityBoxItemsPrefix
@@ -46,12 +48,13 @@ namespace Programacion123
     }
 
     public class EntityBoxController<TEntity, TEditor> where TEntity: Entity, new()
-                                                        where TEditor: Window, EntityEditor<TEntity>, new()
+                                                        where TEditor: Window, IEntityEditor<TEntity>, new()
     {
         public List<string> StorageIds { get { return storageIds; } }
 
         List<string> storageIds;
         string? parentStorageId;
+        public Action<TEntity>? entityInitializer;
         EntityBoxItemsPrefix itemsPrefix;
         ComboBox? comboBox;
         ListBox? listBox;
@@ -65,10 +68,11 @@ namespace Programacion123
         UIElement? blocker;
         TEditor editor;
 
-        public EntityBoxController(EntityBoxConfiguration configuration)
+        public EntityBoxController(EntityBoxConfiguration<TEntity> configuration)
         {
             itemsPrefix = configuration.itemsPrefix;
             parentStorageId = configuration.parentStorageId;
+            entityInitializer = configuration.entityInitializer;
             comboBox = configuration.comboBox;
             listBox = configuration.listBox;
             buttonNew = configuration.buttonNew;
@@ -88,6 +92,17 @@ namespace Programacion123
             if(buttonDown != null) { buttonDown.Click += ButtonDown_Click; buttonDown.ToolTip = "Mover abajo en la lista"; }
 
             UpdateListOrCombo();
+        }
+
+        public TEntity? GetSelectedEntity()
+        {
+            int selectedIndex;
+
+            if (comboBox != null) { selectedIndex = comboBox.SelectedIndex; }
+            else { selectedIndex = listBox.SelectedIndex; }
+
+            if(selectedIndex < 0) { return null; }
+            else { return Storage.LoadOrCreateEntity<TEntity>(storageIds[selectedIndex], parentStorageId); }
         }
 
         void ButtonDown_Click(object sender, RoutedEventArgs e)
@@ -191,6 +206,7 @@ namespace Programacion123
             if(openEditor)
             {
                 var entity = Storage.LoadOrCreateEntity<TEntity>(storageIds[index], parentStorageId);
+
                 editor = new TEditor();
                 if(titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
                 if(editorTitle != null) { editor.SetEditorTitle(editorTitle); }
@@ -205,6 +221,7 @@ namespace Programacion123
         void ButtonNew_Click(object sender, RoutedEventArgs e)
         {
             TEntity entity = new();
+            if(entityInitializer != null) { entityInitializer.Invoke(entity); }
             editor = new TEditor();
             if(titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
             if(editorTitle != null) { editor.SetEditorTitle(editorTitle); }

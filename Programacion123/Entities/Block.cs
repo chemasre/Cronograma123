@@ -13,5 +13,10 @@
         {
             throw new NotImplementedException();
         }
+
+        public override bool Exists(string storageId, string? parentStorageId)
+        {
+            return Storage.ExistsData<BlockData>(storageId, StorageClassId, parentStorageId);
+        }
     }
 }

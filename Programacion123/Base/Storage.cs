@@ -112,6 +112,12 @@ namespace Programacion123
             return result;
         }
 
+        public static bool ExistsEntity<T>(string storageId, string? parentStorageId = null) where T: Entity, new()
+        {
+            T entity = new T();
+            return entity.Exists(storageId, parentStorageId);
+        }
+
         public static T LoadOrCreateEntity<T>(string storageId, string? parentStorageId = null) where T: Entity, new()
         {
             T entity = new T();

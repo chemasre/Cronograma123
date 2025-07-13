@@ -1,15 +1,23 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Programacion123
 {
-    public interface EntityEditor<T>
+    public interface IEntityEditor<T>
     {
         void SetEntityTitleEditable(bool editable);
         void SetEditorTitle(string title);
         void SetEntity(T entity, string? parentStorageId = null);
         T GetEntity();
+    }
+
+    public interface IEntityPicker<T>
+    {
+        void SetPickerTitle(string title);
+        void SetEntity(T? entity, string? parentStorageId = null);
+        T? GetEntity();
     }
 
     /// <summary>
@@ -22,7 +30,8 @@ namespace Programacion123
 
         EntityBoxController<WeekSchedule, WeekScheduleEditor> weekSchedulesController;
         EntityBoxController<Calendar, CalendarEditor> calendarsController;
-        EntityBoxController<SubjectTemplate, SubjectTemplateEditor> subjectTemplateController;
+        EntityBoxController<SubjectTemplate, SubjectTemplateEditor> subjectTemplatesController;
+        EntityBoxController<Subject, SubjectEditor> subjectsController;
 
         public MainWindow()
         {
@@ -30,21 +39,21 @@ namespace Programacion123
 
             Storage.Init();
 
-            var configWeeks = EntityBoxConfiguration.CreateForCombo(ComboWeekSchedules)
+            var configWeeks = EntityBoxConfiguration<WeekSchedule>.CreateForCombo(ComboWeekSchedules)
                                                    .WithStorageIds(Storage.GetStorageIds<WeekSchedule>(Storage.LoadEntities<WeekSchedule>()))
                                                    .WithNew(ButtonWeekScheduleNew)
                                                    .WithEdit(ButtonWeekScheduleEdit)
                                                    .WithDelete(ButtonWeekScheduleDelete)
                                                    .WithBlocker(Blocker);
 
-            var configCalendars = EntityBoxConfiguration.CreateForCombo(ComboBoxCalendars)
+            var configCalendars = EntityBoxConfiguration<Calendar>.CreateForCombo(ComboBoxCalendars)
                                                    .WithStorageIds(Storage.GetStorageIds<Calendar>(Storage.LoadEntities<Calendar>()))
                                                    .WithNew(ButtonCalendarNew)
                                                    .WithEdit(ButtonCalendarEdit)
                                                    .WithDelete(ButtonCalendarDelete)
                                                    .WithBlocker(Blocker);
 
-            var configTemplates = EntityBoxConfiguration.CreateForCombo(ComboSubjectTemplates)
+            var configTemplates = EntityBoxConfiguration<SubjectTemplate>.CreateForCombo(ComboSubjectTemplates)
                                                    .WithStorageIds(Storage.GetStorageIds<SubjectTemplate>(Storage.LoadEntities<SubjectTemplate>()))
                                                    .WithNew(ButtonSubjectTemplateNew)
                                                    .WithEdit(ButtonSubjectTemplateEdit)
@@ -53,7 +62,25 @@ namespace Programacion123
 
             weekSchedulesController = new (configWeeks);
             calendarsController = new (configCalendars);
-            subjectTemplateController = new (configTemplates);
+            subjectTemplatesController = new (configTemplates);
+
+            var configSubjects = EntityBoxConfiguration<Subject>.CreateForCombo(ComboSubjects)
+                                                   .WithStorageIds(Storage.GetStorageIds<Subject>(Storage.LoadEntities<Subject>()))
+                                                   .WithEntityInitializer(
+                                                            (Subject s) =>
+                                                            {
+                                                                s.Template = subjectTemplatesController.GetSelectedEntity();
+                                                                s.Calendar = calendarsController.GetSelectedEntity();
+                                                                s.WeekSchedule = weekSchedulesController.GetSelectedEntity();
+                                                            })
+                                                   .WithNew(ButtonSubjectNew)
+                                                   .WithEdit(ButtonSubjectEdit)
+                                                   .WithDelete(ButtonSubjectDelete)
+                                                   .WithBlocker(Blocker);
+
+
+
+            subjectsController = new (configSubjects);
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)

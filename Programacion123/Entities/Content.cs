@@ -14,6 +14,11 @@
             return base.Validate();
         }
 
+        public override bool Exists(string storageId, string? parentStorageId)
+        {
+            return Storage.ExistsData<ContentData>(storageId, StorageClassId, parentStorageId);
+        }
+
         public override void Save(string? parentStorageId)
         {
             base.Save(parentStorageId);

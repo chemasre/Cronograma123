@@ -36,6 +36,11 @@
             throw new NotImplementedException();
         }
 
+        public override bool Exists(string storageId, string? parentStorageId)
+        {
+            return Storage.ExistsData<SubjectTemplateData>(storageId, StorageClassId, parentStorageId);
+        }
+
         public override void Save(string? parentStorageId = null)
         {
             base.Save(parentStorageId);
@@ -119,6 +124,7 @@
             ContentsIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.ContentsIntroductionStorageId, storageId);
 
             Contents.Set(Storage.LoadEntities<Content>(data.ContentsStorageIds, storageId));
+
         }
 
         public override void Delete(string? parentStorageId = null)

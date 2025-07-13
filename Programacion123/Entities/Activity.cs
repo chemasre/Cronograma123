@@ -21,5 +21,10 @@
         {
             throw new NotImplementedException();
         }
+
+        public override bool Exists(string storageId, string? parentStorageId)
+        {
+            return Storage.ExistsData<ActivityData>(storageId, StorageClassId, parentStorageId);
+        }
     }
 }

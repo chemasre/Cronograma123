@@ -9,7 +9,7 @@ namespace Programacion123
     /// <summary>
     /// Lógica de interacción para WeekScheduleEditor.xaml
     /// </summary>
-    public partial class WeekScheduleEditor : Window, EntityEditor<WeekSchedule>
+    public partial class WeekScheduleEditor : Window, IEntityEditor<WeekSchedule>
     {
         public WeekSchedule WeekSchedule { get { return entity; }  }
 

@@ -8,7 +8,7 @@ namespace Programacion123
     /// <summary>
     /// Lógica de interacción para CommonTextEditor.xaml
     /// </summary>
-    public partial class CommonTextEditor : Window, EntityEditor<CommonText>
+    public partial class CommonTextEditor : Window, IEntityEditor<CommonText>
     {
         string? parentStorageId;
         CommonText entity;

@@ -17,7 +17,7 @@ namespace Programacion123
     /// <summary>
     /// Lógica de interacción para ContentEditor.xaml
     /// </summary>
-    public partial class ContentEditor : Window, EntityEditor<Content>
+    public partial class ContentEditor : Window, IEntityEditor<Content>
     {
         string? parentStorageId;
         Content entity;
@@ -34,7 +34,7 @@ namespace Programacion123
             parentStorageId = _parentStorageId;
             entity = _entity;
 
-            var configPoints = EntityBoxConfiguration.CreateForList(ListBoxPoints)
+            var configPoints = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxPoints)
                                                         .WithParentStorageId(_entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.Points.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.number)

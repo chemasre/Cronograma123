@@ -7,17 +7,17 @@ namespace Programacion123
     /// <summary>
     /// Lógica de interacción para SubjectTemplateEditor.xaml
     /// </summary>
-    public partial class SubjectTemplateEditor : Window, EntityEditor<SubjectTemplate>
+    public partial class SubjectTemplateEditor : Window, IEntityEditor<SubjectTemplate>
     {
         SubjectTemplate entity;
         string? parentStorageId;
-        EntityFieldController<CommonText, CommonTextEditor> generalObjectivesIntroductionController;
+        EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText> > generalObjectivesIntroductionController;
         EntityBoxController<CommonText, CommonTextEditor> generalObjectivesController;
-        EntityFieldController<CommonText, CommonTextEditor> generalCompetencesIntroductionController;
+        EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText>> generalCompetencesIntroductionController;
         EntityBoxController<CommonText, CommonTextEditor> generalCompetencesController;
-        EntityFieldController<CommonText, CommonTextEditor> learningResultsIntroductionController;
+        EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText>> learningResultsIntroductionController;
         EntityBoxController<LearningResult, LearningResultEditor> learningResultsController;
-        EntityFieldController<CommonText, CommonTextEditor> contentsIntroductionController;
+        EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText>> contentsIntroductionController;
         EntityBoxController<Content, ContentEditor> contentsController;
 
         public SubjectTemplateEditor()
@@ -36,7 +36,7 @@ namespace Programacion123
             entity = _subjectTemplate;
             parentStorageId = _parentStorageId;
 
-            var configObjectivesIntroduction = EntityFieldConfiguration.CreateForTextBox(TextGeneralObjectivesIntroduction)
+            var configObjectivesIntroduction = EntityFieldConfiguration<CommonText>.CreateForTextBox(TextGeneralObjectivesIntroduction)
                                                .WithStorageId(entity.GeneralObjectivesIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
                                                .WithNew(ButtonGeneralObjectivesIntroductionNew)
@@ -47,7 +47,7 @@ namespace Programacion123
 
             generalObjectivesIntroductionController = new(configObjectivesIntroduction);
 
-            var configObjectives = EntityBoxConfiguration.CreateForList(ListBoxGeneralObjectives)
+            var configObjectives = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralObjectives)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_subjectTemplate.GeneralObjectives.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.character)
@@ -60,7 +60,7 @@ namespace Programacion123
 
             generalObjectivesController = new(configObjectives);
 
-            var configCompetencesIntroduction = EntityFieldConfiguration.CreateForTextBox(TextGeneralCompetencesIntroduction)
+            var configCompetencesIntroduction = EntityFieldConfiguration<CommonText>.CreateForTextBox(TextGeneralCompetencesIntroduction)
                                                .WithStorageId(entity.GeneralCompetencesIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
                                                .WithNew(ButtonGeneralCompetencesIntroductionNew)
@@ -71,7 +71,7 @@ namespace Programacion123
 
             generalCompetencesIntroductionController = new(configCompetencesIntroduction);
 
-            var configCompetences = EntityBoxConfiguration.CreateForList(ListBoxGeneralCompetences)
+            var configCompetences = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralCompetences)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_subjectTemplate.GeneralCompetences.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.character)
@@ -84,7 +84,7 @@ namespace Programacion123
 
             generalCompetencesController = new(configCompetences);
 
-            var configLearningResultsIntroduction = EntityFieldConfiguration.CreateForTextBox(TextLearningResultsIntroduction)
+            var configLearningResultsIntroduction = EntityFieldConfiguration<CommonText>.CreateForTextBox(TextLearningResultsIntroduction)
                                                .WithStorageId(entity.LearningResultsIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
                                                .WithNew(ButtonLearningResultsIntroductionNew)
@@ -95,7 +95,7 @@ namespace Programacion123
 
             learningResultsIntroductionController = new(configLearningResultsIntroduction);
 
-            var configLearningResults = EntityBoxConfiguration.CreateForList(ListBoxLearningResults)
+            var configLearningResults = EntityBoxConfiguration<LearningResult>.CreateForList(ListBoxLearningResults)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<LearningResult>(_subjectTemplate.LearningResults.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.number)
@@ -108,7 +108,7 @@ namespace Programacion123
 
             learningResultsController = new(configLearningResults);
 
-            var configContentsIntroduction = EntityFieldConfiguration.CreateForTextBox(TextContentsIntroduction)
+            var configContentsIntroduction = EntityFieldConfiguration<CommonText>.CreateForTextBox(TextContentsIntroduction)
                                                .WithStorageId(entity.ContentsIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
                                                .WithNew(ButtonContentsIntroductionNew)
@@ -119,7 +119,7 @@ namespace Programacion123
 
             contentsIntroductionController = new(configContentsIntroduction);
 
-            var configContents = EntityBoxConfiguration.CreateForList(ListBoxContents)
+            var configContents = EntityBoxConfiguration<Content>.CreateForList(ListBoxContents)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<Content>(_subjectTemplate.Contents.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.number)

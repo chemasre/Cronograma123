@@ -17,7 +17,7 @@ namespace Programacion123
     /// <summary>
     /// Lógica de interacción para LearningResultEditor.xaml
     /// </summary>
-    public partial class LearningResultEditor : Window, EntityEditor<LearningResult>
+    public partial class LearningResultEditor : Window, IEntityEditor<LearningResult>
     {
         string? parentStorageId;
         LearningResult entity;
@@ -34,7 +34,7 @@ namespace Programacion123
             parentStorageId = _parentStorageId;
             entity = _entity;
 
-            var configCriterias = EntityBoxConfiguration.CreateForList(ListBoxCriterias)
+            var configCriterias = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxCriterias)
                                                         .WithParentStorageId(_entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.Criterias.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.number)
