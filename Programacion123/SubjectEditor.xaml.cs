@@ -34,6 +34,10 @@ namespace Programacion123
         EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText> > evaluationInstrumentTypesIntroductionController;
         EntityBoxController<CommonText, CommonTextEditor> evaluationInstrumentTypesController;
 
+        EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText> > blocksIntroductionController;
+        EntityBoxController<CommonText, CommonTextEditor> blocksController;
+
+
         public SubjectEditor()
         {
             InitializeComponent();
@@ -163,6 +167,31 @@ namespace Programacion123
 
             evaluationInstrumentTypesController = new(configEvaluationInstrumentTypes);
 
+            var configBlocksIntroduction = EntityFieldConfiguration<CommonText>.CreateForTextBox(TextBlocksIntroduction)
+                                               .WithStorageId(entity.BlocksIntroduction.StorageId)
+                                               .WithParentStorageId(entity.StorageId)
+                                               .WithNew(ButtonBlocksIntroductionNew)
+                                               .WithEdit(ButtonBlocksIntroductionEdit)
+                                               .WithTitleEditable(false)
+                                               .WithEditorTitle("Introducción a los bloques")
+                                               .WithBlocker(Blocker);
+
+
+            blocksIntroductionController = new(configBlocksIntroduction);
+
+            var configBlocks = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxBlocks)
+                                                        .WithParentStorageId(entity.StorageId)
+                                                        .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.Blocks.ToList()))
+                                                        .WithPrefix(EntityBoxItemsPrefix.none)
+                                                        .WithNew(ButtonBlockNew)
+                                                        .WithEdit(ButtonBlockEdit)
+                                                        .WithDelete(ButtonBlockDelete)
+                                                        .WithUpDown(ButtonBlockUp, ButtonBlockDown)
+                                                        .WithEditorTitle("Bloque")
+                                                        .WithBlocker(Blocker);
+
+            blocksController = new(configBlocks);
+
             TextTitle.Text = entity.Title;
 
         }
@@ -184,6 +213,9 @@ namespace Programacion123
 
             entity.EvaluationInstrumentTypesIntroduction = Storage.LoadOrCreateEntity<CommonText>(evaluationInstrumentTypesIntroductionController.StorageId, entity.StorageId);
             entity.EvaluationInstrumentsTypes.Set(Storage.LoadEntities<CommonText>(evaluationInstrumentTypesController.StorageIds, entity.StorageId));
+
+            entity.BlocksIntroduction = Storage.LoadOrCreateEntity<CommonText>(blocksIntroductionController.StorageId, entity.StorageId);
+            entity.Blocks.Set(Storage.LoadEntities<CommonText>(blocksController.StorageIds, entity.StorageId));
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)

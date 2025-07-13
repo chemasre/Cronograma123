@@ -14,6 +14,9 @@
         public CommonText EvaluationInstrumentTypesIntroduction { get; set; } = new CommonText();
         public ListProperty<CommonText> EvaluationInstrumentsTypes { get; } = new ListProperty<CommonText>();
 
+        public CommonText BlocksIntroduction { get; set; } = new CommonText();
+        public ListProperty<CommonText> Blocks { get; } = new ListProperty<CommonText>();
+
         public Subject() : base()
         {
             StorageClassId = "subject";
@@ -67,6 +70,13 @@
             list = EvaluationInstrumentsTypes.ToList();
             list.ForEach(e => e.Save(StorageId));            
             data.EvaluationInstrumentsTypesStorageIds = Storage.GetStorageIds<CommonText>(list);
+
+            data.BlocksIntroductionStorageId = BlocksIntroduction.StorageId;
+            BlocksIntroduction.Save(StorageId);
+
+            list = Blocks.ToList();
+            list.ForEach(e => e.Save(StorageId));            
+            data.BlocksStorageIds = Storage.GetStorageIds<CommonText>(list);
             
 
             Storage.SaveData<SubjectData>(StorageId, StorageClassId, data, parentStorageId);
@@ -97,11 +107,25 @@
 
             EvaluationInstrumentTypesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.EvaluationInstrumentsTypesIntroductionStorageId, storageId);
             EvaluationInstrumentsTypes.Set(Storage.LoadEntities<CommonText>(data.EvaluationInstrumentsTypesStorageIds, storageId));
+
+            BlocksIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.BlocksIntroductionStorageId, storageId);
+            Blocks.Set(Storage.LoadEntities<CommonText>(data.BlocksStorageIds, storageId));
         }
 
         public override void Delete(string? parentStorageId = null)
         {
             base.Delete(parentStorageId);
+
+            MetodologiesIntroduction.Delete(StorageId);
+            Metodologies.ToList().ForEach(e => e.Delete(StorageId));
+            ResourcesIntroduction.Delete(StorageId);
+            SpaceResources.ToList().ForEach(e => e.Delete(StorageId));
+            MaterialResources.ToList().ForEach(e => e.Delete(StorageId));
+            EvaluationInstrumentTypesIntroduction.Delete(StorageId);
+            EvaluationInstrumentsTypes.ToList().ForEach(e => e.Delete(StorageId));
+
+            BlocksIntroduction.Delete(StorageId);
+            Blocks.ToList().ForEach(e => e.Delete(StorageId));
 
             Storage.DeleteData(StorageId, StorageClassId, parentStorageId);
         }

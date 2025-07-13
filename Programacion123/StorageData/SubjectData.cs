@@ -16,6 +16,9 @@
         public string EvaluationInstrumentsTypesIntroductionStorageId { get; set; }
         public List<string> EvaluationInstrumentsTypesStorageIds  { get; set; } = new List<string>();
 
+        public string BlocksIntroductionStorageId { get; set; }
+        public List<string> BlocksStorageIds  { get; set; } = new List<string>();
+
 
     }
 }
