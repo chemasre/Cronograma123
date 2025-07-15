@@ -54,7 +54,7 @@ namespace Programacion123
 
         List<string> storageIds;
         string? parentStorageId;
-        public Action<TEntity>? entityInitializer;
+        Action<TEntity>? entityInitializer;
         EntityBoxItemsPrefix itemsPrefix;
         ComboBox? comboBox;
         ListBox? listBox;
@@ -236,7 +236,7 @@ namespace Programacion123
         {
             List<TEntity> entities;
 
-            entities = Storage.LoadEntities<TEntity>(storageIds, parentStorageId);
+            entities = Storage.LoadEntitiesFromList<TEntity>(storageIds, parentStorageId);
 
             storageIds.Clear();
 

@@ -111,19 +111,19 @@
 
             GeneralObjectivesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.GeneralObjectivesIntroductionStorageId, storageId);
 
-            GeneralObjectives.Set(Storage.LoadEntities<CommonText>(data.GeneralObjectivesStorageIds, storageId));
+            GeneralObjectives.Set(Storage.LoadEntitiesFromList<CommonText>(data.GeneralObjectivesStorageIds, storageId));
 
             GeneralCompetencesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.GeneralCompetencesIntroductionStorageId, storageId);
 
-            GeneralCompetences.Set(Storage.LoadEntities<CommonText>(data.GeneralCompetencesStorageIds, storageId));
+            GeneralCompetences.Set(Storage.LoadEntitiesFromList<CommonText>(data.GeneralCompetencesStorageIds, storageId));
 
             LearningResultsIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.LearningResultsIntroductionStorageId, storageId);
 
-            LearningResults.Set(Storage.LoadEntities<LearningResult>(data.LearningResultsStorageIds, storageId));
+            LearningResults.Set(Storage.LoadEntitiesFromList<LearningResult>(data.LearningResultsStorageIds, storageId));
 
             ContentsIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.ContentsIntroductionStorageId, storageId);
 
-            Contents.Set(Storage.LoadEntities<Content>(data.ContentsStorageIds, storageId));
+            Contents.Set(Storage.LoadEntitiesFromList<Content>(data.ContentsStorageIds, storageId));
 
         }
 

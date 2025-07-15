@@ -89,7 +89,7 @@ namespace Programacion123
             return result;
         }
 
-        public static List<T> LoadEntities<T>(List<string> storageIds, string? parentStorageId = null) where T : Entity, new()
+        public static List<T> LoadEntitiesFromList<T>(List<string> storageIds, string? parentStorageId = null) where T : Entity, new()
         {
             List<T> result = new();
 
@@ -125,7 +125,7 @@ namespace Programacion123
             return entity;
         }
 
-        public static List<T> LoadEntities<T>(string? parentStorageId = null) where T : Entity, new()
+        public static List<T> LoadAllEntities<T>(string? parentStorageId = null) where T : Entity, new()
         {
             string folder = (parentStorageId != null ? parentStorageId: "");
 

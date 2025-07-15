@@ -46,7 +46,7 @@
             Title = data.Title;
             Description = data.Description;
 
-            Points.Set(Storage.LoadEntities<CommonText>(data.PointsStorageIds, storageId));
+            Points.Set(Storage.LoadEntitiesFromList<CommonText>(data.PointsStorageIds, storageId));
 
         }
 

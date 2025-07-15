@@ -9,15 +9,15 @@ namespace Programacion123
     {
         void SetEntityTitleEditable(bool editable);
         void SetEditorTitle(string title);
-        void SetEntity(T entity, string? parentStorageId = null);
+        void SetEntity(T entity, string? _parentStorageId);
         T GetEntity();
     }
 
     public interface IEntityPicker<T>
     {
         void SetPickerTitle(string title);
-        void SetEntity(T? entity, string? parentStorageId = null);
-        T? GetEntity();
+        void SetEntities(T? entity, List<T> entities);
+        T? GetPickedEntity();
     }
 
     /// <summary>
@@ -40,21 +40,21 @@ namespace Programacion123
             Storage.Init();
 
             var configWeeks = EntityBoxConfiguration<WeekSchedule>.CreateForCombo(ComboWeekSchedules)
-                                                   .WithStorageIds(Storage.GetStorageIds<WeekSchedule>(Storage.LoadEntities<WeekSchedule>()))
+                                                   .WithStorageIds(Storage.GetStorageIds<WeekSchedule>(Storage.LoadAllEntities<WeekSchedule>()))
                                                    .WithNew(ButtonWeekScheduleNew)
                                                    .WithEdit(ButtonWeekScheduleEdit)
                                                    .WithDelete(ButtonWeekScheduleDelete)
                                                    .WithBlocker(Blocker);
 
             var configCalendars = EntityBoxConfiguration<Calendar>.CreateForCombo(ComboBoxCalendars)
-                                                   .WithStorageIds(Storage.GetStorageIds<Calendar>(Storage.LoadEntities<Calendar>()))
+                                                   .WithStorageIds(Storage.GetStorageIds<Calendar>(Storage.LoadAllEntities<Calendar>()))
                                                    .WithNew(ButtonCalendarNew)
                                                    .WithEdit(ButtonCalendarEdit)
                                                    .WithDelete(ButtonCalendarDelete)
                                                    .WithBlocker(Blocker);
 
             var configTemplates = EntityBoxConfiguration<SubjectTemplate>.CreateForCombo(ComboSubjectTemplates)
-                                                   .WithStorageIds(Storage.GetStorageIds<SubjectTemplate>(Storage.LoadEntities<SubjectTemplate>()))
+                                                   .WithStorageIds(Storage.GetStorageIds<SubjectTemplate>(Storage.LoadAllEntities<SubjectTemplate>()))
                                                    .WithNew(ButtonSubjectTemplateNew)
                                                    .WithEdit(ButtonSubjectTemplateEdit)
                                                    .WithDelete(ButtonSubjectTemplateDelete)
@@ -65,7 +65,7 @@ namespace Programacion123
             subjectTemplatesController = new (configTemplates);
 
             var configSubjects = EntityBoxConfiguration<Subject>.CreateForCombo(ComboSubjects)
-                                                   .WithStorageIds(Storage.GetStorageIds<Subject>(Storage.LoadEntities<Subject>()))
+                                                   .WithStorageIds(Storage.GetStorageIds<Subject>(Storage.LoadAllEntities<Subject>()))
                                                    .WithEntityInitializer(
                                                             (Subject s) =>
                                                             {

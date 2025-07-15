@@ -28,6 +28,7 @@ namespace Programacion123
         public bool? titleEditable;
         public string? editorTitle;
         public string? pickerTitle;
+        public Func<List<string>>? pickListQuery;
         public UIElement? blocker;
 
         public static EntityFieldConfiguration<TEntity> CreateForTextBox(TextBox _textBox) { EntityFieldConfiguration<TEntity> c = new(); c.textBox = _textBox; return c; }
@@ -41,6 +42,7 @@ namespace Programacion123
         public EntityFieldConfiguration<TEntity> WithPickerTitle(string _pickerTitle) { pickerTitle = _pickerTitle; return this; }
         public EntityFieldConfiguration<TEntity> WithBlocker(UIElement? _blocker) { blocker = _blocker; return this; }
         public EntityFieldConfiguration<TEntity> WithPick(Button _buttonPick) { buttonPick = _buttonPick; return this; }
+        public EntityFieldConfiguration<TEntity> WithPickListQuery(Func<List<string>>? _pickListQuery) { pickListQuery = _pickListQuery; return this; }
     }
 
     public class EntityFieldController<TEntity, TEditor, TPicker> where TEntity : Entity, new()
@@ -68,6 +70,7 @@ namespace Programacion123
         bool? titleEditable;
         string? editorTitle;
         string? pickerTitle;
+        Func<List<string>>? pickListQuery;
         UIElement? blocker;
 
         TEditor? editor;
@@ -91,6 +94,8 @@ namespace Programacion123
             titleEditable = configuration.titleEditable;
             editorTitle = configuration.editorTitle;
             pickerTitle = configuration.pickerTitle;
+
+            pickListQuery = configuration.pickListQuery;
 
             blocker = configuration.blocker;
 
@@ -164,7 +169,12 @@ namespace Programacion123
             picker = new TPicker();
             if(pickerTitle != null) { picker.SetPickerTitle(pickerTitle); }
             if(blocker != null) { blocker.Visibility = Visibility.Visible; }
-            picker.SetEntity(entity, parentStorageId);
+
+            List<string> storageIdList;
+            if(pickListQuery != null) { storageIdList = pickListQuery.Invoke(); }
+            else { storageIdList = Storage.GetStorageIds<TEntity>(Storage.LoadAllEntities<TEntity>(parentStorageId)); }
+            List<TEntity> entityList = Storage.LoadEntitiesFromList<TEntity>(storageIdList, parentStorageId);
+            picker.SetEntities(entity, entityList);
             picker.Closed += OnDialogClosed;
 
             state = State.waitingForPick;
@@ -193,7 +203,7 @@ namespace Programacion123
             }
             else
             {
-                storageId = picker.GetEntity().StorageId;
+                storageId = picker.GetPickedEntity().StorageId;
                 picker.Closed -= OnDialogClosed;
             }
 

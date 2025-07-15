@@ -46,7 +46,7 @@
             Title = data.Title;
             Description = data.Description;
 
-            Activities.Set(Storage.LoadEntities<CommonText>(data.ActivitiesStorageIds, storageId));
+            Activities.Set(Storage.LoadEntitiesFromList<CommonText>(data.ActivitiesStorageIds, storageId));
 
         }
 

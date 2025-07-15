@@ -36,20 +36,20 @@ namespace Programacion123
     {
         List<TEntity>? entities;
 
-        public TEntity? GetEntity()
+        public TEntity? GetPickedEntity()
         {
             if(ComboEntitities.SelectedIndex < 0) { return null; }
             else { return entities[ComboEntitities.SelectedIndex]; }
         }
 
-        public void SetEntity(TEntity? _entity, string? _parentStorageId = null)
+        public void SetEntities(TEntity? _pickedEntity, List<TEntity> _entities)
         {
-            entities = Storage.LoadEntities<TEntity>(_parentStorageId);
+            entities = _entities;
 
             ComboEntitities.Items.Clear();
             entities.ForEach(e => ComboEntitities.Items.Add(e.Title) );
 
-            ComboEntitities.SelectedIndex = entities.FindIndex(e => e.StorageId == _entity.StorageId);
+            ComboEntitities.SelectedIndex = entities.FindIndex(e => e.StorageId == _pickedEntity.StorageId);
             
         }
 

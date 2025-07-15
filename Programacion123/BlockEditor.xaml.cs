@@ -15,37 +15,37 @@ using System.Windows.Shapes;
 namespace Programacion123
 {
     /// <summary>
-    /// Lógica de interacción para LearningResultEditor.xaml
+    /// Lógica de interacción para BlockEditor.xaml
     /// </summary>
-    public partial class LearningResultEditor : Window, IEntityEditor<LearningResult>
+    public partial class BlockEditor : Window, IEntityEditor<Block>
     {
         string? parentStorageId;
-        LearningResult entity;
+        Block entity;
 
-        EntityBoxController<CommonText, CommonTextEditor> criteriasController;
+        EntityBoxController<CommonText, CommonTextEditor> activitiesController;
 
-        public LearningResultEditor()
+        public BlockEditor()
         {
             InitializeComponent();
         }
 
-        public void SetEntity(LearningResult _entity, string? _parentStorageId = null)
+        public void SetEntity(Block _entity, string? _parentStorageId = null)
         {
             parentStorageId = _parentStorageId;
             entity = _entity;
 
-            var configCriterias = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxCriterias)
+            var configActivities = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxPoints)
                                                         .WithParentStorageId(_entity.StorageId)
-                                                        .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.Criterias.ToList()))
+                                                        .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.Activities.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.number)
-                                                        .WithNew(ButtonCriteriaNew)
-                                                        .WithEdit(ButtonCriteriaEdit)
-                                                        .WithDelete(ButtonCriteriaDelete)
-                                                        .WithUpDown(ButtonCriteriaUp, ButtonCriteriaDown)
-                                                        .WithEditorTitle("Criterio")
+                                                        .WithNew(ButtonPointNew)
+                                                        .WithEdit(ButtonPointEdit)
+                                                        .WithDelete(ButtonPointDelete)
+                                                        .WithUpDown(ButtonPointUp, ButtonPointDown)
+                                                        .WithEditorTitle("Actividad")
                                                         .WithBlocker(Blocker);
 
-            criteriasController = new(configCriterias);
+            activitiesController = new(configActivities);
 
 
             TextTitle.Text = _entity.Title;
@@ -59,7 +59,7 @@ namespace Programacion123
 
         }
 
-        public LearningResult GetEntity()
+        public Block GetEntity()
         {
             return entity;
         }
@@ -70,7 +70,7 @@ namespace Programacion123
             entity.Description = TextBoxDescription.Text;
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
-            entity.Criterias.Set(Storage.LoadEntitiesFromList<CommonText>(criteriasController.StorageIds, entity.StorageId));
+            entity.Activities.Set(Storage.LoadEntitiesFromList<CommonText>(activitiesController.StorageIds, entity.StorageId));
 
         }
 

@@ -35,7 +35,7 @@ namespace Programacion123
         EntityBoxController<CommonText, CommonTextEditor> evaluationInstrumentTypesController;
 
         EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText> > blocksIntroductionController;
-        EntityBoxController<CommonText, CommonTextEditor> blocksController;
+        EntityBoxController<Block, BlockEditor> blocksController;
 
 
         public SubjectEditor()
@@ -179,10 +179,10 @@ namespace Programacion123
 
             blocksIntroductionController = new(configBlocksIntroduction);
 
-            var configBlocks = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxBlocks)
+            var configBlocks = EntityBoxConfiguration<Block>.CreateForList(ListBoxBlocks)
                                                         .WithParentStorageId(entity.StorageId)
-                                                        .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.Blocks.ToList()))
-                                                        .WithPrefix(EntityBoxItemsPrefix.none)
+                                                        .WithStorageIds(Storage.GetStorageIds<Block>(entity.Blocks.ToList()))
+                                                        .WithPrefix(EntityBoxItemsPrefix.number)
                                                         .WithNew(ButtonBlockNew)
                                                         .WithEdit(ButtonBlockEdit)
                                                         .WithDelete(ButtonBlockDelete)
@@ -205,17 +205,17 @@ namespace Programacion123
             entity.WeekSchedule = weekScheduleController.GetEntity();
 
             entity.MetodologiesIntroduction = Storage.LoadOrCreateEntity<CommonText>(metodologiesIntroductionController.StorageId, entity.StorageId);
-            entity.Metodologies.Set(Storage.LoadEntities<CommonText>(metodologiesController.StorageIds, entity.StorageId));
+            entity.Metodologies.Set(Storage.LoadEntitiesFromList<CommonText>(metodologiesController.StorageIds, entity.StorageId));
 
             entity.ResourcesIntroduction = Storage.LoadOrCreateEntity<CommonText>(resourcesIntroductionController.StorageId, entity.StorageId);
-            entity.SpaceResources.Set(Storage.LoadEntities<CommonText>(spaceResourcesController.StorageIds, entity.StorageId));
-            entity.MaterialResources.Set(Storage.LoadEntities<CommonText>(materialResourcesController.StorageIds, entity.StorageId));
+            entity.SpaceResources.Set(Storage.LoadEntitiesFromList<CommonText>(spaceResourcesController.StorageIds, entity.StorageId));
+            entity.MaterialResources.Set(Storage.LoadEntitiesFromList<CommonText>(materialResourcesController.StorageIds, entity.StorageId));
 
             entity.EvaluationInstrumentTypesIntroduction = Storage.LoadOrCreateEntity<CommonText>(evaluationInstrumentTypesIntroductionController.StorageId, entity.StorageId);
-            entity.EvaluationInstrumentsTypes.Set(Storage.LoadEntities<CommonText>(evaluationInstrumentTypesController.StorageIds, entity.StorageId));
+            entity.EvaluationInstrumentsTypes.Set(Storage.LoadEntitiesFromList<CommonText>(evaluationInstrumentTypesController.StorageIds, entity.StorageId));
 
             entity.BlocksIntroduction = Storage.LoadOrCreateEntity<CommonText>(blocksIntroductionController.StorageId, entity.StorageId);
-            entity.Blocks.Set(Storage.LoadEntities<CommonText>(blocksController.StorageIds, entity.StorageId));
+            entity.Blocks.Set(Storage.LoadEntitiesFromList<Block>(blocksController.StorageIds, entity.StorageId));
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)

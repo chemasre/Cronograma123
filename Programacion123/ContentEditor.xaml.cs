@@ -70,7 +70,7 @@ namespace Programacion123
             entity.Description = TextBoxDescription.Text;
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
-            entity.Points.Set(Storage.LoadEntities<CommonText>(pointsController.StorageIds, entity.StorageId));
+            entity.Points.Set(Storage.LoadEntitiesFromList<CommonText>(pointsController.StorageIds, entity.StorageId));
 
         }
 

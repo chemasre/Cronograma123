@@ -147,14 +147,14 @@ namespace Programacion123
         {
             entity.Title = TextTitle.Text;
             entity.GeneralObjectivesIntroduction = Storage.LoadOrCreateEntity<CommonText>(generalObjectivesIntroductionController.StorageId, entity.StorageId);
-            entity.GeneralObjectives.Set(Storage.LoadEntities<CommonText>(generalObjectivesController.StorageIds, entity.StorageId));
+            entity.GeneralObjectives.Set(Storage.LoadEntitiesFromList<CommonText>(generalObjectivesController.StorageIds, entity.StorageId));
             entity.GeneralCompetencesIntroduction = Storage.LoadOrCreateEntity<CommonText>(generalCompetencesIntroductionController.StorageId, entity.StorageId);
-            entity.GeneralCompetences.Set(Storage.LoadEntities<CommonText>(generalCompetencesController.StorageIds, entity.StorageId));
+            entity.GeneralCompetences.Set(Storage.LoadEntitiesFromList<CommonText>(generalCompetencesController.StorageIds, entity.StorageId));
 
             entity.LearningResultsIntroduction = Storage.LoadOrCreateEntity<CommonText>(learningResultsIntroductionController.StorageId, entity.StorageId);
-            entity.LearningResults.Set(Storage.LoadEntities<LearningResult>(learningResultsController.StorageIds, entity.StorageId));
+            entity.LearningResults.Set(Storage.LoadEntitiesFromList<LearningResult>(learningResultsController.StorageIds, entity.StorageId));
             entity.ContentsIntroduction = Storage.LoadOrCreateEntity<CommonText>(contentsIntroductionController.StorageId, entity.StorageId);
-            entity.Contents.Set(Storage.LoadEntities<Content>(contentsController.StorageIds, entity.StorageId));
+            entity.Contents.Set(Storage.LoadEntitiesFromList<Content>(contentsController.StorageIds, entity.StorageId));
 
             entity.SubjectName = TextSubjectName.Text;
             entity.SubjectCode = TextSubjectCode.Text;

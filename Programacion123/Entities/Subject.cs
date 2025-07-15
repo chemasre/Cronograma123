@@ -15,7 +15,7 @@
         public ListProperty<CommonText> EvaluationInstrumentsTypes { get; } = new ListProperty<CommonText>();
 
         public CommonText BlocksIntroduction { get; set; } = new CommonText();
-        public ListProperty<CommonText> Blocks { get; } = new ListProperty<CommonText>();
+        public ListProperty<Block> Blocks { get; } = new ListProperty<Block>();
 
         public Subject() : base()
         {
@@ -74,9 +74,10 @@
             data.BlocksIntroductionStorageId = BlocksIntroduction.StorageId;
             BlocksIntroduction.Save(StorageId);
 
-            list = Blocks.ToList();
-            list.ForEach(e => e.Save(StorageId));            
-            data.BlocksStorageIds = Storage.GetStorageIds<CommonText>(list);
+
+            List<Block> blockList = Blocks.ToList();
+            blockList.ForEach(e => e.Save(StorageId));            
+            data.BlocksStorageIds = Storage.GetStorageIds<Block>(blockList);
             
 
             Storage.SaveData<SubjectData>(StorageId, StorageClassId, data, parentStorageId);
@@ -99,17 +100,17 @@
             WeekSchedule = data.WeekScheduleWeakStorageId != null ? Storage.LoadOrCreateEntity<WeekSchedule>(data.WeekScheduleWeakStorageId, null) : null;
 
             MetodologiesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.MetodologiesIntroductionStorageId, storageId);
-            Metodologies.Set(Storage.LoadEntities<CommonText>(data.MetodologiesStorageIds, storageId));
+            Metodologies.Set(Storage.LoadEntitiesFromList<CommonText>(data.MetodologiesStorageIds, storageId));
 
             ResourcesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.ResourcesIntroductionStorageId, storageId);
-            SpaceResources.Set(Storage.LoadEntities<CommonText>(data.SpaceResourcesStorageIds, storageId));
-            MaterialResources.Set(Storage.LoadEntities<CommonText>(data.MaterialResourcesStorageIds, storageId));
+            SpaceResources.Set(Storage.LoadEntitiesFromList<CommonText>(data.SpaceResourcesStorageIds, storageId));
+            MaterialResources.Set(Storage.LoadEntitiesFromList<CommonText>(data.MaterialResourcesStorageIds, storageId));
 
             EvaluationInstrumentTypesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.EvaluationInstrumentsTypesIntroductionStorageId, storageId);
-            EvaluationInstrumentsTypes.Set(Storage.LoadEntities<CommonText>(data.EvaluationInstrumentsTypesStorageIds, storageId));
+            EvaluationInstrumentsTypes.Set(Storage.LoadEntitiesFromList<CommonText>(data.EvaluationInstrumentsTypesStorageIds, storageId));
 
             BlocksIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.BlocksIntroductionStorageId, storageId);
-            Blocks.Set(Storage.LoadEntities<CommonText>(data.BlocksStorageIds, storageId));
+            Blocks.Set(Storage.LoadEntitiesFromList<Block>(data.BlocksStorageIds, storageId));
         }
 
         public override void Delete(string? parentStorageId = null)
