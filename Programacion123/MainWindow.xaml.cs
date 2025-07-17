@@ -9,15 +9,17 @@ namespace Programacion123
     {
         void SetEntityTitleEditable(bool editable);
         void SetEditorTitle(string title);
-        void SetEntity(T entity, string? _parentStorageId);
+        void InitEditor(T entity, string? _parentStorageId);
         T GetEntity();
     }
 
     public interface IEntityPicker<T>
     {
         void SetPickerTitle(string title);
-        void SetEntities(T? entity, List<T> entities);
+        void InitSinglePicker(T? selectedEntity, List<T> entities);
+        void InitMultiPicker(List<T> selectedEntities, List<T> entities);
         T? GetPickedEntity();
+        List<T> GetPickedEntities();
     }
 
     /// <summary>
@@ -28,10 +30,10 @@ namespace Programacion123
         //WeekScheduleEditor weekScheduleEditor;
         //List<string> weekSchedulesStorageIds;
 
-        EntityBoxController<WeekSchedule, WeekScheduleEditor> weekSchedulesController;
-        EntityBoxController<Calendar, CalendarEditor> calendarsController;
-        EntityBoxController<SubjectTemplate, SubjectTemplateEditor> subjectTemplatesController;
-        EntityBoxController<Subject, SubjectEditor> subjectsController;
+        StrongReferencesBoxController<WeekSchedule, WeekScheduleEditor> weekSchedulesController;
+        StrongReferencesBoxController<Calendar, CalendarEditor> calendarsController;
+        StrongReferencesBoxController<SubjectTemplate, SubjectTemplateEditor> subjectTemplatesController;
+        StrongReferencesBoxController<Subject, SubjectEditor> subjectsController;
 
         public MainWindow()
         {
@@ -39,21 +41,21 @@ namespace Programacion123
 
             Storage.Init();
 
-            var configWeeks = EntityBoxConfiguration<WeekSchedule>.CreateForCombo(ComboWeekSchedules)
+            var configWeeks = StrongReferencesBoxConfiguration<WeekSchedule>.CreateForCombo(ComboWeekSchedules)
                                                    .WithStorageIds(Storage.GetStorageIds<WeekSchedule>(Storage.LoadAllEntities<WeekSchedule>()))
                                                    .WithNew(ButtonWeekScheduleNew)
                                                    .WithEdit(ButtonWeekScheduleEdit)
                                                    .WithDelete(ButtonWeekScheduleDelete)
                                                    .WithBlocker(Blocker);
 
-            var configCalendars = EntityBoxConfiguration<Calendar>.CreateForCombo(ComboBoxCalendars)
+            var configCalendars = StrongReferencesBoxConfiguration<Calendar>.CreateForCombo(ComboBoxCalendars)
                                                    .WithStorageIds(Storage.GetStorageIds<Calendar>(Storage.LoadAllEntities<Calendar>()))
                                                    .WithNew(ButtonCalendarNew)
                                                    .WithEdit(ButtonCalendarEdit)
                                                    .WithDelete(ButtonCalendarDelete)
                                                    .WithBlocker(Blocker);
 
-            var configTemplates = EntityBoxConfiguration<SubjectTemplate>.CreateForCombo(ComboSubjectTemplates)
+            var configTemplates = StrongReferencesBoxConfiguration<SubjectTemplate>.CreateForCombo(ComboSubjectTemplates)
                                                    .WithStorageIds(Storage.GetStorageIds<SubjectTemplate>(Storage.LoadAllEntities<SubjectTemplate>()))
                                                    .WithNew(ButtonSubjectTemplateNew)
                                                    .WithEdit(ButtonSubjectTemplateEdit)
@@ -64,7 +66,7 @@ namespace Programacion123
             calendarsController = new (configCalendars);
             subjectTemplatesController = new (configTemplates);
 
-            var configSubjects = EntityBoxConfiguration<Subject>.CreateForCombo(ComboSubjects)
+            var configSubjects = StrongReferencesBoxConfiguration<Subject>.CreateForCombo(ComboSubjects)
                                                    .WithStorageIds(Storage.GetStorageIds<Subject>(Storage.LoadAllEntities<Subject>()))
                                                    .WithEntityInitializer(
                                                             (Subject s) =>

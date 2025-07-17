@@ -23,7 +23,7 @@
                 </Button.Background>
             </Button>
             <Border BorderThickness="1" Height="358" Width="341" Canvas.Left="10" Canvas.Top="100" Background="#FFFFE9C3" CornerRadius="10,10,10,10" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <ListBox x:Name="ComboEntitities" Height="325" Width="302" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Canvas.Top="117" VerticalAlignment="Center" Canvas.Left="28"/>
+            <ListBox x:Name="ListBoxEntities" Height="325" Width="302" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Canvas.Top="117" VerticalAlignment="Center" Canvas.Left="28"/>
             <Border x:Name="BorderToAlignVerticallyEditorTitle" BorderThickness="1" Height="69" Width="329" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="10" Canvas.Left="20">
                 <TextBlock x:Name="TextPickerTitle" TextWrapping="Wrap" Text="Entidad" FontFamily="Segoe Script" FontSize="24" FontWeight="Bold" LineStackingStrategy="BlockLineHeight" LineHeight="24" Width="328" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock.Foreground>

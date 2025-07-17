@@ -18,7 +18,7 @@ namespace Programacion123
             InitializeComponent();
         }
 
-        public void SetEntity(CommonText _entity, string? _parentStorageId = null)
+        public void InitEditor(CommonText _entity, string? _parentStorageId = null)
         {
             parentStorageId = _parentStorageId;
             entity = _entity;
@@ -45,6 +45,7 @@ namespace Programacion123
             entity.Title = TextTitle.Text.Trim();
             entity.Description = TextBoxDescription.Text;
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
+            entity.Save(parentStorageId);
         }
 
         void Validate()
@@ -75,7 +76,7 @@ namespace Programacion123
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
-            entity.Save(parentStorageId);
+            //entity.Save(parentStorageId);
 
             TextTitle.TextChanged -= TextTitle_TextChanged;
             TextBoxDescription.TextChanged -= TextBoxDescription_TextChanged;

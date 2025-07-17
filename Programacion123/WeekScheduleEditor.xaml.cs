@@ -38,6 +38,8 @@ namespace Programacion123
             entity.HoursPerWeekDay.Add(DayOfWeek.Wednesday, (int)dataTable.Rows[2]["Horas"]);
             entity.HoursPerWeekDay.Add(DayOfWeek.Thursday, (int)dataTable.Rows[3]["Horas"]);
             entity.HoursPerWeekDay.Add(DayOfWeek.Friday, (int)dataTable.Rows[4]["Horas"]);
+
+            entity.Save(parentStorageId);
         }
 
         private void Validate()
@@ -90,7 +92,7 @@ namespace Programacion123
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
-            entity.Save(parentStorageId);
+            // entity.Save(parentStorageId);
             TextTitle.TextChanged -= TextTitle_TextChanged;
             dataTable.RowChanged -= DataTable_RowChanged;
             Close();
@@ -102,7 +104,7 @@ namespace Programacion123
             Validate();
         }
 
-        public void SetEntity(WeekSchedule _weekSchedule, string? _parentStorageId)
+        public void InitEditor(WeekSchedule _weekSchedule, string? _parentStorageId)
         {
             parentStorageId = _parentStorageId;
 

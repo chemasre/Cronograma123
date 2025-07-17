@@ -83,7 +83,7 @@ namespace Programacion123
             data = JsonSerializer.Deserialize<ActivitiesStorageData>(text);
 
             Title = data.Title;
-            UnitsSequence.Set(Storage.LoadEntitiesFromList<Unit>(data.UnitsSequenceStorageIds));
+            UnitsSequence.Set(Storage.LoadEntitiesFromStorageIdList<Unit>(data.UnitsSequenceStorageIds));
 
             WeekSchedule = Storage.LoadOrCreateEntity<WeekSchedule>(data.WeekScheduleStorageId, null);
 

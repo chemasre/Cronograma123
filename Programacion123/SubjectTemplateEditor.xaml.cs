@@ -11,14 +11,14 @@ namespace Programacion123
     {
         SubjectTemplate entity;
         string? parentStorageId;
-        EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText> > generalObjectivesIntroductionController;
-        EntityBoxController<CommonText, CommonTextEditor> generalObjectivesController;
-        EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText>> generalCompetencesIntroductionController;
-        EntityBoxController<CommonText, CommonTextEditor> generalCompetencesController;
-        EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText>> learningResultsIntroductionController;
-        EntityBoxController<LearningResult, LearningResultEditor> learningResultsController;
-        EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText>> contentsIntroductionController;
-        EntityBoxController<Content, ContentEditor> contentsController;
+        StrongReferenceFieldController<CommonText, CommonTextEditor> generalObjectivesIntroductionController;
+        StrongReferencesBoxController<CommonText, CommonTextEditor > generalObjectivesController;
+        StrongReferenceFieldController<CommonText, CommonTextEditor> generalCompetencesIntroductionController;
+        StrongReferencesBoxController<CommonText, CommonTextEditor> generalCompetencesController;
+        StrongReferenceFieldController<CommonText, CommonTextEditor> learningResultsIntroductionController;
+        StrongReferencesBoxController<LearningResult, LearningResultEditor> learningResultsController;
+        StrongReferenceFieldController<CommonText, CommonTextEditor> contentsIntroductionController;
+        StrongReferencesBoxController<Content, ContentEditor> contentsController;
 
         public SubjectTemplateEditor()
         {
@@ -31,12 +31,12 @@ namespace Programacion123
             return entity;
         }
 
-        public void SetEntity(SubjectTemplate _subjectTemplate, string? _parentStorageId)
+        public void InitEditor(SubjectTemplate _subjectTemplate, string? _parentStorageId)
         {
             entity = _subjectTemplate;
             parentStorageId = _parentStorageId;
 
-            var configObjectivesIntroduction = EntityFieldConfiguration<CommonText>.CreateForTextBox(TextGeneralObjectivesIntroduction)
+            var configObjectivesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextGeneralObjectivesIntroduction)
                                                .WithStorageId(entity.GeneralObjectivesIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
                                                .WithNew(ButtonGeneralObjectivesIntroductionNew)
@@ -47,7 +47,9 @@ namespace Programacion123
 
             generalObjectivesIntroductionController = new(configObjectivesIntroduction);
 
-            var configObjectives = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralObjectives)
+            generalObjectivesIntroductionController.StorageIdChanged += GeneralObjectivesIntroductionController_StorageIdChanged;
+
+            var configObjectives = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralObjectives)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_subjectTemplate.GeneralObjectives.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.character)
@@ -60,7 +62,9 @@ namespace Programacion123
 
             generalObjectivesController = new(configObjectives);
 
-            var configCompetencesIntroduction = EntityFieldConfiguration<CommonText>.CreateForTextBox(TextGeneralCompetencesIntroduction)
+            generalObjectivesController.StorageIdsChanged += GeneralObjectivesController_StorageIdsChanged;
+
+            var configCompetencesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextGeneralCompetencesIntroduction)
                                                .WithStorageId(entity.GeneralCompetencesIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
                                                .WithNew(ButtonGeneralCompetencesIntroductionNew)
@@ -71,7 +75,9 @@ namespace Programacion123
 
             generalCompetencesIntroductionController = new(configCompetencesIntroduction);
 
-            var configCompetences = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralCompetences)
+            generalCompetencesIntroductionController.StorageIdChanged += GeneralCompetencesIntroductionController_StorageIdChanged;
+
+            var configCompetences = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralCompetences)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_subjectTemplate.GeneralCompetences.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.character)
@@ -84,7 +90,9 @@ namespace Programacion123
 
             generalCompetencesController = new(configCompetences);
 
-            var configLearningResultsIntroduction = EntityFieldConfiguration<CommonText>.CreateForTextBox(TextLearningResultsIntroduction)
+            generalCompetencesController.StorageIdsChanged += GeneralCompetencesController_StorageIdsChanged;
+
+            var configLearningResultsIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextLearningResultsIntroduction)
                                                .WithStorageId(entity.LearningResultsIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
                                                .WithNew(ButtonLearningResultsIntroductionNew)
@@ -95,7 +103,9 @@ namespace Programacion123
 
             learningResultsIntroductionController = new(configLearningResultsIntroduction);
 
-            var configLearningResults = EntityBoxConfiguration<LearningResult>.CreateForList(ListBoxLearningResults)
+            learningResultsIntroductionController.StorageIdChanged += LearningResultsIntroductionController_StorageIdChanged;
+
+            var configLearningResults = StrongReferencesBoxConfiguration<LearningResult>.CreateForList(ListBoxLearningResults)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<LearningResult>(_subjectTemplate.LearningResults.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.number)
@@ -108,7 +118,9 @@ namespace Programacion123
 
             learningResultsController = new(configLearningResults);
 
-            var configContentsIntroduction = EntityFieldConfiguration<CommonText>.CreateForTextBox(TextContentsIntroduction)
+            learningResultsController.StorageIdsChanged += LearningResultsController_StorageIdsChanged;
+
+            var configContentsIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextContentsIntroduction)
                                                .WithStorageId(entity.ContentsIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
                                                .WithNew(ButtonContentsIntroductionNew)
@@ -119,7 +131,9 @@ namespace Programacion123
 
             contentsIntroductionController = new(configContentsIntroduction);
 
-            var configContents = EntityBoxConfiguration<Content>.CreateForList(ListBoxContents)
+            contentsIntroductionController.StorageIdChanged += ContentsIntroductionController_StorageIdChanged;
+
+            var configContents = StrongReferencesBoxConfiguration<Content>.CreateForList(ListBoxContents)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<Content>(_subjectTemplate.Contents.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.number)
@@ -132,6 +146,8 @@ namespace Programacion123
 
             contentsController = new(configContents);
 
+            contentsController.StorageIdsChanged += ContentsController_StorageIdsChanged;
+
             TextTitle.Text = _subjectTemplate.Title;
 
             TextSubjectName.Text = _subjectTemplate.SubjectName;
@@ -143,18 +159,58 @@ namespace Programacion123
             TextGradeCompanyHours.Text = _subjectTemplate.GradeCompanyHours.ToString();
         }
 
+        private void ContentsController_StorageIdsChanged(StrongReferencesBoxController<Content, ContentEditor> controller,List<string> storageIdList)
+        {
+            UpdateEntity();
+        }
+
+        private void ContentsIntroductionController_StorageIdChanged(StrongReferenceFieldController<CommonText, CommonTextEditor> controller, string storageId)
+        {
+            UpdateEntity();
+        }
+
+        private void LearningResultsController_StorageIdsChanged(StrongReferencesBoxController<LearningResult, LearningResultEditor> controller, List<string> storageIdList)
+        {
+            UpdateEntity();
+        }
+
+        private void LearningResultsIntroductionController_StorageIdChanged(StrongReferenceFieldController<CommonText, CommonTextEditor> controller, string storageId)
+        {
+            UpdateEntity();
+        }
+
+        private void GeneralCompetencesController_StorageIdsChanged(StrongReferencesBoxController<CommonText, CommonTextEditor> controller, List<string> storageIdList)
+        {
+            UpdateEntity();
+        }
+
+        private void GeneralCompetencesIntroductionController_StorageIdChanged(StrongReferenceFieldController<CommonText, CommonTextEditor> controller, string storageId)
+        {
+            UpdateEntity();
+        }
+
+        private void GeneralObjectivesController_StorageIdsChanged(StrongReferencesBoxController<CommonText, CommonTextEditor> controller, List<string> storageIdList)
+        {
+            UpdateEntity();
+        }
+
+        private void GeneralObjectivesIntroductionController_StorageIdChanged(StrongReferenceFieldController<CommonText, CommonTextEditor> controller, string storageId)
+        {
+            UpdateEntity();
+        }
+
         private void UpdateEntity()
         {
             entity.Title = TextTitle.Text;
             entity.GeneralObjectivesIntroduction = Storage.LoadOrCreateEntity<CommonText>(generalObjectivesIntroductionController.StorageId, entity.StorageId);
-            entity.GeneralObjectives.Set(Storage.LoadEntitiesFromList<CommonText>(generalObjectivesController.StorageIds, entity.StorageId));
+            entity.GeneralObjectives.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(generalObjectivesController.StorageIds, entity.StorageId));
             entity.GeneralCompetencesIntroduction = Storage.LoadOrCreateEntity<CommonText>(generalCompetencesIntroductionController.StorageId, entity.StorageId);
-            entity.GeneralCompetences.Set(Storage.LoadEntitiesFromList<CommonText>(generalCompetencesController.StorageIds, entity.StorageId));
+            entity.GeneralCompetences.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(generalCompetencesController.StorageIds, entity.StorageId));
 
             entity.LearningResultsIntroduction = Storage.LoadOrCreateEntity<CommonText>(learningResultsIntroductionController.StorageId, entity.StorageId);
-            entity.LearningResults.Set(Storage.LoadEntitiesFromList<LearningResult>(learningResultsController.StorageIds, entity.StorageId));
+            entity.LearningResults.Set(Storage.LoadEntitiesFromStorageIdList<LearningResult>(learningResultsController.StorageIds, entity.StorageId));
             entity.ContentsIntroduction = Storage.LoadOrCreateEntity<CommonText>(contentsIntroductionController.StorageId, entity.StorageId);
-            entity.Contents.Set(Storage.LoadEntitiesFromList<Content>(contentsController.StorageIds, entity.StorageId));
+            entity.Contents.Set(Storage.LoadEntitiesFromStorageIdList<Content>(contentsController.StorageIds, entity.StorageId));
 
             entity.SubjectName = TextSubjectName.Text;
             entity.SubjectCode = TextSubjectCode.Text;
@@ -166,12 +222,14 @@ namespace Programacion123
             int number;
             entity.GradeClassroomHours = Int32.TryParse(TextGradeClassroomHours.Text, out number) ? number : 0;
             entity.GradeCompanyHours= Int32.TryParse(TextGradeCompanyHours.Text, out number) ? number : 0;
+
+            entity.Save(parentStorageId);
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
-            entity.Save(parentStorageId);
+            // entity.Save(parentStorageId);
 
             Close();
         }

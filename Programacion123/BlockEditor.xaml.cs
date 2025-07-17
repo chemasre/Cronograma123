@@ -22,21 +22,21 @@ namespace Programacion123
         string? parentStorageId;
         Block entity;
 
-        EntityBoxController<CommonText, CommonTextEditor> activitiesController;
+        StrongReferencesBoxController<Activity, ActivityEditor> activitiesController;
 
         public BlockEditor()
         {
             InitializeComponent();
         }
 
-        public void SetEntity(Block _entity, string? _parentStorageId = null)
+        public void InitEditor(Block _entity, string? _parentStorageId = null)
         {
             parentStorageId = _parentStorageId;
             entity = _entity;
 
-            var configActivities = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxPoints)
+            var configActivities = StrongReferencesBoxConfiguration<Activity>.CreateForList(ListBoxPoints)
                                                         .WithParentStorageId(_entity.StorageId)
-                                                        .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.Activities.ToList()))
+                                                        .WithStorageIds(Storage.GetStorageIds<Activity>(_entity.Activities.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.number)
                                                         .WithNew(ButtonPointNew)
                                                         .WithEdit(ButtonPointEdit)
@@ -46,6 +46,7 @@ namespace Programacion123
                                                         .WithBlocker(Blocker);
 
             activitiesController = new(configActivities);
+            activitiesController.StorageIdsChanged += ActivitiesController_StorageIdsChanged;
 
 
             TextTitle.Text = _entity.Title;
@@ -53,10 +54,16 @@ namespace Programacion123
             TextBoxDescription.Text = _entity.Description;
 
             TextTitle.TextChanged += TextTitle_TextChanged;
-            TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
+            TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;            
+
 
             Validate();
 
+        }
+
+        private void ActivitiesController_StorageIdsChanged(StrongReferencesBoxController<Activity, ActivityEditor> controller, List<string> storageIdList)
+        {
+            UpdateEntity();
         }
 
         public Block GetEntity()
@@ -70,8 +77,9 @@ namespace Programacion123
             entity.Description = TextBoxDescription.Text;
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
-            entity.Activities.Set(Storage.LoadEntitiesFromList<CommonText>(activitiesController.StorageIds, entity.StorageId));
+            entity.Activities.Set(Storage.LoadEntitiesFromStorageIdList<Activity>(activitiesController.StorageIds, entity.StorageId));
 
+            entity.Save(parentStorageId);
         }
 
         void Validate()
@@ -102,10 +110,10 @@ namespace Programacion123
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
-            entity.Save(parentStorageId);
 
             TextTitle.TextChanged -= TextTitle_TextChanged;
             TextBoxDescription.TextChanged -= TextBoxDescription_TextChanged;
+            activitiesController.StorageIdsChanged -= ActivitiesController_StorageIdsChanged;
 
             Close();
 

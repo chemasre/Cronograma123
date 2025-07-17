@@ -2,7 +2,7 @@
 {
     public class Block: Entity
     {
-        public ListProperty<CommonText> Activities { get; } = new ListProperty<CommonText>();
+        public ListProperty<Activity> Activities { get; } = new ListProperty<Activity>();
 
         public Block() : base()
         {
@@ -28,9 +28,9 @@
             data.Title = Title;
             data.Description = Description;
 
-            List<CommonText> list = Activities.ToList();
+            List<Activity> list = Activities.ToList();
             list.ForEach(e => e.Save(StorageId));            
-            data.ActivitiesStorageIds = Storage.GetStorageIds<CommonText>(list);
+            data.ActivitiesStorageIds = Storage.GetStorageIds<Activity>(list);
 
             Storage.SaveData<BlockData>(StorageId, StorageClassId, data, parentStorageId);
         }
@@ -46,7 +46,7 @@
             Title = data.Title;
             Description = data.Description;
 
-            Activities.Set(Storage.LoadEntitiesFromList<CommonText>(data.ActivitiesStorageIds, storageId));
+            Activities.Set(Storage.LoadEntitiesFromStorageIdList<Activity>(data.ActivitiesStorageIds, storageId));
 
         }
 

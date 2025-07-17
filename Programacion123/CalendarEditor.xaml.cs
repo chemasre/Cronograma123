@@ -32,7 +32,7 @@ namespace Programacion123
             return calendar;
         }
 
-        public void SetEntity(Calendar entity, string? _parentStorageId = null)
+        public void InitEditor(Calendar entity, string? _parentStorageId = null)
         {
             parentStorageId = _parentStorageId;
             calendar = entity;
@@ -97,6 +97,8 @@ namespace Programacion123
 
             calendar.FreeDays.Clear();
             calendar.FreeDays.Add(freeDaysList);
+
+            calendar.Save(parentStorageId);
         }
 
         private void Validate()
@@ -139,7 +141,7 @@ namespace Programacion123
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
-            calendar.Save(parentStorageId);
+            //calendar.Save(parentStorageId);
 
             TextTitle.TextChanged -= TextTitle_TextChanged;
             DateStart.SelectedDateChanged -= DateStart_SelectedDateChanged;

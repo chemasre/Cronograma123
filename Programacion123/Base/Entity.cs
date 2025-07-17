@@ -74,6 +74,5 @@
             storageState = StorageState.detached;
         }
 
-
     }
 }

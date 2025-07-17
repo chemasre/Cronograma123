@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace Programacion123
 {
-    public struct EntityBoxConfiguration<TEntity>
+    public struct StrongReferencesBoxConfiguration<TEntity>
     {
         public EntityBoxItemsPrefix itemsPrefix;
         public string? parentStorageId;
@@ -25,19 +25,19 @@ namespace Programacion123
         public string? editorTitle;
         public UIElement? blocker;
 
-        public static EntityBoxConfiguration<TEntity> CreateForCombo(ComboBox _combo) { EntityBoxConfiguration<TEntity> c = new(); c.comboBox = _combo; c.storageIds = new(); return c; }
-        public static EntityBoxConfiguration<TEntity> CreateForList(ListBox _list) { EntityBoxConfiguration<TEntity> c = new(); c.listBox = _list; c.storageIds = new(); return c; }
-        public EntityBoxConfiguration<TEntity> WithStorageIds(List<string> _storageIds) { storageIds.AddRange(_storageIds); return this; }
-        public EntityBoxConfiguration<TEntity> WithEntityInitializer(Action<TEntity> _entityInitializer) { entityInitializer = _entityInitializer; return this; }
-        public EntityBoxConfiguration<TEntity> WithPrefix(EntityBoxItemsPrefix _prefix) { itemsPrefix = _prefix; return this; }
-        public EntityBoxConfiguration<TEntity> WithNew(Button _buttonNew) { buttonNew = _buttonNew; return this; }
-        public EntityBoxConfiguration<TEntity> WithEdit(Button _buttonEdit) { buttonEdit = _buttonEdit; return this; }
-        public EntityBoxConfiguration<TEntity> WithDelete(Button _buttonDelete) { buttonDelete = _buttonDelete; return this; }
-        public EntityBoxConfiguration<TEntity> WithUpDown(Button _buttonUp, Button _buttonDown) { buttonUp = _buttonUp; buttonDown = _buttonDown; return this; }
-        public EntityBoxConfiguration<TEntity> WithParentStorageId(string _parentStorageId) { parentStorageId = _parentStorageId; return this; }
-        public EntityBoxConfiguration<TEntity> WithTitleEditable(bool _titleEditable) { titleEditable = _titleEditable; return this; }
-        public EntityBoxConfiguration<TEntity> WithEditorTitle(string _editorTitle) { editorTitle = _editorTitle; return this; }
-        public EntityBoxConfiguration<TEntity> WithBlocker(UIElement? _blocker) { blocker = _blocker; return this; }
+        public static StrongReferencesBoxConfiguration<TEntity> CreateForCombo(ComboBox _combo) { StrongReferencesBoxConfiguration<TEntity> c = new(); c.comboBox = _combo; c.storageIds = new(); return c; }
+        public static StrongReferencesBoxConfiguration<TEntity> CreateForList(ListBox _list) { StrongReferencesBoxConfiguration<TEntity> c = new(); c.listBox = _list; c.storageIds = new(); return c; }
+        public StrongReferencesBoxConfiguration<TEntity> WithStorageIds(List<string> _storageIds) { storageIds.AddRange(_storageIds); return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithEntityInitializer(Action<TEntity> _entityInitializer) { entityInitializer = _entityInitializer; return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithPrefix(EntityBoxItemsPrefix _prefix) { itemsPrefix = _prefix; return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithNew(Button _buttonNew) { buttonNew = _buttonNew; return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithEdit(Button _buttonEdit) { buttonEdit = _buttonEdit; return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithDelete(Button _buttonDelete) { buttonDelete = _buttonDelete; return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithUpDown(Button _buttonUp, Button _buttonDown) { buttonUp = _buttonUp; buttonDown = _buttonDown; return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithParentStorageId(string _parentStorageId) { parentStorageId = _parentStorageId; return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithTitleEditable(bool _titleEditable) { titleEditable = _titleEditable; return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithEditorTitle(string _editorTitle) { editorTitle = _editorTitle; return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithBlocker(UIElement? _blocker) { blocker = _blocker; return this; }
     }
 
     public enum EntityBoxItemsPrefix
@@ -47,13 +47,18 @@ namespace Programacion123
         character
     }
 
-    public class EntityBoxController<TEntity, TEditor> where TEntity: Entity, new()
+    public class StrongReferencesBoxController<TEntity, TEditor> where TEntity: Entity, new()
                                                         where TEditor: Window, IEntityEditor<TEntity>, new()
     {
+        public delegate void OnStorageIdsChanged(StrongReferencesBoxController<TEntity, TEditor> controller, List<string> storageIdList);
+
+        public event OnStorageIdsChanged StorageIdsChanged;
+        
         public List<string> StorageIds { get { return storageIds; } }
 
         List<string> storageIds;
         string? parentStorageId;
+        bool? storageIdsAreWeak;
         Action<TEntity>? entityInitializer;
         EntityBoxItemsPrefix itemsPrefix;
         ComboBox? comboBox;
@@ -68,7 +73,7 @@ namespace Programacion123
         UIElement? blocker;
         TEditor editor;
 
-        public EntityBoxController(EntityBoxConfiguration<TEntity> configuration)
+        public StrongReferencesBoxController(StrongReferencesBoxConfiguration<TEntity> configuration)
         {
             itemsPrefix = configuration.itemsPrefix;
             parentStorageId = configuration.parentStorageId;
@@ -88,10 +93,14 @@ namespace Programacion123
             if(buttonNew != null) { buttonNew.Click += ButtonNew_Click; buttonNew.ToolTip = "Crear"; }
             if(buttonEdit != null) { buttonEdit.Click += ButtonEdit_Click; buttonEdit.ToolTip = "Modificar"; }
             if(buttonDelete != null) { buttonDelete.Click += ButtonDelete_Click; buttonDelete.ToolTip = "Eliminar"; }
-            if(buttonUp != null) { buttonUp.Click += ButtonUp_Click; buttonUp.ToolTip = "Mover arriba en la lista"; }
-            if(buttonDown != null) { buttonDown.Click += ButtonDown_Click; buttonDown.ToolTip = "Mover abajo en la lista"; }
+            if(buttonUp != null)
+            {
+                buttonUp.Click += ButtonUp_Click; buttonUp.ToolTip = "Mover arriba en la lista";
+                buttonDown.Click += ButtonDown_Click; buttonDown.ToolTip = "Mover abajo en la lista";
+            }
 
             UpdateListOrCombo();
+
         }
 
         public TEntity? GetSelectedEntity()
@@ -121,6 +130,7 @@ namespace Programacion123
                 storageIds[selectedIndex + 1] = storageIds[selectedIndex];
                 storageIds[selectedIndex] = s;
 
+                StorageIdsChanged?.Invoke(this, storageIds);
                 UpdateListOrCombo();
 
                 SelectStorageId(previousSelectedStorageId);
@@ -145,6 +155,7 @@ namespace Programacion123
                 storageIds[selectedIndex - 1] = storageIds[selectedIndex];
                 storageIds[selectedIndex] = s;
 
+                StorageIdsChanged?.Invoke(this, storageIds);
                 UpdateListOrCombo();
 
                 SelectStorageId(previousSelectedStorageId);
@@ -171,6 +182,7 @@ namespace Programacion123
                 Entity entity = Storage.LoadOrCreateEntity<TEntity>(storageIds[index], parentStorageId);
                 entity.Delete(parentStorageId);
                 storageIds.RemoveAt(index);
+                StorageIdsChanged?.Invoke(this, storageIds);
                 UpdateListOrCombo();
 
                 if(previousStorageId != null)
@@ -211,8 +223,8 @@ namespace Programacion123
                 if(titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
                 if(editorTitle != null) { editor.SetEditorTitle(editorTitle); }
                 if(blocker != null) { blocker.Visibility = Visibility.Visible; }
-                editor.SetEntity(entity, parentStorageId);
-                editor.Closed += OnEditorClosed;
+                editor.InitEditor(entity, parentStorageId);
+                editor.Closed += OnDialogClosed;
                 editor.ShowDialog();
             }
 
@@ -226,9 +238,10 @@ namespace Programacion123
             if(titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
             if(editorTitle != null) { editor.SetEditorTitle(editorTitle); }
             if(blocker != null) { blocker.Visibility = Visibility.Visible; }
-            editor.SetEntity(entity, parentStorageId);
+            editor.InitEditor(entity, parentStorageId);
             storageIds.Add(entity.StorageId);
-            editor.Closed += OnEditorClosed;
+            StorageIdsChanged?.Invoke(this, storageIds);
+            editor.Closed += OnDialogClosed;
             editor.ShowDialog();
         }
 
@@ -236,7 +249,7 @@ namespace Programacion123
         {
             List<TEntity> entities;
 
-            entities = Storage.LoadEntitiesFromList<TEntity>(storageIds, parentStorageId);
+            entities = Storage.LoadEntitiesFromStorageIdList<TEntity>(storageIds, parentStorageId);
 
             storageIds.Clear();
 
@@ -260,12 +273,14 @@ namespace Programacion123
 
         }
 
-        void OnEditorClosed(object? sender, EventArgs e)
+        void OnDialogClosed(object? sender, EventArgs e)
         {
             UpdateListOrCombo();
             if(blocker != null) { blocker.Visibility = Visibility.Hidden; }
+
             SelectStorageId(editor.GetEntity().StorageId);
-            editor.Closed -= OnEditorClosed;
+            editor.Closed -= OnDialogClosed;
+
         }
 
         void SelectStorageId(string storageId)

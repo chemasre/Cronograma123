@@ -22,19 +22,19 @@ namespace Programacion123
         string? parentStorageId;
         LearningResult entity;
 
-        EntityBoxController<CommonText, CommonTextEditor> criteriasController;
+        StrongReferencesBoxController<CommonText, CommonTextEditor> criteriasController;
 
         public LearningResultEditor()
         {
             InitializeComponent();
         }
 
-        public void SetEntity(LearningResult _entity, string? _parentStorageId = null)
+        public void InitEditor(LearningResult _entity, string? _parentStorageId = null)
         {
             parentStorageId = _parentStorageId;
             entity = _entity;
 
-            var configCriterias = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxCriterias)
+            var configCriterias = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxCriterias)
                                                         .WithParentStorageId(_entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.Criterias.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.number)
@@ -47,6 +47,7 @@ namespace Programacion123
 
             criteriasController = new(configCriterias);
 
+            criteriasController.StorageIdsChanged += CriteriasController_StorageIdsChanged;
 
             TextTitle.Text = _entity.Title;
 
@@ -57,6 +58,11 @@ namespace Programacion123
 
             Validate();
 
+        }
+
+        private void CriteriasController_StorageIdsChanged(StrongReferencesBoxController<CommonText, CommonTextEditor> controller, List<string> storageIdList)
+        {
+            UpdateEntity();
         }
 
         public LearningResult GetEntity()
@@ -70,8 +76,9 @@ namespace Programacion123
             entity.Description = TextBoxDescription.Text;
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
-            entity.Criterias.Set(Storage.LoadEntitiesFromList<CommonText>(criteriasController.StorageIds, entity.StorageId));
+            entity.Criterias.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(criteriasController.StorageIds, entity.StorageId));
 
+            entity.Save(parentStorageId);
         }
 
         void Validate()
@@ -102,7 +109,7 @@ namespace Programacion123
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
-            entity.Save(parentStorageId);
+            //entity.Save(parentStorageId);
 
             TextTitle.TextChanged -= TextTitle_TextChanged;
             TextBoxDescription.TextChanged -= TextBoxDescription_TextChanged;

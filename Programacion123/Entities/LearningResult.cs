@@ -46,7 +46,7 @@
             Title = data.Title;
             Description = data.Description;
 
-            Criterias.Set(Storage.LoadEntitiesFromList<CommonText>(data.CriteriasStorageIds, storageId));
+            Criterias.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(data.CriteriasStorageIds, storageId));
 
         }
 

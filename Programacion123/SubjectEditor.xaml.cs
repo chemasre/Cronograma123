@@ -22,20 +22,20 @@ namespace Programacion123
         Subject entity;
         string? parentStorageId;
 
-        EntityFieldController<SubjectTemplate, SubjectTemplateEditor, EntityPicker<SubjectTemplate>> subjectTemplateController;
-        EntityFieldController<Calendar, CalendarEditor, EntityPicker<Calendar>> calendarController;
-        EntityFieldController<WeekSchedule, WeekScheduleEditor, EntityPicker<WeekSchedule>> weekScheduleController;
+        WeakReferenceFieldController<SubjectTemplate, EntityPicker<SubjectTemplate>> subjectTemplateController;
+        WeakReferenceFieldController<Calendar, EntityPicker<Calendar>> calendarController;
+        WeakReferenceFieldController<WeekSchedule, EntityPicker<WeekSchedule>> weekScheduleController;
 
-        EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText> > metodologiesIntroductionController;
-        EntityBoxController<CommonText, CommonTextEditor> metodologiesController;
-        EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText> > resourcesIntroductionController;
-        EntityBoxController<CommonText, CommonTextEditor> spaceResourcesController;
-        EntityBoxController<CommonText, CommonTextEditor> materialResourcesController;
-        EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText> > evaluationInstrumentTypesIntroductionController;
-        EntityBoxController<CommonText, CommonTextEditor> evaluationInstrumentTypesController;
+        StrongReferenceFieldController<CommonText, CommonTextEditor > metodologiesIntroductionController;
+        StrongReferencesBoxController<CommonText, CommonTextEditor> metodologiesController;
+        StrongReferenceFieldController<CommonText, CommonTextEditor > resourcesIntroductionController;
+        StrongReferencesBoxController<CommonText, CommonTextEditor> spaceResourcesController;
+        StrongReferencesBoxController<CommonText, CommonTextEditor > materialResourcesController;
+        StrongReferenceFieldController<CommonText, CommonTextEditor> evaluationInstrumentTypesIntroductionController;
+        StrongReferencesBoxController<CommonText, CommonTextEditor> evaluationInstrumentTypesController;
 
-        EntityFieldController<CommonText, CommonTextEditor, EntityPicker<CommonText> > blocksIntroductionController;
-        EntityBoxController<Block, BlockEditor> blocksController;
+        StrongReferenceFieldController<CommonText, CommonTextEditor > blocksIntroductionController;
+        StrongReferencesBoxController<Block, BlockEditor> blocksController;
 
 
         public SubjectEditor()
@@ -50,13 +50,13 @@ namespace Programacion123
             return entity;
         }
 
-        public void SetEntity(Subject _subject, string? _parentStorageId)
+        public void InitEditor(Subject _subject, string? _parentStorageId)
         {
             entity = _subject;
             parentStorageId = _parentStorageId;
 
-            var configTemplate = EntityFieldConfiguration<SubjectTemplate>.CreateForTextBox(TextTemplate)
-                                               .WithStorageId(entity.Template?.StorageId, true)
+            var configTemplate = WeakReferenceFieldConfiguration<SubjectTemplate>.CreateForTextBox(TextTemplate)
+                                               .WithStorageId(entity.Template?.StorageId)
                                                .WithPick(ButtonTemplatePick)
                                                .WithFieldDisplayType(EntityFieldDisplayType.title)
                                                .WithPickerTitle("Selecciona una plantilla")
@@ -64,8 +64,10 @@ namespace Programacion123
 
             subjectTemplateController = new(configTemplate);
 
-            var configCalendar = EntityFieldConfiguration<Calendar>.CreateForTextBox(TextCalendar)
-                                               .WithStorageId(entity.Calendar?.StorageId, true)
+            subjectTemplateController.StorageIdChanged += SubjectTemplateController_StorageIdChanged;
+
+            var configCalendar = WeakReferenceFieldConfiguration<Calendar>.CreateForTextBox(TextCalendar)
+                                               .WithStorageId(entity.Calendar?.StorageId)
                                                .WithPick(ButtonCalendarPick)
                                                .WithFieldDisplayType(EntityFieldDisplayType.title)
                                                .WithPickerTitle("Selecciona un calendario")
@@ -73,8 +75,10 @@ namespace Programacion123
 
             calendarController = new(configCalendar);
 
-            var configWeekSchedule = EntityFieldConfiguration<WeekSchedule>.CreateForTextBox(TextWeekSchedule)
-                                               .WithStorageId(entity.WeekSchedule?.StorageId, true)
+            calendarController.StorageIdChanged += CalendarController_StorageIdChanged;
+
+            var configWeekSchedule = WeakReferenceFieldConfiguration<WeekSchedule>.CreateForTextBox(TextWeekSchedule)
+                                               .WithStorageId(entity.WeekSchedule?.StorageId)
                                                .WithPick(ButtonWeekSchedulePick)
                                                .WithFieldDisplayType(EntityFieldDisplayType.title)
                                                .WithPickerTitle("Selecciona un horario")
@@ -82,7 +86,9 @@ namespace Programacion123
 
             weekScheduleController = new(configWeekSchedule);
 
-            var configMetodologiesIntroduction = EntityFieldConfiguration<CommonText>.CreateForTextBox(TextMetodologyIntroduction)
+            weekScheduleController.StorageIdChanged += WeekScheduleController_StorageIdChanged;
+
+            var configMetodologiesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextMetodologyIntroduction)
                                                .WithStorageId(entity.MetodologiesIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
                                                .WithNew(ButtonMetodologiesIntroductionNew)
@@ -93,7 +99,9 @@ namespace Programacion123
 
             metodologiesIntroductionController = new(configMetodologiesIntroduction);
 
-            var configMetodologies = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxMetodologies)
+            metodologiesIntroductionController.StorageIdChanged += MetodologiesIntroductionController_StorageIdChanged;
+
+            var configMetodologies = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxMetodologies)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.Metodologies.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.none)
@@ -106,7 +114,9 @@ namespace Programacion123
 
             metodologiesController = new(configMetodologies);
 
-            var configResourcesIntroduction = EntityFieldConfiguration<CommonText>.CreateForTextBox(TextResourcesIntroduction)
+            metodologiesController.StorageIdsChanged += MetodologiesController_StorageIdsChanged;
+
+            var configResourcesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextResourcesIntroduction)
                                                .WithStorageId(entity.ResourcesIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
                                                .WithNew(ButtonResourcesIntroductionNew)
@@ -117,7 +127,9 @@ namespace Programacion123
 
             resourcesIntroductionController = new(configResourcesIntroduction);
 
-            var configSpaceResources = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxSpaceResources)
+            resourcesIntroductionController.StorageIdChanged += ResourcesIntroductionController_StorageIdChanged;
+
+            var configSpaceResources = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxSpaceResources)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.SpaceResources.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.none)
@@ -130,7 +142,9 @@ namespace Programacion123
 
             spaceResourcesController = new(configSpaceResources);
 
-            var configMaterialResources = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxMaterialResources)
+            spaceResourcesController.StorageIdsChanged += SpaceResourcesController_StorageIdsChanged;
+
+            var configMaterialResources = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxMaterialResources)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.MaterialResources.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.none)
@@ -143,7 +157,9 @@ namespace Programacion123
 
             materialResourcesController = new(configMaterialResources);
 
-            var configEvaluationInstrumentTypesIntroduction = EntityFieldConfiguration<CommonText>.CreateForTextBox(TextEvaluationInstrumentTypesIntroduction)
+            materialResourcesController.StorageIdsChanged += MaterialResourcesController_StorageIdsChanged;
+
+            var configEvaluationInstrumentTypesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextEvaluationInstrumentTypesIntroduction)
                                                .WithStorageId(entity.EvaluationInstrumentTypesIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
                                                .WithNew(ButtonEvaluationInstrumentTypesIntroductionNew)
@@ -154,7 +170,9 @@ namespace Programacion123
 
             evaluationInstrumentTypesIntroductionController = new(configEvaluationInstrumentTypesIntroduction);
 
-            var configEvaluationInstrumentTypes = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxEvaluationInstrumentTypes)
+            evaluationInstrumentTypesIntroductionController.StorageIdChanged += EvaluationInstrumentTypesIntroductionController_StorageIdChanged;
+
+            var configEvaluationInstrumentTypes = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxEvaluationInstrumentTypes)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.EvaluationInstrumentsTypes.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.none)
@@ -167,7 +185,9 @@ namespace Programacion123
 
             evaluationInstrumentTypesController = new(configEvaluationInstrumentTypes);
 
-            var configBlocksIntroduction = EntityFieldConfiguration<CommonText>.CreateForTextBox(TextBlocksIntroduction)
+            evaluationInstrumentTypesController.StorageIdsChanged += EvaluationInstrumentTypesController_StorageIdsChanged;
+
+            var configBlocksIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextBlocksIntroduction)
                                                .WithStorageId(entity.BlocksIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
                                                .WithNew(ButtonBlocksIntroductionNew)
@@ -179,7 +199,9 @@ namespace Programacion123
 
             blocksIntroductionController = new(configBlocksIntroduction);
 
-            var configBlocks = EntityBoxConfiguration<Block>.CreateForList(ListBoxBlocks)
+            blocksIntroductionController.StorageIdChanged += BlocksIntroductionController_StorageIdChanged;
+
+            var configBlocks = StrongReferencesBoxConfiguration<Block>.CreateForList(ListBoxBlocks)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<Block>(entity.Blocks.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.number)
@@ -192,8 +214,70 @@ namespace Programacion123
 
             blocksController = new(configBlocks);
 
+            blocksController.StorageIdsChanged += BlocksController_StorageIdsChanged;
+
             TextTitle.Text = entity.Title;
 
+        }
+
+        private void BlocksIntroductionController_StorageIdChanged(StrongReferenceFieldController<CommonText, CommonTextEditor> controller, string storageId)
+        {
+            UpdateEntity();
+        }
+
+        private void EvaluationInstrumentTypesController_StorageIdsChanged(StrongReferencesBoxController<CommonText, CommonTextEditor> controller, List<string> storageIdList)
+        {
+            UpdateEntity();
+        }
+
+        private void EvaluationInstrumentTypesIntroductionController_StorageIdChanged(StrongReferenceFieldController<CommonText, CommonTextEditor> controller, string storageId)
+        {
+            UpdateEntity();
+        }
+
+        private void MaterialResourcesController_StorageIdsChanged(StrongReferencesBoxController<CommonText, CommonTextEditor> controller, List<string> storageIdList)
+        {
+            UpdateEntity();
+        }
+
+        private void SpaceResourcesController_StorageIdsChanged(StrongReferencesBoxController<CommonText, CommonTextEditor> controller, List<string> storageIdList)
+        {
+            UpdateEntity();
+        }
+
+        private void ResourcesIntroductionController_StorageIdChanged(StrongReferenceFieldController<CommonText, CommonTextEditor> controller, string storageId)
+        {
+            UpdateEntity();
+        }
+
+        private void MetodologiesController_StorageIdsChanged(StrongReferencesBoxController<CommonText, CommonTextEditor> controller, List<string> storageIdList)
+        {
+            UpdateEntity();
+        }
+
+        private void MetodologiesIntroductionController_StorageIdChanged(StrongReferenceFieldController<CommonText, CommonTextEditor> controller, string storageId)
+        {
+            UpdateEntity();
+        }
+
+        private void WeekScheduleController_StorageIdChanged(WeakReferenceFieldController<WeekSchedule, EntityPicker<WeekSchedule> > controller, string storageId)
+        {
+            UpdateEntity();
+        }
+
+        private void CalendarController_StorageIdChanged(WeakReferenceFieldController<Calendar, EntityPicker<Calendar>> controller, string storageId)
+        {
+            UpdateEntity();
+        }
+
+        private void SubjectTemplateController_StorageIdChanged(WeakReferenceFieldController<SubjectTemplate, EntityPicker<SubjectTemplate>> controller, string storageId)
+        {
+            UpdateEntity();
+        }
+
+        void BlocksController_StorageIdsChanged(StrongReferencesBoxController<Block, BlockEditor> controller, List<string> storageIdList)
+        {
+            UpdateEntity();
         }
 
         private void UpdateEntity()
@@ -205,23 +289,24 @@ namespace Programacion123
             entity.WeekSchedule = weekScheduleController.GetEntity();
 
             entity.MetodologiesIntroduction = Storage.LoadOrCreateEntity<CommonText>(metodologiesIntroductionController.StorageId, entity.StorageId);
-            entity.Metodologies.Set(Storage.LoadEntitiesFromList<CommonText>(metodologiesController.StorageIds, entity.StorageId));
+            entity.Metodologies.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(metodologiesController.StorageIds, entity.StorageId));
 
             entity.ResourcesIntroduction = Storage.LoadOrCreateEntity<CommonText>(resourcesIntroductionController.StorageId, entity.StorageId);
-            entity.SpaceResources.Set(Storage.LoadEntitiesFromList<CommonText>(spaceResourcesController.StorageIds, entity.StorageId));
-            entity.MaterialResources.Set(Storage.LoadEntitiesFromList<CommonText>(materialResourcesController.StorageIds, entity.StorageId));
+            entity.SpaceResources.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(spaceResourcesController.StorageIds, entity.StorageId));
+            entity.MaterialResources.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(materialResourcesController.StorageIds, entity.StorageId));
 
             entity.EvaluationInstrumentTypesIntroduction = Storage.LoadOrCreateEntity<CommonText>(evaluationInstrumentTypesIntroductionController.StorageId, entity.StorageId);
-            entity.EvaluationInstrumentsTypes.Set(Storage.LoadEntitiesFromList<CommonText>(evaluationInstrumentTypesController.StorageIds, entity.StorageId));
+            entity.EvaluationInstrumentsTypes.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(evaluationInstrumentTypesController.StorageIds, entity.StorageId));
 
             entity.BlocksIntroduction = Storage.LoadOrCreateEntity<CommonText>(blocksIntroductionController.StorageId, entity.StorageId);
-            entity.Blocks.Set(Storage.LoadEntitiesFromList<Block>(blocksController.StorageIds, entity.StorageId));
+            entity.Blocks.Set(Storage.LoadEntitiesFromStorageIdList<Block>(blocksController.StorageIds, entity.StorageId));
+
+            entity.Save(parentStorageId);
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
-            entity.Save(parentStorageId);
 
             Close();
         }

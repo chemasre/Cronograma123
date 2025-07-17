@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Security.Principal;
 using System.Text.Json;
 
 namespace Programacion123
@@ -10,6 +11,82 @@ namespace Programacion123
         public static void Init()
         {
             if(!Directory.Exists(basePath)) { Directory.CreateDirectory(basePath); }
+        }
+
+        public static string? FindParentStorageId(string storageId, string storageClassId)
+        {
+            string? found = null;
+            string[] directories = Directory.GetDirectories(basePath);
+            int i = 0;
+            while(i < directories.Length && found == null)
+            {
+                if(File.Exists(directories[i] + "\\" + storageId + "." + storageClassId)) { found = directories[i]; }
+                else { i ++; }
+            }
+
+            if(found != null)
+            {
+                int index = found.LastIndexOf('\\');
+                found = found.Substring(index);
+            }
+
+            return found;
+        }
+
+        public static T? FindAndLoadChildEntity<T>(string storageId) where T: Entity, new()
+        {
+            T entity = new T();
+
+            string? parentStorageId = FindParentStorageId(storageId, entity.StorageClassId);
+
+            if(parentStorageId == null)
+            {
+                return null;
+            }
+            else
+            {
+                entity.LoadOrCreate(storageId, parentStorageId);
+
+                return entity;
+            }
+
+
+        }
+
+        public static List<T?> FindAndLoadChildEntities<T>(List<string> storageIds) where T:Entity, new()
+        {
+            List<T?> result = new List<T?>();
+            storageIds.ForEach(
+                    e =>
+                    {
+                        T? entity = FindAndLoadChildEntity<T>(e); 
+                        if(entity != null) { result.Add(entity); }
+                    }
+                );
+            return result;
+        }
+
+        public static T? FindAndLoadEntity<T>(string storageId) where T: Entity, new()
+        {
+            if(ExistsEntity<T>(storageId)) { return LoadOrCreateEntity<T>(storageId); }
+            else { return FindAndLoadChildEntity<T>(storageId); }            
+        }
+
+        public static List<T?> FindAndLoadEntities<T>(List<string> storageIds) where T:Entity, new()
+        {
+            List<T?> result = new List<T?>();
+            storageIds.ForEach(e =>
+                            {
+                                T? entity = FindAndLoadEntity<T>(e); 
+                                if(entity != null) { result.Add(entity); } 
+                            });
+            return result;
+        }
+
+        public static T? LoadEntityIfExists<T>(string storageId, string? parentStorageId) where T:Entity, new()
+        {
+            if(ExistsEntity<T>(storageId, parentStorageId)) { return LoadOrCreateEntity<T>(storageId, parentStorageId); }
+            else { return null; }
         }
 
         public static bool ExistsData<T>(string storageId, string storageClassId, string? parentStorageId = null)  where T: StorageData
@@ -89,7 +166,7 @@ namespace Programacion123
             return result;
         }
 
-        public static List<T> LoadEntitiesFromList<T>(List<string> storageIds, string? parentStorageId = null) where T : Entity, new()
+        public static List<T> LoadEntitiesFromStorageIdList<T>(List<string> storageIds, string? parentStorageId = null) where T : Entity, new()
         {
             List<T> result = new();
 

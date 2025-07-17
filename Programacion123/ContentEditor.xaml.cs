@@ -22,19 +22,19 @@ namespace Programacion123
         string? parentStorageId;
         Content entity;
 
-        EntityBoxController<CommonText, CommonTextEditor> pointsController;
+        StrongReferencesBoxController<CommonText, CommonTextEditor > pointsController;
 
         public ContentEditor()
         {
             InitializeComponent();
         }
 
-        public void SetEntity(Content _entity, string? _parentStorageId = null)
+        public void InitEditor(Content _entity, string? _parentStorageId = null)
         {
             parentStorageId = _parentStorageId;
             entity = _entity;
 
-            var configPoints = EntityBoxConfiguration<CommonText>.CreateForList(ListBoxPoints)
+            var configPoints = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxPoints)
                                                         .WithParentStorageId(_entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.Points.ToList()))
                                                         .WithPrefix(EntityBoxItemsPrefix.number)
@@ -47,6 +47,7 @@ namespace Programacion123
 
             pointsController = new(configPoints);
 
+            pointsController.StorageIdsChanged += PointsController_StorageIdsChanged;
 
             TextTitle.Text = _entity.Title;
 
@@ -57,6 +58,11 @@ namespace Programacion123
 
             Validate();
 
+        }
+
+        private void PointsController_StorageIdsChanged(StrongReferencesBoxController<CommonText, CommonTextEditor> controller, List<string> storageIdList)
+        {
+            UpdateEntity();
         }
 
         public Content GetEntity()
@@ -70,8 +76,9 @@ namespace Programacion123
             entity.Description = TextBoxDescription.Text;
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
-            entity.Points.Set(Storage.LoadEntitiesFromList<CommonText>(pointsController.StorageIds, entity.StorageId));
+            entity.Points.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(pointsController.StorageIds, entity.StorageId));
 
+            entity.Save(parentStorageId);
         }
 
         void Validate()
@@ -102,7 +109,7 @@ namespace Programacion123
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
-            entity.Save(parentStorageId);
+            //entity.Save(parentStorageId);
 
             TextTitle.TextChanged -= TextTitle_TextChanged;
             TextBoxDescription.TextChanged -= TextBoxDescription_TextChanged;
