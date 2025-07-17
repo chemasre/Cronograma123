@@ -249,7 +249,7 @@ namespace Programacion123
         {
             List<TEntity> entities;
 
-            entities = Storage.LoadEntitiesFromStorageIdList<TEntity>(storageIds, parentStorageId);
+            entities = Storage.LoadOrCreateEntities<TEntity>(storageIds, parentStorageId);
 
             storageIds.Clear();
 

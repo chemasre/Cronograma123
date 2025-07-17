@@ -46,7 +46,7 @@
             Title = data.Title;
             Description = data.Description;
 
-            Activities.Set(Storage.LoadEntitiesFromStorageIdList<Activity>(data.ActivitiesStorageIds, storageId));
+            Activities.Set(Storage.LoadOrCreateEntities<Activity>(data.ActivitiesStorageIds, storageId));
 
         }
 

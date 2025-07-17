@@ -33,7 +33,10 @@ namespace Programacion123
             return found;
         }
 
-        public static T? FindAndLoadChildEntity<T>(string storageId) where T: Entity, new()
+        /// <summary>
+        /// Finds an entity by its storageId. The entity must have a parent different from null.
+        /// </summary>
+        public static T? FindChildEntity<T>(string storageId) where T: Entity, new()
         {
             T entity = new T();
 
@@ -52,38 +55,50 @@ namespace Programacion123
 
 
         }
-
-        public static List<T?> FindAndLoadChildEntities<T>(List<string> storageIds) where T:Entity, new()
+        
+        /// <summary>
+        /// Finds an entity by its storageId. The entities must have parents different from null and not necesarily the same.
+        /// </summary>
+        public static List<T> FindChildEntities<T>(List<string> storageIds) where T:Entity, new()
         {
-            List<T?> result = new List<T?>();
+            List<T> result = new List<T?>();
             storageIds.ForEach(
                     e =>
                     {
-                        T? entity = FindAndLoadChildEntity<T>(e); 
+                        T? entity = FindChildEntity<T>(e); 
                         if(entity != null) { result.Add(entity); }
                     }
                 );
             return result;
         }
 
-        public static T? FindAndLoadEntity<T>(string storageId) where T: Entity, new()
+        /// <summary>
+        /// Finds an entity by its storage id. The entity can have a parent or not.
+        /// </summary>
+        public static T? FindEntity<T>(string storageId) where T: Entity, new()
         {
             if(ExistsEntity<T>(storageId)) { return LoadOrCreateEntity<T>(storageId); }
-            else { return FindAndLoadChildEntity<T>(storageId); }            
+            else { return FindChildEntity<T>(storageId); }            
         }
 
-        public static List<T?> FindAndLoadEntities<T>(List<string> storageIds) where T:Entity, new()
+        /// <summary>
+        /// Finds entities by their storage ids. The entities can have parents or not, and not necesarily the same.
+        /// </summary>
+        public static List<T?> FindEntities<T>(List<string> storageIds) where T:Entity, new()
         {
             List<T?> result = new List<T?>();
             storageIds.ForEach(e =>
                             {
-                                T? entity = FindAndLoadEntity<T>(e); 
+                                T? entity = FindEntity<T>(e); 
                                 if(entity != null) { result.Add(entity); } 
                             });
             return result;
         }
 
-        public static T? LoadEntityIfExists<T>(string storageId, string? parentStorageId) where T:Entity, new()
+        /// <summary>
+        /// Finds an entity with a specific storageId and parentStorageId
+        /// </summary>
+        public static T? FindEntity<T>(string storageId, string? parentStorageId) where T:Entity, new()
         {
             if(ExistsEntity<T>(storageId, parentStorageId)) { return LoadOrCreateEntity<T>(storageId, parentStorageId); }
             else { return null; }
@@ -166,7 +181,7 @@ namespace Programacion123
             return result;
         }
 
-        public static List<T> LoadEntitiesFromStorageIdList<T>(List<string> storageIds, string? parentStorageId = null) where T : Entity, new()
+        public static List<T> LoadOrCreateEntities<T>(List<string> storageIds, string? parentStorageId = null) where T : Entity, new()
         {
             List<T> result = new();
 

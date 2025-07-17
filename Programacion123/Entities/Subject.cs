@@ -100,17 +100,17 @@
             WeekSchedule = data.WeekScheduleWeakStorageId != null ? Storage.LoadOrCreateEntity<WeekSchedule>(data.WeekScheduleWeakStorageId, null) : null;
 
             MetodologiesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.MetodologiesIntroductionStorageId, storageId);
-            Metodologies.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(data.MetodologiesStorageIds, storageId));
+            Metodologies.Set(Storage.LoadOrCreateEntities<CommonText>(data.MetodologiesStorageIds, storageId));
 
             ResourcesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.ResourcesIntroductionStorageId, storageId);
-            SpaceResources.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(data.SpaceResourcesStorageIds, storageId));
-            MaterialResources.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(data.MaterialResourcesStorageIds, storageId));
+            SpaceResources.Set(Storage.LoadOrCreateEntities<CommonText>(data.SpaceResourcesStorageIds, storageId));
+            MaterialResources.Set(Storage.LoadOrCreateEntities<CommonText>(data.MaterialResourcesStorageIds, storageId));
 
             EvaluationInstrumentTypesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.EvaluationInstrumentsTypesIntroductionStorageId, storageId);
-            EvaluationInstrumentsTypes.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(data.EvaluationInstrumentsTypesStorageIds, storageId));
+            EvaluationInstrumentsTypes.Set(Storage.LoadOrCreateEntities<CommonText>(data.EvaluationInstrumentsTypesStorageIds, storageId));
 
             BlocksIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.BlocksIntroductionStorageId, storageId);
-            Blocks.Set(Storage.LoadEntitiesFromStorageIdList<Block>(data.BlocksStorageIds, storageId));
+            Blocks.Set(Storage.LoadOrCreateEntities<Block>(data.BlocksStorageIds, storageId));
         }
 
         public override void Delete(string? parentStorageId = null)

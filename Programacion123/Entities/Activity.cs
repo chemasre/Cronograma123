@@ -79,16 +79,16 @@ namespace Programacion123
             Description = data.Description;
 
             string subjectStorageId = Storage.FindParentStorageId(Storage.FindParentStorageId(StorageId, StorageClassId), new Block().StorageClassId);
-            Metodology = data.MetodologyWeakStorageId != null ? Storage.LoadEntityIfExists<CommonText>(data.MetodologyWeakStorageId, subjectStorageId) : null;
+            Metodology = data.MetodologyWeakStorageId != null ? Storage.FindEntity<CommonText>(data.MetodologyWeakStorageId, subjectStorageId) : null;
 
-            SpaceResources.Set(Storage.FindAndLoadChildEntities<CommonText>(data.SpaceResourcesWeakStorageIds));
-            MaterialResources.Set(Storage.FindAndLoadChildEntities<CommonText>(data.MaterialResourcesWeakStorageIds));
+            SpaceResources.Set(Storage.FindChildEntities<CommonText>(data.SpaceResourcesWeakStorageIds));
+            MaterialResources.Set(Storage.FindChildEntities<CommonText>(data.MaterialResourcesWeakStorageIds));
 
             IsEvaluable = data.IsEvaluable;
 
-            EvaluationInstrumentTypes.Set(Storage.FindAndLoadChildEntities<CommonText>(data.EvaluationInstrumentTypesWeakStorageIds));
-            ContentPoints.Set(Storage.FindAndLoadChildEntities<CommonText>(data.ContentPointsWeakStorageIds));
-            Criterias.Set(Storage.FindAndLoadChildEntities<CommonText>(data.CriteriasWeakStorageIds));
+            EvaluationInstrumentTypes.Set(Storage.FindChildEntities<CommonText>(data.EvaluationInstrumentTypesWeakStorageIds));
+            ContentPoints.Set(Storage.FindChildEntities<CommonText>(data.ContentPointsWeakStorageIds));
+            Criterias.Set(Storage.FindChildEntities<CommonText>(data.CriteriasWeakStorageIds));
 
         }
 

@@ -76,7 +76,7 @@ namespace Programacion123
             entity.Description = TextBoxDescription.Text;
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
-            entity.Criterias.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(criteriasController.StorageIds, entity.StorageId));
+            entity.Criterias.Set(Storage.LoadOrCreateEntities<CommonText>(criteriasController.StorageIds, entity.StorageId));
 
             entity.Save(parentStorageId);
         }

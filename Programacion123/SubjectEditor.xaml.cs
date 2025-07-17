@@ -289,17 +289,17 @@ namespace Programacion123
             entity.WeekSchedule = weekScheduleController.GetEntity();
 
             entity.MetodologiesIntroduction = Storage.LoadOrCreateEntity<CommonText>(metodologiesIntroductionController.StorageId, entity.StorageId);
-            entity.Metodologies.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(metodologiesController.StorageIds, entity.StorageId));
+            entity.Metodologies.Set(Storage.LoadOrCreateEntities<CommonText>(metodologiesController.StorageIds, entity.StorageId));
 
             entity.ResourcesIntroduction = Storage.LoadOrCreateEntity<CommonText>(resourcesIntroductionController.StorageId, entity.StorageId);
-            entity.SpaceResources.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(spaceResourcesController.StorageIds, entity.StorageId));
-            entity.MaterialResources.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(materialResourcesController.StorageIds, entity.StorageId));
+            entity.SpaceResources.Set(Storage.LoadOrCreateEntities<CommonText>(spaceResourcesController.StorageIds, entity.StorageId));
+            entity.MaterialResources.Set(Storage.LoadOrCreateEntities<CommonText>(materialResourcesController.StorageIds, entity.StorageId));
 
             entity.EvaluationInstrumentTypesIntroduction = Storage.LoadOrCreateEntity<CommonText>(evaluationInstrumentTypesIntroductionController.StorageId, entity.StorageId);
-            entity.EvaluationInstrumentsTypes.Set(Storage.LoadEntitiesFromStorageIdList<CommonText>(evaluationInstrumentTypesController.StorageIds, entity.StorageId));
+            entity.EvaluationInstrumentsTypes.Set(Storage.LoadOrCreateEntities<CommonText>(evaluationInstrumentTypesController.StorageIds, entity.StorageId));
 
             entity.BlocksIntroduction = Storage.LoadOrCreateEntity<CommonText>(blocksIntroductionController.StorageId, entity.StorageId);
-            entity.Blocks.Set(Storage.LoadEntitiesFromStorageIdList<Block>(blocksController.StorageIds, entity.StorageId));
+            entity.Blocks.Set(Storage.LoadOrCreateEntities<Block>(blocksController.StorageIds, entity.StorageId));
 
             entity.Save(parentStorageId);
         }

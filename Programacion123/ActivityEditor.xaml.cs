@@ -68,7 +68,7 @@ namespace Programacion123
 
             entity.Metodology = metodologyController.GetEntity();
 
-            entity.ContentPoints.Set(Storage.FindAndLoadEntities<CommonText>(contentPointsController.StorageIds));
+            entity.ContentPoints.Set(Storage.FindEntities<CommonText>(contentPointsController.StorageIds));
 
             entity.IsEvaluable = CheckboxIsEvaluable.IsChecked.GetValueOrDefault();
 

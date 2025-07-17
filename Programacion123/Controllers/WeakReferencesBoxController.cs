@@ -113,13 +113,13 @@ namespace Programacion123
             if(pickListQuery == null)
             {
                 storageIdList = Storage.GetStorageIds<TEntity>(Storage.LoadAllEntities<TEntity>(parentStorageId));
-                entityList = Storage.LoadEntitiesFromStorageIdList<TEntity>(storageIdList, parentStorageId);
+                entityList = Storage.LoadOrCreateEntities<TEntity>(storageIdList, parentStorageId);
             }
             else
             {
                 storageIdList = pickListQuery.Invoke();
                 foreach(string s in storageIds) { storageIdList.Remove(s); }
-                entityList = Storage.FindAndLoadEntities<TEntity>(storageIdList);
+                entityList = Storage.FindEntities<TEntity>(storageIdList);
             }
              
             picker.InitMultiPicker(new List<TEntity>(), entityList);
@@ -184,11 +184,11 @@ namespace Programacion123
 
             if(pickListQuery != null)
             {
-                entities = Storage.FindAndLoadEntities<TEntity>(storageIds);
+                entities = Storage.FindEntities<TEntity>(storageIds);
             }
             else
             {
-                entities = Storage.LoadEntitiesFromStorageIdList<TEntity>(storageIds, parentStorageId);
+                entities = Storage.LoadOrCreateEntities<TEntity>(storageIds, parentStorageId);
             }
 
             storageIds.Clear();

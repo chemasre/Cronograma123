@@ -118,7 +118,7 @@ namespace Programacion123
             List<string> storageIdList;
             if(pickListQuery != null) { storageIdList = pickListQuery.Invoke(); }
             else { storageIdList = Storage.GetStorageIds<TEntity>(Storage.LoadAllEntities<TEntity>(parentStorageId)); }
-            List<TEntity> entityList = Storage.LoadEntitiesFromStorageIdList<TEntity>(storageIdList, parentStorageId);
+            List<TEntity> entityList = Storage.LoadOrCreateEntities<TEntity>(storageIdList, parentStorageId);
             picker.InitSinglePicker(entity, entityList);
             picker.Closed += OnDialogClosed;
 
