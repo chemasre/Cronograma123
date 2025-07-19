@@ -31,13 +31,15 @@ namespace Programacion123
 
         public void InitEditor(Block _entity, string? _parentStorageId = null)
         {
+            _entity.Save(_parentStorageId);
+
             parentStorageId = _parentStorageId;
             entity = _entity;
 
             var configActivities = StrongReferencesBoxConfiguration<Activity>.CreateForList(ListBoxPoints)
                                                         .WithParentStorageId(_entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<Activity>(_entity.Activities.ToList()))
-                                                        .WithPrefix(EntityBoxItemsPrefix.number)
+                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
                                                         .WithNew(ButtonPointNew)
                                                         .WithEdit(ButtonPointEdit)
                                                         .WithDelete(ButtonPointDelete)
@@ -55,7 +57,6 @@ namespace Programacion123
 
             TextTitle.TextChanged += TextTitle_TextChanged;
             TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;            
-
 
             Validate();
 

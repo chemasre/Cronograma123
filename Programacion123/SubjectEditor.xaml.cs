@@ -52,13 +52,15 @@ namespace Programacion123
 
         public void InitEditor(Subject _subject, string? _parentStorageId)
         {
+            _subject.Save(_parentStorageId);
+
             entity = _subject;
             parentStorageId = _parentStorageId;
 
             var configTemplate = WeakReferenceFieldConfiguration<SubjectTemplate>.CreateForTextBox(TextTemplate)
                                                .WithStorageId(entity.Template?.StorageId)
                                                .WithPick(ButtonTemplatePick)
-                                               .WithFieldDisplayType(EntityFieldDisplayType.title)
+                                               .WithFormat(EntityFormatContent.title)
                                                .WithPickerTitle("Selecciona una plantilla")
                                                .WithBlocker(Blocker);
 
@@ -69,7 +71,7 @@ namespace Programacion123
             var configCalendar = WeakReferenceFieldConfiguration<Calendar>.CreateForTextBox(TextCalendar)
                                                .WithStorageId(entity.Calendar?.StorageId)
                                                .WithPick(ButtonCalendarPick)
-                                               .WithFieldDisplayType(EntityFieldDisplayType.title)
+                                               .WithFormat(EntityFormatContent.title)
                                                .WithPickerTitle("Selecciona un calendario")
                                                .WithBlocker(Blocker);
 
@@ -80,7 +82,7 @@ namespace Programacion123
             var configWeekSchedule = WeakReferenceFieldConfiguration<WeekSchedule>.CreateForTextBox(TextWeekSchedule)
                                                .WithStorageId(entity.WeekSchedule?.StorageId)
                                                .WithPick(ButtonWeekSchedulePick)
-                                               .WithFieldDisplayType(EntityFieldDisplayType.title)
+                                               .WithFormat(EntityFormatContent.title)
                                                .WithPickerTitle("Selecciona un horario")
                                                .WithBlocker(Blocker);
 
@@ -104,7 +106,7 @@ namespace Programacion123
             var configMetodologies = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxMetodologies)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.Metodologies.ToList()))
-                                                        .WithPrefix(EntityBoxItemsPrefix.none)
+                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
                                                         .WithNew(ButtonMetodologyNew)
                                                         .WithEdit(ButtonMetodologyEdit)
                                                         .WithDelete(ButtonMetodologyDelete)
@@ -132,7 +134,7 @@ namespace Programacion123
             var configSpaceResources = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxSpaceResources)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.SpaceResources.ToList()))
-                                                        .WithPrefix(EntityBoxItemsPrefix.none)
+                                                        .WithFormat(EntityFormatContent.title)
                                                         .WithNew(ButtonSpaceResourceNew)
                                                         .WithEdit(ButtonSpaceResourceEdit)
                                                         .WithDelete(ButtonSpaceResourceDelete)
@@ -147,7 +149,7 @@ namespace Programacion123
             var configMaterialResources = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxMaterialResources)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.MaterialResources.ToList()))
-                                                        .WithPrefix(EntityBoxItemsPrefix.none)
+                                                        .WithFormat(EntityFormatContent.title)
                                                         .WithNew(ButtonMaterialResourceNew)
                                                         .WithEdit(ButtonMaterialResourceEdit)
                                                         .WithDelete(ButtonMaterialResourceDelete)
@@ -175,7 +177,7 @@ namespace Programacion123
             var configEvaluationInstrumentTypes = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxEvaluationInstrumentTypes)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.EvaluationInstrumentsTypes.ToList()))
-                                                        .WithPrefix(EntityBoxItemsPrefix.none)
+                                                        .WithFormat(EntityFormatContent.title)
                                                         .WithNew(ButtonEvaluationInstrumentTypeNew)
                                                         .WithEdit(ButtonEvaluationInstrumentTypeEdit)
                                                         .WithDelete(ButtonEvaluationInstrumentTypeDelete)
@@ -204,7 +206,7 @@ namespace Programacion123
             var configBlocks = StrongReferencesBoxConfiguration<Block>.CreateForList(ListBoxBlocks)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<Block>(entity.Blocks.ToList()))
-                                                        .WithPrefix(EntityBoxItemsPrefix.number)
+                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
                                                         .WithNew(ButtonBlockNew)
                                                         .WithEdit(ButtonBlockEdit)
                                                         .WithDelete(ButtonBlockDelete)
@@ -218,6 +220,24 @@ namespace Programacion123
 
             TextTitle.Text = entity.Title;
 
+
+            Validate();
+
+        }
+
+        void Validate()
+        {
+            Entity.ValidationResult validation = entity.Validate();
+
+            if (validation == Entity.ValidationResult.success)
+            {
+                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
+                TextValidation.Text = "No se han detectado problemas";
+            }
+            else
+            {
+                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorInvalid"]);
+            }
         }
 
         private void BlocksIntroductionController_StorageIdChanged(StrongReferenceFieldController<CommonText, CommonTextEditor> controller, string storageId)

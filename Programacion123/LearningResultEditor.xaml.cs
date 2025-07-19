@@ -31,13 +31,26 @@ namespace Programacion123
 
         public void InitEditor(LearningResult _entity, string? _parentStorageId = null)
         {
+            _entity.Save(_parentStorageId);
+
             parentStorageId = _parentStorageId;
             entity = _entity;
+
+            SubjectTemplate template = new();
+            template = Storage.FindEntity<SubjectTemplate>(Storage.FindParentStorageId(_entity.StorageId, _entity.StorageClassId), null);
+
+            Func<CommonText, int, string> formatter =
+                (e, i) =>
+                {
+                    string resultStorageId = Storage.FindParentStorageId(e.StorageId, e.StorageClassId);
+                    int resultIndex = template.LearningResults.ToList().FindIndex(r => r.StorageId == resultStorageId);
+                    return String.Format("RA{0}.{1}: {2}", resultIndex + 1, i + 1, e.Title);
+                };
 
             var configCriterias = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxCriterias)
                                                         .WithParentStorageId(_entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.Criterias.ToList()))
-                                                        .WithPrefix(EntityBoxItemsPrefix.number)
+                                                        .WithFormatter(formatter)
                                                         .WithNew(ButtonCriteriaNew)
                                                         .WithEdit(ButtonCriteriaEdit)
                                                         .WithDelete(ButtonCriteriaDelete)

@@ -74,6 +74,29 @@
             return d.ToShortDateString();
         }
 
+        public static string FormatEntity<T>(T entity, EntityFormatContent formatContent) where T:Entity
+        {
+            string content;
+            if(formatContent == EntityFormatContent.title) { content = entity.Title; }
+            else // formatContent == EntityFormatContent.description
+            { content = entity.Description; }
+            if(content.Length > 100) { content = content.Substring(0, Math.Min(100, content.Length)) + "..."; }
+
+            return content;
+        }
+
+        public static string FormatEntity<T>(T entity, int index, EntityFormatContent formatContent, EntityFormatIndex formatIndex) where T:Entity
+        {
+            string content = FormatEntity<T>(entity, formatContent);
+            string prefix;
+            if(formatIndex == EntityFormatIndex.none) { prefix = ""; }
+            else if(formatIndex == EntityFormatIndex.number) { prefix = (index + 1).ToString() + ": "; }
+            else // formatIndex == EntityFormatIndex.character
+            { prefix = System.Text.Encoding.ASCII.GetString(new byte[] { (byte)(65 + index) }).ToLower() + ": "; }
+
+            return prefix + content;
+        }
+
 
 
     }

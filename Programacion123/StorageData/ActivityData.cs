@@ -12,8 +12,8 @@
 
         public bool IsEvaluable { get; set; }
 
+        public string? EvaluationInstrumentTypeWeakStorageId  { get; set; } = null;
         public List<string> CriteriasWeakStorageIds  { get; set; } = new List<string>();
-        public List<string> EvaluationInstrumentTypesWeakStorageIds  { get; set; } = new List<string>();
 
     }
 }

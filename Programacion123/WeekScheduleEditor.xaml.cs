@@ -106,6 +106,8 @@ namespace Programacion123
 
         public void InitEditor(WeekSchedule _weekSchedule, string? _parentStorageId)
         {
+            _weekSchedule.Save(_parentStorageId);
+
             parentStorageId = _parentStorageId;
 
             dataTable = new DataTable();
@@ -158,6 +160,7 @@ namespace Programacion123
 
             dataTable.RowChanged += DataTable_RowChanged;
             TextTitle.TextChanged += TextTitle_TextChanged;
+
             Validate();
         }
 
@@ -176,5 +179,6 @@ namespace Programacion123
         {
             TextEditorTitle.Content = title;
         }
+
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Programacion123
+﻿using System.Windows.Media;
+
+namespace Programacion123
 {
     public enum GradeType
     {
@@ -33,7 +35,7 @@
 
         public override ValidationResult Validate()
         {
-            throw new NotImplementedException();
+            return base.Validate();
         }
 
         public override bool Exists(string storageId, string? parentStorageId)

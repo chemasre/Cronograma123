@@ -20,6 +20,8 @@ namespace Programacion123
 
         public void InitEditor(CommonText _entity, string? _parentStorageId = null)
         {
+            _entity.Save(_parentStorageId);
+
             parentStorageId = _parentStorageId;
             entity = _entity;
 

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Media;
 
 namespace Programacion123
 {
@@ -33,6 +33,8 @@ namespace Programacion123
 
         public void InitEditor(SubjectTemplate _subjectTemplate, string? _parentStorageId)
         {
+            _subjectTemplate.Save(_parentStorageId);
+
             entity = _subjectTemplate;
             parentStorageId = _parentStorageId;
 
@@ -52,7 +54,7 @@ namespace Programacion123
             var configObjectives = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralObjectives)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_subjectTemplate.GeneralObjectives.ToList()))
-                                                        .WithPrefix(EntityBoxItemsPrefix.character)
+                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.character)
                                                         .WithNew(ButtonGeneralObjectiveNew)
                                                         .WithEdit(ButtonGeneralObjectiveEdit)
                                                         .WithDelete(ButtonGeneralObjectiveDelete)
@@ -80,7 +82,7 @@ namespace Programacion123
             var configCompetences = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralCompetences)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_subjectTemplate.GeneralCompetences.ToList()))
-                                                        .WithPrefix(EntityBoxItemsPrefix.character)
+                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.character)
                                                         .WithNew(ButtonGeneralCompetenceNew)
                                                         .WithEdit(ButtonGeneralCompetenceEdit)
                                                         .WithDelete(ButtonGeneralCompetenceDelete)
@@ -108,7 +110,7 @@ namespace Programacion123
             var configLearningResults = StrongReferencesBoxConfiguration<LearningResult>.CreateForList(ListBoxLearningResults)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<LearningResult>(_subjectTemplate.LearningResults.ToList()))
-                                                        .WithPrefix(EntityBoxItemsPrefix.number)
+                                                        .WithFormatter((e, i) => String.Format("RA{0}: {1}", i + 1, e.Title))
                                                         .WithNew(ButtonLearningResultsNew)
                                                         .WithEdit(ButtonLearningResultsEdit)
                                                         .WithDelete(ButtonLearningResultsDelete)
@@ -136,7 +138,7 @@ namespace Programacion123
             var configContents = StrongReferencesBoxConfiguration<Content>.CreateForList(ListBoxContents)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<Content>(_subjectTemplate.Contents.ToList()))
-                                                        .WithPrefix(EntityBoxItemsPrefix.number)
+                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
                                                         .WithNew(ButtonContentsNew)
                                                         .WithEdit(ButtonContentsEdit)
                                                         .WithDelete(ButtonContentsDelete)
@@ -157,6 +159,25 @@ namespace Programacion123
             TextGradeFamilyName.Text = _subjectTemplate.GradeFamilyName;
             TextGradeClassroomHours.Text = _subjectTemplate.GradeClassroomHours.ToString();
             TextGradeCompanyHours.Text = _subjectTemplate.GradeCompanyHours.ToString();
+
+
+            Validate();
+
+        }
+
+        void Validate()
+        {
+            Entity.ValidationResult validation = entity.Validate();
+
+            if (validation == Entity.ValidationResult.success)
+            {
+                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
+                TextValidation.Text = "No se han detectado problemas";
+            }
+            else
+            {
+                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorInvalid"]);
+            }
         }
 
         private void ContentsController_StorageIdsChanged(StrongReferencesBoxController<Content, ContentEditor> controller,List<string> storageIdList)

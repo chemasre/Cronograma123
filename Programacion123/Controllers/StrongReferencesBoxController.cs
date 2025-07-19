@@ -10,12 +10,14 @@ namespace Programacion123
 {
     public struct StrongReferencesBoxConfiguration<TEntity>
     {
-        public EntityBoxItemsPrefix itemsPrefix;
         public string? parentStorageId;
         public List<string> storageIds;
         public Action<TEntity>? entityInitializer;
         public ComboBox? comboBox;            
         public ListBox? listBox;
+        public EntityFormatContent formatContent;
+        public EntityFormatIndex formatIndex;
+        public Func<TEntity, int, string>? formatter;
         public Button? buttonNew;
         public Button? buttonEdit;
         public Button? buttonDelete;
@@ -29,7 +31,8 @@ namespace Programacion123
         public static StrongReferencesBoxConfiguration<TEntity> CreateForList(ListBox _list) { StrongReferencesBoxConfiguration<TEntity> c = new(); c.listBox = _list; c.storageIds = new(); return c; }
         public StrongReferencesBoxConfiguration<TEntity> WithStorageIds(List<string> _storageIds) { storageIds.AddRange(_storageIds); return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithEntityInitializer(Action<TEntity> _entityInitializer) { entityInitializer = _entityInitializer; return this; }
-        public StrongReferencesBoxConfiguration<TEntity> WithPrefix(EntityBoxItemsPrefix _prefix) { itemsPrefix = _prefix; return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithFormat(EntityFormatContent _formatContent, EntityFormatIndex _formatIndex = EntityFormatIndex.none) { formatContent = _formatContent; formatIndex = _formatIndex; return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithFormatter(Func<TEntity, int, string> _formatter) { formatter = _formatter; return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithNew(Button _buttonNew) { buttonNew = _buttonNew; return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithEdit(Button _buttonEdit) { buttonEdit = _buttonEdit; return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithDelete(Button _buttonDelete) { buttonDelete = _buttonDelete; return this; }
@@ -38,13 +41,6 @@ namespace Programacion123
         public StrongReferencesBoxConfiguration<TEntity> WithTitleEditable(bool _titleEditable) { titleEditable = _titleEditable; return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithEditorTitle(string _editorTitle) { editorTitle = _editorTitle; return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithBlocker(UIElement? _blocker) { blocker = _blocker; return this; }
-    }
-
-    public enum EntityBoxItemsPrefix
-    {
-        none,
-        number,
-        character
     }
 
     public class StrongReferencesBoxController<TEntity, TEditor> where TEntity: Entity, new()
@@ -60,7 +56,9 @@ namespace Programacion123
         string? parentStorageId;
         bool? storageIdsAreWeak;
         Action<TEntity>? entityInitializer;
-        EntityBoxItemsPrefix itemsPrefix;
+        EntityFormatContent formatContent;
+        EntityFormatIndex formatIndex;
+        Func<TEntity, int, string>? formatter;
         ComboBox? comboBox;
         ListBox? listBox;
         Button? buttonNew;
@@ -75,11 +73,14 @@ namespace Programacion123
 
         public StrongReferencesBoxController(StrongReferencesBoxConfiguration<TEntity> configuration)
         {
-            itemsPrefix = configuration.itemsPrefix;
+            formatContent = configuration.formatContent;
             parentStorageId = configuration.parentStorageId;
             entityInitializer = configuration.entityInitializer;
             comboBox = configuration.comboBox;
             listBox = configuration.listBox;
+            formatIndex = configuration.formatIndex;
+            formatContent = configuration.formatContent;
+            formatter = configuration.formatter;
             buttonNew = configuration.buttonNew;
             buttonEdit = configuration.buttonEdit;
             buttonDelete = configuration.buttonDelete;
@@ -258,7 +259,15 @@ namespace Programacion123
                 comboBox.Items.Clear();
 
                 int index = 0;
-                entities.ForEach((e) => { comboBox.Items.Add(GetPrefix(index) + e.Title); storageIds.Add(e.StorageId); index ++; });
+                entities.ForEach(
+                    (e) =>
+                    {   string formatted;                        
+                        if(formatter != null) { formatted = formatter.Invoke(e, index); }
+                        else { formatted = Utils.FormatEntity<TEntity>(e, index, formatContent, formatIndex); }
+                        comboBox.Items.Add(formatted);
+                        storageIds.Add(e.StorageId);
+                        index ++;
+                    });
                 if(comboBox.Items.Count > 0) { comboBox.SelectedIndex = 0;  }
             }
             else
@@ -266,7 +275,15 @@ namespace Programacion123
                 listBox.Items.Clear();
 
                 int index = 0;
-                entities.ForEach((e) => { listBox.Items.Add(GetPrefix(index) + e.Title); storageIds.Add(e.StorageId); index ++; });
+                entities.ForEach(
+                    (e) =>
+                    {   string formatted;
+                        if(formatter != null) { formatted = formatter.Invoke(e, index); }
+                        else { formatted = Utils.FormatEntity<TEntity>(e, index, formatContent, formatIndex); }
+                        listBox.Items.Add(formatted);
+                        storageIds.Add(e.StorageId);
+                        index ++;
+                    });
                 if(listBox.Items.Count > 0) { listBox.SelectedIndex = 0;  }
             }
 
@@ -290,14 +307,6 @@ namespace Programacion123
             if(comboBox != null) { comboBox.SelectedIndex = index; }
             else { listBox.SelectedIndex = index; }
 
-        }
-
-        string GetPrefix(int index)
-        {
-            if(itemsPrefix == EntityBoxItemsPrefix.none) { return ""; }
-            else if(itemsPrefix == EntityBoxItemsPrefix.number) { return (index + 1).ToString() + ".- "; }
-            else // itemsPrefix == ItemsPrefix.character
-            { return System.Text.Encoding.ASCII.GetString(new byte[] { (byte)(65 + index) }).ToLower() + ". "; }
         }
 
     }

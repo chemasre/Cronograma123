@@ -16,8 +16,10 @@ namespace Programacion123
     public interface IEntityPicker<T>
     {
         void SetPickerTitle(string title);
-        void InitSinglePicker(T? selectedEntity, List<T> entities);
-        void InitMultiPicker(List<T> selectedEntities, List<T> entities);
+        void SetFormat(EntityFormatContent formatContent, EntityFormatIndex formatIndex = EntityFormatIndex.none);
+        void SetFormatter(Func<T, int, string>? formatter);
+        void SetSinglePickerEntities(T? selectedEntity, List<T> entities);
+        void SetMultiPickerEntities(List<T> selectedEntities, List<T> pickableEntities);
         T? GetPickedEntity();
         List<T> GetPickedEntities();
     }

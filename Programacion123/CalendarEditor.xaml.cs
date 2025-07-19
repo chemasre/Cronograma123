@@ -34,6 +34,8 @@ namespace Programacion123
 
         public void InitEditor(Calendar entity, string? _parentStorageId = null)
         {
+            entity.Save(_parentStorageId);
+
             parentStorageId = _parentStorageId;
             calendar = entity;
 

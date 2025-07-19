@@ -9,11 +9,20 @@ using System.Windows.Documents;
 
 namespace Programacion123
 {
-    public enum EntityFieldDisplayType
+    public enum EntityFormatContent
     {
-        description,
-        title
+        title,
+        description
     }
+
+    public enum EntityFormatIndex
+    {
+        none,
+        number,
+        character
+    }
+
+
 
     public struct StrongReferenceFieldConfiguration<TEntity>
     {
@@ -23,7 +32,8 @@ namespace Programacion123
         public Button? buttonNew;
         public Button? buttonEdit;
         public Button? buttonPick;
-        public EntityFieldDisplayType fieldDisplayType;
+        public EntityFormatContent formatContent;
+        public Func<TEntity, string>? formatter;
         public bool? titleEditable;
         public string? editorTitle;
         public UIElement? blocker;
@@ -33,7 +43,8 @@ namespace Programacion123
         public StrongReferenceFieldConfiguration<TEntity> WithNew(Button _buttonNew) { buttonNew = _buttonNew; return this; }
         public StrongReferenceFieldConfiguration<TEntity> WithEdit(Button _buttonEdit) { buttonEdit = _buttonEdit; return this; }
         public StrongReferenceFieldConfiguration<TEntity> WithParentStorageId(string _parentStorageId) { parentStorageId = _parentStorageId; return this; }
-        public StrongReferenceFieldConfiguration<TEntity> WithFieldDisplayType(EntityFieldDisplayType _fieldDisplayType) { fieldDisplayType = _fieldDisplayType; return this; }
+        public StrongReferenceFieldConfiguration<TEntity> WithFormat(EntityFormatContent _content) { formatContent = _content; return this; }
+        public StrongReferenceFieldConfiguration<TEntity> WithFormatter(Func<TEntity, string>? _entityFormatter) { formatter = _entityFormatter; return this; }
         public StrongReferenceFieldConfiguration<TEntity> WithTitleEditable(bool _titleEditable) { titleEditable = _titleEditable; return this; }
         public StrongReferenceFieldConfiguration<TEntity> WithEditorTitle(string _editorTitle) { editorTitle = _editorTitle; return this; }
         public StrongReferenceFieldConfiguration<TEntity> WithBlocker(UIElement? _blocker) { blocker = _blocker; return this; }
@@ -53,7 +64,8 @@ namespace Programacion123
         string? storageId;
         Button? buttonNew;
         Button? buttonEdit;
-        EntityFieldDisplayType fieldDisplayType;
+        EntityFormatContent formatContent;
+        Func<TEntity, string>? formatter;
         bool? titleEditable;
         string? editorTitle;
         UIElement? blocker;
@@ -66,7 +78,8 @@ namespace Programacion123
             parentStorageId = configuration.parentStorageId;
 
             textBox = configuration.textBox;
-            fieldDisplayType = configuration.fieldDisplayType;
+            formatContent = configuration.formatContent;
+            formatter = configuration.formatter;
             
             buttonNew = configuration.buttonNew;
             buttonEdit = configuration.buttonEdit;
@@ -92,8 +105,14 @@ namespace Programacion123
         {
             TEntity entity = Storage.LoadOrCreateEntity<TEntity>(storageId, parentStorageId);
 
-            string trimmed = (fieldDisplayType == EntityFieldDisplayType.description ? entity.Description : entity.Title).Trim();
-            textBox.Text = trimmed.Substring(0, Math.Min(100, trimmed.Length)) + "...";
+            if(formatter != null)
+            {
+                textBox.Text = formatter.Invoke(entity);
+            }
+            else
+            {
+                textBox.Text = Utils.FormatEntity<TEntity>(entity, formatContent);
+            }
         }
 
         void ButtonEdit_Click(object sender, RoutedEventArgs e)

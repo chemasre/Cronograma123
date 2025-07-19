@@ -27,7 +27,7 @@ namespace Programacion123
             if(found != null)
             {
                 int index = found.LastIndexOf('\\');
-                found = found.Substring(index);
+                found = found.Substring(index + 1);
             }
 
             return found;

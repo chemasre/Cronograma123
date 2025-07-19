@@ -13,8 +13,8 @@ namespace Programacion123
         public SetProperty<CommonText> MaterialResources = new SetProperty<CommonText>();
 
         public bool IsEvaluable = false;
+        public CommonText? EvaluationInstrumentType = null;
         public SetProperty<CommonText> Criterias = new SetProperty<CommonText>();
-        public SetProperty<CommonText> EvaluationInstrumentTypes = new SetProperty<CommonText>();
 
         public Activity() : base()
         {
@@ -42,6 +42,8 @@ namespace Programacion123
 
             data.Title = Title;
             data.Description = Description;
+            data.Hours = Hours;
+
 
             data.MetodologyWeakStorageId = Metodology?.StorageId;
 
@@ -51,17 +53,15 @@ namespace Programacion123
             list = SpaceResources.ToList();
             data.SpaceResourcesWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
 
-            list = SpaceResources.ToList();
+            list = MaterialResources.ToList();
             data.MaterialResourcesWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
 
             data.IsEvaluable = IsEvaluable;
 
+            data.EvaluationInstrumentTypeWeakStorageId = EvaluationInstrumentType?.StorageId;
+
             list = Criterias.ToList();
             data.CriteriasWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
-
-            list = EvaluationInstrumentTypes.ToList();
-            data.EvaluationInstrumentTypesWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
-
 
             Storage.SaveData<ActivityData>(StorageId, StorageClassId, data, parentStorageId);
 
@@ -77,17 +77,18 @@ namespace Programacion123
             
             Title = data.Title;
             Description = data.Description;
+            Hours = data.Hours;
 
             string subjectStorageId = Storage.FindParentStorageId(Storage.FindParentStorageId(StorageId, StorageClassId), new Block().StorageClassId);
             Metodology = data.MetodologyWeakStorageId != null ? Storage.FindEntity<CommonText>(data.MetodologyWeakStorageId, subjectStorageId) : null;
 
+            ContentPoints.Set(Storage.FindChildEntities<CommonText>(data.ContentPointsWeakStorageIds));
             SpaceResources.Set(Storage.FindChildEntities<CommonText>(data.SpaceResourcesWeakStorageIds));
             MaterialResources.Set(Storage.FindChildEntities<CommonText>(data.MaterialResourcesWeakStorageIds));
 
             IsEvaluable = data.IsEvaluable;
 
-            EvaluationInstrumentTypes.Set(Storage.FindChildEntities<CommonText>(data.EvaluationInstrumentTypesWeakStorageIds));
-            ContentPoints.Set(Storage.FindChildEntities<CommonText>(data.ContentPointsWeakStorageIds));
+            EvaluationInstrumentType = data.EvaluationInstrumentTypeWeakStorageId!= null ? Storage.FindEntity<CommonText>(data.EvaluationInstrumentTypeWeakStorageId, subjectStorageId) : null;
             Criterias.Set(Storage.FindChildEntities<CommonText>(data.CriteriasWeakStorageIds));
 
         }

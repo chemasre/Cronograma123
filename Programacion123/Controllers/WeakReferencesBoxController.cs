@@ -5,12 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
+using System.Runtime.Serialization;
 
 namespace Programacion123
 {
     public struct WeakReferencesBoxConfiguration<TEntity>
     {
-        public EntityBoxItemsPrefix itemsPrefix;
+        public EntityFormatContent formatContent;
+        public EntityFormatIndex formatIndex;
+        public Func<TEntity, int, string>? formatter;
         public string? parentStorageId;
         public List<string> storageIds;
         public ListBox? listBox;
@@ -20,17 +23,20 @@ namespace Programacion123
         public Button? buttonPickRemove;
         public string? pickerTitle;
         public Func<List<string>>? pickListQuery;
+        public List<string>? pickList;
         public UIElement? blocker;
 
         public static WeakReferencesBoxConfiguration<TEntity> CreateForList(ListBox _list) { WeakReferencesBoxConfiguration<TEntity> c = new(); c.listBox = _list; c.storageIds = new(); return c; }
         public WeakReferencesBoxConfiguration<TEntity> WithStorageIds(List<string> _storageIds) { storageIds.AddRange(_storageIds); return this; }
-        public WeakReferencesBoxConfiguration<TEntity> WithPrefix(EntityBoxItemsPrefix _prefix) { itemsPrefix = _prefix; return this; }
+        public WeakReferencesBoxConfiguration<TEntity> WithFormat(EntityFormatContent _formatContent, EntityFormatIndex _formatIndex = EntityFormatIndex.none) { formatContent = _formatContent; formatIndex = _formatIndex; return this; }
+        public WeakReferencesBoxConfiguration<TEntity> WithFormatter(Func<TEntity, int, string> _formatter) { formatter = _formatter; return this; }
         public WeakReferencesBoxConfiguration<TEntity> WithUpDown(Button _buttonUp, Button _buttonDown) { buttonUp = _buttonUp; buttonDown = _buttonDown; return this; }
         public WeakReferencesBoxConfiguration<TEntity> WithPick(Button _buttonPickAdd, Button _buttonPickRemove) { buttonPickAdd = _buttonPickAdd; buttonPickRemove = _buttonPickRemove; return this; }
         public WeakReferencesBoxConfiguration<TEntity> WithParentStorageId(string _parentStorageId) { parentStorageId = _parentStorageId; return this; }
         public WeakReferencesBoxConfiguration<TEntity> WithPickListQuery(Func<List<string>>? _pickListQuery) { pickListQuery = _pickListQuery; return this; }
         public WeakReferencesBoxConfiguration<TEntity> WithPickerTitle(string title) { pickerTitle = title; return this; }
         public WeakReferencesBoxConfiguration<TEntity> WithBlocker(UIElement? _blocker) { blocker = _blocker; return this; }
+        public WeakReferencesBoxConfiguration<TEntity> WithPickList(List<string> _pickList) { pickList = _pickList; return this; }
     }
 
     public class WeakReferencesBoxController<TEntity, TPicker> where TEntity: Entity, new()
@@ -44,20 +50,25 @@ namespace Programacion123
 
         List<string> storageIds;
         string? parentStorageId;
-        EntityBoxItemsPrefix itemsPrefix;
+        EntityFormatContent formatContent;
+        EntityFormatIndex formatIndex;
+        Func<TEntity, int, string>? formatter;
         ListBox? listBox;
         Button? buttonUp;
         Button? buttonDown;
         Button? buttonPickAdd;
         Button? buttonPickRemove;
         string? pickerTitle;
-        public Func<List<string>>? pickListQuery;
+        Func<List<string>>? pickListQuery;
+        List<string>? pickList;
         UIElement? blocker;
         TPicker picker;
 
         public WeakReferencesBoxController(WeakReferencesBoxConfiguration<TEntity> configuration)
         {
-            itemsPrefix = configuration.itemsPrefix;
+            formatContent = configuration.formatContent;
+            formatIndex = configuration.formatIndex;
+            formatter = configuration.formatter;
             parentStorageId = configuration.parentStorageId;
             listBox = configuration.listBox;
             buttonUp = configuration.buttonUp;
@@ -67,6 +78,7 @@ namespace Programacion123
             storageIds = new List<string>(configuration.storageIds);
             pickerTitle = configuration.pickerTitle;
             pickListQuery = configuration.pickListQuery;
+            pickList = configuration.pickList;
             blocker = configuration.blocker;
 
             if(buttonUp != null)
@@ -101,39 +113,22 @@ namespace Programacion123
         {
             picker = new TPicker();
             if(pickerTitle != null) { picker.SetPickerTitle(pickerTitle); }
+            if(formatter != null) { picker.SetFormatter(formatter); }
+            picker.SetFormat(formatContent, formatIndex);
             if(blocker != null) { blocker.Visibility = Visibility.Visible; }
 
-            List<string> storageIdList;
-            List<TEntity> entityList;
-
-            // Important difference that should be normalized in future versions
-            // When picking without a query, all entities must share the same parent
-            // When picking from a generated list, we are assuming the storage id list can contain elements from different parents
-
-            if(pickListQuery == null)
-            {
-                storageIdList = Storage.GetStorageIds<TEntity>(Storage.LoadAllEntities<TEntity>(parentStorageId));
-                entityList = Storage.LoadOrCreateEntities<TEntity>(storageIdList, parentStorageId);
-            }
-            else
-            {
-                storageIdList = pickListQuery.Invoke();
-                foreach(string s in storageIds) { storageIdList.Remove(s); }
-                entityList = Storage.FindEntities<TEntity>(storageIdList);
-            }
+            List<TEntity> pickableEntities = GetPickableEntities();
+            foreach(string s in storageIds) { pickableEntities.RemoveAll(e => e.StorageId == s); }
              
-            picker.InitMultiPicker(new List<TEntity>(), entityList);
+            picker.SetMultiPickerEntities(new List<TEntity>(), pickableEntities);
             picker.Closed += OnDialogClosed;
 
             picker.ShowDialog();
         }
 
-        public TEntity? GetSelectedEntity()
+        public List<TEntity> GetSelectedEntities()
         {
-            int selectedIndex = listBox.SelectedIndex;
-
-            if(selectedIndex < 0) { return null; }
-            else { return Storage.LoadOrCreateEntity<TEntity>(storageIds[selectedIndex], parentStorageId); }
+            return Storage.FindEntities<TEntity>(storageIds);
         }
 
         void ButtonDown_Click(object sender, RoutedEventArgs e)
@@ -155,6 +150,35 @@ namespace Programacion123
                 SelectStorageId(previousSelectedStorageId);
             }
 
+
+        }
+
+        List<TEntity> GetPickableEntities()
+        {
+            List<string> pickableStorageIds;
+            List<TEntity> pickableEntities;
+
+            // Important difference that should be normalized in future versions
+            // When picking without a query or list, all entities must share the same parent
+            // When picking with a query or a list, we are assuming the storage id list can contain elements from different parents
+
+            if(pickListQuery == null)
+            {
+                pickableStorageIds = Storage.GetStorageIds<TEntity>(Storage.LoadAllEntities<TEntity>(parentStorageId));
+                pickableEntities = Storage.LoadOrCreateEntities<TEntity>(pickableStorageIds, parentStorageId);
+            }
+            else if(pickList != null)
+            {
+                pickableStorageIds = pickList;
+                pickableEntities = Storage.FindEntities<TEntity>(pickableStorageIds);
+            }
+            else
+            {
+                pickableStorageIds = pickListQuery.Invoke();
+                pickableEntities = Storage.FindEntities<TEntity>(pickableStorageIds);
+            }
+
+            return pickableEntities;
 
         }
 
@@ -196,7 +220,16 @@ namespace Programacion123
             listBox.Items.Clear();
 
             int index = 0;
-            entities.ForEach((e) => { listBox.Items.Add(GetPrefix(index) + e.Title); storageIds.Add(e.StorageId); index ++; });
+            entities.ForEach(
+                (e) =>
+                {   string formattedEntity;
+                    if(formatter != null) { formattedEntity = formatter.Invoke(e, index); }
+                    else { formattedEntity = Utils.FormatEntity(e, index, formatContent, formatIndex); }
+                    listBox.Items.Add(formattedEntity);
+                    storageIds.Add(e.StorageId);
+                    index ++;
+                });
+
             if(listBox.Items.Count > 0) { listBox.SelectedIndex = 0;  }
 
         }
@@ -204,9 +237,17 @@ namespace Programacion123
         void OnDialogClosed(object? sender, EventArgs e)
         {
             List<TEntity> selected = picker.GetPickedEntities();
-            HashSet<string> set = new(Storage.GetStorageIds<TEntity>(selected));
-            foreach(TEntity entity in selected) { set.Add(entity.StorageId); }
-            storageIds = set.ToList<string>();
+            foreach(TEntity entity in selected) { storageIds.Add(entity.StorageId); }
+
+            List<TEntity> pickableEntities = GetPickableEntities();
+            storageIds.Sort(
+                (string s1, string s2) =>
+                {
+                    int index1 = pickableEntities.FindIndex((e) => e.StorageId == s1);
+                    int index2 = pickableEntities.FindIndex((e) => e.StorageId == s2);
+                    return index1.CompareTo(index2);
+                });
+
             StorageIdsChanged?.Invoke(this, storageIds);
 
             UpdateList();
@@ -222,14 +263,6 @@ namespace Programacion123
             
             listBox.SelectedIndex = index;
 
-        }
-
-        string GetPrefix(int index)
-        {
-            if(itemsPrefix == EntityBoxItemsPrefix.none) { return ""; }
-            else if(itemsPrefix == EntityBoxItemsPrefix.number) { return (index + 1).ToString() + ".- "; }
-            else // itemsPrefix == ItemsPrefix.character
-            { return System.Text.Encoding.ASCII.GetString(new byte[] { (byte)(65 + index) }).ToLower() + ". "; }
         }
 
     }
