@@ -42,9 +42,9 @@ namespace Programacion123
     public class WeakReferencesBoxController<TEntity, TPicker> where TEntity: Entity, new()
                                                         where TPicker : Window, IEntityPicker<TEntity>, new()
     {
-        public delegate void OnStorageIdsChanged(WeakReferencesBoxController<TEntity, TPicker> controller, List<string> storageIdList);
+        public delegate void OnChanged(WeakReferencesBoxController<TEntity, TPicker> controller);
 
-        public event OnStorageIdsChanged StorageIdsChanged;
+        public event OnChanged Changed;
         
         public List<string> StorageIds { get { return storageIds; } }
 
@@ -103,7 +103,7 @@ namespace Programacion123
             if(selectedIndex >= 0)
             {
                 storageIds.RemoveAt(selectedIndex);
-                StorageIdsChanged?.Invoke(this, storageIds);
+                Changed?.Invoke(this);
                 UpdateList();
             }
 
@@ -144,7 +144,7 @@ namespace Programacion123
                 storageIds[selectedIndex + 1] = storageIds[selectedIndex];
                 storageIds[selectedIndex] = s;
 
-                StorageIdsChanged?.Invoke(this, storageIds);
+                Changed?.Invoke(this);
                 UpdateList();
 
                 SelectStorageId(previousSelectedStorageId);
@@ -195,7 +195,7 @@ namespace Programacion123
                 storageIds[selectedIndex - 1] = storageIds[selectedIndex];
                 storageIds[selectedIndex] = s;
 
-                StorageIdsChanged?.Invoke(this, storageIds);
+                Changed?.Invoke(this);
                 UpdateList();
 
                 SelectStorageId(previousSelectedStorageId);
@@ -248,7 +248,7 @@ namespace Programacion123
                     return index1.CompareTo(index2);
                 });
 
-            StorageIdsChanged?.Invoke(this, storageIds);
+            Changed?.Invoke(this);
 
             UpdateList();
             if(blocker != null) { blocker.Visibility = Visibility.Hidden; }

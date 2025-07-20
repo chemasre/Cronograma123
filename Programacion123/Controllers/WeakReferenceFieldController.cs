@@ -43,9 +43,9 @@ namespace Programacion123
     public class WeakReferenceFieldController<TEntity, TPicker> where TEntity : Entity, new()
                                                     where TPicker : Window, IEntityPicker<TEntity>, new()
     {
-        public delegate void OnStorageIdChanged(WeakReferenceFieldController<TEntity, TPicker> controller, string storageId);
+        public delegate void OnStorageIdChanged(WeakReferenceFieldController<TEntity, TPicker> controller);
 
-        public event OnStorageIdChanged StorageIdChanged;
+        public event OnStorageIdChanged Changed;
 
         public string? StorageId { get { return storageId; } }
 
@@ -153,7 +153,7 @@ namespace Programacion123
             if(blocker != null) { blocker.Visibility = Visibility.Hidden; }
 
             storageId = picker.GetPickedEntity()?.StorageId;
-            StorageIdChanged?.Invoke(this, storageId);
+            Changed?.Invoke(this);
             picker.Closed -= OnDialogClosed;
 
             UpdateField();

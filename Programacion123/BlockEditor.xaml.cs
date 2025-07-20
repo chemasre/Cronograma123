@@ -48,7 +48,7 @@ namespace Programacion123
                                                         .WithBlocker(Blocker);
 
             activitiesController = new(configActivities);
-            activitiesController.StorageIdsChanged += ActivitiesController_StorageIdsChanged;
+            activitiesController.Changed += ActivitiesController_Changed;
 
 
             TextTitle.Text = _entity.Title;
@@ -62,7 +62,7 @@ namespace Programacion123
 
         }
 
-        private void ActivitiesController_StorageIdsChanged(StrongReferencesBoxController<Activity, ActivityEditor> controller, List<string> storageIdList)
+        private void ActivitiesController_Changed(StrongReferencesBoxController<Activity, ActivityEditor> controller)
         {
             UpdateEntity();
         }
@@ -114,7 +114,7 @@ namespace Programacion123
 
             TextTitle.TextChanged -= TextTitle_TextChanged;
             TextBoxDescription.TextChanged -= TextBoxDescription_TextChanged;
-            activitiesController.StorageIdsChanged -= ActivitiesController_StorageIdsChanged;
+            activitiesController.Changed -= ActivitiesController_Changed;
 
             Close();
 

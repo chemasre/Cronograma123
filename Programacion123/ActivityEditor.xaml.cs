@@ -123,7 +123,7 @@ namespace Programacion123
                                                .WithBlocker(Blocker);
 
             metodologyController = new(configMetodology);
-            metodologyController.StorageIdChanged += MetodologyController_StorageIdChanged;
+            metodologyController.Changed += MetodologyController_Changed;
 
             Func<List<string>> pickContentPointsQuery =
                 () =>
@@ -195,7 +195,7 @@ namespace Programacion123
                                                         .WithBlocker(Blocker);
 
             contentPointsController = new(configContents);
-            contentPointsController.StorageIdsChanged += ContentPointsController_StorageIdsChanged;
+            contentPointsController.Changed += ContentPointsController_Changed;
 
             var configSpaceResources = WeakReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxSpaceResources)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.SpaceResources.ToList()))
@@ -206,7 +206,7 @@ namespace Programacion123
                                                         .WithBlocker(Blocker);
 
             spaceResourcesController = new(configSpaceResources);
-            spaceResourcesController.StorageIdsChanged += SpaceResourcesController_StorageIdsChanged;
+            spaceResourcesController.Changed += SpaceResourcesController_Changed;
 
             var configMaterialResources = WeakReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxMaterialResources)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.MaterialResources.ToList()))
@@ -217,7 +217,7 @@ namespace Programacion123
                                                         .WithBlocker(Blocker);
 
             materialResourcesController = new(configMaterialResources);
-            materialResourcesController.StorageIdsChanged += MaterialResourcesController_StorageIdsChanged;
+            materialResourcesController.Changed += MaterialResourcesController_Changed;
 
 
             var configEvaluationInstrument = WeakReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextEvaluationInstrument)
@@ -230,7 +230,7 @@ namespace Programacion123
                                                .WithBlocker(Blocker);
 
             evaluationInstrumentController = new(configEvaluationInstrument);
-            evaluationInstrumentController.StorageIdChanged += EvaluationInstrumentController_StorageIdChanged;
+            evaluationInstrumentController.Changed += EvaluationInstrumentController_Changed;
 
             Func<List<string>> pickCriteriasQuery =
                 () =>
@@ -302,7 +302,7 @@ namespace Programacion123
                                                         .WithBlocker(Blocker);
 
             criteriasController = new(configCriterias);
-            criteriasController.StorageIdsChanged += CriteriasController_StorageIdsChanged;
+            criteriasController.Changed += CriteriasController_Changed;
 
 
             TextTitle.Text = entity.Title;
@@ -317,32 +317,32 @@ namespace Programacion123
 
         }
 
-        void SpaceResourcesController_StorageIdsChanged(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller, List<string> storageIdList)
+        void SpaceResourcesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
         }
 
-        void MaterialResourcesController_StorageIdsChanged(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller, List<string> storageIdList)
+        void MaterialResourcesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
         }
 
-        void CriteriasController_StorageIdsChanged(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller, List<string> storageIdList)
+        void CriteriasController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
         }
 
-        void EvaluationInstrumentController_StorageIdChanged(WeakReferenceFieldController<CommonText, EntityPicker<CommonText>> controller, string storageId)
+        void EvaluationInstrumentController_Changed(WeakReferenceFieldController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
         }
 
-        void MetodologyController_StorageIdChanged(WeakReferenceFieldController<CommonText, EntityPicker<CommonText>> controller, string storageId)
+        void MetodologyController_Changed(WeakReferenceFieldController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
         }
 
-        void ContentPointsController_StorageIdsChanged(WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > controller, List<string> storageIdList)
+        void ContentPointsController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > controller)
         {
             UpdateEntity();
         }

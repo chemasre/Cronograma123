@@ -60,7 +60,7 @@ namespace Programacion123
 
             pointsController = new(configPoints);
 
-            pointsController.StorageIdsChanged += PointsController_StorageIdsChanged;
+            pointsController.Changed += PointsController_Changed;
 
             TextTitle.Text = _entity.Title;
 
@@ -73,7 +73,7 @@ namespace Programacion123
 
         }
 
-        private void PointsController_StorageIdsChanged(StrongReferencesBoxController<CommonText, CommonTextEditor> controller, List<string> storageIdList)
+        private void PointsController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
             UpdateEntity();
         }

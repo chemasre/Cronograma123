@@ -60,7 +60,7 @@ namespace Programacion123
 
             criteriasController = new(configCriterias);
 
-            criteriasController.StorageIdsChanged += CriteriasController_StorageIdsChanged;
+            criteriasController.Changed += CriteriasController_Changed;
 
             TextTitle.Text = _entity.Title;
 
@@ -73,7 +73,7 @@ namespace Programacion123
 
         }
 
-        private void CriteriasController_StorageIdsChanged(StrongReferencesBoxController<CommonText, CommonTextEditor> controller, List<string> storageIdList)
+        private void CriteriasController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
             UpdateEntity();
         }

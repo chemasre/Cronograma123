@@ -46,9 +46,9 @@ namespace Programacion123
     public class StrongReferencesBoxController<TEntity, TEditor> where TEntity: Entity, new()
                                                         where TEditor: Window, IEntityEditor<TEntity>, new()
     {
-        public delegate void OnStorageIdsChanged(StrongReferencesBoxController<TEntity, TEditor> controller, List<string> storageIdList);
+        public delegate void OnChanged(StrongReferencesBoxController<TEntity, TEditor> controller);
 
-        public event OnStorageIdsChanged StorageIdsChanged;
+        public event OnChanged Changed;
         
         public List<string> StorageIds { get { return storageIds; } }
 
@@ -131,7 +131,7 @@ namespace Programacion123
                 storageIds[selectedIndex + 1] = storageIds[selectedIndex];
                 storageIds[selectedIndex] = s;
 
-                StorageIdsChanged?.Invoke(this, storageIds);
+                Changed?.Invoke(this);
                 UpdateListOrCombo();
 
                 SelectStorageId(previousSelectedStorageId);
@@ -156,7 +156,7 @@ namespace Programacion123
                 storageIds[selectedIndex - 1] = storageIds[selectedIndex];
                 storageIds[selectedIndex] = s;
 
-                StorageIdsChanged?.Invoke(this, storageIds);
+                Changed?.Invoke(this);
                 UpdateListOrCombo();
 
                 SelectStorageId(previousSelectedStorageId);
@@ -183,7 +183,7 @@ namespace Programacion123
                 Entity entity = Storage.LoadOrCreateEntity<TEntity>(storageIds[index], parentStorageId);
                 entity.Delete(parentStorageId);
                 storageIds.RemoveAt(index);
-                StorageIdsChanged?.Invoke(this, storageIds);
+                Changed?.Invoke(this);
                 UpdateListOrCombo();
 
                 if(previousStorageId != null)
@@ -241,7 +241,7 @@ namespace Programacion123
             if(blocker != null) { blocker.Visibility = Visibility.Visible; }
             editor.InitEditor(entity, parentStorageId);
             storageIds.Add(entity.StorageId);
-            StorageIdsChanged?.Invoke(this, storageIds);
+            Changed?.Invoke(this);
             editor.Closed += OnDialogClosed;
             editor.ShowDialog();
         }
@@ -295,7 +295,9 @@ namespace Programacion123
             UpdateListOrCombo();
             if(blocker != null) { blocker.Visibility = Visibility.Hidden; }
 
-            SelectStorageId(editor.GetEntity().StorageId);
+            string storageId = editor.GetEntity().StorageId;
+            SelectStorageId(storageId);
+            Changed?.Invoke(this);
             editor.Closed -= OnDialogClosed;
 
         }

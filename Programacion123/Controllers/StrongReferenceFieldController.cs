@@ -53,9 +53,9 @@ namespace Programacion123
     public class StrongReferenceFieldController<TEntity, TEditor> where TEntity : Entity, new()
                                                     where TEditor : Window, IEntityEditor<TEntity>, new()
     {
-        public delegate void OnStorageIdChanged(StrongReferenceFieldController<TEntity, TEditor> controller, string storageId);
+        public delegate void OnStorageIdChanged(StrongReferenceFieldController<TEntity, TEditor> controller);
 
-        public event OnStorageIdChanged StorageIdChanged;
+        public event OnStorageIdChanged Changed;
 
         public string? StorageId { get { return storageId; } }
 
@@ -154,7 +154,7 @@ namespace Programacion123
             }
 
             storageId = editor.GetEntity().StorageId;
-            StorageIdChanged?.Invoke(this, storageId);
+            Changed?.Invoke(this);
             editor.Closed -= OnDialogClosed;
 
             UpdateField();
