@@ -358,9 +358,9 @@ namespace Programacion123
 
         void Validate()
         {
-            Entity.ValidationResult validation = entity.Validate();
+            Entity.ValidationResult result = entity.Validate();
 
-            if (validation == Entity.ValidationResult.success)
+            if (result.code == Entity.ValidationCode.success)
             {
                 BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
                 TextValidation.Text = "No se han detectado problemas";

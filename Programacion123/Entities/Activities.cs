@@ -22,12 +22,12 @@ namespace Programacion123
         public override ValidationResult Validate()
         {
 
-            ValidationResult completa = ValidationResult.success;
+            ValidationResult result = ValidationResult.Create(ValidationCode.success);
 
-            if (UnitsSequence.Count <= 0) { completa = ValidationResult.unitsMissing; }
-            else if (WeekSchedule.HoursPerWeekDay.Count <= 0) { completa = ValidationResult.weekDayMissing; }
+            if (UnitsSequence.Count <= 0) { result = ValidationResult.Create(ValidationCode.unitsMissing); }
+            else if (WeekSchedule.HoursPerWeekDay.Count <= 0) { result = ValidationResult.Create(ValidationCode.weekScheduleDayMissing); }
 
-            return completa;
+            return result;
         }
 
         public void ResetWeekSchedule()

@@ -28,7 +28,47 @@ namespace Programacion123
 
         public override ValidationResult Validate()
         {
-            return base.Validate();
+            ValidationResult result = base.Validate();
+
+            if(result.code != ValidationCode.success) { return result; }
+
+            if(Metodology == null) { return ValidationResult.Create(ValidationCode.activityNotLinkedToMetodology); }
+
+            if(ContentPoints.Count <= 0) { return ValidationResult.Create(ValidationCode.activityNotLinkedToContents); } 
+
+            if(IsEvaluable)
+            {
+                if(EvaluationInstrumentType == null) { return ValidationResult.Create(ValidationCode.activityEvaluableAndNotLinkedToEvaluationInstrumentType); }
+
+                if(Criterias.Count <= 0) { return ValidationResult.Create(ValidationCode.activityEvaluableAndNotLinkedToCriterias); }
+
+                if(LearningResultsWeights.Count <= 0) { return ValidationResult.Create(ValidationCode.activityEvaluableAndNotLinkedToResultsWeights); }
+
+                HashSet<string> referencedLearningResultsIds = new();
+
+                List<CommonText> criteriasList = Criterias.ToList();
+                for(int i = 0; i < criteriasList.Count; i++)
+                {
+                    referencedLearningResultsIds.Add(Storage.FindParentStorageId(criteriasList[i].StorageId, criteriasList[i].StorageClassId));
+                }
+
+                List< KeyValuePair<LearningResult, float> > learningResultsWeightsList = LearningResultsWeights.ToList();
+
+                for(int i = 0; i < learningResultsWeightsList.Count; i++)
+                {
+                    if(referencedLearningResultsIds.Contains(learningResultsWeightsList[i].Key.StorageId))
+                    {
+                        if(learningResultsWeightsList[i].Value <= 0) { return ValidationResult.Create(ValidationCode.activityReferencesResultWithoutWeight).WithIndex(i); }
+                    }
+                    else
+                    {
+                        if(learningResultsWeightsList[i].Value > 0) { return ValidationResult.Create(ValidationCode.activityDoesntReferenceResultButHasWeight).WithIndex(i); }
+                    }
+                }
+            }
+
+            return ValidationResult.Create(ValidationCode.success);
+
         }
 
         public override bool Exists(string storageId, string? parentStorageId)

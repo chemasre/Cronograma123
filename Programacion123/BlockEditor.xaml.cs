@@ -99,7 +99,7 @@ namespace Programacion123
         {
             Entity.ValidationResult validation = entity.Validate();
 
-            if (validation == Entity.ValidationResult.success)
+            if (validation.code == Entity.ValidationCode.success)
             {
                 BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
                 TextValidation.Text = "No se han detectado problemas";
@@ -108,11 +108,11 @@ namespace Programacion123
             {
                 BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorInvalid"]);
 
-                if (validation == Entity.ValidationResult.titleEmpty)
+                if (validation.code == Entity.ValidationCode.entityTitleEmpty)
                 {                    
                     TextValidation.Text = "Tienes que escribir un título";
                 }
-                else // validation == Entity.ValidationResult.descriptionEmpty
+                else // validation.code == Entity.ValidationResult.descriptionEmpty
                 {
                     TextValidation.Text = "La descripción no puede estar vacía";
                 }

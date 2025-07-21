@@ -46,7 +46,7 @@ namespace Programacion123
         {
             Entity.ValidationResult validation = entity.Validate();
 
-            if (validation == Entity.ValidationResult.success)
+            if (validation.code == Entity.ValidationCode.success)
             {
                 BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
                 TextValidation.Text = "El horario es válido";
@@ -55,15 +55,15 @@ namespace Programacion123
             {
                 BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorInvalid"]);
 
-                if (validation == Entity.ValidationResult.titleEmpty)
+                if (validation.code == Entity.ValidationCode.entityTitleEmpty)
                 {                    
                     TextValidation.Text = "Tienes que escribir un título para el horario";
                 }
-                else if (validation == Entity.ValidationResult.descriptionEmpty)
+                else if (validation.code == Entity.ValidationCode.entityDescriptionEmpty)
                 {                    
                     TextValidation.Text = "Tienes que escribir una descripción para el calendario";
                 }
-                else // validation == Entity.ValidationResult.oneHourMinimum
+                else // validation.code == Entity.ValidationResult.oneHourMinimum
                 {
                     TextValidation.Text = "Tienes que introducir como mínimo una hora en alguno de los días";
                 }

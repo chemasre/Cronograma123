@@ -28,51 +28,52 @@
         {
             ValidationResult result = base.Validate();
 
-            if (result != ValidationResult.success) { return result;  }
+            if (result.code != ValidationCode.success) { return result;  }
 
-            if (Template == null) { return ValidationResult.subjectNotLinkedToTemplate; }
-            if (Calendar == null) { return ValidationResult.subjectNotLinkedToCalendar; }
-            if (WeekSchedule == null) { return ValidationResult.subjectNotLinkedToWeekSchedule;  }
+            if (Template == null) { return ValidationResult.Create(ValidationCode.subjectNotLinkedToTemplate); }
+            if (Calendar == null) { return ValidationResult.Create(ValidationCode.subjectNotLinkedToCalendar); }
+            if (WeekSchedule == null) { return ValidationResult.Create(ValidationCode.subjectNotLinkedToWeekSchedule);  }
 
-            if (Template.Validate() != ValidationResult.success) { return ValidationResult.subjectTemplateInvalid; }
-            if (Calendar.Validate() != ValidationResult.success) { return ValidationResult.subjectCalendarInvalid; }
-            if (WeekSchedule.Validate() != ValidationResult.success) { return ValidationResult.subjectWeekScheduleInvalid; }
+            if (Template.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectTemplateInvalid); }
+            if (Calendar.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectCalendarInvalid); }
+            if (WeekSchedule.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectWeekScheduleInvalid); }
 
-            if (MetodologiesIntroduction.Validate() != ValidationResult.success) { return ValidationResult.subjectMetodologiesIntroductionInvalid; }
+            if (MetodologiesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectMetodologiesIntroductionInvalid); }
 
             List<CommonText> metodologiesList = Metodologies.ToList();
-            foreach (CommonText m in metodologiesList) { if (m.Validate() != ValidationResult.success) { return ValidationResult.subjectMetodologiesInvalid; } }
+            for(int i = 0; i < metodologiesList.Count; i++) { if (metodologiesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectMetodologiesInvalid).WithIndex(i); } }
 
-            if (ResourcesIntroduction.Validate() != ValidationResult.success) { return ValidationResult.subjectResourcesIntroductionInvalid; }
+            if (ResourcesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectResourcesIntroductionInvalid); }
 
             List<CommonText> spacesList = SpaceResources.ToList();
-            foreach (CommonText s in spacesList) { if (s.Validate() != ValidationResult.success) { return ValidationResult.subjectSpaceResourceInvalid; } }
+            for(int i = 0; i < spacesList.Count; i++) { if (spacesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectSpaceResourceInvalid).WithIndex(i); } }
 
             List<CommonText> materialsList = MaterialResources.ToList();
-            foreach (CommonText m in materialsList) { if (m.Validate() != ValidationResult.success) { return ValidationResult.subjectMaterialResourceInvalid; } }
+            for(int i = 0; i < materialsList.Count; i++) { if (materialsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectMaterialResourceInvalid).WithIndex(i); } }
 
-            if (EvaluationInstrumentTypesIntroduction.Validate() != ValidationResult.success) { return ValidationResult.subjectEvaluationInstrumentTypesIntroductionInvalid; }
+            if (EvaluationInstrumentTypesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectEvaluationInstrumentTypesIntroductionInvalid); }
 
             List<CommonText> instrumentsList = EvaluationInstrumentsTypes.ToList();
-            foreach (CommonText i in instrumentsList) { if (i.Validate() != ValidationResult.success) { return ValidationResult.subjectInstrumentTypeInvalid; } }
+            for(int i = 0; i < instrumentsList.Count; i++) { if (instrumentsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectInstrumentTypeInvalid).WithIndex(i); } }
 
-            if (BlocksIntroduction.Validate() != ValidationResult.success) { return ValidationResult.subjectBlocksIntroductionInvalid; }
+            if (BlocksIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectBlocksIntroductionInvalid); }
 
             List<Block> blocksList = Blocks.ToList();
-            foreach (Block b in blocksList) { if (b.Validate() != ValidationResult.success) { return ValidationResult.subjectBlockInvalid; } }
+            for(int i = 0; i < blocksList.Count; i++) { if (blocksList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectBlockInvalid).WithIndex(i); } }
 
             List<KeyValuePair<LearningResult, float>> learningResultsWeightsList = LearningResultsWeights.ToList();
 
             float sum = 0;
-            foreach (KeyValuePair<LearningResult, float> r in learningResultsWeightsList)
+            for(int i = 0; i < learningResultsWeightsList.Count; i++)
             {
-                if (r.Value <= 0) { return ValidationResult.subjectLearningResultWeightInvalid;  }
+                KeyValuePair<LearningResult, float> r = learningResultsWeightsList[i];
+                if (r.Value <= 0) { return ValidationResult.Create(ValidationCode.subjectLearningResultWeightInvalid).WithIndex(i);  }
                 sum += r.Value;
             }
 
-            if (sum != 100) { return ValidationResult.subjectLearningResultsWeightNotHundredPercent; }
+            if (sum != 100) { return ValidationResult.Create(ValidationCode.subjectLearningResultsWeightNotHundredPercent); }
 
-            return ValidationResult.success;
+            return ValidationResult.Create(ValidationCode.success);
         }
 
         public override bool Exists(string storageId, string? parentStorageId)

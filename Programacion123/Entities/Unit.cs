@@ -44,8 +44,8 @@
 
         public override ValidationResult Validate()
         {
-           if(Hours <= 0) { return ValidationResult.oneHourMinimum; }
-           else { return ValidationResult.success; }
+           if(Hours <= 0) { return ValidationResult.Create(ValidationCode.weekScheduleOneHourMinimum); }
+           else { return ValidationResult.Create(ValidationCode.success); }
         }
     };
 }

@@ -107,7 +107,7 @@ namespace Programacion123
         {
             Entity.ValidationResult result = calendar.Validate();
 
-            if (result == Entity.ValidationResult.success)
+            if (result.code == Entity.ValidationCode.success)
             {
                 BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
                 TextValidation.Text = "El calendario es válido";
@@ -116,23 +116,23 @@ namespace Programacion123
             {
                 BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorInvalid"]);
 
-                if (result == Entity.ValidationResult.titleEmpty)
+                if (result.code == Entity.ValidationCode.entityTitleEmpty)
                 {                    
                     TextValidation.Text = "Tienes que escribir un título para el calendario";
                 }
-                else if (result == Entity.ValidationResult.descriptionEmpty)
+                else if (result.code == Entity.ValidationCode.entityDescriptionEmpty)
                 {                    
                     TextValidation.Text = "Tienes que escribir una descripción para el calendario";
                 }
-                else if(result == Entity.ValidationResult.freeDayBeforeStartOrAfterEnd)
+                else if(result.code == Entity.ValidationCode.calendarFreeDayBeforeStartOrAfterEnd)
                 {
                     TextValidation.Text = "Todos los días festivos deben situarse entre el primer día del curso y el último (incluidos)";
                 }
-                else if(result == Entity.ValidationResult.startDayAfterEndDay)
+                else if(result.code == Entity.ValidationCode.calendarStartDayAfterEndDay)
                 {
                     TextValidation.Text = "Tienes que situar el primer día del curso antes o coincidiendo con el último";
                 }
-                else // result == Entity.ValidationResult.noSchoolDays
+                else // result.code == Entity.ValidationResult.noSchoolDays
                 {
                     TextValidation.Text = "Tiene que existir al menos un día lectivo";
                 }

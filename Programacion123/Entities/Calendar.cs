@@ -28,23 +28,23 @@
         {
             ValidationResult validation = base.Validate();
 
-            if (validation == ValidationResult.success && StartDay > EndDay)
+            if (validation.code == ValidationCode.success && StartDay > EndDay)
             {
                 //Console.WriteLine("La fecha de inicio no puede ser posterior a la fecha de fin");
-                validation = ValidationResult.startDayAfterEndDay;
+                validation = ValidationResult.Create(ValidationCode.calendarStartDayAfterEndDay);
             }
 
-            if(validation == ValidationResult.success)
+            if(validation.code == ValidationCode.success)
             {
                 int i = 0;
                 var listaFestivos = FreeDays.ToList();
 
-                while (validation == ValidationResult.success && i < listaFestivos.Count)
+                while (validation.code == ValidationCode.success && i < listaFestivos.Count)
                 {
                     if (listaFestivos[i] > EndDay || listaFestivos[i] < StartDay)
                     {
                         //Utils.MuestraError("El festivo " + listaFestivos[i].ToString("dd/MM/yyyy") + " esta fuera del calendario");
-                        validation = ValidationResult.freeDayBeforeStartOrAfterEnd;
+                        validation = ValidationResult.Create(ValidationCode.calendarFreeDayBeforeStartOrAfterEnd);
                     }
 
                     i++;
@@ -52,7 +52,7 @@
 
             }
 
-            if(validation == ValidationResult.success)
+            if(validation.code == ValidationCode.success)
             {
                 DateTime d = StartDay;
                 bool foundSchoolDay = false;
@@ -63,7 +63,7 @@
                     else { d = d.AddDays(1); }
                 }
 
-                if(!foundSchoolDay) { validation = ValidationResult.noSchoolDays; }
+                if(!foundSchoolDay) { validation = ValidationResult.Create(ValidationCode.calendarNoSchoolDays); }
             }
 
             return validation;

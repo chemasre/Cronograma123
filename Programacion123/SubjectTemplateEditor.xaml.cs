@@ -169,7 +169,7 @@ namespace Programacion123
         {
             Entity.ValidationResult validation = entity.Validate();
 
-            if (validation == Entity.ValidationResult.success)
+            if (validation.code == Entity.ValidationCode.success)
             {
                 BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
                 TextValidation.Text = "No se han detectado problemas";

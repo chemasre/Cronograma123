@@ -11,7 +11,13 @@
 
         public override ValidationResult Validate()
         {
-            return base.Validate();
+            ValidationResult result = base.Validate();
+
+            if(result.code != ValidationCode.success) { return result; }
+
+            for(int i = 0; i < Points.Count; i++) { if(Points[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.contentPointInvalid).WithIndex(i); } }
+
+            return ValidationResult.Create(ValidationCode.success);
         }
 
         public override bool Exists(string storageId, string? parentStorageId)

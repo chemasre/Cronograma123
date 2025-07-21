@@ -14,11 +14,11 @@
         {
             ValidationResult validation = base.Validate();
 
-            if(validation == ValidationResult.success)
+            if(validation.code == ValidationCode.success)
             {
                 int total = 0;
                 HoursPerWeekDay.ToList().ForEach(e => total += e.Value);
-                if (total <= 0) { validation = ValidationResult.oneHourMinimum; }
+                if (total <= 0) { validation = ValidationResult.Create(ValidationCode.weekScheduleOneHourMinimum); }
             }
             
             return validation;

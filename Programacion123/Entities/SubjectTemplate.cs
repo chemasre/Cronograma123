@@ -35,7 +35,43 @@ namespace Programacion123
 
         public override ValidationResult Validate()
         {
-            return base.Validate();
+            ValidationResult result = base.Validate();
+
+            if(result.code != ValidationCode.success) { return result; }
+
+            if(SubjectName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNameEmpty); }
+            if(SubjectCode.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectCodeEmpty); }
+            if(GradeName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNameEmpty); }
+            if(GradeClassroomHours <= 0) { return ValidationResult.Create(ValidationCode.templateClassroomHoursZero); }
+            if(GradeFamilyName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateGradeFamilyNameEmpty); }
+
+            if(GeneralObjectivesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGeneralObjectivesIntroductionInvalid); }
+
+            List<CommonText> objectivesList = GeneralObjectives.ToList();
+            for(int i = 0; i < objectivesList.Count; i++) { if(objectivesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGeneralObjectiveInvalid).WithIndex(i); } }
+
+            if(GeneralCompetencesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGeneralCompetencesIntroductionInvalid); }
+
+            List<CommonText> competencesList = GeneralCompetences.ToList();
+            for(int i = 0; i < competencesList.Count; i++) { if(competencesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGeneralCompetenceInvalid).WithIndex(i); } }
+
+            if(KeyCapacitiesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateKeyCapacitiesIntroductionInvalid); }
+
+            List<CommonText> capacitiesList = KeyCapacities.ToList();
+            for(int i = 0; i < capacitiesList.Count; i++) { if(capacitiesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateKeyCapacitiesInvalid).WithIndex(i); } }
+
+            if(LearningResultsIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateLearningResultsIntroductionInvalid); }
+
+            List<LearningResult> resultsList = LearningResults.ToList();
+            for(int i = 0; i < resultsList.Count; i++) { if(resultsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateLearningResultsInvalid).WithIndex(i); } }
+
+            if(ContentsIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateContentsIntroductionInvalid); }
+
+            List<Content> contentsList = Contents.ToList();
+            for(int i = 0; i < contentsList.Count; i++) { if(contentsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateContentsInvalid).WithIndex(i); } }
+
+
+            return ValidationResult.Create(ValidationCode.success);
         }
 
         public override bool Exists(string storageId, string? parentStorageId)
