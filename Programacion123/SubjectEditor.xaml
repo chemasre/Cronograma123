@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="SubjectEditor" Height="744" Width="532" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" Foreground="{x:Null}" AllowsTransparency="True" Topmost="True">
+        Title="SubjectEditor" Height="744" Width="532" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" Foreground="{x:Null}" AllowsTransparency="True" Topmost="True" MouseDown="Window_MouseDown">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" Background="#FFC3B7FF" CornerRadius="30" BorderBrush="#FF0370A9" >
         <Canvas>
             <Border BorderThickness="1" Height="73" Width="514" CornerRadius="30,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">

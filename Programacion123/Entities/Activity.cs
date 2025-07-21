@@ -8,13 +8,15 @@ namespace Programacion123
 
         public CommonText? Metodology = null;
 
-        public SetProperty<CommonText> ContentPoints = new SetProperty<CommonText>();
-        public SetProperty<CommonText> SpaceResources = new SetProperty<CommonText>();
-        public SetProperty<CommonText> MaterialResources = new SetProperty<CommonText>();
+        public SetProperty<CommonText> ContentPoints { get; } = new SetProperty<CommonText>();
+        public SetProperty<CommonText> SpaceResources { get; } = new SetProperty<CommonText>();
+        public SetProperty<CommonText> MaterialResources { get; } = new SetProperty<CommonText>();
 
         public bool IsEvaluable = false;
         public CommonText? EvaluationInstrumentType = null;
-        public SetProperty<CommonText> Criterias = new SetProperty<CommonText>();
+        public SetProperty<CommonText> Criterias { get; }= new SetProperty<CommonText>();
+
+        public DictionaryProperty<LearningResult, float> LearningResultsWeights { get; } = new DictionaryProperty<LearningResult, float>();
 
         public Activity() : base()
         {
@@ -63,6 +65,11 @@ namespace Programacion123
             list = Criterias.ToList();
             data.CriteriasWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
 
+            List< KeyValuePair<LearningResult, float> > resultsList = LearningResultsWeights.ToList();
+            List< KeyValuePair<string, float> > resultsWithIds = new();
+            foreach(var r in resultsList) { resultsWithIds.Add(KeyValuePair.Create<string, float>(r.Key.StorageId, r.Value)); }
+            data.LearningResultsWeakStorageIdsWeights = resultsWithIds;
+
             Storage.SaveData<ActivityData>(StorageId, StorageClassId, data, parentStorageId);
 
         }
@@ -90,6 +97,14 @@ namespace Programacion123
 
             EvaluationInstrumentType = data.EvaluationInstrumentTypeWeakStorageId!= null ? Storage.FindEntity<CommonText>(data.EvaluationInstrumentTypeWeakStorageId, subjectStorageId) : null;
             Criterias.Set(Storage.FindChildEntities<CommonText>(data.CriteriasWeakStorageIds));
+
+            List< KeyValuePair<string, float> > resultsWithIds = data.LearningResultsWeakStorageIdsWeights;
+            List< KeyValuePair<LearningResult, float> > resultsList = new();
+            foreach(var r in resultsWithIds)
+            {   LearningResult result = Storage.FindChildEntity<LearningResult>(r.Key);
+                resultsList.Add(new KeyValuePair<LearningResult, float>(result, r.Value));
+            }
+            LearningResultsWeights.Set(resultsList);
 
         }
 

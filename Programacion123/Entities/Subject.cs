@@ -19,6 +19,8 @@ namespace Programacion123
         public CommonText BlocksIntroduction { get; set; } = new CommonText();
         public ListProperty<Block> Blocks { get; } = new ListProperty<Block>();
 
+        public DictionaryProperty<LearningResult, float> LearningResultsWeights  { get; } = new DictionaryProperty<LearningResult, float>();
+
         public Subject() : base()
         {
             StorageClassId = "subject";
@@ -80,7 +82,11 @@ namespace Programacion123
             List<Block> blockList = Blocks.ToList();
             blockList.ForEach(e => e.Save(StorageId));            
             data.BlocksStorageIds = Storage.GetStorageIds<Block>(blockList);
-            
+        
+            List< KeyValuePair<LearningResult, float> > resultsList = LearningResultsWeights.ToList();
+            List< KeyValuePair<string, float> > resultsWithIds = new();
+            foreach(var r in resultsList) { resultsWithIds.Add(KeyValuePair.Create<string, float>(r.Key.StorageId, r.Value)); }
+            data.LearningResultsWeakStorageIdsWeights = resultsWithIds;            
 
             Storage.SaveData<SubjectData>(StorageId, StorageClassId, data, parentStorageId);
 
@@ -113,6 +119,14 @@ namespace Programacion123
 
             BlocksIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.BlocksIntroductionStorageId, storageId);
             Blocks.Set(Storage.LoadOrCreateEntities<Block>(data.BlocksStorageIds, storageId));
+
+            List< KeyValuePair<string, float> > resultsWithIds = data.LearningResultsWeakStorageIdsWeights;
+            List< KeyValuePair<LearningResult, float> > resultsList = new();
+            foreach(var r in resultsWithIds)
+            {   LearningResult? result = Storage.FindChildEntity<LearningResult>(r.Key);
+                if(result != null) { resultsList.Add(new KeyValuePair<LearningResult, float>(result, r.Value)); }
+            }
+            LearningResultsWeights.Set(resultsList);
         }
 
         public override void Delete(string? parentStorageId = null)

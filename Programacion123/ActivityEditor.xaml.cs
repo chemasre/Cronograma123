@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,7 @@ namespace Programacion123
         Subject? subject;
         Block? block;
 
+        DataTable dataTableResultsWeight;
 
         public ActivityEditor()
         {
@@ -86,9 +88,19 @@ namespace Programacion123
             entity.IsEvaluable = CheckboxIsEvaluable.IsChecked.GetValueOrDefault();
 
             entity.EvaluationInstrumentType = evaluationInstrumentController.GetEntity();
-
             entity.Criterias.Set(criteriasController.GetSelectedEntities());
+            entity.LearningResultsWeights.Clear();
 
+            if(subject.Template != null)
+            {
+                int resultIndex = 0;
+                List<LearningResult> results = subject.Template.LearningResults.ToList();
+                foreach(DataColumn c in dataTableResultsWeight.Columns)
+                {
+                    entity.LearningResultsWeights.Add(results[resultIndex], (float)dataTableResultsWeight.Rows[0][c.ColumnName]);
+                    resultIndex ++;
+                }
+            }
 
             entity.Save(parentStorageId);
         }
@@ -123,7 +135,6 @@ namespace Programacion123
                                                .WithBlocker(Blocker);
 
             metodologyController = new(configMetodology);
-            metodologyController.Changed += MetodologyController_Changed;
 
             Func<List<string>> pickContentPointsQuery =
                 () =>
@@ -195,7 +206,6 @@ namespace Programacion123
                                                         .WithBlocker(Blocker);
 
             contentPointsController = new(configContents);
-            contentPointsController.Changed += ContentPointsController_Changed;
 
             var configSpaceResources = WeakReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxSpaceResources)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.SpaceResources.ToList()))
@@ -206,7 +216,6 @@ namespace Programacion123
                                                         .WithBlocker(Blocker);
 
             spaceResourcesController = new(configSpaceResources);
-            spaceResourcesController.Changed += SpaceResourcesController_Changed;
 
             var configMaterialResources = WeakReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxMaterialResources)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.MaterialResources.ToList()))
@@ -217,7 +226,6 @@ namespace Programacion123
                                                         .WithBlocker(Blocker);
 
             materialResourcesController = new(configMaterialResources);
-            materialResourcesController.Changed += MaterialResourcesController_Changed;
 
 
             var configEvaluationInstrument = WeakReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextEvaluationInstrument)
@@ -230,7 +238,6 @@ namespace Programacion123
                                                .WithBlocker(Blocker);
 
             evaluationInstrumentController = new(configEvaluationInstrument);
-            evaluationInstrumentController.Changed += EvaluationInstrumentController_Changed;
 
             Func<List<string>> pickCriteriasQuery =
                 () =>
@@ -302,19 +309,47 @@ namespace Programacion123
                                                         .WithBlocker(Blocker);
 
             criteriasController = new(configCriterias);
-            criteriasController.Changed += CriteriasController_Changed;
-
 
             TextTitle.Text = entity.Title;
             TextBoxDescription.Text = entity.Description;
             TextHours.Text = entity.Hours.ToString();
             CheckboxIsEvaluable.IsChecked = entity.IsEvaluable;
 
+            dataTableResultsWeight = new DataTable();
+            
+            DataGridLearningResultsWeight.ItemsSource = dataTableResultsWeight.DefaultView;
+            DataGridLearningResultsWeight.CanUserAddRows = false;
+            DataGridLearningResultsWeight.CanUserDeleteRows = false;
+            DataGridLearningResultsWeight.CanUserReorderColumns = false;
+            DataGridLearningResultsWeight.CanUserSortColumns = false;
+            DataGridLearningResultsWeight.CanUserResizeColumns = false;
+            DataGridLearningResultsWeight.CanUserResizeRows = false;
+
+            TextHours.TextChanged += TextHours_TextChanged;
+
+            metodologyController.Changed += MetodologyController_Changed;
+            contentPointsController.Changed += ContentPointsController_Changed;
+            spaceResourcesController.Changed += SpaceResourcesController_Changed;
+            materialResourcesController.Changed += MaterialResourcesController_Changed;
+            evaluationInstrumentController.Changed += EvaluationInstrumentController_Changed;
+            criteriasController.Changed += CriteriasController_Changed;
+
             CheckboxIsEvaluable.Checked += CheckboxIsEvaluable_CheckedChanged;
             CheckboxIsEvaluable.Unchecked += CheckboxIsEvaluable_CheckedChanged;
 
-            UpdateActivityCodeUI();
+            dataTableResultsWeight.RowChanged += DataTableResultsWeight_RowChanged;
 
+            UpdateActivityCodeUI();
+            UpdateResultsWeightTableUI();
+
+
+
+
+        }
+
+        private void DataTableResultsWeight_RowChanged(object sender, DataRowChangeEventArgs e)
+        {
+            UpdateEntity();
         }
 
         void SpaceResourcesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
@@ -330,6 +365,7 @@ namespace Programacion123
         void CriteriasController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
+            UpdateResultsWeightTableUI();
         }
 
         void EvaluationInstrumentController_Changed(WeakReferenceFieldController<CommonText, EntityPicker<CommonText>> controller)
@@ -351,6 +387,7 @@ namespace Programacion123
         {
             UpdateActivityCodeUI();
             UpdateEntity();
+            UpdateResultsWeightTableUI();
         }
 
         void UpdateActivityCodeUI()
@@ -369,6 +406,50 @@ namespace Programacion123
             }
         }
 
+        void UpdateResultsWeightTableUI()
+        {
+            dataTableResultsWeight.Clear();
+            dataTableResultsWeight.Rows.Clear();
+            dataTableResultsWeight.Columns.Clear();
+
+            List<LearningResult> learningResultList = subject.Template.LearningResults.ToList();
+            for(int i = 0; i < learningResultList.Count; i++)
+            {
+                string columnName = String.Format("RA{0}", i + 1);
+                dataTableResultsWeight.Columns.Add(columnName, typeof(float));
+            }
+
+            List<KeyValuePair<LearningResult, float>> learningResultsWeightList = entity.LearningResultsWeights.ToList();
+
+            DataRow row = dataTableResultsWeight.NewRow();
+
+            for(int i = 0; i < learningResultList.Count; i++)
+            {
+                string columnName = String.Format("RA{0}", i + 1);
+                row[columnName] = learningResultsWeightList[i].Value;
+            }
+
+            dataTableResultsWeight.Rows.Add(row);
+
+            //List<Tuple<int, float>> rIndexWeights = new();
+            //List<KeyValuePair<LearningResult, float>> rWeightsList = entity.LearningResultsWeights.ToList();
+            //foreach(var rWeight in rWeightsList)
+            //{
+            //    int rIndex = .FindIndex(r => r.StorageId == rWeight.Key.StorageId);
+            //    rIndexWeights.Add(Tuple.Create<int, float>(rIndex, rWeight.Value));
+            //}
+
+            //rIndexWeights.Sort((e1, e2) => e1.Item1.CompareTo(e2.Item1) );
+
+            //foreach(var rIndexWeight in rIndexWeights)
+            //{ dataTableResultsWeight.Columns.Add(String.Format("RA{0}", rIndexWeight.Item1 + 1), typeof(float)); }
+
+            //DataRow row = dataTableResultsWeight.NewRow();
+            //foreach(var rIndexWeight in rIndexWeights)
+            //{ row[String.Format("RA{0}", rIndexWeight.Item1 + 1)] = rIndexWeight.Item2; }
+            //dataTableResultsWeight.Rows.Add(row);
+        }
+
         public Activity GetEntity()
         {
             return entity;
@@ -380,6 +461,33 @@ namespace Programacion123
             if(!Int32.TryParse(TextHours.Text, out h)) { TextHours.Text = ""; }
 
             UpdateEntity();
+        }
+
+
+        public HashSet<int> GetReferencedResults(List<CommonText> criteriasList, List<LearningResult> resultsList)
+        {
+            HashSet<int> referencedResults = new();
+            for(int i = 0; i < resultsList.Count; i ++)
+            {
+                bool done = false;
+                List<CommonText> resultCriteriaList = resultsList[i].Criterias.ToList();
+                int j = 0;
+                while(j < resultCriteriaList.Count && !done)
+                {
+                    if(criteriasList.Find(r => r.StorageId == resultCriteriaList[j].StorageId) != null)
+                    {
+                        referencedResults.Add(i);
+                        done = true;
+                    }
+                    else
+                    {
+                        j++;
+                    }
+                }
+                    
+            }
+
+            return referencedResults;
         }
     }
 }

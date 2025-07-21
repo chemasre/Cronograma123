@@ -244,14 +244,30 @@ namespace Programacion123
             DataGridActivitiesWeight.CanUserResizeColumns = false;
             DataGridActivitiesWeight.CanUserResizeRows = false;
 
-            UpdateActivityResultsWeightTableUI();
-            UpdateResultsWeightTableUI();
+            UpdateEntityTemplateReferences();
+
+            dataTableResultsWeight.RowChanged += DataTableResultsWeight_RowChanged;
+            dataTableActivitiesWeight.RowChanged += DataTableActivitiesWeight_RowChanged;
+
+            UpdateActivityWeightsUIFromEntity();
+            UpdateWeightsUIFromEntity();
+
 
             Validate();
 
         }
 
-        void UpdateResultsWeightTableUI()
+        private void DataTableActivitiesWeight_RowChanged(object sender, DataRowChangeEventArgs e)
+        {
+            UpdateEntityFromUI();
+        }
+
+        private void DataTableResultsWeight_RowChanged(object sender, DataRowChangeEventArgs e)
+        {
+            UpdateEntityFromUI();
+        }
+
+        void UpdateWeightsUIFromEntity()
         {
             dataTableResultsWeight.Clear();
             dataTableResultsWeight.Rows.Clear();
@@ -259,19 +275,34 @@ namespace Programacion123
 
             if(entity.Template != null)
             {
-                int resultsCount = entity.Template.LearningResults.ToList().Count;
+                List< KeyValuePair<LearningResult, float> > resultsWeightsList = entity.LearningResultsWeights.ToList();
+                List<LearningResult> resultsList = entity.Template.LearningResults.ToList();
+                int resultsCount = resultsList.Count;
                 for(int i = 0; i < resultsCount; i++)
                 { dataTableResultsWeight.Columns.Add(String.Format("RA{0}", i + 1), typeof(float)); }
 
                 DataRow row = dataTableResultsWeight.NewRow();
                 for(int i = 0; i < resultsCount; i++)
-                { row[String.Format("RA{0}", i + 1)] = 0; }
+                {
+                    int weightIndex;
+                    float weight;                    
+                    weightIndex = resultsWeightsList.FindIndex(r => r.Key.StorageId == resultsList[i].StorageId);
+                    if(weightIndex >= 0) { weight = resultsWeightsList[weightIndex].Value; }
+                    else { weight = 0; }
+
+                    row[String.Format("RA{0}", i + 1)] = weight;
+                }
+
+                dataTableResultsWeight.RowChanged -= DataTableResultsWeight_RowChanged;
                 dataTableResultsWeight.Rows.Add(row);
+                dataTableResultsWeight.RowChanged += DataTableResultsWeight_RowChanged;
             }
 
+            DataGridLearningResultsWeight.ItemsSource = null;
+            DataGridLearningResultsWeight.ItemsSource = dataTableResultsWeight.DefaultView;
         }
 
-        void UpdateActivityResultsWeightTableUI()
+        void UpdateActivityWeightsUIFromEntity()
         {
             dataTableActivitiesWeight.Clear();
             dataTableActivitiesWeight.Rows.Clear();
@@ -294,34 +325,34 @@ namespace Programacion123
                     for(int a = 0; a < block.Activities.Count; a++)
                     {
                         Activity activity = block.Activities[a];
+                        //activity = Storage.LoadOrCreateEntity<Activity>(activity.StorageId, block.StorageId);
 
                         if(activity.IsEvaluable)
                         {
                             DataRow row = dataTableActivitiesWeight.NewRow();
                             row["Activity"] = String.Format("B{0:00}-A{1:00}", b + 1, evaluableActivityIndex + 1);
 
-                            HashSet<string> activityResultsStorageIds = new();
-                            List<CommonText> criteriasList = activity.Criterias.ToList();
+                            List<KeyValuePair<LearningResult, float>> resultsWeightsList = activity.LearningResultsWeights.ToList();
 
-                            foreach(CommonText c in criteriasList)
-                            {
-                                activityResultsStorageIds.Add(Storage.FindParentStorageId(c.StorageId, c.StorageClassId));
+                            for(int i = 0; i < results.Count; i++)
+                            { 
+                                int weightIndex = resultsWeightsList.FindIndex(r => r.Key.StorageId == results[i].StorageId);
+                                float weight = weightIndex >= 0 ? resultsWeightsList[weightIndex].Value : 0;
+                                row[String.Format("RA{0}", i + 1)] = weight;
                             }
 
-                            foreach(string resultStorageId in activityResultsStorageIds)
-                            {
-                                int resultIndex = results.FindIndex(r => r.StorageId == resultStorageId);
-                                row[String.Format("RA{0}", resultIndex + 1)] = 0;
-                            }
-
+                            dataTableActivitiesWeight.RowChanged -= DataTableActivitiesWeight_RowChanged;
                             dataTableActivitiesWeight.Rows.Add(row);
+                            dataTableActivitiesWeight.RowChanged += DataTableActivitiesWeight_RowChanged;
 
                             evaluableActivityIndex ++;
                         }
                     }
                 }
-            }
+            }            
 
+            DataGridActivitiesWeight.ItemsSource = null;
+            DataGridActivitiesWeight.ItemsSource = dataTableActivitiesWeight.DefaultView;
         }
 
 
@@ -342,70 +373,73 @@ namespace Programacion123
 
         private void BlocksIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntity();
+            UpdateEntityFromUI();
         }
 
         private void EvaluationInstrumentTypesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntity();
+            UpdateEntityFromUI();
         }
 
         private void EvaluationInstrumentTypesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntity();
+            UpdateEntityFromUI();
         }
 
         private void MaterialResourcesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntity();
+            UpdateEntityFromUI();
         }
 
         private void SpaceResourcesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntity();
+            UpdateEntityFromUI();
         }
 
         private void ResourcesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntity();
+            UpdateEntityFromUI();
         }
 
         private void MetodologiesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntity();
+            UpdateEntityFromUI();
         }
 
         private void MetodologiesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntity();
+            UpdateEntityFromUI();
         }
 
         private void WeekScheduleController_Changed(WeakReferenceFieldController<WeekSchedule, EntityPicker<WeekSchedule> > controller)
         {
-            UpdateEntity();
+            UpdateEntityFromUI();
         }
 
         private void CalendarController_Changed(WeakReferenceFieldController<Calendar, EntityPicker<Calendar>> controller)
         {
-            UpdateEntity();
+            UpdateEntityFromUI();
         }
 
         private void SubjectTemplateController_Changed(WeakReferenceFieldController<SubjectTemplate, EntityPicker<SubjectTemplate>> controller)
         {
-            UpdateEntity();
-            UpdateResultsWeightTableUI();
-            UpdateActivityResultsWeightTableUI();
+            UpdateEntityFromUI();
+            UpdateWeightsUIFromEntity();
+            UpdateActivityWeightsUIFromEntity();
         }
 
         void BlocksController_Changed(StrongReferencesBoxController<Block, BlockEditor> controller)
         {
-            UpdateEntity();
-            UpdateResultsWeightTableUI();
-            UpdateActivityResultsWeightTableUI();
+            // Reload blocks because activities may have changed
+            entity.Blocks.Set(Storage.LoadOrCreateEntities<Block>(blocksController.StorageIds, entity.StorageId));
+
+            UpdateActivityWeightsUIFromEntity();
+            UpdateEntityFromUI();
+            
         }
 
-        private void UpdateEntity()
-        {
+        private void UpdateEntityFromUI()
+        {            
             entity.Title = TextTitle.Text;
 
             entity.Template = subjectTemplateController.GetEntity();
@@ -425,12 +459,128 @@ namespace Programacion123
             entity.BlocksIntroduction = Storage.LoadOrCreateEntity<CommonText>(blocksIntroductionController.StorageId, entity.StorageId);
             entity.Blocks.Set(Storage.LoadOrCreateEntities<Block>(blocksController.StorageIds, entity.StorageId));
 
+            entity.LearningResultsWeights.Clear();
+            if(entity.Template != null)
+            {
+                int columnIndex = 0;
+                int count = Math.Min(dataTableResultsWeight.Columns.Count, entity.Template.LearningResults.Count);
+                for(int i = 0; i < count; i++)
+                {
+                    DataColumn c = dataTableResultsWeight.Columns[i];
+                    LearningResult r = entity.Template.LearningResults[columnIndex];
+                    entity.LearningResultsWeights.Add(r, (float)dataTableResultsWeight.Rows[0][c.ColumnName]);
+                    columnIndex++;
+                }
+            }
+            else
+            {
+                entity.LearningResultsWeights.Clear();
+            }
+
+            int evaluableActivityIndex = 0;
+            List<Block> blocksList = entity.Blocks.ToList();
+            foreach(Block b in blocksList)
+            {
+                List<Activity> activitiesList = b.Activities.ToList();
+                foreach(Activity a in activitiesList)
+                {
+                    if(a.IsEvaluable)
+                    {
+                        if(entity.Template != null)
+                        {
+                            a.LearningResultsWeights.Clear();
+                            List<LearningResult> resultList = entity.Template.LearningResults.ToList();
+                            int columnCount = Math.Min(dataTableActivitiesWeight.Columns.Count - 1, resultList.Count);
+                            for(int i = 0; i < columnCount; i++)
+                            {
+                                string columnName = dataTableActivitiesWeight.Columns[i + 1].ColumnName;
+                                float weight;
+                                if(dataTableActivitiesWeight.Rows.Count > evaluableActivityIndex)
+                                { weight = (float)dataTableActivitiesWeight.Rows[evaluableActivityIndex][columnName]; }
+                                else { weight = 0; }
+
+                                a.LearningResultsWeights.Add(resultList[i], weight);
+                            }
+                        }
+                        else
+                        {
+                            a.LearningResultsWeights.Clear();
+                        }
+
+                        evaluableActivityIndex++;
+                    }
+                    else
+                    {
+                        a.LearningResultsWeights.Clear();
+                    }
+                    
+                }
+            }
+
+            UpdateEntityTemplateReferences();
+
+            // Not needed as UpdateEntityTemplateReferences already does that
+            //entity.Save(parentStorageId);
+        }
+
+        void UpdateEntityTemplateReferences()
+        {
+            if(entity.Template == null)
+            {
+                entity.LearningResultsWeights.Clear();
+
+                List<Block> blocksList = entity.Blocks.ToList();
+
+                foreach(Block b in blocksList)
+                {
+                    List<Activity> activitiesList = b.Activities.ToList();
+
+                    foreach(Activity a in activitiesList)
+                    {
+                        a.LearningResultsWeights.Clear();
+                    }
+                }
+            }
+            else
+            {
+                List<KeyValuePair<LearningResult, float>> previousWeights = entity.LearningResultsWeights.ToList();
+
+                List<LearningResult> resultsList = entity.Template.LearningResults.ToList();
+                entity.LearningResultsWeights.Clear();
+                foreach(LearningResult r in resultsList)
+                {
+                    int weightIndex = previousWeights.FindIndex(p => p.Key.StorageId == r.StorageId);
+                    float weight = weightIndex >= 0 ? previousWeights[weightIndex].Value : 0;
+                    entity.LearningResultsWeights.Add(r, weight);
+                }
+
+                List<Block> blocksList = entity.Blocks.ToList();
+
+                foreach(Block b in blocksList)
+                {
+                    List<Activity> activitiesList = b.Activities.ToList();
+
+                    foreach(Activity a in activitiesList)
+                    {
+                        List<KeyValuePair<LearningResult, float>> previousActivityWeights = a.LearningResultsWeights.ToList();
+                        a.LearningResultsWeights.Clear();
+                        foreach(LearningResult r in resultsList)
+                        {
+                            int weightIndex = previousActivityWeights.FindIndex(p => p.Key.StorageId == r.StorageId);
+                            float weight = weightIndex >= 0 ? previousActivityWeights[weightIndex].Value : 0;
+                            a.LearningResultsWeights.Add(r, weight);
+                        }
+
+                    }
+                }
+            }
+
             entity.Save(parentStorageId);
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntityFromUI();
 
             Close();
         }

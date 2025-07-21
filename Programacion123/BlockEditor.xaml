@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="BlockEditor" Height="562" Width="504" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}" Foreground="{x:Null}" Topmost="True">
+        Title="BlockEditor" Height="562" Width="504" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}" Foreground="{x:Null}" Topmost="True" MouseDown="Window_MouseDown">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="#FF0370A9" Background="#FFC3B7FF" >
         <Canvas>
 

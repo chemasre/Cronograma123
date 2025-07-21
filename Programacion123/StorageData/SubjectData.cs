@@ -19,6 +19,7 @@
         public string BlocksIntroductionStorageId { get; set; }
         public List<string> BlocksStorageIds  { get; set; } = new List<string>();
 
+        public List< KeyValuePair<string, float> > LearningResultsWeakStorageIdsWeights { get; set; } = new List<KeyValuePair<string, float>>();
 
     }
 }

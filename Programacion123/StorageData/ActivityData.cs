@@ -15,5 +15,7 @@
         public string? EvaluationInstrumentTypeWeakStorageId  { get; set; } = null;
         public List<string> CriteriasWeakStorageIds  { get; set; } = new List<string>();
 
+        public List< KeyValuePair<string, float> > LearningResultsWeakStorageIdsWeights { get; set; } = new List<KeyValuePair<string, float>>();
+
     }
 }

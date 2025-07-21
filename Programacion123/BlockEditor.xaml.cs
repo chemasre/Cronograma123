@@ -36,7 +36,19 @@ namespace Programacion123
             parentStorageId = _parentStorageId;
             entity = _entity;
 
+            Action<Activity> activityInitializer =
+                (Activity a) =>
+                {
+                    Subject subject = Storage.FindEntity<Subject>(Storage.FindParentStorageId(entity.StorageId, entity.StorageClassId), null);
+                    if(subject.Template != null)
+                    {
+                        List<LearningResult> results = subject.Template.LearningResults.ToList();
+                        foreach(LearningResult r in results) { a.LearningResultsWeights.Add(r, 0); }
+                    }
+                };
+
             var configActivities = StrongReferencesBoxConfiguration<Activity>.CreateForList(ListBoxPoints)
+                                                        .WithEntityInitializer(activityInitializer)
                                                         .WithParentStorageId(_entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<Activity>(_entity.Activities.ToList()))
                                                         .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
