@@ -25,7 +25,24 @@
             noSchoolDays,
             unitsMissing, // Subject
             weekDayMissing,
-            oneHourMinimum // Unit
+            oneHourMinimum, // Unit
+            subjectNotLinkedToTemplate,
+            subjectNotLinkedToCalendar,
+            subjectNotLinkedToWeekSchedule,
+            subjectMetodologiesIntroductionInvalid,
+            subjectMetodologiesInvalid,
+            subjectTemplateInvalid,
+            subjectCalendarInvalid,
+            subjectWeekScheduleInvalid,
+            subjectResourcesIntroductionInvalid,
+            subjectSpaceResourceInvalid,
+            subjectMaterialResourceInvalid,
+            subjectEvaluationInstrumentTypesIntroductionInvalid,
+            subjectInstrumentTypeInvalid,
+            subjectBlocksIntroductionInvalid,
+            subjectBlockInvalid,
+            subjectLearningResultWeightInvalid,
+            subjectLearningResultsWeightNotHundredPercent
         };
 
         public string StorageId { get; set; }

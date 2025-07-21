@@ -2,6 +2,7 @@
 {
     public class CommonText: Entity
     {
+
         public CommonText() : base()
         {
             StorageClassId = "commontext";

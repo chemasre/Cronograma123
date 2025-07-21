@@ -1,6 +1,4 @@
-﻿using System.Windows.Media;
-
-namespace Programacion123
+﻿namespace Programacion123
 {
     public class Subject : Entity
     {
@@ -28,7 +26,53 @@ namespace Programacion123
 
         public override ValidationResult Validate()
         {
-            return base.Validate();
+            ValidationResult result = base.Validate();
+
+            if (result != ValidationResult.success) { return result;  }
+
+            if (Template == null) { return ValidationResult.subjectNotLinkedToTemplate; }
+            if (Calendar == null) { return ValidationResult.subjectNotLinkedToCalendar; }
+            if (WeekSchedule == null) { return ValidationResult.subjectNotLinkedToWeekSchedule;  }
+
+            if (Template.Validate() != ValidationResult.success) { return ValidationResult.subjectTemplateInvalid; }
+            if (Calendar.Validate() != ValidationResult.success) { return ValidationResult.subjectCalendarInvalid; }
+            if (WeekSchedule.Validate() != ValidationResult.success) { return ValidationResult.subjectWeekScheduleInvalid; }
+
+            if (MetodologiesIntroduction.Validate() != ValidationResult.success) { return ValidationResult.subjectMetodologiesIntroductionInvalid; }
+
+            List<CommonText> metodologiesList = Metodologies.ToList();
+            foreach (CommonText m in metodologiesList) { if (m.Validate() != ValidationResult.success) { return ValidationResult.subjectMetodologiesInvalid; } }
+
+            if (ResourcesIntroduction.Validate() != ValidationResult.success) { return ValidationResult.subjectResourcesIntroductionInvalid; }
+
+            List<CommonText> spacesList = SpaceResources.ToList();
+            foreach (CommonText s in spacesList) { if (s.Validate() != ValidationResult.success) { return ValidationResult.subjectSpaceResourceInvalid; } }
+
+            List<CommonText> materialsList = MaterialResources.ToList();
+            foreach (CommonText m in materialsList) { if (m.Validate() != ValidationResult.success) { return ValidationResult.subjectMaterialResourceInvalid; } }
+
+            if (EvaluationInstrumentTypesIntroduction.Validate() != ValidationResult.success) { return ValidationResult.subjectEvaluationInstrumentTypesIntroductionInvalid; }
+
+            List<CommonText> instrumentsList = EvaluationInstrumentsTypes.ToList();
+            foreach (CommonText i in instrumentsList) { if (i.Validate() != ValidationResult.success) { return ValidationResult.subjectInstrumentTypeInvalid; } }
+
+            if (BlocksIntroduction.Validate() != ValidationResult.success) { return ValidationResult.subjectBlocksIntroductionInvalid; }
+
+            List<Block> blocksList = Blocks.ToList();
+            foreach (Block b in blocksList) { if (b.Validate() != ValidationResult.success) { return ValidationResult.subjectBlockInvalid; } }
+
+            List<KeyValuePair<LearningResult, float>> learningResultsWeightsList = LearningResultsWeights.ToList();
+
+            float sum = 0;
+            foreach (KeyValuePair<LearningResult, float> r in learningResultsWeightsList)
+            {
+                if (r.Value <= 0) { return ValidationResult.subjectLearningResultWeightInvalid;  }
+                sum += r.Value;
+            }
+
+            if (sum != 100) { return ValidationResult.subjectLearningResultsWeightNotHundredPercent; }
+
+            return ValidationResult.success;
         }
 
         public override bool Exists(string storageId, string? parentStorageId)
