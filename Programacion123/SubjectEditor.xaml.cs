@@ -34,6 +34,7 @@ namespace Programacion123
         StrongReferencesBoxController<CommonText, CommonTextEditor > materialResourcesController;
         StrongReferenceFieldController<CommonText, CommonTextEditor> evaluationInstrumentTypesIntroductionController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> evaluationInstrumentTypesController;
+        StrongReferenceFieldController<CommonText, CommonTextEditor> evaluationIntroductionController;
 
         StrongReferenceFieldController<CommonText, CommonTextEditor > blocksIntroductionController;
         StrongReferencesBoxController<Block, BlockEditor> blocksController;
@@ -97,6 +98,7 @@ namespace Programacion123
             var configMetodologiesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextMetodologyIntroduction)
                                                .WithStorageId(entity.MetodologiesIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
+                                               .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonMetodologiesIntroductionNew)
                                                .WithEdit(ButtonMetodologiesIntroductionEdit)
                                                .WithTitleEditable(false)
@@ -125,6 +127,7 @@ namespace Programacion123
             var configResourcesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextResourcesIntroduction)
                                                .WithStorageId(entity.ResourcesIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
+                                               .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonResourcesIntroductionNew)
                                                .WithEdit(ButtonResourcesIntroductionEdit)
                                                .WithTitleEditable(false)
@@ -168,6 +171,7 @@ namespace Programacion123
             var configEvaluationInstrumentTypesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextEvaluationInstrumentTypesIntroduction)
                                                .WithStorageId(entity.EvaluationInstrumentTypesIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
+                                               .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonEvaluationInstrumentTypesIntroductionNew)
                                                .WithEdit(ButtonEvaluationInstrumentTypesIntroductionEdit)
                                                .WithTitleEditable(false)
@@ -196,6 +200,7 @@ namespace Programacion123
             var configBlocksIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextBlocksIntroduction)
                                                .WithStorageId(entity.BlocksIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
+                                               .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonBlocksIntroductionNew)
                                                .WithEdit(ButtonBlocksIntroductionEdit)
                                                .WithTitleEditable(false)
@@ -222,7 +227,23 @@ namespace Programacion123
 
             blocksController.Changed += BlocksController_Changed;
 
+            var configEvaluationIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextEvaluationIntroduction)
+                                               .WithStorageId(entity.EvaluationIntroduction.StorageId)
+                                               .WithParentStorageId(entity.StorageId)
+                                               .WithFormat(EntityFormatContent.description)
+                                               .WithNew(ButtonEvaluationIntroductionNew)
+                                               .WithEdit(ButtonEvaluationIntroductionEdit)
+                                               .WithTitleEditable(false)
+                                               .WithEditorTitle("Introducción a la evaluación")
+                                               .WithBlocker(Blocker);
+
+            evaluationIntroductionController = new(configEvaluationIntroduction);
+
+            evaluationIntroductionController.Changed += EvaluationIntroductionController_Changed;
+
             TextTitle.Text = entity.Title;
+
+            TextTitle.TextChanged += TextTitle_TextChanged;
 
             dataTableResultsWeight = new DataTable();
             
@@ -255,6 +276,18 @@ namespace Programacion123
 
             Validate();
 
+        }
+
+        private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void EvaluationIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
+        {
+            UpdateEntity();
+            Validate();
         }
 
         private void DataTableActivitiesWeight_RowChanged(object sender, DataRowChangeEventArgs e)
@@ -458,6 +491,8 @@ namespace Programacion123
             entity.BlocksIntroduction = Storage.LoadOrCreateEntity<CommonText>(blocksIntroductionController.StorageId, entity.StorageId);
             entity.Blocks.Set(Storage.LoadOrCreateEntities<Block>(blocksController.StorageIds, entity.StorageId));
 
+            entity.EvaluationIntroduction = Storage.LoadOrCreateEntity<CommonText>(evaluationIntroductionController.StorageId, entity.StorageId);
+
             entity.LearningResultsWeights.Clear();
             if(entity.Template != null)
             {
@@ -612,5 +647,6 @@ namespace Programacion123
                 DragMove();
             }
         }
+
     }
 }

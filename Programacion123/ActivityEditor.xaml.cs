@@ -134,7 +134,7 @@ namespace Programacion123
             block.LoadOrCreate(blockStorageId, subjectStorageId);
 
             TextBlock.Text = block.Title;
-            TextBlock.Background = Brushes.LightPink;
+            TextBlock.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
 
             var configMetodology = WeakReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextMetodology)
                                                .WithStorageId(entity.Metodology?.StorageId)
@@ -336,6 +336,8 @@ namespace Programacion123
             DataGridLearningResultsWeight.CanUserResizeColumns = false;
             DataGridLearningResultsWeight.CanUserResizeRows = false;
 
+            TextTitle.TextChanged += TextTitle_TextChanged;
+            TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
             TextHours.TextChanged += TextHours_TextChanged;
 
             metodologyController.Changed += MetodologyController_Changed;
@@ -355,6 +357,18 @@ namespace Programacion123
 
             Validate();
 
+        }
+
+        private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void TextBoxDescription_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
         }
 
         private void DataTableResultsWeight_RowChanged(object sender, DataRowChangeEventArgs e)

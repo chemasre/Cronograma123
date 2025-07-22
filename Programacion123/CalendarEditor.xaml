@@ -26,7 +26,7 @@
             <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="29" Canvas.Top="572" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Width="312" Height="52" HorizontalAlignment="Left" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black"/>
             </Border>
-            <TextBox x:Name="TextTitle" Canvas.Left="106" TextWrapping="Wrap" Canvas.Top="94" Width="244" HorizontalAlignment="Left" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
+            <TextBox x:Name="TextTitle" Canvas.Left="106" Canvas.Top="94" Width="244" HorizontalAlignment="Left" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
             <Label Content="Título" Canvas.Left="29" Canvas.Top="90" HorizontalAlignment="Left" VerticalAlignment="Top" Width="89"/>
             <DatePicker x:Name="DateStart" Canvas.Left="169" Canvas.Top="340" HorizontalAlignment="Center" VerticalAlignment="Top" Width="181" GotKeyboardFocus="DateStart_GotKeyboardFocus"/>
             <Label Content="Primer día del curso" Canvas.Left="29" Canvas.Top="340" Width="154" HorizontalAlignment="Center" VerticalAlignment="Top"/>

@@ -16,66 +16,74 @@ namespace Programacion123
 
         public override string ToString()
         {
-            if (code == ValidationCode.success) { return "No se detectan problemas"; }
-            else if (code == ValidationCode.entityTitleEmpty) { return "Debes escribir un título"; }
-            else if (code == ValidationCode.entityDescriptionEmpty) { return "Debes escribir una descripción"; }
-            else if (code == ValidationCode.calendarStartDayAfterEndDay) { return "El día de inicio no puede ser posterior al de fin"; }
-            else if (code == ValidationCode.calendarFreeDayBeforeStartOrAfterEnd) { return "Tienes que eliminar los días festivos que están antes del primer día del curso o después del último"; }
-            else if (code == ValidationCode.calendarNoSchoolDays) { return "El calendario tiene que incluir al menos un día lectivo"; }
+            if (code == ValidationCode.success) { return "No se detectan problemas."; }
+            else if (code == ValidationCode.entityTitleEmpty) { return "El título está vacío."; }
+            else if (code == ValidationCode.entityDescriptionEmpty) { return "La descripción está vacía."; }
+            else if (code == ValidationCode.calendarStartDayAfterEndDay) { return "El día de inicio es posterior al de fin."; }
+            else if (code == ValidationCode.calendarFreeDayBeforeStartOrAfterEnd) { return "Hay días festivos anteriores al primer día del curso o posteriores al último."; }
+            else if (code == ValidationCode.calendarNoSchoolDays) { return "El calendario del curso no tiene días lectivos."; }
             else if (code == ValidationCode.unitsMissing) { return ""; }
-            else if (code == ValidationCode.weekScheduleDayMissing) { return "El horario debe incluir al menos un día de la semana"; }
-            else if (code == ValidationCode.weekScheduleOneHourMinimum) { return "Tienes que poner al menos una hora"; }
-            else if (code == ValidationCode.subjectNotLinkedToTemplate) { return "Debes vincular una plantilla con la asignatura"; }
-            else if (code == ValidationCode.subjectNotLinkedToCalendar) { return "Debes vincular un calendario a la asignatura"; }
-            else if (code == ValidationCode.subjectNotLinkedToWeekSchedule) { return "Debes vincular un horario a la asignatura"; }
-            else if (code == ValidationCode.subjectMetodologiesIntroductionInvalid) { return "Debes revisar la introducción a las metodologías. Hay algún problema en ella."; }
-            else if (code == ValidationCode.subjectMetodologiesInvalid) { return String.Format("Debes revisar la metodología que ocupa la posición {0}. Hay algún problema en ella.", index + 1); }
-            else if (code == ValidationCode.subjectTemplateInvalid) { return "Debes revisar la plantilla vinculada a la asignatura. Hay algún problema en ella."; }
-            else if (code == ValidationCode.subjectCalendarInvalid) { return "Debes revisar el calendario vinculado a la asignatura. Hay algún problema en él."; }
-            else if (code == ValidationCode.subjectWeekScheduleInvalid) { return "Debes revisar el horario vinculado a la asignatura. Hay algún problema en él."; }
-            else if (code == ValidationCode.subjectResourcesIntroductionInvalid) { return "Debes revisar la introducción a los recursos. Hay algún problema en ella"; }
-            else if (code == ValidationCode.subjectSpaceResourceInvalid) { return String.Format("Debes revisar el espacio que ocupa la posición {0}", index + 1); }
-            else if (code == ValidationCode.subjectMaterialResourceInvalid) { return String.Format("Debes revisar el material que ocupa la posición {0}", index + 1); }
-            else if (code == ValidationCode.subjectEvaluationInstrumentTypesIntroductionInvalid) { return "Debes revisar la introducción a los tipos de instrumento de evaluación. Hay algún problema en ella"; }
-            else if (code == ValidationCode.subjectInstrumentTypeInvalid) { return "Debes revisar el tipo de instrumento de evaluación. Hay algún problema en él"; }
-            else if (code == ValidationCode.subjectBlocksIntroductionInvalid) { return "Debes revisar la introducción a los bloques. Hay algún problema en ella"; }
-            else if (code == ValidationCode.subjectBlockInvalid) { return String.Format("Hay un problema en el bloque que ocupa la posición {0}", index + 1); }
-            else if (code == ValidationCode.subjectLearningResultWeightInvalid) { return String.Format("Hay un problema en el peso de resultado de aprendizaje que ocupa la posición {0}", index + 1); }
-            else if (code == ValidationCode.subjectLearningResultsWeightNotHundredPercent) { return "Debes revisar la suma de los pesos de los resultados de aprendizaje porque no suma 100"; }
-            else if (code == ValidationCode.templateSubjectNameEmpty) { return "El nombre oficial del módulo no puede estar vacío"; }
-            else if (code == ValidationCode.templateSubjectCodeEmpty) { return "El código del módulo no puede estar vacío"; }
-            else if (code == ValidationCode.templateGradeNameEmpty) { return "El nombre del ciclo no puede estar vacío"; }
-            else if (code == ValidationCode.templateClassroomHoursZero) { return "La asignatura debe incluir al menos una hora de clase en el centro"; }
-            else if (code == ValidationCode.templateGradeFamilyNameEmpty) { return "El nombre de la familia profesional no puede estar vacío"; }
-            else if (code == ValidationCode.templateGeneralObjectivesIntroductionInvalid) { return "Debes revisar la introducción a los objetivos generales. Hay algún problema en ella"; }
-            else if (code == ValidationCode.templateGeneralObjectiveInvalid) { return String.Format("Debes revisar el objetivo general que ocupa la posición {0}", index + 1); }
-            else if (code == ValidationCode.templateGeneralCompetencesIntroductionInvalid) { return "Debes revisar la introducción a las competencias generales. Hay algún problema en ella"; }
-            else if (code == ValidationCode.templateGeneralCompetenceInvalid) { return String.Format("Debes revisar la competencia general que ocupa la posición {0}", index + 1); }
-            else if (code == ValidationCode.templateKeyCapacitiesIntroductionInvalid) { return "Debes revisar la introducción a las capacidades clave. Hay algún problema en ella"; }
-            else if (code == ValidationCode.templateKeyCapacitiesInvalid) { return String.Format("Debes revisar la capacidad clave que ocupa la posición {0}", index + 1); }
-            else if (code == ValidationCode.templateLearningResultsIntroductionInvalid) { return "Debes revisar la introducción a los resultados de aprendizaje. Hay algún problema en ella"; }
-            else if (code == ValidationCode.templateLearningResultsInvalid) { return String.Format("Debes revisar el resultado de aprendizaje que ocupa la posición {0}", index + 1); }
-            else if (code == ValidationCode.templateContentsIntroductionInvalid) { return "Debes revisar la introducción a los contenidos. Hay algún problema en ella"; }
-            else if (code == ValidationCode.templateContentsInvalid) { return String.Format("Debes revisar el contenido que ocupa la posición {0}", index + 1); }
-            else if (code == ValidationCode.templateNoGeneralObjectives) { return "La plantilla debe contener al menos un objetivo general";  }
-            else if (code == ValidationCode.templateNoGeneralCompetences) { return "La plantilla debe contener al menos una competencia general";}
-            else if (code == ValidationCode.templateNoKeyCapacities) { return "La plantilla debe contener al menos una capacidad clave";}
-            else if (code == ValidationCode.templateNoLearningResults) { return "La plantilla debe contener al menos un resultado de aprendizaje";}
-            else if (code == ValidationCode.templateNoContents) { return "La plantilla debe incluir al menos un contenido";}
-            else if (code == ValidationCode.activityNotLinkedToMetodology) { return "Debes seleccionar alguna metodología para la actividad"; }
-            else if (code == ValidationCode.activityNotLinkedToContents) { return "Debes seleccionar algún contenido para la actividad"; }
-            else if (code == ValidationCode.activityEvaluableAndNotLinkedToEvaluationInstrumentType) { return "Al ser evauable, debes seleccionar algún instrumento de evaluación para la actividad"; }
-            else if (code == ValidationCode.activityEvaluableAndNotLinkedToCriterias) { return "Al ser evauable, debes seleccionar algún criterio de evaluación para la actividad"; }
-            else if (code == ValidationCode.activityEvaluableAndNotLinkedToResultsWeights) { return "Al ser evauable, debes seleccionar algún peso en los resultados de aprendizaje para la actividad"; }
-            else if (code == ValidationCode.activityReferencesResultWithoutWeight) { return String.Format("El resultado de aprendizaje que ocupa la columna {0} en la tabla de pesos está referenciado por al menos un criterio de evaluación pero no tiene peso", index + 1); }
-            else if (code == ValidationCode.activityDoesntReferenceResultButHasWeight) { return String.Format("El resultado de aprendizaje que ocupa la columna {0} en la tabla de pesos no está referenciado por ningún criterio", index + 1); }
-            else if (code == ValidationCode.contentNoPoints) { return "El contenido debe tener al menos un punto"; }
-            else if (code == ValidationCode.contentPointInvalid) { return String.Format("Debes revisar el punto de contenido que ocupa la posición {0}", index + 1); }
-            else if (code == ValidationCode.learningResultNoCriterias) { return "El resultado de aprendizaje debe tener al menos un criterio"; }
-            else if (code == ValidationCode.learningResultCriteriaInvalid) { return String.Format("Debes revisar el criterio que ocupa la posición {0}", index + 1); }
-            else if (code == ValidationCode.blockNoActivities) { return "El bloque debe tener al menos una actividad"; }
+            else if (code == ValidationCode.weekScheduleDayMissing) { return "El horario no incluye ningún día de la semana."; }
+            else if (code == ValidationCode.weekScheduleOneHourMinimum) { return "El horario no reserva ninguna hora para la asignatura."; }
+            else if (code == ValidationCode.subjectNotLinkedToTemplate) { return "La asignatura ha de estar vinculada a una plantilla."; }
+            else if (code == ValidationCode.subjectNotLinkedToCalendar) { return "La asignatura ha de estar vinculada a un calendario."; }
+            else if (code == ValidationCode.subjectNotLinkedToWeekSchedule) { return "La asignatura ha de estar vinculada a un horario."; }
+            else if (code == ValidationCode.subjectMetodologiesIntroductionInvalid) { return "El texto introductorio a las metodologías presenta algún problema."; }
+            else if (code == ValidationCode.subjectMetodologiesInvalid) { return String.Format("La metodología {0} presenta algún problema.", index + 1); }
+            else if (code == ValidationCode.subjectTemplateInvalid) { return "La plantilla vinculada a la asignatura presenta algún problema."; }
+            else if (code == ValidationCode.subjectCalendarInvalid) { return "El calendario vinculado a la asignatura presenta algún problema."; }
+            else if (code == ValidationCode.subjectWeekScheduleInvalid) { return "El horario vinculado a la asignatura presenta algún problema."; }
+            else if (code == ValidationCode.subjectResourcesIntroductionInvalid) { return "El texto introductorio a los recursos presenta algún problema."; }
+            else if (code == ValidationCode.subjectSpaceResourceInvalid) { return String.Format("En la pestaña de recursos educativos, el espacio {0} presenta algún problema.", index + 1); }
+            else if (code == ValidationCode.subjectMaterialResourceInvalid) { return String.Format("En la pestaña de recursos educativos, el material {0} presenta algún problema.", index + 1); }
+            else if (code == ValidationCode.subjectEvaluationInstrumentTypesIntroductionInvalid) { return "El texto introductorio a los tipos de instrumento de evaluación presenta algún problema."; }
+            else if (code == ValidationCode.subjectInstrumentTypeInvalid) { return String.Format("El tipo de instrumento de evaluación {0} presenta algún problema.", index + 1); }
+            else if (code == ValidationCode.subjectBlocksIntroductionInvalid) { return "El texto introductorio a los bloques presenta algún problema."; }
+            else if (code == ValidationCode.subjectBlockInvalid) { return String.Format("El bloque {0} presenta algún problema.", index + 1); }
+            //else if (code == ValidationCode.subjectLearningResultWeightInvalid) { return String.Format("Hay un problema en el peso de resultado de aprendizaje que ocupa la posición {0}.", index + 1); }
+            else if (code == ValidationCode.subjectLearningResultsWeightNotHundredPercent) { return "La suma de los pesos de los resultados de aprendizaje en la pestaña evaluación no es 100."; }
+            else if (code == ValidationCode.subjectNoMetodologies) { return "La asignatura al menos debe contar con una metodología."; }
+            else if (code == ValidationCode.subjectNoSpaces) { return "La asignatura al menos debe contar con un recurso de tipo espacio."; }
+            else if (code == ValidationCode.subjectNoEvaluationInstrumentTypes) { return "La asignatura al menos debe contar con un tipo de instrumento de evaluación."; }
+            else if (code == ValidationCode.subjectNoBlocks) { return "La asignatura al menos debe contar con un bloque."; }
+            else if (code == ValidationCode.subjectEvaluationIntroductionInvalid) { return "El texto introductorio a la evaluación presenta algún problema."; }
+            else if (code == ValidationCode.subjectLearningResultNotReferencedByActivities) { return String.Format("Ninguna actividad hace referencia al resultado de aprendizaje {0} en sus criterios de evaluación.", index + 1); }
+            else if (code == ValidationCode.subjectActivitiesLearningResultWeightNotHundredPercent) { return String.Format("En el resultado de aprendizaje {0}, la suma de los pesos de las actividades evaluables debe ser cien.", index + 1);  }
+            else if (code == ValidationCode.templateSubjectNameEmpty) { return "El nombre oficial del módulo está vacío."; }
+            else if (code == ValidationCode.templateSubjectCodeEmpty) { return "El código del módulo está vacío."; }
+            else if (code == ValidationCode.templateGradeNameEmpty) { return "El nombre del ciclo está vacío."; }
+            else if (code == ValidationCode.templateClassroomHoursZero) { return "La asignatura al menos debe contar con una hora de clase en el centro."; }
+            else if (code == ValidationCode.templateGradeFamilyNameEmpty) { return "El nombre de la familia profesional está vacío."; }
+            else if (code == ValidationCode.templateGeneralObjectivesIntroductionInvalid) { return "El texto introductorio a los objetivos generales presenta algún problema."; }
+            else if (code == ValidationCode.templateGeneralObjectiveInvalid) { return String.Format("El objetivo general {0} presenta algún problema.", index + 1); }
+            else if (code == ValidationCode.templateGeneralCompetencesIntroductionInvalid) { return "El texto introductorio a las competencias generales presenta algún problema."; }
+            else if (code == ValidationCode.templateGeneralCompetenceInvalid) { return String.Format("La competencia general {0} presenta algún problema.", index + 1); }
+            else if (code == ValidationCode.templateKeyCapacitiesIntroductionInvalid) { return "El texto introductorio a las capacidades clave presenta algún problema."; }
+            else if (code == ValidationCode.templateKeyCapacitiesInvalid) { return String.Format("La capacidad clave {0} presenta algún problema.", index + 1); }
+            else if (code == ValidationCode.templateLearningResultsIntroductionInvalid) { return "El texto introductorio a los resultados de aprendizaje presenta algún problema."; }
+            else if (code == ValidationCode.templateLearningResultsInvalid) { return String.Format("El resultado de aprendizaje {0} presenta algún problema.", index + 1); }
+            else if (code == ValidationCode.templateContentsIntroductionInvalid) { return "El texto introductorio a los contenidos presenta algún problema."; }
+            else if (code == ValidationCode.templateContentsInvalid) { return String.Format("El contenido {0} presenta algún problema.", index + 1); }
+            else if (code == ValidationCode.templateNoGeneralObjectives) { return "La plantilla al menos debe contar con un objetivo general."; }
+            else if (code == ValidationCode.templateNoGeneralCompetences) { return "La plantilla al menos debe contar con una competencia general."; }
+            else if (code == ValidationCode.templateNoKeyCapacities) { return "La plantilla al menos debe contar con una capacidad clave."; }
+            else if (code == ValidationCode.templateNoLearningResults) { return "La plantilla al menos debe contar con un resultado de aprendizaje."; }
+            else if (code == ValidationCode.templateNoContents) { return "La plantilla al menos debe incluir un contenido."; }
+            else if (code == ValidationCode.activityNotLinkedToMetodology) { return "En la pestaña de datos esenciales, la actividad no está vinculada a ninguna metodología."; }
+            else if (code == ValidationCode.activityNotLinkedToContents) { return "La actividad no está vinculada a ningún contenido."; }
+            else if (code == ValidationCode.activityEvaluableAndNotLinkedToEvaluationInstrumentType) { return "La actividad es evaluable pero no está vinculada a ningún instrumento de evaluación."; }
+            else if (code == ValidationCode.activityEvaluableAndNotLinkedToCriterias) { return "La actividad es evauable pero no está vinculada a ningún criterio de evaluación."; }
+            else if (code == ValidationCode.activityEvaluableAndNotLinkedToResultsWeights) { return "La actividad es evaluable pero no tiene peso en ningún resultado de aprendizaje."; }
+            else if (code == ValidationCode.activityNotLinkedToSpaceResource) { return "La actividad no está vinculada a ningún recurso didáctico de tipo espacio."; }
+            else if (code == ValidationCode.activityReferencesResultWithoutWeight) { return String.Format("El resultado de aprendizaje {0} está referenciado por al menos un criterio de evaluación pero su peso es cero.", index + 1); }
+            else if (code == ValidationCode.activityDoesntReferenceResultButHasWeight) { return String.Format("El resultado de aprendizaje {0} tiene un peso mayor que cero y no está referenciado por ningún criterio de evaluación.", index + 1); }
+            else if (code == ValidationCode.contentNoPoints) { return "El contenido debe incluir al menos un punto."; }
+            else if (code == ValidationCode.contentPointInvalid) { return String.Format("El punto {0} presenta algún problema.", index + 1); }
+            else if (code == ValidationCode.learningResultNoCriterias) { return "El resultado de aprendizaje al menos debe contar con un criterio."; }
+            else if (code == ValidationCode.learningResultCriteriaInvalid) { return String.Format("El criterio {0} presenta algún problema.", index + 1); }
+            else if (code == ValidationCode.blockNoActivities) { return "El bloque al menos debe contar con una actividad."; }
             else // code == ValidationCode.blockActivityInvalid)
-            { return String.Format("Debes revisar la actividad que ocupa la posición {0}", index + 1); }
+            { return String.Format("La actividad {0} presenta algún problema.", index + 1); }
 
         }
     }
@@ -106,8 +114,15 @@ namespace Programacion123
         subjectInstrumentTypeInvalid,
         subjectBlocksIntroductionInvalid,
         subjectBlockInvalid,
-        subjectLearningResultWeightInvalid,
+        //subjectLearningResultWeightInvalid,
         subjectLearningResultsWeightNotHundredPercent,
+        subjectNoMetodologies,
+        subjectNoSpaces,
+        subjectNoEvaluationInstrumentTypes,
+        subjectNoBlocks,
+        subjectEvaluationIntroductionInvalid,
+        subjectLearningResultNotReferencedByActivities,
+        subjectActivitiesLearningResultWeightNotHundredPercent,
         templateSubjectNameEmpty,
         templateSubjectCodeEmpty,
         templateGradeNameEmpty,
@@ -141,5 +156,6 @@ namespace Programacion123
         learningResultCriteriaInvalid,
         blockNoActivities,
         blockActivityInvalid,
+        activityNotLinkedToSpaceResource,
     };
 }

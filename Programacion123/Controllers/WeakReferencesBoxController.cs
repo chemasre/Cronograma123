@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 using System.Runtime.Serialization;
+using System.Windows.Media;
 
 namespace Programacion123
 {
@@ -81,7 +82,9 @@ namespace Programacion123
             pickList = configuration.pickList;
             blocker = configuration.blocker;
 
-            if(buttonUp != null)
+            listBox.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
+
+            if (buttonUp != null)
             {
                 buttonUp.Click += ButtonUp_Click; buttonUp.ToolTip = "Mover arriba en la lista";
                 buttonDown.Click += ButtonDown_Click; buttonDown.ToolTip = "Mover abajo en la lista";

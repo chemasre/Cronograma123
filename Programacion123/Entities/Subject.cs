@@ -17,6 +17,7 @@
         public CommonText BlocksIntroduction { get; set; } = new CommonText();
         public ListProperty<Block> Blocks { get; } = new ListProperty<Block>();
 
+        public CommonText EvaluationIntroduction { get; set; } = new CommonText();
         public DictionaryProperty<LearningResult, float> LearningResultsWeights  { get; } = new DictionaryProperty<LearningResult, float>();
 
         public Subject() : base()
@@ -41,12 +42,14 @@
             if (MetodologiesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectMetodologiesIntroductionInvalid); }
 
             List<CommonText> metodologiesList = Metodologies.ToList();
+            if (metodologiesList.Count <= 0) { return ValidationResult.Create(ValidationCode.subjectNoMetodologies);  }
             for(int i = 0; i < metodologiesList.Count; i++) { if (metodologiesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectMetodologiesInvalid).WithIndex(i); } }
 
             if (ResourcesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectResourcesIntroductionInvalid); }
 
             List<CommonText> spacesList = SpaceResources.ToList();
-            for(int i = 0; i < spacesList.Count; i++) { if (spacesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectSpaceResourceInvalid).WithIndex(i); } }
+            if (spacesList.Count <= 0) { return ValidationResult.Create(ValidationCode.subjectNoSpaces); }
+            for (int i = 0; i < spacesList.Count; i++) { if (spacesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectSpaceResourceInvalid).WithIndex(i); } }
 
             List<CommonText> materialsList = MaterialResources.ToList();
             for(int i = 0; i < materialsList.Count; i++) { if (materialsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectMaterialResourceInvalid).WithIndex(i); } }
@@ -54,12 +57,16 @@
             if (EvaluationInstrumentTypesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectEvaluationInstrumentTypesIntroductionInvalid); }
 
             List<CommonText> instrumentsList = EvaluationInstrumentsTypes.ToList();
-            for(int i = 0; i < instrumentsList.Count; i++) { if (instrumentsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectInstrumentTypeInvalid).WithIndex(i); } }
+            if (instrumentsList.Count <= 0) { return ValidationResult.Create(ValidationCode.subjectNoEvaluationInstrumentTypes); }
+            for (int i = 0; i < instrumentsList.Count; i++) { if (instrumentsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectInstrumentTypeInvalid).WithIndex(i); } }
 
             if (BlocksIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectBlocksIntroductionInvalid); }
 
             List<Block> blocksList = Blocks.ToList();
-            for(int i = 0; i < blocksList.Count; i++) { if (blocksList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectBlockInvalid).WithIndex(i); } }
+            if (blocksList.Count <= 0) { return ValidationResult.Create(ValidationCode.subjectNoBlocks); }
+            for (int i = 0; i < blocksList.Count; i++) { if (blocksList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectBlockInvalid).WithIndex(i); } }
+
+            if (EvaluationIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectEvaluationIntroductionInvalid); }
 
             List<KeyValuePair<LearningResult, float>> learningResultsWeightsList = LearningResultsWeights.ToList();
 
@@ -67,11 +74,54 @@
             for(int i = 0; i < learningResultsWeightsList.Count; i++)
             {
                 KeyValuePair<LearningResult, float> r = learningResultsWeightsList[i];
-                if (r.Value <= 0) { return ValidationResult.Create(ValidationCode.subjectLearningResultWeightInvalid).WithIndex(i);  }
+                //if (r.Value <= 0) { return ValidationResult.Create(ValidationCode.subjectLearningResultWeightInvalid).WithIndex(i);  }
                 sum += r.Value;
             }
 
             if (sum != 100) { return ValidationResult.Create(ValidationCode.subjectLearningResultsWeightNotHundredPercent); }
+
+            List<LearningResult> learningResultsList = Template.LearningResults.ToList();
+            HashSet<string> referencedLearningResults = new();
+            Dictionary<string, float> learningResultsWeights = new();
+
+            foreach(Block b in blocksList)
+            {
+                List<Activity> activitiesList = b.Activities.ToList();
+
+                foreach(Activity a in activitiesList)
+                {
+                    List<CommonText> criteriasList = a.Criterias.ToList();
+
+                    criteriasList.ForEach(c => referencedLearningResults.Add(Storage.FindParentStorageId(c.StorageId, c.StorageClassId)));
+
+                    if(a.IsEvaluable)
+                    {
+                        List<KeyValuePair<LearningResult, float>> weightsList = a.LearningResultsWeights.ToList();
+
+                        weightsList.ForEach(
+                            r =>
+                            {
+                                if (!learningResultsWeights.ContainsKey(r.Key.StorageId))
+                                { learningResultsWeights.Add(r.Key.StorageId, 0); }
+
+                                learningResultsWeights[r.Key.StorageId] += r.Value;
+
+                            });
+                    }
+                }
+            }
+
+            for(int i = 0; i < learningResultsList.Count; i++)
+            {
+                if (!referencedLearningResults.Contains(learningResultsList[i].StorageId)) { return ValidationResult.Create(ValidationCode.subjectLearningResultNotReferencedByActivities).WithIndex(i);  }
+            }
+
+            foreach (KeyValuePair<string, float> r in learningResultsWeights)
+            {
+                int index = learningResultsList.FindIndex(r2 => r2.StorageId == r.Key);
+                if (index >= 0 && r.Value != 100) { return ValidationResult.Create(ValidationCode.subjectActivitiesLearningResultWeightNotHundredPercent).WithIndex(index);  }
+            }
+
 
             return ValidationResult.Create(ValidationCode.success);
         }
@@ -127,7 +177,10 @@
             List<Block> blockList = Blocks.ToList();
             blockList.ForEach(e => e.Save(StorageId));            
             data.BlocksStorageIds = Storage.GetStorageIds<Block>(blockList);
-        
+
+            data.EvaluationIntroductionStorageId = EvaluationIntroduction.StorageId;
+            EvaluationIntroduction.Save(StorageId);
+
             List< KeyValuePair<LearningResult, float> > resultsList = LearningResultsWeights.ToList();
             List< KeyValuePair<string, float> > resultsWithIds = new();
             foreach(var r in resultsList) { resultsWithIds.Add(KeyValuePair.Create<string, float>(r.Key.StorageId, r.Value)); }
@@ -165,6 +218,8 @@
             BlocksIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.BlocksIntroductionStorageId, storageId);
             Blocks.Set(Storage.LoadOrCreateEntities<Block>(data.BlocksStorageIds, storageId));
 
+            EvaluationIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.EvaluationIntroductionStorageId, storageId);
+
             List< KeyValuePair<string, float> > resultsWithIds = data.LearningResultsWeakStorageIdsWeights;
             List< KeyValuePair<LearningResult, float> > resultsList = new();
             foreach(var r in resultsWithIds)
@@ -188,6 +243,8 @@
 
             BlocksIntroduction.Delete(StorageId);
             Blocks.ToList().ForEach(e => e.Delete(StorageId));
+
+            EvaluationIntroduction.Delete(StorageId);
 
             Storage.DeleteData(StorageId, StorageClassId, parentStorageId);
         }

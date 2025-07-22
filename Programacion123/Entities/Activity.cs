@@ -44,6 +44,8 @@ namespace Programacion123
 
                 if(LearningResultsWeights.Count <= 0) { return ValidationResult.Create(ValidationCode.activityEvaluableAndNotLinkedToResultsWeights); }
 
+                if (SpaceResources.Count <= 0) { return ValidationResult.Create(ValidationCode.activityNotLinkedToSpaceResource);  }
+
                 HashSet<string> referencedLearningResultsIds = new();
 
                 List<CommonText> criteriasList = Criterias.ToList();

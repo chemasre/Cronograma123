@@ -27,7 +27,7 @@
             <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="23" Canvas.Top="281" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Width="298" Height="52" HorizontalAlignment="Center" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Top"/>
             </Border>
-            <TextBox x:Name="TextTitle" Canvas.Left="102" TextWrapping="Wrap" Canvas.Top="89" Width="218" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
+            <TextBox x:Name="TextTitle" Canvas.Left="102" Canvas.Top="89" Width="218" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
             <Label Content="Título" Canvas.Left="27" Canvas.Top="85" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75"/>
 
         </Canvas>
