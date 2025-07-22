@@ -13,9 +13,13 @@ namespace Programacion123
         string? parentStorageId;
         CommonText entity;
 
+        bool titleEditable;
+
         public CommonTextEditor()
         {
             InitializeComponent();
+
+            titleEditable = true;
         }
 
         public void InitEditor(CommonText _entity, string? _parentStorageId = null)
@@ -27,14 +31,43 @@ namespace Programacion123
 
             TextTitle.Text = _entity.Title;
 
-            TextBoxDescription.Text = _entity.Description;
-            //TextBoxDescription.Document.Blocks.Clear();
+            if (titleEditable)
+            {
+                LabelTitle.Visibility = Visibility.Visible;
+                LabelDescription.Visibility = Visibility.Visible;
+                BorderDescriptionBase.Visibility = Visibility.Visible;
+                TextTitle.Visibility = Visibility.Visible;
+                TextBoxDescription.Visibility = Visibility.Visible;
+                NoTitleBorderDescriptionBase.Visibility = Visibility.Hidden;
+                NoTitleTextBoxDescription.Visibility = Visibility.Hidden;
+                TextBoxDescription.Text = _entity.Description;
 
-            TextTitle.TextChanged += TextTitle_TextChanged;
-            TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
+                TextTitle.TextChanged += TextTitle_TextChanged;
+                TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
+            }
+            else
+            {
+                LabelTitle.Visibility = Visibility.Hidden;
+                LabelDescription.Visibility = Visibility.Hidden;
+                BorderDescriptionBase.Visibility = Visibility.Hidden;
+                TextTitle.Visibility = Visibility.Hidden;
+                TextBoxDescription.Visibility = Visibility.Hidden;
+                NoTitleBorderDescriptionBase.Visibility = Visibility.Visible;
+                NoTitleTextBoxDescription.Visibility = Visibility.Visible;
+                NoTitleTextBoxDescription.Text = _entity.Description;
+
+                NoTitleTextBoxDescription.TextChanged += NoTitleTextBoxDescription_TextChanged;
+            }
+
 
             Validate();
 
+        }
+
+        private void NoTitleTextBoxDescription_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
         }
 
         public CommonText GetEntity()
@@ -45,34 +78,21 @@ namespace Programacion123
         void UpdateEntity()
         {
             entity.Title = TextTitle.Text.Trim();
-            entity.Description = TextBoxDescription.Text;
+            entity.Description = (titleEditable ? TextBoxDescription.Text : NoTitleTextBoxDescription.Text).Trim();
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
+
             entity.Save(parentStorageId);
+
         }
 
         void Validate()
         {
-            Entity.ValidationResult validation = entity.Validate();
+            ValidationResult validation = entity.Validate();
 
-            if (validation.code == Entity.ValidationCode.success)
-            {
-                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
-                TextValidation.Text = "No se han detectado problemas";
-            }
-            else
-            {
-                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorInvalid"]);
+            string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
+            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
+            TextValidation.Text = validation.ToString();
 
-                if (validation.code == Entity.ValidationCode.entityTitleEmpty)
-                {                    
-                    TextValidation.Text = "Tienes que escribir un título";
-                }
-                else // validation.code == Entity.ValidationResult.descriptionEmpty
-                {
-                    TextValidation.Text = "La descripción no puede estar vacía";
-                }
-            }
-            
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
@@ -80,8 +100,15 @@ namespace Programacion123
             UpdateEntity();
             //entity.Save(parentStorageId);
 
-            TextTitle.TextChanged -= TextTitle_TextChanged;
-            TextBoxDescription.TextChanged -= TextBoxDescription_TextChanged;
+            if(titleEditable)
+            {
+                TextTitle.TextChanged -= TextTitle_TextChanged;
+                TextBoxDescription.TextChanged -= TextBoxDescription_TextChanged;
+            }
+            else
+            {
+                NoTitleTextBoxDescription.TextChanged -= NoTitleTextBoxDescription_TextChanged;
+            }
 
             Close();
 
@@ -101,9 +128,7 @@ namespace Programacion123
 
         public void SetEntityTitleEditable(bool editable)
         {
-            TextTitle.IsReadOnly = !editable;
-            TextTitle.IsReadOnlyCaretVisible = false;
-            TextTitle.Background = Brushes.LightGray;
+            titleEditable = editable;
         }
 
         public void SetEditorTitle(string title)

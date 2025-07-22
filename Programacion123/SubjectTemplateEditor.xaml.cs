@@ -15,6 +15,8 @@ namespace Programacion123
         StrongReferencesBoxController<CommonText, CommonTextEditor > generalObjectivesController;
         StrongReferenceFieldController<CommonText, CommonTextEditor> generalCompetencesIntroductionController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> generalCompetencesController;
+        StrongReferenceFieldController<CommonText, CommonTextEditor> keyCapacitiesIntroductionController;
+        StrongReferencesBoxController<CommonText, CommonTextEditor> keyCapacitiesController;
         StrongReferenceFieldController<CommonText, CommonTextEditor> learningResultsIntroductionController;
         StrongReferencesBoxController<LearningResult, LearningResultEditor> learningResultsController;
         StrongReferenceFieldController<CommonText, CommonTextEditor> contentsIntroductionController;
@@ -38,9 +40,11 @@ namespace Programacion123
             entity = _subjectTemplate;
             parentStorageId = _parentStorageId;
 
+
             var configObjectivesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextGeneralObjectivesIntroduction)
                                                .WithStorageId(entity.GeneralObjectivesIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
+                                               .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonGeneralObjectivesIntroductionNew)
                                                .WithEdit(ButtonGeneralObjectivesIntroductionEdit)
                                                .WithTitleEditable(false)
@@ -69,6 +73,7 @@ namespace Programacion123
             var configCompetencesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextGeneralCompetencesIntroduction)
                                                .WithStorageId(entity.GeneralCompetencesIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
+                                               .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonGeneralCompetencesIntroductionNew)
                                                .WithEdit(ButtonGeneralCompetencesIntroductionEdit)
                                                .WithTitleEditable(false)
@@ -94,9 +99,39 @@ namespace Programacion123
 
             generalCompetencesController.Changed += GeneralCompetencesController_Changed;
 
+            var configKeyCapacitiesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextKeyCapacitiesIntroduction)
+                                               .WithStorageId(entity.KeyCapacitiesIntroduction.StorageId)
+                                               .WithParentStorageId(entity.StorageId)
+                                               .WithFormat(EntityFormatContent.description)
+                                               .WithNew(ButtonKeyCapacitiesIntroductionNew)
+                                               .WithEdit(ButtonKeyCapacitiesIntroductionEdit)
+                                               .WithTitleEditable(false)
+                                               .WithEditorTitle("Introducción a las capacidades clave")
+                                               .WithBlocker(Blocker);
+
+            keyCapacitiesIntroductionController = new(configKeyCapacitiesIntroduction);
+
+            keyCapacitiesIntroductionController.Changed += KeyCapacitiesIntroductionController_Changed;
+
+            var configKeyCapacities = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxKeyCapacities)
+                                                        .WithParentStorageId(_subjectTemplate.StorageId)
+                                                        .WithStorageIds(Storage.GetStorageIds<CommonText>(_subjectTemplate.KeyCapacities.ToList()))
+                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.character)
+                                                        .WithNew(ButtonKeyCapacitiesNew)
+                                                        .WithEdit(ButtonKeyCapacitiesEdit)
+                                                        .WithDelete(ButtonKeyCapacitiesDelete)
+                                                        .WithUpDown(ButtonKeyCapacitiesUp, ButtonKeyCapacitiesDown)
+                                                        .WithEditorTitle("Capacidad clave")
+                                                        .WithBlocker(Blocker);
+
+            keyCapacitiesController = new(configKeyCapacities);
+
+            keyCapacitiesController.Changed += KeyCapacitiesController_Changed;
+
             var configLearningResultsIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextLearningResultsIntroduction)
                                                .WithStorageId(entity.LearningResultsIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
+                                               .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonLearningResultsIntroductionNew)
                                                .WithEdit(ButtonLearningResultsIntroductionEdit)
                                                .WithTitleEditable(false)
@@ -125,6 +160,7 @@ namespace Programacion123
             var configContentsIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextContentsIntroduction)
                                                .WithStorageId(entity.ContentsIntroduction.StorageId)
                                                .WithParentStorageId(entity.StorageId)
+                                               .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonContentsIntroductionNew)
                                                .WithEdit(ButtonContentsIntroductionEdit)
                                                .WithTitleEditable(false)
@@ -161,63 +197,134 @@ namespace Programacion123
             TextGradeCompanyHours.Text = _subjectTemplate.GradeCompanyHours.ToString();
 
 
+            TextTitle.TextChanged += TextTitle_TextChanged;
+            TextSubjectName.TextChanged += TextSubjectName_TextChanged;
+            TextSubjectCode.TextChanged += TextSubjectCode_TextChanged;
+            TextGradeName.TextChanged += TextGradeName_TextChanged;
+            TextGradeFamilyName.TextChanged += TextGradeFamilyName_TextChanged;
+            TextGradeClassroomHours.TextChanged += TextGradeClassroomHours_TextChanged;
+            TextGradeCompanyHours.TextChanged += TextGradeCompanyHours_TextChanged;
+
             Validate();
 
         }
 
+        private void KeyCapacitiesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void KeyCapacitiesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void TextSubjectCode_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void TextGradeCompanyHours_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            int result;
+            if (!Int32.TryParse(TextGradeCompanyHours.Text, out result)) { TextGradeCompanyHours.Text = ""; }
+
+            UpdateEntity();
+            Validate();
+        }
+
+        private void TextGradeClassroomHours_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            int result;
+            if (!Int32.TryParse(TextGradeClassroomHours.Text, out result)) { TextGradeClassroomHours.Text = ""; }
+
+            UpdateEntity();
+            Validate();
+        }
+
+        private void TextGradeFamilyName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void TextGradeName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void TextSubjectName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void TextTitle_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
         void Validate()
         {
-            Entity.ValidationResult validation = entity.Validate();
+            ValidationResult validation = entity.Validate();
 
-            if (validation.code == Entity.ValidationCode.success)
-            {
-                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
-                TextValidation.Text = "No se han detectado problemas";
-            }
-            else
-            {
-                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorInvalid"]);
-            }
+            string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
+            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
+            TextValidation.Text = validation.ToString();
+
         }
 
         private void ContentsController_Changed(StrongReferencesBoxController<Content, ContentEditor> controller)
         {
             UpdateEntity();
+            Validate();
         }
 
         private void ContentsIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
             UpdateEntity();
+            Validate();
         }
 
         private void LearningResultsController_Changed(StrongReferencesBoxController<LearningResult, LearningResultEditor> controller)
         {
             UpdateEntity();
+            Validate();
         }
 
         private void LearningResultsIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
             UpdateEntity();
+            Validate();
         }
 
         private void GeneralCompetencesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
             UpdateEntity();
+            Validate();
         }
 
         private void GeneralCompetencesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
             UpdateEntity();
+            Validate();
         }
 
         private void GeneralObjectivesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
             UpdateEntity();
+            Validate();
         }
 
         private void GeneralObjectivesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
             UpdateEntity();
+            Validate();
         }
 
         private void UpdateEntity()
@@ -227,6 +334,8 @@ namespace Programacion123
             entity.GeneralObjectives.Set(Storage.LoadOrCreateEntities<CommonText>(generalObjectivesController.StorageIds, entity.StorageId));
             entity.GeneralCompetencesIntroduction = Storage.LoadOrCreateEntity<CommonText>(generalCompetencesIntroductionController.StorageId, entity.StorageId);
             entity.GeneralCompetences.Set(Storage.LoadOrCreateEntities<CommonText>(generalCompetencesController.StorageIds, entity.StorageId));
+            entity.KeyCapacitiesIntroduction = Storage.LoadOrCreateEntity<CommonText>(keyCapacitiesIntroductionController.StorageId, entity.StorageId);
+            entity.KeyCapacities.Set(Storage.LoadOrCreateEntities<CommonText>(keyCapacitiesController.StorageIds, entity.StorageId));
 
             entity.LearningResultsIntroduction = Storage.LoadOrCreateEntity<CommonText>(learningResultsIntroductionController.StorageId, entity.StorageId);
             entity.LearningResults.Set(Storage.LoadOrCreateEntities<LearningResult>(learningResultsController.StorageIds, entity.StorageId));
@@ -249,6 +358,7 @@ namespace Programacion123
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
+
             UpdateEntity();
             // entity.Save(parentStorageId);
 

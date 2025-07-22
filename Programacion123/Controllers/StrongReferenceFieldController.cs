@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace Programacion123
 {
@@ -78,6 +79,7 @@ namespace Programacion123
             parentStorageId = configuration.parentStorageId;
 
             textBox = configuration.textBox;
+            textBox.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
             formatContent = configuration.formatContent;
             formatter = configuration.formatter;
             
@@ -146,7 +148,7 @@ namespace Programacion123
         {
             if(blocker != null) { blocker.Visibility = Visibility.Hidden; }
 
-            if(storageId != null)
+            if(storageId != null && storageId != editor.GetEntity().StorageId)
             {
                 TEntity previous = Storage.LoadOrCreateEntity<TEntity>(storageId, parentStorageId);
                 previous.Delete(parentStorageId);

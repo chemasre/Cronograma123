@@ -42,32 +42,14 @@ namespace Programacion123
             entity.Save(parentStorageId);
         }
 
-        private void Validate()
+        void Validate()
         {
-            Entity.ValidationResult validation = entity.Validate();
+            ValidationResult validation = entity.Validate();
 
-            if (validation.code == Entity.ValidationCode.success)
-            {
-                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
-                TextValidation.Text = "El horario es válido";
-            }
-            else
-            {
-                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorInvalid"]);
+            string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
+            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
+            TextValidation.Text = validation.ToString();
 
-                if (validation.code == Entity.ValidationCode.entityTitleEmpty)
-                {                    
-                    TextValidation.Text = "Tienes que escribir un título para el horario";
-                }
-                else if (validation.code == Entity.ValidationCode.entityDescriptionEmpty)
-                {                    
-                    TextValidation.Text = "Tienes que escribir una descripción para el calendario";
-                }
-                else // validation.code == Entity.ValidationResult.oneHourMinimum
-                {
-                    TextValidation.Text = "Tienes que introducir como mínimo una hora en alguno de los días";
-                }
-            }
         }
 
         private void WeekDataGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)

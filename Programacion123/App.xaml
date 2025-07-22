@@ -6,6 +6,7 @@
     <Application.Resources>
         <Color x:Key="ColorInvalid">#FFFDFF21</Color>
         <Color x:Key="ColorValid">#FFBAFFA7</Color>
+        <Color x:Key="ColorLocked">#FF98F5F9</Color>
         <DropShadowEffect x:Key="EffectDropShadow" BlurRadius="5" Color="Gray" ShadowDepth="3"/>
         <Style BasedOn="{StaticResource {x:Type Button}}" x:Key="PushableButton" TargetType="{x:Type Button}">
             <Setter Property="OverridesDefaultStyle" Value="True" />

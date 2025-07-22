@@ -15,6 +15,7 @@
 
             if(result.code != ValidationCode.success) { return result; }
 
+            if (Criterias.Count <= 0) { return ValidationResult.Create(ValidationCode.learningResultNoCriterias);  }
             for(int i = 0; i < Criterias.Count; i++) { if(Criterias[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.learningResultCriteriaInvalid).WithIndex(i); } }
 
             return ValidationResult.Create(ValidationCode.success);

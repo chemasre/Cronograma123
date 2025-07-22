@@ -77,6 +77,7 @@ namespace Programacion123
         private void ActivitiesController_Changed(StrongReferencesBoxController<Activity, ActivityEditor> controller)
         {
             UpdateEntity();
+            Validate();
         }
 
         public Block GetEntity()
@@ -97,27 +98,12 @@ namespace Programacion123
 
         void Validate()
         {
-            Entity.ValidationResult validation = entity.Validate();
+            ValidationResult validation = entity.Validate();
 
-            if (validation.code == Entity.ValidationCode.success)
-            {
-                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
-                TextValidation.Text = "No se han detectado problemas";
-            }
-            else
-            {
-                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorInvalid"]);
+            string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
+            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
+            TextValidation.Text = validation.ToString();
 
-                if (validation.code == Entity.ValidationCode.entityTitleEmpty)
-                {                    
-                    TextValidation.Text = "Tienes que escribir un título";
-                }
-                else // validation.code == Entity.ValidationResult.descriptionEmpty
-                {
-                    TextValidation.Text = "La descripción no puede estar vacía";
-                }
-            }
-            
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)

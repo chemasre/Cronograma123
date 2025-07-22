@@ -15,6 +15,7 @@
 
             if(result.code != ValidationCode.success) { return result; }
 
+            if (Points.Count <= 0) { return ValidationResult.Create(ValidationCode.contentNoPoints);  }
             for(int i = 0; i < Points.Count; i++) { if(Points[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.contentPointInvalid).WithIndex(i); } }
 
             return ValidationResult.Create(ValidationCode.success);

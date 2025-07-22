@@ -48,27 +48,32 @@ namespace Programacion123
             if(GeneralObjectivesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGeneralObjectivesIntroductionInvalid); }
 
             List<CommonText> objectivesList = GeneralObjectives.ToList();
+            if (objectivesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateNoGeneralObjectives);  }
             for(int i = 0; i < objectivesList.Count; i++) { if(objectivesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGeneralObjectiveInvalid).WithIndex(i); } }
 
             if(GeneralCompetencesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGeneralCompetencesIntroductionInvalid); }
 
             List<CommonText> competencesList = GeneralCompetences.ToList();
-            for(int i = 0; i < competencesList.Count; i++) { if(competencesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGeneralCompetenceInvalid).WithIndex(i); } }
+            if (competencesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateNoGeneralCompetences); }
+            for (int i = 0; i < competencesList.Count; i++) { if(competencesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGeneralCompetenceInvalid).WithIndex(i); } }
 
             if(KeyCapacitiesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateKeyCapacitiesIntroductionInvalid); }
 
             List<CommonText> capacitiesList = KeyCapacities.ToList();
-            for(int i = 0; i < capacitiesList.Count; i++) { if(capacitiesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateKeyCapacitiesInvalid).WithIndex(i); } }
+            if (capacitiesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateNoKeyCapacities); }
+            for (int i = 0; i < capacitiesList.Count; i++) { if(capacitiesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateKeyCapacitiesInvalid).WithIndex(i); } }
 
             if(LearningResultsIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateLearningResultsIntroductionInvalid); }
 
             List<LearningResult> resultsList = LearningResults.ToList();
-            for(int i = 0; i < resultsList.Count; i++) { if(resultsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateLearningResultsInvalid).WithIndex(i); } }
+            if (resultsList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateNoLearningResults); }
+            for (int i = 0; i < resultsList.Count; i++) { if(resultsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateLearningResultsInvalid).WithIndex(i); } }
 
             if(ContentsIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateContentsIntroductionInvalid); }
 
             List<Content> contentsList = Contents.ToList();
-            for(int i = 0; i < contentsList.Count; i++) { if(contentsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateContentsInvalid).WithIndex(i); } }
+            if (contentsList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateNoContents); }
+            for (int i = 0; i < contentsList.Count; i++) { if(contentsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateContentsInvalid).WithIndex(i); } }
 
 
             return ValidationResult.Create(ValidationCode.success);
@@ -109,6 +114,10 @@ namespace Programacion123
             list = GeneralCompetences.ToList();
             list.ForEach(e => e.Save(StorageId));
             data.GeneralCompetencesStorageIds = Storage.GetStorageIds<CommonText>(list);
+
+            list = KeyCapacities.ToList();
+            list.ForEach(e => e.Save(StorageId));
+            data.KeyCapacitiesStorageIds= Storage.GetStorageIds<CommonText>(list);
 
             data.LearningResultsIntroductionStorageId = LearningResultsIntroduction.StorageId;
             LearningResultsIntroduction.Save(StorageId);
@@ -154,6 +163,8 @@ namespace Programacion123
             GeneralCompetencesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.GeneralCompetencesIntroductionStorageId, storageId);
 
             GeneralCompetences.Set(Storage.LoadOrCreateEntities<CommonText>(data.GeneralCompetencesStorageIds, storageId));
+
+            KeyCapacities.Set(Storage.LoadOrCreateEntities<CommonText>(data.KeyCapacitiesStorageIds, storageId));
 
             LearningResultsIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.LearningResultsIntroductionStorageId, storageId);
 

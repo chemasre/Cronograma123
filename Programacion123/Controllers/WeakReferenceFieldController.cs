@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace Programacion123
 {
@@ -70,6 +71,7 @@ namespace Programacion123
             parentStorageId = configuration.parentStorageId;
 
             textBox = configuration.textBox;
+            textBox.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
             formatContent = configuration.formatContent;
             formatIndex = configuration.formatIndex;
             formatter = configuration.formatter;

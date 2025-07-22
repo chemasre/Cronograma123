@@ -259,12 +259,14 @@ namespace Programacion123
 
         private void DataTableActivitiesWeight_RowChanged(object sender, DataRowChangeEventArgs e)
         {
-            UpdateEntityFromUI();
+            UpdateEntity();
+            Validate();
         }
 
         private void DataTableResultsWeight_RowChanged(object sender, DataRowChangeEventArgs e)
         {
-            UpdateEntityFromUI();
+            UpdateEntity();
+            Validate();
         }
 
         void UpdateWeightsUIFromEntity()
@@ -355,75 +357,71 @@ namespace Programacion123
             DataGridActivitiesWeight.ItemsSource = dataTableActivitiesWeight.DefaultView;
         }
 
-
-        void Validate()
-        {
-            Entity.ValidationResult result = entity.Validate();
-
-            if (result.code == Entity.ValidationCode.success)
-            {
-                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
-                TextValidation.Text = "No se han detectado problemas";
-            }
-            else
-            {
-                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorInvalid"]);
-            }
-        }
-
         private void BlocksIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntityFromUI();
+            UpdateEntity();
+            Validate();
         }
 
         private void EvaluationInstrumentTypesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntityFromUI();
+            UpdateEntity();
+            Validate();
         }
 
         private void EvaluationInstrumentTypesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntityFromUI();
+            UpdateEntity();
+            Validate();
         }
 
         private void MaterialResourcesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntityFromUI();
+            UpdateEntity();
+            Validate();
+
         }
 
         private void SpaceResourcesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntityFromUI();
+            UpdateEntity();
+            Validate();
         }
 
         private void ResourcesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntityFromUI();
+            UpdateEntity();
+            Validate();
         }
 
         private void MetodologiesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntityFromUI();
+            UpdateEntity();
+            Validate();
         }
 
         private void MetodologiesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntityFromUI();
+            UpdateEntity();
+            Validate();
         }
 
         private void WeekScheduleController_Changed(WeakReferenceFieldController<WeekSchedule, EntityPicker<WeekSchedule> > controller)
         {
-            UpdateEntityFromUI();
+            UpdateEntity();
+            Validate();
         }
 
         private void CalendarController_Changed(WeakReferenceFieldController<Calendar, EntityPicker<Calendar>> controller)
         {
-            UpdateEntityFromUI();
+            UpdateEntity();
+            Validate();
         }
 
         private void SubjectTemplateController_Changed(WeakReferenceFieldController<SubjectTemplate, EntityPicker<SubjectTemplate>> controller)
         {
-            UpdateEntityFromUI();
+            UpdateEntity();
+            Validate();
             UpdateWeightsUIFromEntity();
             UpdateActivityWeightsUIFromEntity();
         }
@@ -434,11 +432,12 @@ namespace Programacion123
             entity.Blocks.Set(Storage.LoadOrCreateEntities<Block>(blocksController.StorageIds, entity.StorageId));
 
             UpdateActivityWeightsUIFromEntity();
-            UpdateEntityFromUI();
-            
+            UpdateEntity();
+            Validate();
+
         }
 
-        private void UpdateEntityFromUI()
+        private void UpdateEntity()
         {            
             entity.Title = TextTitle.Text;
 
@@ -578,9 +577,19 @@ namespace Programacion123
             entity.Save(parentStorageId);
         }
 
+        void Validate()
+        {
+            ValidationResult validation = entity.Validate();
+
+            string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
+            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
+            TextValidation.Text = validation.ToString();
+
+        }
+
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-            UpdateEntityFromUI();
+            UpdateEntity();
 
             Close();
         }

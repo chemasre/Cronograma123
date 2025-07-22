@@ -13,6 +13,7 @@
         public List<string> GeneralObjectivesStorageIds { get; set; } = new List<string>();
         public string GeneralCompetencesIntroductionStorageId { get; set; }
         public List<string> GeneralCompetencesStorageIds { get; set; } = new List<string>();
+        public List<string> KeyCapacitiesStorageIds { get; set; } = new List<string>();
         public string LearningResultsIntroductionStorageId { get; set; }
         public List<string> LearningResultsStorageIds { get; set; } = new List<string>();
         public string ContentsIntroductionStorageId { get; set; }

@@ -105,6 +105,17 @@ namespace Programacion123
             entity.Save(parentStorageId);
         }
 
+        void Validate()
+        {
+            ValidationResult validation = entity.Validate();
+
+            string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
+            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
+            TextValidation.Text = validation.ToString();
+
+        }
+
+
         public void InitEditor(Activity _entity, string? _parentStorageId)
         {
             _entity.Save(_parentStorageId);
@@ -342,51 +353,58 @@ namespace Programacion123
             UpdateActivityCodeUI();
             UpdateResultsWeightTableUI();
 
-
-
+            Validate();
 
         }
 
         private void DataTableResultsWeight_RowChanged(object sender, DataRowChangeEventArgs e)
         {
             UpdateEntity();
+            Validate();
         }
 
         void SpaceResourcesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
+            Validate();
         }
 
         void MaterialResourcesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
+            Validate();
         }
 
         void CriteriasController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
+            Validate();
             UpdateResultsWeightTableUI();
         }
 
         void EvaluationInstrumentController_Changed(WeakReferenceFieldController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
+            Validate();
         }
 
         void MetodologyController_Changed(WeakReferenceFieldController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
+            Validate();
         }
 
         void ContentPointsController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > controller)
         {
             UpdateEntity();
+            Validate();
         }
 
         void CheckboxIsEvaluable_CheckedChanged(object sender, RoutedEventArgs e)
         {
             UpdateActivityCodeUI();
             UpdateEntity();
+            Validate();
             UpdateResultsWeightTableUI();
         }
 
@@ -461,6 +479,7 @@ namespace Programacion123
             if(!Int32.TryParse(TextHours.Text, out h)) { TextHours.Text = ""; }
 
             UpdateEntity();
+            Validate();
         }
 
 

@@ -103,40 +103,13 @@ namespace Programacion123
             calendar.Save(parentStorageId);
         }
 
-        private void Validate()
+        void Validate()
         {
-            Entity.ValidationResult result = calendar.Validate();
+            ValidationResult validation = calendar.Validate();
 
-            if (result.code == Entity.ValidationCode.success)
-            {
-                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorValid"]);
-                TextValidation.Text = "El calendario es válido";
-            }
-            else
-            {
-                BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorInvalid"]);
-
-                if (result.code == Entity.ValidationCode.entityTitleEmpty)
-                {                    
-                    TextValidation.Text = "Tienes que escribir un título para el calendario";
-                }
-                else if (result.code == Entity.ValidationCode.entityDescriptionEmpty)
-                {                    
-                    TextValidation.Text = "Tienes que escribir una descripción para el calendario";
-                }
-                else if(result.code == Entity.ValidationCode.calendarFreeDayBeforeStartOrAfterEnd)
-                {
-                    TextValidation.Text = "Todos los días festivos deben situarse entre el primer día del curso y el último (incluidos)";
-                }
-                else if(result.code == Entity.ValidationCode.calendarStartDayAfterEndDay)
-                {
-                    TextValidation.Text = "Tienes que situar el primer día del curso antes o coincidiendo con el último";
-                }
-                else // result.code == Entity.ValidationResult.noSchoolDays
-                {
-                    TextValidation.Text = "Tiene que existir al menos un día lectivo";
-                }
-            }
+            string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
+            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
+            TextValidation.Text = validation.ToString();
 
         }
 
