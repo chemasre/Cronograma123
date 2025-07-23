@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="SubjectEditor" Height="744" Width="532" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" Foreground="{x:Null}" AllowsTransparency="True" Topmost="True" MouseDown="Window_MouseDown">
-    <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" Background="#FFC3B7FF" CornerRadius="30" BorderBrush="#FF0370A9" >
+        Title="SubjectEditor" Height="744" Width="532" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" AllowsTransparency="True" Topmost="True" MouseDown="Window_MouseDown" FontFamily="{DynamicResource Font}" Foreground="{x:Null}">
+    <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" Background="{DynamicResource WindowBackground}" CornerRadius="30" BorderBrush="#FF0370A9" >
         <Canvas>
             <Border BorderThickness="1" Height="73" Width="514" CornerRadius="30,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
@@ -17,7 +17,7 @@
                 </Border.Background>
             </Border>
 
-            <Label x:Name="TextEditorTitle" Content="Programación de la asignatura" FontSize="24" FontFamily="Segoe Script" FontWeight="Bold" Width="448" HorizontalAlignment="Center" Canvas.Left="13" Canvas.Top="10" VerticalAlignment="Top" Foreground="White" Background="{x:Null}"/>
+            <Label x:Name="TextEditorTitle" Content="Programación de la asignatura" FontSize="24" FontFamily="{DynamicResource WindowTitleFont}" FontWeight="Bold" Width="448" HorizontalAlignment="Center" Canvas.Left="13" Canvas.Top="10" VerticalAlignment="Top" Foreground="White" Background="{x:Null}"/>
             <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" Click="ButtonClose_Click" HorizontalAlignment="Left" Canvas.Left="461" VerticalAlignment="Center" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
@@ -27,7 +27,7 @@
                 <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Width="451" Height="52" HorizontalAlignment="Left" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black"/>
             </Border>
             <TextBox x:Name="TextTitle" Canvas.Left="185" Canvas.Top="93" Width="288" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
-            <Label Content="Título de la programación" Canvas.Left="25" Canvas.Top="87" HorizontalAlignment="Center" VerticalAlignment="Top" Width="169"/>
+            <Label Content="Título" Canvas.Left="25" Canvas.Top="87" HorizontalAlignment="Center" VerticalAlignment="Top" Width="169"/>
             <TabControl Height="369" Width="466" HorizontalAlignment="Center" Canvas.Top="247" VerticalAlignment="Top" Canvas.Left="26" Background="#FFFFE9C3" BorderBrush="#00ACACAC">
                 <TabItem Header="Bloques y actividades">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">

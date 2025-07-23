@@ -345,7 +345,7 @@ namespace Programacion123
 
             if(entity.Template != null)
             {
-                dataTableActivitiesWeight.Columns.Add("Activity", typeof(string));
+                dataTableActivitiesWeight.Columns.Add("Actividad", typeof(string));
 
                 List<LearningResult> results = entity.Template.LearningResults.ToList();
                 for(int i = 0; i < results.Count; i++)
@@ -365,7 +365,7 @@ namespace Programacion123
                         if(activity.IsEvaluable)
                         {
                             DataRow row = dataTableActivitiesWeight.NewRow();
-                            row["Activity"] = String.Format("B{0:00}-A{1:00}", b + 1, evaluableActivityIndex + 1);
+                            row["Actividad"] = String.Format("B{0:00}-A{1:00}", b + 1, evaluableActivityIndex + 1);
 
                             List<KeyValuePair<LearningResult, float>> resultsWeightsList = activity.LearningResultsWeights.ToList();
 

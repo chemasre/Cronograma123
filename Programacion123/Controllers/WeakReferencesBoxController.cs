@@ -82,8 +82,6 @@ namespace Programacion123
             pickList = configuration.pickList;
             blocker = configuration.blocker;
 
-            listBox.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
-
             if (buttonUp != null)
             {
                 buttonUp.Click += ButtonUp_Click; buttonUp.ToolTip = "Mover arriba en la lista";

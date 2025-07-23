@@ -4,9 +4,9 @@
              xmlns:local="clr-namespace:Programacion123"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <Color x:Key="ColorInvalid">#FFFDFF21</Color>
+        <Color x:Key="ColorInvalid">#F7E676</Color>
         <Color x:Key="ColorValid">#FFBAFFA7</Color>
-        <Color x:Key="ColorLocked">#FF98F5F9</Color>
+        <Color x:Key="ColorLocked">#D5DEE8</Color>
         <DropShadowEffect x:Key="EffectDropShadow" BlurRadius="5" Color="Gray" ShadowDepth="3"/>
         <Style BasedOn="{StaticResource {x:Type Button}}" x:Key="PushableButton" TargetType="{x:Type Button}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -44,5 +44,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <LinearGradientBrush x:Key="WindowBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFC3B7FF"/>
+            <GradientStop Color="#FFC3B7FF" Offset="1"/>
+        </LinearGradientBrush>
+        <FontFamily x:Key="TitleFont">Verdana Pro Cond Light</FontFamily>
+        <FontFamily x:Key="Font">Yu Gothic UI</FontFamily>
+        <FontFamily x:Key="WindowTitleFont">Segoe Script</FontFamily>
     </Application.Resources>
 </Application>
