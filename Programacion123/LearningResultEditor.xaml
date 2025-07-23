@@ -8,6 +8,9 @@
         Title="LearningResultEditor" Height="561" Width="506" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" HorizontalAlignment="Left" VerticalAlignment="Top" AllowsTransparency="True" Background="{x:Null}" Foreground="{x:Null}" MouseDown="Window_MouseDown" Topmost="True" FontFamily="{DynamicResource Font}">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="#FF0370A9" Background="{DynamicResource WindowBackground}" >
         <Canvas>
+            <Canvas.Background>
+                <ImageBrush ImageSource="/Images/BackgroundClouds.png" Stretch="UniformToFill"/>
+            </Canvas.Background>
 
             <Border BorderThickness="1" Height="86" Width="488" CornerRadius="30,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
@@ -27,7 +30,11 @@
                 <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Width="312" Height="52" HorizontalAlignment="Left" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black"/>
             </Border>
             <TextBox x:Name="TextTitle" Canvas.Left="126" Canvas.Top="97" Width="317" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
-            <Border BorderThickness="1" Height="306" Width="431" Canvas.Left="29" Canvas.Top="133" Background="#FFFFE9C3" CornerRadius="10,10,10,10" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Border BorderThickness="1" Height="306" Width="431" Canvas.Left="29" Canvas.Top="133" CornerRadius="10,10,10,10" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Border.Background>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                </Border.Background>
+            </Border>
             <Label Content="Título" Canvas.Left="29" Canvas.Top="93" HorizontalAlignment="Center" VerticalAlignment="Center" Width="89"/>
             <Label Content="Descripción" Canvas.Left="40" Canvas.Top="150" Width="123" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <TextBox x:Name="TextBoxDescription" Canvas.Left="156" TextWrapping="Wrap" Text="TextBox" Canvas.Top="150" Width="288" Height="110" AcceptsReturn="True" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>

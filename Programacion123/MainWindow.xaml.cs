@@ -1,10 +1,13 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
+using System.Security.Policy;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Programacion123
 {
+
     public interface IEntityEditor<T>
     {
         void SetEntityTitleEditable(bool editable);
@@ -29,6 +32,9 @@ namespace Programacion123
     /// </summary>
     public partial class MainWindow : Window
     {
+        const string homeUrl = "http://sinestesiagamedesign.es/teaching";
+        const string helpUrl = "http://youtube.com";
+
         //WeekScheduleEditor weekScheduleEditor;
         //List<string> weekSchedulesStorageIds;
 
@@ -98,6 +104,24 @@ namespace Programacion123
             {
                 DragMove();
             }
+        }
+
+        private void ButtonHome_Click(object sender, RoutedEventArgs e)
+        {
+            OpenUrl(homeUrl);
+        }
+
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            OpenUrl(helpUrl);
+        }
+
+        void OpenUrl(string url)
+        {
+            ProcessStartInfo info = new ();
+            info.FileName = url;
+            info.UseShellExecute = true;
+            Process.Start (info);
         }
     }
 }

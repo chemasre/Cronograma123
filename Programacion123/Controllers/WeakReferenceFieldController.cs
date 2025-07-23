@@ -72,6 +72,7 @@ namespace Programacion123
 
             textBox = configuration.textBox;
             textBox.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
+            textBox.IsReadOnly = true;
             formatContent = configuration.formatContent;
             formatIndex = configuration.formatIndex;
             formatter = configuration.formatter;

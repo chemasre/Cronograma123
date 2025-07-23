@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
         Title="EntityPickerBase" Height="484" Width="375" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" AllowsTransparency="True" Topmost="True" FontFamily="{DynamicResource Font}">
-    <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="#FF0370A9" Background="{DynamicResource WindowBackground}" >
+    <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="#FF0370A9" >
+        <Border.Background>
+            <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>
+        </Border.Background>
         <Canvas>
             <Border BorderThickness="1" Height="86" Width="359" CornerRadius="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Border.Background>
@@ -22,7 +25,11 @@
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
                 </Button.Background>
             </Button>
-            <Border BorderThickness="1" Height="358" Width="341" Canvas.Left="10" Canvas.Top="100" Background="#FFFFE9C3" CornerRadius="10,10,10,10" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Border BorderThickness="1" Height="358" Width="341" Canvas.Left="10" Canvas.Top="100" CornerRadius="10,10,10,10" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Border.Background>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                </Border.Background>
+            </Border>
             <ListBox x:Name="ListBoxEntities" Height="325" Width="302" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Canvas.Top="117" VerticalAlignment="Center" Canvas.Left="28"/>
             <Border x:Name="BorderToAlignVerticallyEditorTitle" BorderThickness="1" Height="69" Width="284" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="10" Canvas.Left="20">
                 <TextBlock x:Name="TextPickerTitle" TextWrapping="Wrap" Text="Entidad" FontFamily="{DynamicResource WindowTitleFont}" FontSize="24" FontWeight="Bold" LineStackingStrategy="BlockLineHeight" LineHeight="24" Width="284" HorizontalAlignment="Center" VerticalAlignment="Center">

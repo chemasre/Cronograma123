@@ -21,10 +21,14 @@
     <None Remove="ButtonNew.png" />
     <None Remove="ButtonWarning.png" />
     <None Remove="IconEdit.png" />
+    <None Remove="Images\BackgroundClouds.png" />
+    <None Remove="Images\BackgroundSteps.png" />
     <None Remove="Images\ButonReferenceAdd.png" />
     <None Remove="Images\ButonReferenceRemove.png" />
     <None Remove="Images\ButtonAccept.png" />
     <None Remove="Images\ButtonCancel.png" />
+    <None Remove="Images\ButtonHelp.png" />
+    <None Remove="Images\ButtonHome.png" />
     <None Remove="Images\ButtonPick.png" />
   </ItemGroup>
 
@@ -50,8 +54,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\BackgroundClouds.png" />
+    <Resource Include="Images\BackgroundSteps.png" />
     <Resource Include="Images\ButonReferenceAdd.png" />
     <Resource Include="Images\ButonReferenceRemove.png" />
+    <Resource Include="Images\ButtonHelp.png" />
+    <Resource Include="Images\ButtonHome.png" />
     <Resource Include="Images\ButtonMoveDown.png" />
     <Resource Include="Images\ButtonMoveUp.png" />
   </ItemGroup>

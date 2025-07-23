@@ -326,6 +326,9 @@ namespace Programacion123
             TextHours.Text = entity.Hours.ToString();
             CheckboxIsEvaluable.IsChecked = entity.IsEvaluable;
 
+            TextActivityCode.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
+            TextActivityCode.IsReadOnly = true;
+
             dataTableResultsWeight = new DataTable();
             
             DataGridLearningResultsWeight.ItemsSource = dataTableResultsWeight.DefaultView;
@@ -429,12 +432,10 @@ namespace Programacion123
                 int activityIndex = block.Activities.ToList().FindIndex((a => a.StorageId == entity.StorageId));
                 int blockIndex = subject.Blocks.ToList().FindIndex((b) => b.StorageId == block.StorageId);
                 TextActivityCode.Text = String.Format("B{0:00}-A{1:00}", blockIndex + 1, activityIndex + 1);
-                TextActivityCode.Background = Brushes.LightPink;
             }
             else
             {
-                TextActivityCode.Text = "";
-                TextActivityCode.Background = Brushes.LightGray;
+                TextActivityCode.Text = "(actividad no evaluable)";
             }
         }
 
