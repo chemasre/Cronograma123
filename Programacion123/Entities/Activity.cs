@@ -155,6 +155,7 @@ namespace Programacion123
             base.Delete(parentStorageId);
 
             Storage.DeleteData(StorageId, StorageClassId, parentStorageId);
+
         }
 
 

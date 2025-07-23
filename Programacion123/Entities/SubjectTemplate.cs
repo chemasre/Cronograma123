@@ -184,12 +184,15 @@ namespace Programacion123
             GeneralObjectives.ToList().ForEach(e => e.Delete(StorageId));
             GeneralCompetencesIntroduction.Delete(StorageId);
             GeneralCompetences.ToList().ForEach(e => e.Delete(StorageId));
+            KeyCapacitiesIntroduction.Delete(StorageId);
+            KeyCapacities.ToList().ForEach(e => e.Delete(StorageId));
             LearningResultsIntroduction.Delete(StorageId);
             LearningResults.ToList().ForEach(e => e.Delete(StorageId));
             ContentsIntroduction.Delete(StorageId);
             Contents.ToList().ForEach(e => e.Delete(StorageId));
 
             Storage.DeleteData(StorageId, StorageClassId, parentStorageId);
+
 
 
         }
