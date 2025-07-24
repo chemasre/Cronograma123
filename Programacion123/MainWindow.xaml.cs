@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
+using System.Reflection;
 using System.Security.Policy;
 using System.Windows;
 using System.Windows.Controls;
@@ -49,6 +50,11 @@ namespace Programacion123
 
             Storage.Init();
 
+            InitUI();
+        }
+
+        void InitUI()
+        {
             var configWeeks = StrongReferencesBoxConfiguration<WeekSchedule>.CreateForCombo(ComboWeekSchedules)
                                                    .WithStorageIds(Storage.GetStorageIds<WeekSchedule>(Storage.LoadAllEntities<WeekSchedule>()))
                                                    .WithNew(ButtonWeekScheduleNew)
@@ -91,6 +97,7 @@ namespace Programacion123
 
 
             subjectsController = new (configSubjects);
+
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
@@ -122,6 +129,24 @@ namespace Programacion123
             info.FileName = url;
             info.UseShellExecute = true;
             Process.Start (info);
+        }
+
+        private void ButtonReset_Click(object sender, RoutedEventArgs e)
+        {
+            ConfirmDialog confirm = new();
+            confirm.Init("Confirmación", "Esto eliminará TODOS los datos guardados y devolverá la aplicación a su estado inicial ¿estás seguro/a?",
+                (e) =>
+                {
+                    if(e)
+                    {
+                        Storage.Reset();
+                        InitUI();
+                    }
+
+                });
+
+            confirm.ShowDialog();
+
         }
     }
 }

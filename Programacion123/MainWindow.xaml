@@ -197,6 +197,14 @@
                     <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                 </Button.Foreground>
             </Button>
+            <Button x:Name="ButtonReset" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="374" Canvas.Top="535" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="ButtonReset_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/ButtonReset.png"/>
+                </Button.Background>
+                <Button.Foreground>
+                    <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                </Button.Foreground>
+            </Button>
         </Canvas>
     </Border>
 </Window>

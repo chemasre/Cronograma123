@@ -30,6 +30,7 @@
     <None Remove="Images\ButtonHelp.png" />
     <None Remove="Images\ButtonHome.png" />
     <None Remove="Images\ButtonPick.png" />
+    <None Remove="Images\ButtonReset.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -75,6 +76,7 @@
     <Resource Include="Images\ButtonEdit.png" />
     <Resource Include="Images\ButtonNew.png" />
     <Resource Include="Images\ButtonPick.png" />
+    <Resource Include="Images\ButtonReset.png" />
     <Resource Include="Images\ButtonWarning.png" />
   </ItemGroup>
 

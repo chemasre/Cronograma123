@@ -246,5 +246,25 @@ namespace Programacion123
             entities.ForEach((e) => { e.Save(parentStorageId); } );
         }
 
+        public static void Reset()
+        {
+            ResetRecursively(basePath);
+        }
+
+        static void ResetRecursively(string directory, int depth = 0)
+        {
+            string[] files = Directory.GetFiles(directory);
+            Array.ForEach(files, (f) => File.Delete(f));
+
+            string[] directories = Directory.GetDirectories(directory);
+            Array.ForEach(directories, (d) => ResetRecursively(d, depth + 1));
+
+            if(depth > 0)
+            {
+                Directory.Delete(directory);
+            }
+
+        }
+
     }
 }
