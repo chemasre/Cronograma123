@@ -76,6 +76,8 @@ namespace Programacion123
             int hours;
             if(Int32.TryParse(TextHours.Text, out hours))  { entity.Hours = hours; }
             else { entity.Hours = 0; }
+
+            entity.StartInNewDay = CheckboxStartInNewDay.IsChecked.GetValueOrDefault();
             
 
             entity.Metodology = metodologyController.GetEntity();
@@ -324,6 +326,7 @@ namespace Programacion123
             TextTitle.Text = entity.Title;
             TextBoxDescription.Text = entity.Description;
             TextHours.Text = entity.Hours.ToString();
+            CheckboxStartInNewDay.IsChecked = entity.StartInNewDay;
             CheckboxIsEvaluable.IsChecked = entity.IsEvaluable;
 
             TextActivityCode.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
@@ -342,6 +345,8 @@ namespace Programacion123
             TextTitle.TextChanged += TextTitle_TextChanged;
             TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
             TextHours.TextChanged += TextHours_TextChanged;
+            CheckboxStartInNewDay.Checked += CheckboxStartInNewDay_Checked;
+            CheckboxStartInNewDay.Unchecked += CheckboxStartInNewDay_Unchecked;
 
             metodologyController.Changed += MetodologyController_Changed;
             contentPointsController.Changed += ContentPointsController_Changed;
@@ -360,6 +365,18 @@ namespace Programacion123
 
             Validate();
 
+        }
+
+        private void CheckboxStartInNewDay_Unchecked(object sender, RoutedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void CheckboxStartInNewDay_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
         }
 
         private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)

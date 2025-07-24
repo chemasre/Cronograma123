@@ -3,6 +3,7 @@
     public class ActivityData : StorageData
     {
         public int Hours { get; set; }
+        public bool StartInNewDay { get; set; }
 
         public string? MetodologyWeakStorageId { get; set; } = null;
 

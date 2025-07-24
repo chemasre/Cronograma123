@@ -52,6 +52,9 @@
                         <TextBox x:Name="TextHours" Canvas.Left="146" Canvas.Top="196" Width="57" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Label Content="Descripción" Canvas.Left="15" Canvas.Top="18" Width="123" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <TextBox x:Name="TextBoxDescription" Canvas.Left="146" TextWrapping="Wrap" Text="TextBox" Canvas.Top="23" Width="288" Height="110" AcceptsReturn="True" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Iniciar en día&#xD;&#xA;nuevo" Canvas.Left="15" Canvas.Top="231" Width="129" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="CheckboxStartInNewDay"
+                            Canvas.Top="237" Canvas.Left="146" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
                     </Canvas>
                 </TabItem>
                 <TabItem Header="Contenidos">

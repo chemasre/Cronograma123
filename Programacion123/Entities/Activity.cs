@@ -4,6 +4,7 @@ namespace Programacion123
 {
     public class Activity: Entity
     {
+        public bool StartInNewDay { get; set; } = true;
         public int Hours { get; set; }
 
         public CommonText? Metodology = null;
@@ -87,6 +88,7 @@ namespace Programacion123
             data.Title = Title;
             data.Description = Description;
             data.Hours = Hours;
+            data.StartInNewDay = StartInNewDay;
 
 
             data.MetodologyWeakStorageId = Metodology?.StorageId;
@@ -127,6 +129,7 @@ namespace Programacion123
             Title = data.Title;
             Description = data.Description;
             Hours = data.Hours;
+            StartInNewDay = data.StartInNewDay;
 
             string subjectStorageId = Storage.FindParentStorageId(Storage.FindParentStorageId(StorageId, StorageClassId), new Block().StorageClassId);
             Metodology = data.MetodologyWeakStorageId != null ? Storage.FindEntity<CommonText>(data.MetodologyWeakStorageId, subjectStorageId) : null;
