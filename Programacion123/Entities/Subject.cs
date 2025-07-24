@@ -122,6 +122,22 @@
                 if (index >= 0 && r.Value != 100) { return ValidationResult.Create(ValidationCode.subjectActivitiesLearningResultWeightNotHundredPercent).WithIndex(index);  }
             }
 
+            bool foundSchoolDay = false;
+            DateTime d = Calendar.StartDay;
+            while(d <= Calendar.EndDay && !foundSchoolDay)
+            {
+                if(d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    if (!Calendar.FreeDays.Contains(d) && WeekSchedule.HoursPerWeekDay[d.DayOfWeek] > 0) { foundSchoolDay = true;  }
+                }
+                
+                if(!foundSchoolDay)
+                {
+                    d = d.AddDays(1);
+                }
+            }
+
+            if(!foundSchoolDay) { return ValidationResult.Create(ValidationCode.subjectCalendarAndWeekScheduleLeaveNoSchoolDays);  }
 
             return ValidationResult.Create(ValidationCode.success);
         }

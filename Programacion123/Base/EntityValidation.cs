@@ -49,6 +49,7 @@ namespace Programacion123
             else if (code == ValidationCode.subjectEvaluationIntroductionInvalid) { return "El texto introductorio a la evaluación presenta algún problema."; }
             else if (code == ValidationCode.subjectLearningResultNotReferencedByActivities) { return String.Format("Ninguna actividad hace referencia al resultado de aprendizaje {0} en sus criterios de evaluación.", index + 1); }
             else if (code == ValidationCode.subjectActivitiesLearningResultWeightNotHundredPercent) { return String.Format("En el resultado de aprendizaje {0}, la suma de los pesos de las actividades evaluables debe ser cien.", index + 1);  }
+            else if (code == ValidationCode.subjectCalendarAndWeekScheduleLeaveNoSchoolDays) { return "La combinación de calendario y horario no permite ningún día lectivo."; }
             else if (code == ValidationCode.templateSubjectNameEmpty) { return "El nombre oficial del módulo está vacío."; }
             else if (code == ValidationCode.templateSubjectCodeEmpty) { return "El código del módulo está vacío."; }
             else if (code == ValidationCode.templateGradeNameEmpty) { return "El nombre del ciclo está vacío."; }
@@ -123,6 +124,7 @@ namespace Programacion123
         subjectEvaluationIntroductionInvalid,
         subjectLearningResultNotReferencedByActivities,
         subjectActivitiesLearningResultWeightNotHundredPercent,
+        subjectCalendarAndWeekScheduleLeaveNoSchoolDays,
         templateSubjectNameEmpty,
         templateSubjectCodeEmpty,
         templateGradeNameEmpty,
