@@ -54,6 +54,7 @@ namespace Programacion123
                                                         .WithNew(ButtonCriteriaNew)
                                                         .WithEdit(ButtonCriteriaEdit)
                                                         .WithDelete(ButtonCriteriaDelete)
+                                                        .WithDeleteConfirmQuestion("Esto eliminará permanentemente el criterio seleccionado. ¿Estás seguro/a?")
                                                         .WithUpDown(ButtonCriteriaUp, ButtonCriteriaDown)
                                                         .WithEditorTitle("Criterio")
                                                         .WithBlocker(Blocker);

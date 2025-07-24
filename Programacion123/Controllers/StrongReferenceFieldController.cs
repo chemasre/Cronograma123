@@ -38,6 +38,7 @@ namespace Programacion123
         public bool? titleEditable;
         public string? editorTitle;
         public UIElement? blocker;
+        public string? replaceConfirmQuestion;
 
         public static StrongReferenceFieldConfiguration<TEntity> CreateForTextBox(TextBox _textBox) { StrongReferenceFieldConfiguration<TEntity> c = new(); c.textBox = _textBox; return c; }
         public StrongReferenceFieldConfiguration<TEntity> WithStorageId(string _storageId) { storageId = _storageId; return this; }
@@ -49,6 +50,8 @@ namespace Programacion123
         public StrongReferenceFieldConfiguration<TEntity> WithTitleEditable(bool _titleEditable) { titleEditable = _titleEditable; return this; }
         public StrongReferenceFieldConfiguration<TEntity> WithEditorTitle(string _editorTitle) { editorTitle = _editorTitle; return this; }
         public StrongReferenceFieldConfiguration<TEntity> WithBlocker(UIElement? _blocker) { blocker = _blocker; return this; }
+
+        public StrongReferenceFieldConfiguration<TEntity> WithReplaceConfirmQuestion(string _question) { replaceConfirmQuestion = _question; return this; }
     }
 
     public class StrongReferenceFieldController<TEntity, TEditor> where TEntity : Entity, new()
@@ -67,6 +70,7 @@ namespace Programacion123
         Button? buttonEdit;
         EntityFormatContent formatContent;
         Func<TEntity, string>? formatter;
+        string? replaceConfirmQuestion;
         bool? titleEditable;
         string? editorTitle;
         UIElement? blocker;
@@ -83,6 +87,7 @@ namespace Programacion123
             textBox.IsReadOnly = true;
             formatContent = configuration.formatContent;
             formatter = configuration.formatter;
+            replaceConfirmQuestion = configuration.replaceConfirmQuestion;
             
             buttonNew = configuration.buttonNew;
             buttonEdit = configuration.buttonEdit;
@@ -133,15 +138,29 @@ namespace Programacion123
 
         void ButtonNew_Click(object sender, RoutedEventArgs e)
         {
+            if(replaceConfirmQuestion != null)
+            {
+                ConfirmDialog confirm = new();
+                confirm.Init("Confirma reemplazo", replaceConfirmQuestion, (r) => { if (r) { ButtonNewConfirmed();  } });
+                confirm.ShowDialog();
+            }
+            else
+            {
+                ButtonNewConfirmed();
+            }
+        }
+
+        void ButtonNewConfirmed()
+        {
             var entity = new TEntity();
             editor = new TEditor();
-            if(titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
-            if(editorTitle != null) { editor.SetEditorTitle(editorTitle); }
-            if(blocker != null) { blocker.Visibility = Visibility.Visible; }
+            if (titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
+            if (editorTitle != null) { editor.SetEditorTitle(editorTitle); }
+            if (blocker != null) { blocker.Visibility = Visibility.Visible; }
             editor.InitEditor(entity, parentStorageId);
             editor.Closed += OnDialogClosed;
 
-            editor.ShowDialog();            
+            editor.ShowDialog();
         }
 
 

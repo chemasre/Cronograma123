@@ -60,6 +60,7 @@ namespace Programacion123
                                                    .WithNew(ButtonWeekScheduleNew)
                                                    .WithEdit(ButtonWeekScheduleEdit)
                                                    .WithDelete(ButtonWeekScheduleDelete)
+                                                   .WithDeleteConfirmQuestion("Esto eliminará permanentemente el horario seleccionado. ¿Estás seguro/a?")
                                                    .WithBlocker(Blocker);
 
             var configCalendars = StrongReferencesBoxConfiguration<Calendar>.CreateForCombo(ComboBoxCalendars)
@@ -67,6 +68,7 @@ namespace Programacion123
                                                    .WithNew(ButtonCalendarNew)
                                                    .WithEdit(ButtonCalendarEdit)
                                                    .WithDelete(ButtonCalendarDelete)
+                                                   .WithDeleteConfirmQuestion("Esto eliminará permanentemente el calendario seleccionado. ¿Estás seguro/a?")
                                                    .WithBlocker(Blocker);
 
             var configTemplates = StrongReferencesBoxConfiguration<SubjectTemplate>.CreateForCombo(ComboSubjectTemplates)
@@ -74,6 +76,7 @@ namespace Programacion123
                                                    .WithNew(ButtonSubjectTemplateNew)
                                                    .WithEdit(ButtonSubjectTemplateEdit)
                                                    .WithDelete(ButtonSubjectTemplateDelete)
+                                                   .WithDeleteConfirmQuestion("Esto eliminará permanentemente la plantilla seleccionada junto con los elementos curriculares definidos en ella. ¿Estás seguro/a?")
                                                    .WithBlocker(Blocker);
 
             weekSchedulesController = new (configWeeks);
@@ -92,6 +95,7 @@ namespace Programacion123
                                                    .WithNew(ButtonSubjectNew)
                                                    .WithEdit(ButtonSubjectEdit)
                                                    .WithDelete(ButtonSubjectDelete)
+                                                   .WithDeleteConfirmQuestion("Esto eliminará permanentemente la asignatura seleccionada junto con los bloques y otros elementos definidos en ella. ¿Estás seguro/a?")
                                                    .WithBlocker(Blocker);
 
 

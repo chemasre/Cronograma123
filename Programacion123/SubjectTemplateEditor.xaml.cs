@@ -47,6 +47,7 @@ namespace Programacion123
                                                .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonGeneralObjectivesIntroductionNew)
                                                .WithEdit(ButtonGeneralObjectivesIntroductionEdit)
+                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
                                                .WithTitleEditable(false)
                                                .WithEditorTitle("Introducción a los objetivos generales")
                                                .WithBlocker(Blocker);
@@ -63,6 +64,7 @@ namespace Programacion123
                                                         .WithEdit(ButtonGeneralObjectiveEdit)
                                                         .WithDelete(ButtonGeneralObjectiveDelete)
                                                         .WithUpDown(ButtonGeneralObjectiveUp, ButtonGeneralObjectiveDown)
+                                                        .WithDeleteConfirmQuestion("Esto eliminará permanentemente el objetivo seleccionado. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Objetivo general")
                                                         .WithBlocker(Blocker);
 
@@ -76,6 +78,7 @@ namespace Programacion123
                                                .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonGeneralCompetencesIntroductionNew)
                                                .WithEdit(ButtonGeneralCompetencesIntroductionEdit)
+                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
                                                .WithTitleEditable(false)
                                                .WithEditorTitle("Introducción a las competencias generales")
                                                .WithBlocker(Blocker);
@@ -92,6 +95,7 @@ namespace Programacion123
                                                         .WithEdit(ButtonGeneralCompetenceEdit)
                                                         .WithDelete(ButtonGeneralCompetenceDelete)
                                                         .WithUpDown(ButtonGeneralCompetenceUp, ButtonGeneralCompetenceDown)
+                                                        .WithDeleteConfirmQuestion("Esto eliminará permanentemente la competencia general seleccionada. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Competencia general")
                                                         .WithBlocker(Blocker);
 
@@ -105,6 +109,7 @@ namespace Programacion123
                                                .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonKeyCapacitiesIntroductionNew)
                                                .WithEdit(ButtonKeyCapacitiesIntroductionEdit)
+                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
                                                .WithTitleEditable(false)
                                                .WithEditorTitle("Introducción a las capacidades clave")
                                                .WithBlocker(Blocker);
@@ -121,6 +126,7 @@ namespace Programacion123
                                                         .WithEdit(ButtonKeyCapacitiesEdit)
                                                         .WithDelete(ButtonKeyCapacitiesDelete)
                                                         .WithUpDown(ButtonKeyCapacitiesUp, ButtonKeyCapacitiesDown)
+                                                        .WithDeleteConfirmQuestion("Esto eliminará permanentemente la capacidad clave seleccionada. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Capacidad clave")
                                                         .WithBlocker(Blocker);
 
@@ -134,6 +140,7 @@ namespace Programacion123
                                                .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonLearningResultsIntroductionNew)
                                                .WithEdit(ButtonLearningResultsIntroductionEdit)
+                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
                                                .WithTitleEditable(false)
                                                .WithEditorTitle("Introducción a los resultados de aprendizaje")
                                                .WithBlocker(Blocker);
@@ -150,6 +157,7 @@ namespace Programacion123
                                                         .WithEdit(ButtonLearningResultsEdit)
                                                         .WithDelete(ButtonLearningResultsDelete)
                                                         .WithUpDown(ButtonLearningResultsUp, ButtonLearningResultsDown)
+                                                        .WithDeleteConfirmQuestion("Esto eliminará permanentemente el resultado de aprendizaje seleccionado junto con los criterios definidos en él. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Resultado de aprendizaje")
                                                         .WithBlocker(Blocker);
 
@@ -163,6 +171,7 @@ namespace Programacion123
                                                .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonContentsIntroductionNew)
                                                .WithEdit(ButtonContentsIntroductionEdit)
+                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
                                                .WithTitleEditable(false)
                                                .WithEditorTitle("Introducción a los contenidos")
                                                .WithBlocker(Blocker);
@@ -179,6 +188,7 @@ namespace Programacion123
                                                         .WithEdit(ButtonContentsEdit)
                                                         .WithDelete(ButtonContentsDelete)
                                                         .WithUpDown(ButtonContentsUp, ButtonContentsDown)
+                                                        .WithDeleteConfirmQuestion("Esto eliminará permanentemente el contenido seleccionado junto con los puntos definidos en él. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Contenido")
                                                         .WithBlocker(Blocker);
 

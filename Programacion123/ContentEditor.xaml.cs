@@ -55,6 +55,7 @@ namespace Programacion123
                                                         .WithEdit(ButtonPointEdit)
                                                         .WithDelete(ButtonPointDelete)
                                                         .WithUpDown(ButtonPointUp, ButtonPointDown)
+                                                        .WithDeleteConfirmQuestion("Esto eliminará la actividad seleccionada. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Punto de contenido")
                                                         .WithBlocker(Blocker);
 

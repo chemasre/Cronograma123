@@ -101,6 +101,7 @@ namespace Programacion123
                                                .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonMetodologiesIntroductionNew)
                                                .WithEdit(ButtonMetodologiesIntroductionEdit)
+                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
                                                .WithTitleEditable(false)
                                                .WithEditorTitle("Introducción a las metodologías")
                                                .WithBlocker(Blocker);
@@ -117,6 +118,7 @@ namespace Programacion123
                                                         .WithEdit(ButtonMetodologyEdit)
                                                         .WithDelete(ButtonMetodologyDelete)
                                                         .WithUpDown(ButtonMetodologyUp, ButtonMetodologyDown)
+                                                        .WithDeleteConfirmQuestion("Esto eliminará permanentemente la metodología seleccionada. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Metodología")
                                                         .WithBlocker(Blocker);
 
@@ -130,6 +132,7 @@ namespace Programacion123
                                                .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonResourcesIntroductionNew)
                                                .WithEdit(ButtonResourcesIntroductionEdit)
+                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
                                                .WithTitleEditable(false)
                                                .WithEditorTitle("Introducción a los recursos")
                                                .WithBlocker(Blocker);
@@ -146,6 +149,7 @@ namespace Programacion123
                                                         .WithEdit(ButtonSpaceResourceEdit)
                                                         .WithDelete(ButtonSpaceResourceDelete)
                                                         .WithUpDown(ButtonSpaceResourceUp, ButtonSpaceResourceDown)
+                                                        .WithDeleteConfirmQuestion("Esto eliminará permanentemente el espacio seleccionado. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Espacio")
                                                         .WithBlocker(Blocker);
 
@@ -161,6 +165,7 @@ namespace Programacion123
                                                         .WithEdit(ButtonMaterialResourceEdit)
                                                         .WithDelete(ButtonMaterialResourceDelete)
                                                         .WithUpDown(ButtonMaterialResourceUp, ButtonMaterialResourceDown)
+                                                        .WithDeleteConfirmQuestion("Esto eliminará permanentemente el material seleccionado. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Material")
                                                         .WithBlocker(Blocker);
 
@@ -174,6 +179,7 @@ namespace Programacion123
                                                .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonEvaluationInstrumentTypesIntroductionNew)
                                                .WithEdit(ButtonEvaluationInstrumentTypesIntroductionEdit)
+                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
                                                .WithTitleEditable(false)
                                                .WithEditorTitle("Introducción a los instrumentos de evaluación")
                                                .WithBlocker(Blocker);
@@ -190,6 +196,7 @@ namespace Programacion123
                                                         .WithEdit(ButtonEvaluationInstrumentTypeEdit)
                                                         .WithDelete(ButtonEvaluationInstrumentTypeDelete)
                                                         .WithUpDown(ButtonEvaluationInstrumentTypeUp, ButtonEvaluationInstrumentTypeDown)
+                                                        .WithDeleteConfirmQuestion("Esto eliminará el tipo de instrumento de evaluación seleccionado. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Tipo de instrumento de evaluación")
                                                         .WithBlocker(Blocker);
 
@@ -203,6 +210,7 @@ namespace Programacion123
                                                .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonBlocksIntroductionNew)
                                                .WithEdit(ButtonBlocksIntroductionEdit)
+                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
                                                .WithTitleEditable(false)
                                                .WithEditorTitle("Introducción a los bloques")
                                                .WithBlocker(Blocker);
@@ -220,6 +228,7 @@ namespace Programacion123
                                                         .WithEdit(ButtonBlockEdit)
                                                         .WithDelete(ButtonBlockDelete)
                                                         .WithUpDown(ButtonBlockUp, ButtonBlockDown)
+                                                        .WithDeleteConfirmQuestion("Esto eliminará permanentemente el bloque seleccionado junto con todas las actividades definidas en él. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Bloque")
                                                         .WithBlocker(Blocker);
 
@@ -233,6 +242,7 @@ namespace Programacion123
                                                .WithFormat(EntityFormatContent.description)
                                                .WithNew(ButtonEvaluationIntroductionNew)
                                                .WithEdit(ButtonEvaluationIntroductionEdit)
+                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
                                                .WithTitleEditable(false)
                                                .WithEditorTitle("Introducción a la evaluación")
                                                .WithBlocker(Blocker);

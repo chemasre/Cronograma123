@@ -26,6 +26,7 @@ namespace Programacion123
         public bool? titleEditable;
         public string? editorTitle;
         public UIElement? blocker;
+        public string? deleteConfirmQuestion;
 
         public static StrongReferencesBoxConfiguration<TEntity> CreateForCombo(ComboBox _combo) { StrongReferencesBoxConfiguration<TEntity> c = new(); c.comboBox = _combo; c.storageIds = new(); return c; }
         public static StrongReferencesBoxConfiguration<TEntity> CreateForList(ListBox _list) { StrongReferencesBoxConfiguration<TEntity> c = new(); c.listBox = _list; c.storageIds = new(); return c; }
@@ -41,6 +42,8 @@ namespace Programacion123
         public StrongReferencesBoxConfiguration<TEntity> WithTitleEditable(bool _titleEditable) { titleEditable = _titleEditable; return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithEditorTitle(string _editorTitle) { editorTitle = _editorTitle; return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithBlocker(UIElement? _blocker) { blocker = _blocker; return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithDeleteConfirmQuestion(string _question) { deleteConfirmQuestion = _question; return this; }
+
     }
 
     public class StrongReferencesBoxController<TEntity, TEditor> where TEntity: Entity, new()
@@ -59,6 +62,7 @@ namespace Programacion123
         EntityFormatContent formatContent;
         EntityFormatIndex formatIndex;
         Func<TEntity, int, string>? formatter;
+        string? deleteConfirmQuestion;
         ComboBox? comboBox;
         ListBox? listBox;
         Button? buttonNew;
@@ -81,6 +85,7 @@ namespace Programacion123
             formatIndex = configuration.formatIndex;
             formatContent = configuration.formatContent;
             formatter = configuration.formatter;
+            deleteConfirmQuestion = configuration.deleteConfirmQuestion;
             buttonNew = configuration.buttonNew;
             buttonEdit = configuration.buttonEdit;
             buttonDelete = configuration.buttonDelete;
@@ -165,9 +170,23 @@ namespace Programacion123
 
         void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            int index = -61;
+            if(deleteConfirmQuestion != null)
+            {
+                ConfirmDialog confirm = new ConfirmDialog();
+                confirm.Init("Confirma eliminación", deleteConfirmQuestion, (b) => { if (b) { ButtonDeleteConfirmed(); } });
+                confirm.ShowDialog();
+            }
+            else
+            {
+                ButtonDeleteConfirmed();
+            }
+        }
 
-            if(comboBox != null)
+        void ButtonDeleteConfirmed()
+        {
+            int index = -1;
+
+            if (comboBox != null)
             {
                 index = comboBox.SelectedIndex;
             }
@@ -176,7 +195,7 @@ namespace Programacion123
                 index = listBox.SelectedIndex;
             }
 
-            if(index >= 0)
+            if (index >= 0)
             {
                 string? previousStorageId = index > 0 ? storageIds[index - 1] : null;
 
@@ -186,7 +205,7 @@ namespace Programacion123
                 Changed?.Invoke(this);
                 UpdateListOrCombo();
 
-                if(previousStorageId != null)
+                if (previousStorageId != null)
                 {
                     SelectStorageId(previousStorageId);
                 }
