@@ -1,27 +1,18 @@
-﻿using System.Windows.Media;
+﻿using Microsoft.Office.Interop.Word;
+using System.Windows.Media;
 
 namespace Programacion123
 {
-    public enum GradeType
-    {
-        superior,
-        medium
-    }
-
     public class SubjectTemplate : Entity
     {
+        public GradeTemplate? GradeTemplate { get; set; }
+
         public string SubjectName { get; set; } = "Nombre completo del módulo";
         public string SubjectCode { get; set; } = "Código del módulo";
-        public GradeType GradeType { get; set; } = GradeType.superior;
-        public string GradeName { get; set; } = "Nombre completo del grado";
         public int GradeClassroomHours { get; set; } = 100;
         public int GradeCompanyHours { get; set; } = 50;
-        public string GradeFamilyName { get; set; } = "Nombre de la familia profesional";
-        public CommonText GeneralObjectivesIntroduction { get; set; } = new CommonText();
         public ListProperty<CommonText> GeneralObjectives { get; } = new ListProperty<CommonText>();
-        public CommonText GeneralCompetencesIntroduction { get; set; } = new CommonText();
         public ListProperty<CommonText> GeneralCompetences { get; } = new ListProperty<CommonText>();
-        public CommonText KeyCapacitiesIntroduction { get; set; } = new CommonText();
         public ListProperty<CommonText> KeyCapacities { get; } = new ListProperty<CommonText>();
         public CommonText LearningResultsIntroduction { get; set; } = new CommonText();
         public ListProperty<LearningResult> LearningResults { get; } = new ListProperty<LearningResult>();
@@ -39,29 +30,23 @@ namespace Programacion123
 
             if(result.code != ValidationCode.success) { return result; }
 
-            if(SubjectName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNameEmpty); }
-            if(SubjectCode.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectCodeEmpty); }
-            if(GradeName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNameEmpty); }
-            if(GradeClassroomHours <= 0) { return ValidationResult.Create(ValidationCode.templateClassroomHoursZero); }
-            if(GradeFamilyName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateGradeFamilyNameEmpty); }
+            if (GradeTemplate == null) { return ValidationResult.Create(ValidationCode.templateSubjectNotLinkedToGradeTemplate); }
 
-            if(GeneralObjectivesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGeneralObjectivesIntroductionInvalid); }
+            if (SubjectName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNameEmpty); }
+            if(SubjectCode.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectCodeEmpty); }
+            if(GradeClassroomHours <= 0) { return ValidationResult.Create(ValidationCode.templateClassroomHoursZero); }
 
             List<CommonText> objectivesList = GeneralObjectives.ToList();
-            if (objectivesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateNoGeneralObjectives);  }
-            for(int i = 0; i < objectivesList.Count; i++) { if(objectivesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGeneralObjectiveInvalid).WithIndex(i); } }
-
-            if(GeneralCompetencesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGeneralCompetencesIntroductionInvalid); }
+            if (objectivesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoGeneralObjectives);  }
+            for(int i = 0; i < objectivesList.Count; i++) { if(objectivesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeGeneralObjectiveInvalid).WithIndex(i); } }
 
             List<CommonText> competencesList = GeneralCompetences.ToList();
-            if (competencesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateNoGeneralCompetences); }
-            for (int i = 0; i < competencesList.Count; i++) { if(competencesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGeneralCompetenceInvalid).WithIndex(i); } }
-
-            if(KeyCapacitiesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateKeyCapacitiesIntroductionInvalid); }
+            if (competencesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoGeneralCompetences); }
+            for (int i = 0; i < competencesList.Count; i++) { if(competencesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeGeneralCompetenceInvalid).WithIndex(i); } }
 
             List<CommonText> capacitiesList = KeyCapacities.ToList();
-            if (capacitiesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateNoKeyCapacities); }
-            for (int i = 0; i < capacitiesList.Count; i++) { if(capacitiesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateKeyCapacitiesInvalid).WithIndex(i); } }
+            if (capacitiesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoKeyCapacities); }
+            for (int i = 0; i < capacitiesList.Count; i++) { if(capacitiesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeKeyCapacitiesInvalid).WithIndex(i); } }
 
             if(LearningResultsIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateLearningResultsIntroductionInvalid); }
 
@@ -93,31 +78,21 @@ namespace Programacion123
             data.Title = Title;
             data.Description = Description;
 
+            data.GradeTemplateWeakStorageId = GradeTemplate?.StorageId;
+
             data.SubjectName = SubjectName;
             data.SubjectCode = SubjectCode;
-            data.GradeType = GradeType;
-            data.GradeName = GradeName;
-            data.GradeFamilyName = GradeFamilyName;
             data.GradeClassroomHours = GradeClassroomHours;
             data.GradeCompanyHours = GradeCompanyHours;
 
-            data.GeneralObjectivesIntroductionStorageId = GeneralObjectivesIntroduction.StorageId;
-            GeneralObjectivesIntroduction.Save(StorageId);
-
-            List<CommonText> list = GeneralObjectives.ToList();
-            list.ForEach(e => e.Save(StorageId));            
-            data.GeneralObjectivesStorageIds = Storage.GetStorageIds<CommonText>(list);
-
-            data.GeneralCompetencesIntroductionStorageId = GeneralCompetencesIntroduction.StorageId;
-            GeneralCompetencesIntroduction.Save(StorageId);
+            List<CommonText> list = GeneralObjectives.ToList();           
+            data.GeneralObjectivesWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
 
             list = GeneralCompetences.ToList();
-            list.ForEach(e => e.Save(StorageId));
-            data.GeneralCompetencesStorageIds = Storage.GetStorageIds<CommonText>(list);
+            data.GeneralCompetencesWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
 
             list = KeyCapacities.ToList();
-            list.ForEach(e => e.Save(StorageId));
-            data.KeyCapacitiesStorageIds= Storage.GetStorageIds<CommonText>(list);
+            data.KeyCapacitiesWeakStorageIds= Storage.GetStorageIds<CommonText>(list);
 
             data.LearningResultsIntroductionStorageId = LearningResultsIntroduction.StorageId;
             LearningResultsIntroduction.Save(StorageId);
@@ -148,23 +123,18 @@ namespace Programacion123
             Title = data.Title;
             Description = data.Description;
 
+            GradeTemplate = data.GradeTemplateWeakStorageId != null ? Storage.LoadOrCreateEntity<GradeTemplate>(data.GradeTemplateWeakStorageId, null) : null;
+
             SubjectName = data.SubjectName;
             SubjectCode = data.SubjectCode;
-            GradeType = data.GradeType;
-            GradeName = data.GradeName;
-            GradeFamilyName = data.GradeFamilyName;
             GradeClassroomHours = data.GradeClassroomHours;
             GradeCompanyHours = data.GradeCompanyHours;
 
-            GeneralObjectivesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.GeneralObjectivesIntroductionStorageId, storageId);
+            GeneralObjectives.Set(Storage.FindChildEntities<CommonText>(data.GeneralObjectivesWeakStorageIds));
 
-            GeneralObjectives.Set(Storage.LoadOrCreateEntities<CommonText>(data.GeneralObjectivesStorageIds, storageId));
+            GeneralCompetences.Set(Storage.FindChildEntities<CommonText>(data.GeneralCompetencesWeakStorageIds));
 
-            GeneralCompetencesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.GeneralCompetencesIntroductionStorageId, storageId);
-
-            GeneralCompetences.Set(Storage.LoadOrCreateEntities<CommonText>(data.GeneralCompetencesStorageIds, storageId));
-
-            KeyCapacities.Set(Storage.LoadOrCreateEntities<CommonText>(data.KeyCapacitiesStorageIds, storageId));
+            KeyCapacities.Set(Storage.FindChildEntities<CommonText>(data.KeyCapacitiesWeakStorageIds));
 
             LearningResultsIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.LearningResultsIntroductionStorageId, storageId);
 
@@ -180,12 +150,6 @@ namespace Programacion123
         {
             base.Delete(parentStorageId);
 
-            GeneralObjectivesIntroduction.Delete(StorageId);
-            GeneralObjectives.ToList().ForEach(e => e.Delete(StorageId));
-            GeneralCompetencesIntroduction.Delete(StorageId);
-            GeneralCompetences.ToList().ForEach(e => e.Delete(StorageId));
-            KeyCapacitiesIntroduction.Delete(StorageId);
-            KeyCapacities.ToList().ForEach(e => e.Delete(StorageId));
             LearningResultsIntroduction.Delete(StorageId);
             LearningResults.ToList().ForEach(e => e.Delete(StorageId));
             ContentsIntroduction.Delete(StorageId);

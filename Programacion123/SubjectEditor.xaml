@@ -165,7 +165,7 @@
                 </TabItem>
                 <TabItem Header="Metodologías">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Label Content="Objetivos" Canvas.Left="14" Canvas.Top="89" Width="129" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Label Content="Metodologías" Canvas.Left="14" Canvas.Top="89" Width="129" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         <ListBox x:Name="ListBoxMetodologies" Height="104" Width="286" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="148" Canvas.Top="98" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
                         <Label Content="Texto introductorio" Canvas.Left="14" Canvas.Top="25" Width="129" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Button x:Name="ButtonMetodologyNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="148" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">

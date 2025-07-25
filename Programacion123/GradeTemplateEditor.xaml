@@ -1,0 +1,248 @@
+﻿<Window x:Class="Programacion123.GradeTemplateEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Programacion123"
+        mc:Ignorable="d"
+        Title="GradeTemplateEditor" Height="615" Width="529" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" AllowsTransparency="True">
+    <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="#FF0370A9" >
+        <Border.Background>
+            <ImageBrush ImageSource="/Images/BackgroundClouds.png" Stretch="UniformToFill"/>
+        </Border.Background>
+        <Canvas>
+            <Border BorderThickness="1" Height="73" Width="514" CornerRadius="30,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#66FF0000"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+
+            <Label x:Name="TextEditorTitle" Content="Plantilla oficial del grado" FontSize="24" FontFamily="{DynamicResource WindowTitleFont}" FontWeight="Bold" Width="448" HorizontalAlignment="Center" Canvas.Left="13" Canvas.Top="10" VerticalAlignment="Top" Foreground="White" Background="{x:Null}"/>
+            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" Click="ButtonClose_Click" HorizontalAlignment="Left" Canvas.Left="461" VerticalAlignment="Center" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/ButtonClose.png"/>
+                </Button.Background>
+            </Button>
+            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="25" Canvas.Top="514" HorizontalAlignment="Left" VerticalAlignment="Top" Width="466">
+                <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Width="451" Height="52" HorizontalAlignment="Left" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black"/>
+            </Border>
+            <TextBox x:Name="TextTitle" Canvas.Left="159" Canvas.Top="93" Width="322" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
+            <Label Content="Título de la plantilla" Canvas.Left="25" Canvas.Top="87" HorizontalAlignment="Center" VerticalAlignment="Top" Width="169"/>
+            <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-5" Canvas.Top="-5" Height="691" Width="526" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
+            <TabControl Height="351" Width="466" HorizontalAlignment="Center" Canvas.Top="143" VerticalAlignment="Top" Canvas.Left="26" BorderBrush="#00ACACAC">
+                <TabControl.Background>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                </TabControl.Background>
+                <TabItem Header="Datos esenciales">
+                    <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Label Content="Nombre oficial" Height="28" Canvas.Left="25" Canvas.Top="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Label Content="Tipo de ciclo" Height="28" Canvas.Left="25" Canvas.Top="60" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Familia profesional" Height="28" Canvas.Left="25" Canvas.Top="97" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <TextBox x:Name="TextName" Text="TextBox" Width="283" Canvas.Left="159" Canvas.Top="29" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="ComboType" Width="283" Canvas.Left="159" Canvas.Top="63" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <ComboBoxItem Content="Ciclo Formativo de Grado Superior"/>
+                            <ComboBoxItem Content="Ciclo Formativo de Grado Medio"/>
+                        </ComboBox>
+                        <TextBox x:Name="TextFamilyName" Text="TextBox" Width="283" Canvas.Left="159" Canvas.Top="102" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    </Canvas>
+                </TabItem>
+                <TabItem Header="Objetivos generales">
+                    <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Label Content="Objetivos" Canvas.Left="14" Canvas.Top="89" Width="129" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <ListBox x:Name="ListBoxGeneralObjectives" Height="104" Width="286" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="148" Canvas.Top="98" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
+                        <Label Content="Texto introductorio" Canvas.Left="14" Canvas.Top="25" Width="129" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Button x:Name="ButtonGeneralObjectiveNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="148" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonGeneralObjectiveEdit" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="177" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonGeneralObjectiveDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="206" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/ButtonDelete.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonGeneralObjectiveDown" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="235" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonMoveDown.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonGeneralObjectiveUp" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="264" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonMoveUp.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <TextBox x:Name="TextGeneralObjectivesIntroduction" Canvas.Left="148" Text="TextBox" Canvas.Top="31" Width="219" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}" IsReadOnly="True"/>
+                        <Button x:Name="ButtonGeneralObjectivesIntroductionEdit" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="410" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonGeneralObjectivesIntroductionNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="381" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Foreground>
+                        </Button>
+                    </Canvas>
+                </TabItem>
+                <TabItem Header="Competencias generales">
+                    <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Label Content="Competencias" Canvas.Left="14" Canvas.Top="89" Width="158" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <ListBox x:Name="ListBoxGeneralCompetences" Height="104" Width="286" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="148" Canvas.Top="98" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Button x:Name="ButtonGeneralCompetenceNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="148" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonGeneralCompetenceEdit" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="177" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonGeneralCompetenceDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="206" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/ButtonDelete.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonGeneralCompetenceDown" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="235" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonMoveDown.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonGeneralCompetenceUp" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="264" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonMoveUp.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Label Content="Texto introductorio" Canvas.Left="14" Canvas.Top="25" Width="153" Height="24" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <TextBox x:Name="TextGeneralCompetencesIntroduction" Canvas.Left="148" Text="TextBox" Canvas.Top="31" Width="219" Effect="{DynamicResource EffectDropShadow}" IsReadOnly="True" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Button x:Name="ButtonGeneralCompetencesIntroductionEdit" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="410" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonGeneralCompetencesIntroductionNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="381" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Foreground>
+                        </Button>
+                    </Canvas>
+                </TabItem>
+                <TabItem Header="Capacidades clave">
+                    <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Label Content="Capacidades clave" Canvas.Left="14" Canvas.Top="89" Width="158" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <ListBox x:Name="ListBoxKeyCapacities" Height="104" Width="286" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="148" Canvas.Top="98" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button x:Name="ButtonKeyCapacitiesNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="148" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonKeyCapacitiesEdit" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="177" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonKeyCapacitiesDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="206" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/ButtonDelete.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonKeyCapacitiesDown" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="235" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonMoveDown.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonKeyCapacitiesUp" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="264" Canvas.Top="69" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonMoveUp.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Label Content="Texto introductorio" Canvas.Left="14" Canvas.Top="25" Width="153" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBox x:Name="TextKeyCapacitiesIntroduction" Canvas.Left="148" Text="TextBox" Canvas.Top="31" Width="219" Effect="{DynamicResource EffectDropShadow}" IsReadOnly="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button x:Name="ButtonKeyCapacitiesIntroductionEdit" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="410" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonKeyCapacitiesIntroductionNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="381" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Foreground>
+                        </Button>
+
+                    </Canvas>
+                </TabItem>
+            </TabControl>
+        </Canvas>
+    </Border>
+</Window>

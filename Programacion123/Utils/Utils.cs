@@ -92,9 +92,14 @@
             if(formatIndex == EntityFormatIndex.none) { prefix = ""; }
             else if(formatIndex == EntityFormatIndex.number) { prefix = (index + 1).ToString() + ": "; }
             else // formatIndex == EntityFormatIndex.character
-            { prefix = System.Text.Encoding.ASCII.GetString(new byte[] { (byte)(65 + index) }).ToLower() + ": "; }
+            { prefix = FormatLetterPrefixLowercase(index) + ": "; }
 
             return prefix + content;
+        }
+
+        public static string FormatLetterPrefixLowercase(int index)
+        {
+            return System.Text.Encoding.ASCII.GetString(new byte[] { (byte)(65 + index) }).ToLower();
         }
 
 

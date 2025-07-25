@@ -11,14 +11,15 @@ namespace Programacion123
     {
         SubjectTemplate entity;
         string? parentStorageId;
-        StrongReferenceFieldController<CommonText, CommonTextEditor> generalObjectivesIntroductionController;
-        StrongReferencesBoxController<CommonText, CommonTextEditor > generalObjectivesController;
-        StrongReferenceFieldController<CommonText, CommonTextEditor> generalCompetencesIntroductionController;
-        StrongReferencesBoxController<CommonText, CommonTextEditor> generalCompetencesController;
-        StrongReferenceFieldController<CommonText, CommonTextEditor> keyCapacitiesIntroductionController;
-        StrongReferencesBoxController<CommonText, CommonTextEditor> keyCapacitiesController;
+
+        WeakReferenceFieldController<GradeTemplate, EntityPicker<GradeTemplate>> gradeTemplateController;
+        WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > generalObjectivesController;
+        WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> generalCompetencesController;
+        WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> keyCapacitiesController;
+
         StrongReferenceFieldController<CommonText, CommonTextEditor> learningResultsIntroductionController;
         StrongReferencesBoxController<LearningResult, LearningResultEditor> learningResultsController;
+
         StrongReferenceFieldController<CommonText, CommonTextEditor> contentsIntroductionController;
         StrongReferencesBoxController<Content, ContentEditor> contentsController;
 
@@ -40,97 +41,188 @@ namespace Programacion123
             entity = _subjectTemplate;
             parentStorageId = _parentStorageId;
 
-
-            var configObjectivesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextGeneralObjectivesIntroduction)
-                                               .WithStorageId(entity.GeneralObjectivesIntroduction.StorageId)
-                                               .WithParentStorageId(entity.StorageId)
-                                               .WithFormat(EntityFormatContent.description)
-                                               .WithNew(ButtonGeneralObjectivesIntroductionNew)
-                                               .WithEdit(ButtonGeneralObjectivesIntroductionEdit)
-                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
-                                               .WithTitleEditable(false)
-                                               .WithEditorTitle("Introducción a los objetivos generales")
+            var configGradeTemplate = WeakReferenceFieldConfiguration<GradeTemplate>.CreateForTextBox(TextGradeTemplate)
+                                               .WithStorageId(entity.GradeTemplate?.StorageId)
+                                               .WithPick(ButtonGradeTemplatePick)
+                                               .WithFormat(EntityFormatContent.title)
+                                               .WithPickerTitle("Selecciona una plantilla de ciclo")
                                                .WithBlocker(Blocker);
 
-            generalObjectivesIntroductionController = new(configObjectivesIntroduction);
+            gradeTemplateController = new(configGradeTemplate);
 
-            generalObjectivesIntroductionController.Changed += GeneralObjectivesIntroductionController_Changed;
+            gradeTemplateController.Changed += GradeTemplateController_Changed;
 
-            var configObjectives = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralObjectives)
-                                                        .WithParentStorageId(_subjectTemplate.StorageId)
+            Func<List<string>> pickObjectivesQuery =
+            () =>
+            {
+                List<string> objectivesStorageIds = new();
+                if (entity.GradeTemplate != null)
+                {
+                    List<CommonText> objectivesList = entity.GradeTemplate.GeneralObjectives.ToList();
+                    objectivesStorageIds = Storage.GetStorageIds<CommonText>(objectivesList);
+
+                }
+
+                return objectivesStorageIds;
+            };
+
+            Func<CommonText, int, string> objectivesFormatter =
+                (e, i) =>
+                {
+                    bool canFormat;
+                    GradeTemplate? gradeTemplate = null;
+                    List<CommonText>? objectives = null;
+                    int objectiveIndex = -1;
+
+                    canFormat = (entity.GradeTemplate != null);
+                    if (canFormat)
+                    {
+                        gradeTemplate = entity.GradeTemplate;
+                    }
+                    if (canFormat)
+                    {
+                        objectives = gradeTemplate.GeneralObjectives.ToList();
+                        objectiveIndex = objectives.FindIndex(o => o.StorageId == e.StorageId);
+                        canFormat = (objectiveIndex >= 0);
+                    }
+
+                    if (canFormat)
+                    {
+                        return String.Format("{0}: {1}", Utils.FormatLetterPrefixLowercase(objectiveIndex), e.Title);
+                    }
+                    else
+                    {
+                        return "<no se encuentra la referencia>";
+                    }
+                };
+
+
+
+            var configObjectives = WeakReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralObjectives)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_subjectTemplate.GeneralObjectives.ToList()))
-                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.character)
-                                                        .WithNew(ButtonGeneralObjectiveNew)
-                                                        .WithEdit(ButtonGeneralObjectiveEdit)
-                                                        .WithDelete(ButtonGeneralObjectiveDelete)
-                                                        .WithUpDown(ButtonGeneralObjectiveUp, ButtonGeneralObjectiveDown)
-                                                        .WithDeleteConfirmQuestion("Esto eliminará permanentemente el objetivo seleccionado. ¿Estás seguro/a?")
-                                                        .WithEditorTitle("Objetivo general")
+                                                        .WithFormatter(objectivesFormatter)
+                                                        .WithPick(ButtonGeneralObjectiveReferenceAdd, ButtonGeneralObjectiveReferenceRemove)
+                                                        .WithPickListQuery(pickObjectivesQuery)
+                                                        .WithPickerTitle("Objetivos generales")
                                                         .WithBlocker(Blocker);
 
             generalObjectivesController = new(configObjectives);
 
             generalObjectivesController.Changed += GeneralObjectivesController_Changed;
 
-            var configCompetencesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextGeneralCompetencesIntroduction)
-                                               .WithStorageId(entity.GeneralCompetencesIntroduction.StorageId)
-                                               .WithParentStorageId(entity.StorageId)
-                                               .WithFormat(EntityFormatContent.description)
-                                               .WithNew(ButtonGeneralCompetencesIntroductionNew)
-                                               .WithEdit(ButtonGeneralCompetencesIntroductionEdit)
-                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
-                                               .WithTitleEditable(false)
-                                               .WithEditorTitle("Introducción a las competencias generales")
-                                               .WithBlocker(Blocker);
+            Func<List<string>> pickCompetencesQuery =
+            () =>
+            {
+                List<string> competencesStorageIds = new();
+                if (entity.GradeTemplate != null)
+                {
+                    List<CommonText> competencesList = entity.GradeTemplate.GeneralCompetences.ToList();
+                    competencesStorageIds = Storage.GetStorageIds<CommonText>(competencesList);
 
-            generalCompetencesIntroductionController = new(configCompetencesIntroduction);
+                }
 
-            generalCompetencesIntroductionController.Changed += GeneralCompetencesIntroductionController_Changed;
+                return competencesStorageIds;
+            };
 
-            var configCompetences = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralCompetences)
-                                                        .WithParentStorageId(_subjectTemplate.StorageId)
+            Func<CommonText, int, string> competencesFormatter =
+                (e, i) =>
+                {
+                    bool canFormat;
+                    GradeTemplate? gradeTemplate = null;
+                    List<CommonText>? competences = null;
+                    int competenceIndex = -1;
+
+                    canFormat = (entity.GradeTemplate != null);
+                    if (canFormat)
+                    {
+                        gradeTemplate = entity.GradeTemplate;
+                    }
+                    if (canFormat)
+                    {
+                        competences = gradeTemplate.GeneralCompetences.ToList();
+                        competenceIndex = competences.FindIndex(c => c.StorageId == e.StorageId);
+                        canFormat = (competenceIndex >= 0);
+                    }
+
+                    if (canFormat)
+                    {
+                        return String.Format("{0}: {1}", Utils.FormatLetterPrefixLowercase(competenceIndex), e.Title);
+                    }
+                    else
+                    {
+                        return "<no se encuentra la referencia>";
+                    }
+                };
+
+
+
+            var configCompetences = WeakReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralCompetences)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_subjectTemplate.GeneralCompetences.ToList()))
-                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.character)
-                                                        .WithNew(ButtonGeneralCompetenceNew)
-                                                        .WithEdit(ButtonGeneralCompetenceEdit)
-                                                        .WithDelete(ButtonGeneralCompetenceDelete)
-                                                        .WithUpDown(ButtonGeneralCompetenceUp, ButtonGeneralCompetenceDown)
-                                                        .WithDeleteConfirmQuestion("Esto eliminará permanentemente la competencia general seleccionada. ¿Estás seguro/a?")
-                                                        .WithEditorTitle("Competencia general")
+                                                        .WithFormatter(competencesFormatter)
+                                                        .WithPick(ButtonGeneralCompetenceReferenceAdd, ButtonGeneralCompetenceReferenceRemove)
+                                                        .WithPickListQuery(pickCompetencesQuery)
+                                                        .WithPickerTitle("Competencias generales")
                                                         .WithBlocker(Blocker);
 
             generalCompetencesController = new(configCompetences);
 
             generalCompetencesController.Changed += GeneralCompetencesController_Changed;
 
-            var configKeyCapacitiesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextKeyCapacitiesIntroduction)
-                                               .WithStorageId(entity.KeyCapacitiesIntroduction.StorageId)
-                                               .WithParentStorageId(entity.StorageId)
-                                               .WithFormat(EntityFormatContent.description)
-                                               .WithNew(ButtonKeyCapacitiesIntroductionNew)
-                                               .WithEdit(ButtonKeyCapacitiesIntroductionEdit)
-                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
-                                               .WithTitleEditable(false)
-                                               .WithEditorTitle("Introducción a las capacidades clave")
-                                               .WithBlocker(Blocker);
+            Func<List<string>> pickKeyCapacitiesQuery =
+            () =>
+            {
+                List<string> keyCapacitiesStorageIds = new();
+                if (entity.GradeTemplate != null)
+                {
+                    List<CommonText> capacitiesList = entity.GradeTemplate.KeyCapacities.ToList();
+                    keyCapacitiesStorageIds = Storage.GetStorageIds<CommonText>(capacitiesList);
 
-            keyCapacitiesIntroductionController = new(configKeyCapacitiesIntroduction);
+                }
 
-            keyCapacitiesIntroductionController.Changed += KeyCapacitiesIntroductionController_Changed;
+                return keyCapacitiesStorageIds;
+            };
 
-            var configKeyCapacities = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxKeyCapacities)
-                                                        .WithParentStorageId(_subjectTemplate.StorageId)
+            Func<CommonText, int, string> keyCapacitiesFormatter =
+                (e, i) =>
+                {
+                    bool canFormat;
+                    GradeTemplate? gradeTemplate = null;
+                    List<CommonText>? capacities = null;
+                    int capacityIndex = -1;
+
+                    canFormat = (entity.GradeTemplate != null);
+                    if (canFormat)
+                    {
+                        gradeTemplate = entity.GradeTemplate;
+                    }
+                    if (canFormat)
+                    {
+                        capacities = gradeTemplate.KeyCapacities.ToList();
+                        capacityIndex = capacities.FindIndex(c => c.StorageId == e.StorageId);
+                        canFormat = (capacityIndex >= 0);
+                    }
+
+                    if (canFormat)
+                    {
+                        return String.Format("{0}: {1}", Utils.FormatLetterPrefixLowercase(capacityIndex), e.Title);
+                    }
+                    else
+                    {
+                        return "<no se encuentra la referencia>";
+                    }
+                };
+
+
+
+            var configCapacities = WeakReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxKeyCapacities)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_subjectTemplate.KeyCapacities.ToList()))
-                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.character)
-                                                        .WithNew(ButtonKeyCapacitiesNew)
-                                                        .WithEdit(ButtonKeyCapacitiesEdit)
-                                                        .WithDelete(ButtonKeyCapacitiesDelete)
-                                                        .WithUpDown(ButtonKeyCapacitiesUp, ButtonKeyCapacitiesDown)
-                                                        .WithDeleteConfirmQuestion("Esto eliminará permanentemente la capacidad clave seleccionada. ¿Estás seguro/a?")
-                                                        .WithEditorTitle("Capacidad clave")
+                                                        .WithFormatter(keyCapacitiesFormatter)
+                                                        .WithPick(ButtonKeyCapacitiesReferenceAdd, ButtonKeyCapacitiesReferenceRemove)
+                                                        .WithPickListQuery(pickKeyCapacitiesQuery)
+                                                        .WithPickerTitle("Capacidades clave")
                                                         .WithBlocker(Blocker);
 
-            keyCapacitiesController = new(configKeyCapacities);
+            keyCapacitiesController = new(configCapacities);
 
             keyCapacitiesController.Changed += KeyCapacitiesController_Changed;
 
@@ -200,9 +292,6 @@ namespace Programacion123
 
             TextSubjectName.Text = _subjectTemplate.SubjectName;
             TextSubjectCode.Text = _subjectTemplate.SubjectCode;
-            ComboGradeType.SelectedIndex = (int)_subjectTemplate.GradeType;
-            TextGradeName.Text = _subjectTemplate.GradeName;
-            TextGradeFamilyName.Text = _subjectTemplate.GradeFamilyName;
             TextGradeClassroomHours.Text = _subjectTemplate.GradeClassroomHours.ToString();
             TextGradeCompanyHours.Text = _subjectTemplate.GradeCompanyHours.ToString();
 
@@ -210,8 +299,6 @@ namespace Programacion123
             TextTitle.TextChanged += TextTitle_TextChanged;
             TextSubjectName.TextChanged += TextSubjectName_TextChanged;
             TextSubjectCode.TextChanged += TextSubjectCode_TextChanged;
-            TextGradeName.TextChanged += TextGradeName_TextChanged;
-            TextGradeFamilyName.TextChanged += TextGradeFamilyName_TextChanged;
             TextGradeClassroomHours.TextChanged += TextGradeClassroomHours_TextChanged;
             TextGradeCompanyHours.TextChanged += TextGradeCompanyHours_TextChanged;
 
@@ -219,13 +306,13 @@ namespace Programacion123
 
         }
 
-        private void KeyCapacitiesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
+        private void GradeTemplateController_Changed(WeakReferenceFieldController<GradeTemplate, EntityPicker<GradeTemplate>> controller)
         {
             UpdateEntity();
             Validate();
         }
 
-        private void KeyCapacitiesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
+        private void KeyCapacitiesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > controller)
         {
             UpdateEntity();
             Validate();
@@ -251,18 +338,6 @@ namespace Programacion123
             int result;
             if (!Int32.TryParse(TextGradeClassroomHours.Text, out result)) { TextGradeClassroomHours.Text = ""; }
 
-            UpdateEntity();
-            Validate();
-        }
-
-        private void TextGradeFamilyName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
-        private void TextGradeName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
             UpdateEntity();
             Validate();
         }
@@ -313,39 +388,28 @@ namespace Programacion123
             Validate();
         }
 
-        private void GeneralCompetencesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
+        private void GeneralCompetencesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>>  controller)
         {
             UpdateEntity();
             Validate();
         }
 
-        private void GeneralCompetencesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
+        private void GeneralObjectivesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > controller)
         {
             UpdateEntity();
             Validate();
         }
 
-        private void GeneralObjectivesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
-        private void GeneralObjectivesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
 
         private void UpdateEntity()
         {
             entity.Title = TextTitle.Text;
-            entity.GeneralObjectivesIntroduction = Storage.LoadOrCreateEntity<CommonText>(generalObjectivesIntroductionController.StorageId, entity.StorageId);
-            entity.GeneralObjectives.Set(Storage.LoadOrCreateEntities<CommonText>(generalObjectivesController.StorageIds, entity.StorageId));
-            entity.GeneralCompetencesIntroduction = Storage.LoadOrCreateEntity<CommonText>(generalCompetencesIntroductionController.StorageId, entity.StorageId);
-            entity.GeneralCompetences.Set(Storage.LoadOrCreateEntities<CommonText>(generalCompetencesController.StorageIds, entity.StorageId));
-            entity.KeyCapacitiesIntroduction = Storage.LoadOrCreateEntity<CommonText>(keyCapacitiesIntroductionController.StorageId, entity.StorageId);
-            entity.KeyCapacities.Set(Storage.LoadOrCreateEntities<CommonText>(keyCapacitiesController.StorageIds, entity.StorageId));
+
+            entity.GradeTemplate = gradeTemplateController.GetEntity();
+
+            entity.GeneralObjectives.Set(generalObjectivesController.GetSelectedEntities());
+            entity.GeneralCompetences.Set(generalCompetencesController.GetSelectedEntities());
+            entity.KeyCapacities.Set(keyCapacitiesController.GetSelectedEntities());
 
             entity.LearningResultsIntroduction = Storage.LoadOrCreateEntity<CommonText>(learningResultsIntroductionController.StorageId, entity.StorageId);
             entity.LearningResults.Set(Storage.LoadOrCreateEntities<LearningResult>(learningResultsController.StorageIds, entity.StorageId));
@@ -354,10 +418,6 @@ namespace Programacion123
 
             entity.SubjectName = TextSubjectName.Text;
             entity.SubjectCode = TextSubjectCode.Text;
-            entity.GradeName = TextGradeName.Text;
-            entity.GradeType = (GradeType)(ComboGradeType.SelectedIndex >= 0 ? ComboGradeType.SelectedIndex : 0);
-            entity.GradeName = TextGradeName.Text;
-            entity.GradeFamilyName = TextGradeFamilyName.Text;
 
             int number;
             entity.GradeClassroomHours = Int32.TryParse(TextGradeClassroomHours.Text, out number) ? number : 0;

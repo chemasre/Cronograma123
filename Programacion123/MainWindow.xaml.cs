@@ -42,6 +42,7 @@ namespace Programacion123
         StrongReferencesBoxController<WeekSchedule, WeekScheduleEditor> weekSchedulesController;
         StrongReferencesBoxController<Calendar, CalendarEditor> calendarsController;
         StrongReferencesBoxController<SubjectTemplate, SubjectTemplateEditor> subjectTemplatesController;
+        StrongReferencesBoxController<GradeTemplate, GradeTemplateEditor> gradeTemplatesController;
         StrongReferencesBoxController<Subject, SubjectEditor> subjectsController;
 
         public MainWindow()
@@ -55,6 +56,14 @@ namespace Programacion123
 
         void InitUI()
         {
+            var configGradeTemplates = StrongReferencesBoxConfiguration<GradeTemplate>.CreateForCombo(ComboGradeTemplates)
+                                                   .WithStorageIds(Storage.GetStorageIds<GradeTemplate>(Storage.LoadAllEntities<GradeTemplate>()))
+                                                   .WithNew(ButtonGradeTemplateNew)
+                                                   .WithEdit(ButtonGradeTemplateEdit)
+                                                   .WithDelete(ButtonGradeTemplateDelete)
+                                                   .WithDeleteConfirmQuestion("Esto eliminará permanentemente la plantilla de grado seleccionada junto con los elementos curriculares definidos en ella. ¿Estás seguro/a?")
+                                                   .WithBlocker(Blocker);
+
             var configWeeks = StrongReferencesBoxConfiguration<WeekSchedule>.CreateForCombo(ComboWeekSchedules)
                                                    .WithStorageIds(Storage.GetStorageIds<WeekSchedule>(Storage.LoadAllEntities<WeekSchedule>()))
                                                    .WithNew(ButtonWeekScheduleNew)
@@ -71,17 +80,23 @@ namespace Programacion123
                                                    .WithDeleteConfirmQuestion("Esto eliminará permanentemente el calendario seleccionado. ¿Estás seguro/a?")
                                                    .WithBlocker(Blocker);
 
-            var configTemplates = StrongReferencesBoxConfiguration<SubjectTemplate>.CreateForCombo(ComboSubjectTemplates)
+            var configSubjectTemplates = StrongReferencesBoxConfiguration<SubjectTemplate>.CreateForCombo(ComboSubjectTemplates)
                                                    .WithStorageIds(Storage.GetStorageIds<SubjectTemplate>(Storage.LoadAllEntities<SubjectTemplate>()))
+                                                   .WithEntityInitializer(
+                                                            (SubjectTemplate t) =>
+                                                            {
+                                                                t.GradeTemplate = gradeTemplatesController.GetSelectedEntity();
+                                                            })
                                                    .WithNew(ButtonSubjectTemplateNew)
                                                    .WithEdit(ButtonSubjectTemplateEdit)
                                                    .WithDelete(ButtonSubjectTemplateDelete)
-                                                   .WithDeleteConfirmQuestion("Esto eliminará permanentemente la plantilla seleccionada junto con los elementos curriculares definidos en ella. ¿Estás seguro/a?")
+                                                   .WithDeleteConfirmQuestion("Esto eliminará permanentemente la plantilla de módulo seleccionada junto con los elementos curriculares definidos en ella. ¿Estás seguro/a?")
                                                    .WithBlocker(Blocker);
 
             weekSchedulesController = new (configWeeks);
             calendarsController = new (configCalendars);
-            subjectTemplatesController = new (configTemplates);
+            subjectTemplatesController = new(configSubjectTemplates);
+            gradeTemplatesController = new(configGradeTemplates);
 
             var configSubjects = StrongReferencesBoxConfiguration<Subject>.CreateForCombo(ComboSubjects)
                                                    .WithStorageIds(Storage.GetStorageIds<Subject>(Storage.LoadAllEntities<Subject>()))
