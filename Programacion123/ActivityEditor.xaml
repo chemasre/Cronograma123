@@ -26,8 +26,8 @@
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
                 </Button.Background>
             </Button>
-            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="25" Canvas.Top="617" HorizontalAlignment="Center" VerticalAlignment="Top" Width="466">
-                <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Width="451" Height="52" HorizontalAlignment="Left" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black"/>
+            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="112" Canvas.Top="617" HorizontalAlignment="Left" VerticalAlignment="Center" Width="379">
+                <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Height="52" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="0,0,5,0"/>
             </Border>
             <TextBox x:Name="TextTitle" Canvas.Left="185" Canvas.Top="93" Width="288" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}" FontFamily="{DynamicResource Font}"/>
             <Label Content="Título de la actividad" Canvas.Left="25" Canvas.Top="87" HorizontalAlignment="Center" VerticalAlignment="Top" Width="169"/>
@@ -161,6 +161,7 @@
             </TabControl>
             <Label Content="Bloque vinculado" Canvas.Left="26" Canvas.Top="120" Width="169" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <TextBox x:Name="TextBlock" Canvas.Left="185" Canvas.Top="124" Width="288" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{DynamicResource Font}" IsReadOnly="True"/>
+            <Image Height="74" Canvas.Left="12" Canvas.Top="612" Width="100" Source="/Images/ValidatorCapy.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         </Canvas>
     </Border>
 </Window>

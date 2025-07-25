@@ -26,8 +26,8 @@
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
                 </Button.Background>
             </Button>
-            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="29" Canvas.Top="572" HorizontalAlignment="Center" VerticalAlignment="Top">
-                <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Width="312" Height="52" HorizontalAlignment="Left" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black"/>
+            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="122" Canvas.Top="572" HorizontalAlignment="Left" VerticalAlignment="Center" Width="229">
+                <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Height="52" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="0,0,5,0"/>
             </Border>
             <TextBox x:Name="TextTitle" Canvas.Left="106" Canvas.Top="94" Width="244" HorizontalAlignment="Left" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
             <Label Content="Título" Canvas.Left="29" Canvas.Top="90" HorizontalAlignment="Left" VerticalAlignment="Top" Width="89"/>
@@ -56,6 +56,7 @@
             <ListBox x:Name="ListBoxFreeDays" Height="112" Width="181" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="169" Canvas.Top="436"/>
             <Rectangle Height="181" Width="322" Canvas.Left="29" Canvas.Top="136" HorizontalAlignment="Center" VerticalAlignment="Top" Fill="#33000000"/>
             <Calendar x:Name="CalendarPreview" Canvas.Left="100" Canvas.Top="143" HorizontalAlignment="Left" VerticalAlignment="Top" IsTodayHighlighted="False" SelectionMode="None" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="#99FFF5C6" DisplayDateChanged="CalendarPreview_DisplayDateChanged"/>
+            <Image Height="74" Canvas.Left="18" Canvas.Top="566" Width="100" Source="/Images/ValidatorCapy.png" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
         </Canvas>
     </Border>

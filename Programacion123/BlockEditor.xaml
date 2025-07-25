@@ -26,8 +26,8 @@
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
                 </Button.Background>
             </Button>
-            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="29" Canvas.Top="454" HorizontalAlignment="Left" VerticalAlignment="Center" Width="433">
-                <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Width="312" Height="52" HorizontalAlignment="Left" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black"/>
+            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="118" Canvas.Top="454" HorizontalAlignment="Left" VerticalAlignment="Center" Width="344">
+                <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Height="52" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="5,0,5,0"/>
             </Border>
             <TextBox x:Name="TextTitle" Canvas.Left="126" Canvas.Top="97" Width="317" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
             <Border BorderThickness="1" Height="306" Width="431" Canvas.Left="29" Canvas.Top="133" CornerRadius="10,10,10,10" HorizontalAlignment="Center" VerticalAlignment="Top">
@@ -90,6 +90,7 @@
                 </Button.Foreground>
             </Button>
             <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-5" Canvas.Top="-5" Height="555" Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" />
+            <Image Height="74" Canvas.Left="19" Canvas.Top="448" Width="100" Source="/Images/ValidatorCapy.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         </Canvas>
     </Border>

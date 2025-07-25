@@ -31,6 +31,7 @@
     <None Remove="Images\ButtonHome.png" />
     <None Remove="Images\ButtonPick.png" />
     <None Remove="Images\ButtonReset.png" />
+    <None Remove="Images\ValidatorCapy.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -78,6 +79,7 @@
     <Resource Include="Images\ButtonPick.png" />
     <Resource Include="Images\ButtonReset.png" />
     <Resource Include="Images\ButtonWarning.png" />
+    <Resource Include="Images\ValidatorCapy.png" />
   </ItemGroup>
 
 </Project>

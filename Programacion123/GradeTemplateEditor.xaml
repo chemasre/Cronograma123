@@ -20,13 +20,13 @@
                 </Border.Background>
             </Border>
 
-            <Label x:Name="TextEditorTitle" Content="Plantilla oficial del grado" FontSize="24" FontFamily="{DynamicResource WindowTitleFont}" FontWeight="Bold" Width="448" HorizontalAlignment="Center" Canvas.Left="13" Canvas.Top="10" VerticalAlignment="Top" Foreground="White" Background="{x:Null}"/>
+            <Label x:Name="TextEditorTitle" Content="Plantilla oficial del ciclo" FontSize="24" FontFamily="{DynamicResource WindowTitleFont}" FontWeight="Bold" Width="448" HorizontalAlignment="Center" Canvas.Left="13" Canvas.Top="10" VerticalAlignment="Top" Foreground="White" Background="{x:Null}"/>
             <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" Click="ButtonClose_Click" HorizontalAlignment="Left" Canvas.Left="461" VerticalAlignment="Center" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
                 </Button.Background>
             </Button>
-            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="25" Canvas.Top="514" HorizontalAlignment="Left" VerticalAlignment="Top" Width="466">
+            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="110" Canvas.Top="514" HorizontalAlignment="Left" VerticalAlignment="Center" Width="381">
                 <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Width="451" Height="52" HorizontalAlignment="Left" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black"/>
             </Border>
             <TextBox x:Name="TextTitle" Canvas.Left="159" Canvas.Top="93" Width="322" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
@@ -243,6 +243,7 @@
                     </Canvas>
                 </TabItem>
             </TabControl>
+            <Image Height="74" Canvas.Left="13" Canvas.Top="508" Width="100" Source="/Images/ValidatorCapy.png"/>
         </Canvas>
     </Border>
 </Window>
