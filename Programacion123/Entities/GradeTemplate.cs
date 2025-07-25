@@ -12,7 +12,7 @@ namespace Programacion123
     public class GradeTemplate : Entity
     {
         public GradeType GradeType { get; set; } = GradeType.superior;
-        public string GradeName { get; set; } = "Nombre completo del grado";
+        public string GradeName { get; set; } = "Nombre completo del ciclo";
         public string GradeFamilyName { get; set; } = "Nombre de la familia profesional";
         public CommonText GeneralObjectivesIntroduction { get; set; } = new CommonText();
         public ListProperty<CommonText> GeneralObjectives { get; } = new ListProperty<CommonText>();

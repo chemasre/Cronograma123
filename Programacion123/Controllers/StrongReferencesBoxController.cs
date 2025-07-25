@@ -173,7 +173,7 @@ namespace Programacion123
             if(deleteConfirmQuestion != null)
             {
                 ConfirmDialog confirm = new ConfirmDialog();
-                confirm.Init("Confirma eliminación", deleteConfirmQuestion, (b) => { if (b) { ButtonDeleteConfirmed(); } });
+                confirm.Init(ConfirmIconType.warning, "Confirma eliminación", deleteConfirmQuestion, (b) => { if (b) { ButtonDeleteConfirmed(); } });
                 confirm.ShowDialog();
             }
             else

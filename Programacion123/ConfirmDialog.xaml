@@ -6,20 +6,13 @@
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
         Title="ConfirmDialog" Height="316" Width="505" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" AllowsTransparency="True" Topmost="True">
-    <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="#FF0370A9" Margin="0,0,0,-6" >
+    <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>
         </Border.Background>
-        <Canvas>
-            <Border BorderThickness="1" Height="69" Width="488" CornerRadius="30,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
-                <Border.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#66FF0000"/>
-                        <GradientStop Color="White" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-            </Border>
-            <Border x:Name="BorderDescriptionBase" BorderThickness="1" Height="148" Width="467" Canvas.Left="11" Canvas.Top="84" CornerRadius="10,10,10,10" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <Canvas Margin="0,0,0,2">
+            <Border BorderThickness="1" Height="69" Width="488" CornerRadius="30,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Background="{DynamicResource TitleBackground}"/>
+            <Border x:Name="BorderDescriptionBase" BorderThickness="1" Height="148" Width="468" Canvas.Left="10" Canvas.Top="84" CornerRadius="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Border.Background>
                     <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundSteps.png"/>
                 </Border.Background>
@@ -44,11 +37,13 @@
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
                 </Button.Background>
             </Button>
-            <Border x:Name="BorderContent" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="28" Canvas.Top="101" HorizontalAlignment="Center" VerticalAlignment="Top" Width="433" Height="113">
+            <Border x:Name="BorderContent" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="155" Canvas.Top="101" HorizontalAlignment="Left" VerticalAlignment="Center" Width="306" Height="113">
                 <TextBlock x:Name="TextContent" TextWrapping="Wrap" Text="TextBlock" Height="92" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="5,0,5,0"/>
             </Border>
             <Label Content="Aceptar" FontSize="22" Width="158" Canvas.Left="65" Canvas.Top="250" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="Cancelar" FontSize="22" Width="158" Canvas.Left="291" Canvas.Top="250" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Image x:Name="IconWarning" Height="100" Canvas.Left="34" Canvas.Top="103" Width="100" Source="/Images/IconWarning.png" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
+            <Image x:Name="IconInfo" Height="100" Canvas.Left="34" Canvas.Top="103" Width="100" Source="/Images/IconInfo.png" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         </Canvas>
     </Border>

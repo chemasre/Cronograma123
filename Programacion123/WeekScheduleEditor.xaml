@@ -6,22 +6,16 @@
     xmlns:local="clr-namespace:Programacion123"
     mc:Ignorable="d"
     Title="WeekScheduleEditor" Height="377" Width="366" Topmost="True" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize" MouseDown="Window_MouseDown" AllowsTransparency="True" Background="{x:Null}" FontFamily="{DynamicResource Font}">
-    <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="#FF0370A9" >
+    <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush ImageSource="/Images/BackgroundClouds.png" Stretch="UniformToFill"/>
         </Border.Background>
         <Canvas>
-            <Border BorderThickness="1" Height="58" Width="350" CornerRadius="30,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
-                <Border.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#66FF0000"/>
-                        <GradientStop Color="White" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
+            <Border Background="{DynamicResource TitleBackground}" BorderThickness="1" Height="58" Width="350" CornerRadius="30,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
             </Border>
 
             <DataGrid x:Name="WeekDataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" ColumnWidth="*" SelectionMode="Single" SelectionUnit="Cell" SelectedCellsChanged="WeekDataGrid_SelectedCellsChanged" Height="139" Canvas.Left="27" Canvas.Top="136" Width="300" BorderBrush="{x:Null}" Background="{x:Null}" HorizontalGridLinesBrush="#FF9BD6FB" VerticalGridLinesBrush="#FF9BD6FB" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label x:Name="TextEditorTitle" Content="Horario" FontSize="24" FontWeight="Bold" Width="304" HorizontalAlignment="Center" Canvas.Left="23" Canvas.Top="7" VerticalAlignment="Top" Foreground="White" FontFamily="{DynamicResource WindowTitleFont}"/>
+            <Label x:Name="TextEditorTitle" Content="Horario" FontSize="24" Width="304" HorizontalAlignment="Center" Canvas.Left="23" Canvas.Top="7" VerticalAlignment="Top" Foreground="White" FontFamily="{DynamicResource WindowTitleFont}" FontWeight="Bold"/>
             <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" Click="ButtonClose_Click" HorizontalAlignment="Left" Canvas.Left="300" VerticalAlignment="Top" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>

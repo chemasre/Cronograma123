@@ -34,31 +34,28 @@ namespace Programacion123
 
             if (SubjectName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNameEmpty); }
             if(SubjectCode.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectCodeEmpty); }
-            if(GradeClassroomHours <= 0) { return ValidationResult.Create(ValidationCode.templateClassroomHoursZero); }
+            if(GradeClassroomHours <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectClassroomHoursZero); }
 
             List<CommonText> objectivesList = GeneralObjectives.ToList();
-            if (objectivesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoGeneralObjectives);  }
-            for(int i = 0; i < objectivesList.Count; i++) { if(objectivesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeGeneralObjectiveInvalid).WithIndex(i); } }
-
+            if (objectivesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoGeneralObjectivesReferenced);  }
+            
             List<CommonText> competencesList = GeneralCompetences.ToList();
-            if (competencesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoGeneralCompetences); }
-            for (int i = 0; i < competencesList.Count; i++) { if(competencesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeGeneralCompetenceInvalid).WithIndex(i); } }
+            if (competencesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoGeneralCompetencesReferenced); }
 
             List<CommonText> capacitiesList = KeyCapacities.ToList();
-            if (capacitiesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoKeyCapacities); }
-            for (int i = 0; i < capacitiesList.Count; i++) { if(capacitiesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeKeyCapacitiesInvalid).WithIndex(i); } }
+            if (capacitiesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoKeyCapacitiesReferenced); }
 
-            if(LearningResultsIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateLearningResultsIntroductionInvalid); }
+            if(LearningResultsIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateSubjectLearningResultsIntroductionInvalid); }
 
             List<LearningResult> resultsList = LearningResults.ToList();
-            if (resultsList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateNoLearningResults); }
-            for (int i = 0; i < resultsList.Count; i++) { if(resultsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateLearningResultsInvalid).WithIndex(i); } }
+            if (resultsList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoLearningResults); }
+            for (int i = 0; i < resultsList.Count; i++) { if(resultsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateSubjectLearningResultsInvalid).WithIndex(i); } }
 
-            if(ContentsIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateContentsIntroductionInvalid); }
+            if(ContentsIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateSubjectContentsIntroductionInvalid); }
 
             List<Content> contentsList = Contents.ToList();
-            if (contentsList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateNoContents); }
-            for (int i = 0; i < contentsList.Count; i++) { if(contentsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateContentsInvalid).WithIndex(i); } }
+            if (contentsList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoContents); }
+            for (int i = 0; i < contentsList.Count; i++) { if(contentsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateSubjectContentsInvalid).WithIndex(i); } }
 
 
             return ValidationResult.Create(ValidationCode.success);

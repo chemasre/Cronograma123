@@ -61,7 +61,7 @@ namespace Programacion123
                                                    .WithNew(ButtonGradeTemplateNew)
                                                    .WithEdit(ButtonGradeTemplateEdit)
                                                    .WithDelete(ButtonGradeTemplateDelete)
-                                                   .WithDeleteConfirmQuestion("Esto eliminará permanentemente la plantilla de grado seleccionada junto con los elementos curriculares definidos en ella. ¿Estás seguro/a?")
+                                                   .WithDeleteConfirmQuestion("Esto eliminará permanentemente la plantilla de ciclo seleccionada junto con los elementos curriculares definidos en ella. ¿Estás seguro/a?")
                                                    .WithBlocker(Blocker);
 
             var configWeeks = StrongReferencesBoxConfiguration<WeekSchedule>.CreateForCombo(ComboWeekSchedules)
@@ -110,7 +110,7 @@ namespace Programacion123
                                                    .WithNew(ButtonSubjectNew)
                                                    .WithEdit(ButtonSubjectEdit)
                                                    .WithDelete(ButtonSubjectDelete)
-                                                   .WithDeleteConfirmQuestion("Esto eliminará permanentemente la asignatura seleccionada junto con los bloques y otros elementos definidos en ella. ¿Estás seguro/a?")
+                                                   .WithDeleteConfirmQuestion("Esto eliminará permanentemente el módulo seleccionada junto con los bloques y otros elementos definidos en ella. ¿Estás seguro/a?")
                                                    .WithBlocker(Blocker);
 
 
@@ -153,7 +153,7 @@ namespace Programacion123
         private void ButtonReset_Click(object sender, RoutedEventArgs e)
         {
             ConfirmDialog confirm = new();
-            confirm.Init("Confirmación", "Esto eliminará TODOS los datos guardados y devolverá la aplicación a su estado inicial ¿estás seguro/a?",
+            confirm.Init(ConfirmIconType.warning, "Confirmación", "Esto eliminará TODOS los datos guardados y devolverá la aplicación a su estado inicial ¿estás seguro/a?",
                 (e) =>
                 {
                     if(e)

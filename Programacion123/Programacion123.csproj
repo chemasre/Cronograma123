@@ -23,6 +23,7 @@
     <None Remove="IconEdit.png" />
     <None Remove="Images\BackgroundClouds.png" />
     <None Remove="Images\BackgroundSteps.png" />
+    <None Remove="Images\BackgroundTitle.png" />
     <None Remove="Images\ButonReferenceAdd.png" />
     <None Remove="Images\ButonReferenceRemove.png" />
     <None Remove="Images\ButtonAccept.png" />
@@ -31,6 +32,7 @@
     <None Remove="Images\ButtonHome.png" />
     <None Remove="Images\ButtonPick.png" />
     <None Remove="Images\ButtonReset.png" />
+    <None Remove="Images\IconWarning.png" />
     <None Remove="Images\ValidatorCapy.png" />
   </ItemGroup>
 
@@ -58,6 +60,7 @@
   <ItemGroup>
     <Resource Include="Images\BackgroundClouds.png" />
     <Resource Include="Images\BackgroundSteps.png" />
+    <Resource Include="Images\BackgroundTitle.png" />
     <Resource Include="Images\ButonReferenceAdd.png" />
     <Resource Include="Images\ButonReferenceRemove.png" />
     <Resource Include="Images\ButtonHelp.png" />
@@ -79,6 +82,7 @@
     <Resource Include="Images\ButtonPick.png" />
     <Resource Include="Images\ButtonReset.png" />
     <Resource Include="Images\ButtonWarning.png" />
+    <Resource Include="Images\IconWarning.png" />
     <Resource Include="Images\ValidatorCapy.png" />
   </ItemGroup>
 

@@ -2,7 +2,7 @@
 {
     public class GradeTemplateData : StorageData
     {
-        public string GradeName { get; set; } = "Nombre completo del grado";
+        public string GradeName { get; set; } = "Nombre completo del ciclo";
         public GradeType GradeType { get; set; } = GradeType.superior;
         public string GradeFamilyName { get; set; } = "Nombre de la familia profesional";
         public string GeneralObjectivesIntroductionStorageId { get; set; }

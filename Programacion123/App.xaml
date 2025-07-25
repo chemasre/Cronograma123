@@ -8,6 +8,8 @@
         <Color x:Key="ColorValid">#FFBAFFA7</Color>
         <Color x:Key="ColorLocked">#D5DEE8</Color>
         <DropShadowEffect x:Key="EffectDropShadow" BlurRadius="5" Color="Gray" ShadowDepth="3"/>
+        <SolidColorBrush x:Key="WindowBorder" Color="#FF787878"/>
+        <ImageBrush x:Key="TitleBackground" ImageSource="/Images/BackgroundTitle.png" Stretch="UniformToFill" TileMode="Tile"/>
         <Style BasedOn="{StaticResource {x:Type Button}}" x:Key="PushableButton" TargetType="{x:Type Button}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Template">

@@ -141,7 +141,7 @@ namespace Programacion123
             if(replaceConfirmQuestion != null)
             {
                 ConfirmDialog confirm = new();
-                confirm.Init("Confirma reemplazo", replaceConfirmQuestion, (r) => { if (r) { ButtonNewConfirmed();  } });
+                confirm.Init(ConfirmIconType.warning, "Confirma reemplazo", replaceConfirmQuestion, (r) => { if (r) { ButtonNewConfirmed();  } });
                 confirm.ShowDialog();
             }
             else
