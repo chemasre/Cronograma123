@@ -237,21 +237,25 @@ namespace Programacion123
 
         void OnDialogClosed(object? sender, EventArgs e)
         {
-            List<TEntity> selected = picker.GetPickedEntities();
-            foreach(TEntity entity in selected) { storageIds.Add(entity.StorageId); }
+            if(!picker.GetWasCancelled())
+            {
+                List<TEntity> selected = picker.GetPickedEntities();
+                foreach(TEntity entity in selected) { storageIds.Add(entity.StorageId); }
 
-            List<TEntity> pickableEntities = GetPickableEntities();
-            storageIds.Sort(
-                (string s1, string s2) =>
-                {
-                    int index1 = pickableEntities.FindIndex((e) => e.StorageId == s1);
-                    int index2 = pickableEntities.FindIndex((e) => e.StorageId == s2);
-                    return index1.CompareTo(index2);
-                });
+                List<TEntity> pickableEntities = GetPickableEntities();
+                storageIds.Sort(
+                    (string s1, string s2) =>
+                    {
+                        int index1 = pickableEntities.FindIndex((e) => e.StorageId == s1);
+                        int index2 = pickableEntities.FindIndex((e) => e.StorageId == s2);
+                        return index1.CompareTo(index2);
+                    });
 
-            Changed?.Invoke(this);
+                Changed?.Invoke(this);
 
-            UpdateList();
+                UpdateList();
+            }
+
             if(blocker != null) { blocker.Visibility = Visibility.Hidden; }
 
             picker.Closed -= OnDialogClosed;

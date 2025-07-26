@@ -26,6 +26,7 @@ namespace Programacion123
         void SetMultiPickerEntities(List<T> selectedEntities, List<T> pickableEntities);
         T? GetPickedEntity();
         List<T> GetPickedEntities();
+        bool GetWasCancelled();
     }
 
     /// <summary>

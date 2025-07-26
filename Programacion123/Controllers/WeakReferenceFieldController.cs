@@ -155,8 +155,12 @@ namespace Programacion123
         {
             if(blocker != null) { blocker.Visibility = Visibility.Hidden; }
 
-            storageId = picker.GetPickedEntity()?.StorageId;
-            Changed?.Invoke(this);
+            if(!picker.GetWasCancelled())
+            {
+                storageId = picker.GetPickedEntity()?.StorageId;
+                Changed?.Invoke(this);
+            }
+
             picker.Closed -= OnDialogClosed;
 
             UpdateField();

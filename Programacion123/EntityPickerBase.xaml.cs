@@ -21,15 +21,25 @@ namespace Programacion123
     /// </summary>
     public partial class EntityPickerBase : Window
     {
+        protected bool cancelled;
+
         public EntityPickerBase()
         {
             InitializeComponent();
+
+            cancelled = false;
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
+            cancelled = true;
             Close();
+        }
 
+        private void ButtonAddReference_Click(object sender, RoutedEventArgs e)
+        {
+            cancelled = false;
+            Close();
         }
     }
 
@@ -91,6 +101,11 @@ namespace Programacion123
 
             ListBoxEntities.SelectionMode = SelectionMode.Single;
             ListBoxEntities.SelectedIndex = entities.FindIndex(e => e.StorageId == _pickedEntity.StorageId);
+
+            LabelSetReference.Visibility = Visibility.Visible;
+            ButtonSetReference.Visibility = Visibility.Visible;
+            LabelAddReference.Visibility = Visibility.Hidden;
+            ButtonAddReference.Visibility = Visibility.Hidden;
             
             isMultiPickerMode = false;
         }        
@@ -134,6 +149,11 @@ namespace Programacion123
                 ListBoxEntities.SelectedItems.Add(multiSelectItemList.Find(e2 => e2.entity.StorageId == e1.StorageId));
             }
 
+            LabelAddReference.Visibility = Visibility.Visible;
+            ButtonAddReference.Visibility = Visibility.Visible;
+            LabelSetReference.Visibility = Visibility.Hidden;
+            ButtonSetReference.Visibility = Visibility.Hidden;
+
             isMultiPickerMode = true;
         }
 
@@ -154,6 +174,11 @@ namespace Programacion123
         public void SetFormatter(Func<TEntity, int, string>? _formatter)
         {
             formatter = _formatter;
+        }
+
+        public bool GetWasCancelled()
+        {
+            return cancelled;
         }
     }
 }

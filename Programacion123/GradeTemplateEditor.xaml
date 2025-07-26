@@ -20,7 +20,7 @@
                 </Button.Background>
             </Button>
             <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="110" Canvas.Top="514" HorizontalAlignment="Left" VerticalAlignment="Center" Width="381">
-                <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Width="451" Height="52" HorizontalAlignment="Left" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black"/>
+                <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Width="366" Height="52" HorizontalAlignment="Left" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black"/>
             </Border>
             <TextBox x:Name="TextTitle" Canvas.Left="159" Canvas.Top="93" Width="322" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
             <Label Content="Título de la plantilla" Canvas.Left="25" Canvas.Top="87" HorizontalAlignment="Center" VerticalAlignment="Top" Width="169"/>

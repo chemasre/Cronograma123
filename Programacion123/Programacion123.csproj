@@ -26,11 +26,13 @@
     <None Remove="Images\BackgroundTitle.png" />
     <None Remove="Images\ButonReferenceAdd.png" />
     <None Remove="Images\ButonReferenceRemove.png" />
+    <None Remove="Images\ButonReferenceSetBig.png" />
     <None Remove="Images\ButtonAccept.png" />
     <None Remove="Images\ButtonCancel.png" />
     <None Remove="Images\ButtonHelp.png" />
     <None Remove="Images\ButtonHome.png" />
     <None Remove="Images\ButtonPick.png" />
+    <None Remove="Images\ButtonReferenceAddBig.png" />
     <None Remove="Images\ButtonReset.png" />
     <None Remove="Images\IconWarning.png" />
     <None Remove="Images\ValidatorCapy.png" />
@@ -63,6 +65,7 @@
     <Resource Include="Images\BackgroundTitle.png" />
     <Resource Include="Images\ButonReferenceAdd.png" />
     <Resource Include="Images\ButonReferenceRemove.png" />
+    <Resource Include="Images\ButonReferenceSetBig.png" />
     <Resource Include="Images\ButtonHelp.png" />
     <Resource Include="Images\ButtonHome.png" />
     <Resource Include="Images\ButtonMoveDown.png" />
@@ -80,6 +83,7 @@
     <Resource Include="Images\ButtonEdit.png" />
     <Resource Include="Images\ButtonNew.png" />
     <Resource Include="Images\ButtonPick.png" />
+    <Resource Include="Images\ButtonReferenceAddBig.png" />
     <Resource Include="Images\ButtonReset.png" />
     <Resource Include="Images\ButtonWarning.png" />
     <Resource Include="Images\IconWarning.png" />
