@@ -43,7 +43,7 @@ namespace Programacion123
         }
     }
 
-    public class EntityPicker<TEntity> : EntityPickerBase, IEntityPicker<TEntity> where TEntity:Entity, new()
+    public class EntityPicker<TEntity> : EntityPickerBase, IEntityPicker<TEntity> where TEntity:Entity
     {
         List<TEntity>? entities;
         bool isMultiPickerMode;

@@ -158,7 +158,7 @@
 
             data.SubjectTemplateWeakStorageId = Template?.StorageId;
             data.CalendarWeakStorageId = Calendar?.StorageId;
-            data.WeekScheduleWeakStorageId = Calendar?.StorageId;
+            data.WeekScheduleWeakStorageId = WeekSchedule?.StorageId;
 
 
             data.MetodologiesIntroductionStorageId = MetodologiesIntroduction.StorageId;

@@ -1,10 +1,13 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Security.Policy;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Win32;
+using static Programacion123.ExportImportDialog;
 
 namespace Programacion123
 {
@@ -160,7 +163,7 @@ namespace Programacion123
                     if(e)
                     {
                         Storage.Reset();
-                        InitUI();
+                        RestartUI();
                     }
 
                 });
@@ -168,5 +171,109 @@ namespace Programacion123
             confirm.ShowDialog();
 
         }
+
+        private void ButtonImport_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new();
+            openFileDialog.Title = "Elige archivo para cargar";
+            openFileDialog.Filter = "Ficheros zip (*.zip)|*.zip|Todos los ficheros (*.*)|*.*";
+
+            if(openFileDialog.ShowDialog().GetValueOrDefault())
+            {
+                Storage.Archive_Open(openFileDialog.FileName);
+
+                ExportImportDialogConfiguration config = new()
+                {
+                    isExport = false,
+                    gradeTemplateStorageIds = Storage.GetStorageIds<GradeTemplate>(Storage.LoadAllEntities<GradeTemplate>()),
+                    subjectTemplatesStorageIds = Storage.GetStorageIds<SubjectTemplate>(Storage.LoadAllEntities<SubjectTemplate>()),
+                    calendarsStorageIds = Storage.GetStorageIds<Calendar>(Storage.LoadAllEntities<Calendar>()),
+                    weekSchedulesStorageIds = Storage.GetStorageIds<WeekSchedule>(Storage.LoadAllEntities<WeekSchedule>()),
+                    subjectsStorageIds = Storage.GetStorageIds<Subject>(Storage.LoadAllEntities<Subject>()),
+                    closeAction =
+                        (accepted, exportDialog) =>
+                        {
+                            if(accepted)
+                            {
+                                List<string> storageIds = new();
+                                storageIds.AddRange(exportDialog.GradeTemplatesStorageIds);
+                                storageIds.AddRange(exportDialog.SubjectTemplatesStorageIds);
+                                storageIds.AddRange(exportDialog.CalendarsStorageIds);
+                                storageIds.AddRange(exportDialog.WeekSchedulesStorageIds);
+                                storageIds.AddRange(exportDialog.SubjectsStorageIds);
+
+                                Storage.Archive_CopyStorageIdsToBase(storageIds);
+                            }
+
+                            Storage.Archive_Close();
+
+                            if(accepted)
+                            {
+                                RestartUI();
+                            }
+
+                        }
+
+                };
+
+                ExportImportDialog dialog = new();
+
+                dialog.Init(config);
+
+                dialog.ShowDialog();
+
+            }
+        }
+
+        private void ButtonExport_Click(object sender, RoutedEventArgs e)
+        {
+            ExportImportDialog dialog = new();
+
+            Action<bool, ExportImportDialog> closeAction = 
+            (accepted, exportDialog) =>
+            {
+                SaveFileDialog saveFileDialog = new();
+                saveFileDialog.Title = "Elige archivo para guardar";
+                saveFileDialog.Filter = "Ficheros zip (*.zip)|*.zip|Todos los ficheros (*.*)|*.*";
+
+                if(saveFileDialog.ShowDialog().GetValueOrDefault())
+                {
+                    List<string> storageIds = new();
+                    storageIds.AddRange(dialog.GradeTemplatesStorageIds);
+                    storageIds.AddRange(dialog.SubjectTemplatesStorageIds);
+                    storageIds.AddRange(dialog.CalendarsStorageIds);
+                    storageIds.AddRange(dialog.WeekSchedulesStorageIds);
+                    storageIds.AddRange(dialog.SubjectsStorageIds);
+                    Storage.Archive_Create(storageIds, saveFileDialog.FileName);
+                }				
+            };
+
+            ExportImportDialogConfiguration config = new()
+            {
+                isExport = true,
+                gradeTemplateStorageIds = Storage.GetStorageIds<GradeTemplate>(Storage.LoadAllEntities<GradeTemplate>()),
+                subjectTemplatesStorageIds = Storage.GetStorageIds<SubjectTemplate>(Storage.LoadAllEntities<SubjectTemplate>()),
+                calendarsStorageIds = Storage.GetStorageIds<Calendar>(Storage.LoadAllEntities<Calendar>()),
+                weekSchedulesStorageIds = Storage.GetStorageIds<WeekSchedule>(Storage.LoadAllEntities<WeekSchedule>()),
+                subjectsStorageIds = Storage.GetStorageIds<Subject>(Storage.LoadAllEntities<Subject>()),
+                closeAction = closeAction
+            };
+
+            dialog.Init(config);
+
+            dialog.ShowDialog();
+        }
+
+        void RestartUI()
+        {
+            weekSchedulesController.Finish();
+            calendarsController.Finish();
+            subjectTemplatesController.Finish();
+            gradeTemplatesController.Finish();
+            subjectsController.Finish();
+
+            InitUI();
+        }
+
     }
 }

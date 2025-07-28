@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="GradeTemplateEditor" Height="615" Width="529" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" AllowsTransparency="True">
+        Title="GradeTemplateEditor" Height="615" Width="529" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" AllowsTransparency="True" MouseDown="Window_MouseDown">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush ImageSource="/Images/BackgroundClouds.png" Stretch="UniformToFill"/>
@@ -105,7 +105,7 @@
                         </Button>
                     </Canvas>
                 </TabItem>
-                <TabItem Header="Competencias generales">
+                <TabItem Header="Competencias profesionales, personales y sociales">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Label Content="Competencias" Canvas.Left="14" Canvas.Top="89" Width="158" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <ListBox x:Name="ListBoxGeneralCompetences" Height="104" Width="286" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="148" Canvas.Top="98" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -169,7 +169,7 @@
                         </Button>
                     </Canvas>
                 </TabItem>
-                <TabItem Header="Capacidades clave">
+                <TabItem Header="Competencias clave">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Label Content="Capacidades clave" Canvas.Left="14" Canvas.Top="89" Width="158" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         <ListBox x:Name="ListBoxKeyCapacities" Height="104" Width="286" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="148" Canvas.Top="98" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Center"/>

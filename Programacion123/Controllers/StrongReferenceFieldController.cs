@@ -183,6 +183,14 @@ namespace Programacion123
 
 
         }
+
+        public void Finish()
+        {
+            if(buttonNew != null) { buttonNew.Click -= ButtonNew_Click; }
+            if(buttonEdit != null)  { buttonEdit.Click -= ButtonEdit_Click; }
+        }
+
+        
     }
 
 }

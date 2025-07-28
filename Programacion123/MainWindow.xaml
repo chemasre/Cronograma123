@@ -225,6 +225,22 @@
             <Label Content="1" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="133" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="Define la plantilla del ciclo" FontSize="22" Width="374" Canvas.Left="105" Canvas.Top="140" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-5" Canvas.Top="-5" Height="658" Width="598" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
+            <Button x:Name="ButtonExport" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="321" Canvas.Top="581" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="ButtonExport_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/ButtonZipExport.png"/>
+                </Button.Background>
+                <Button.Foreground>
+                    <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                </Button.Foreground>
+            </Button>
+            <Button x:Name="ButtonImport" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="268" Canvas.Top="581" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="ButtonImport_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/ButtonZipImport.png"/>
+                </Button.Background>
+                <Button.Foreground>
+                    <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                </Button.Foreground>
+            </Button>
         </Canvas>
     </Border>
 </Window>

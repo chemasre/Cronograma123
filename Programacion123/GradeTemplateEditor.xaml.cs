@@ -69,7 +69,8 @@ namespace Programacion123
             var configObjectives = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralObjectives)
                                                         .WithParentStorageId(_gradeTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_gradeTemplate.GeneralObjectives.ToList()))
-                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.character)
+                                                        .WithFormat(EntityFormatContent.description, EntityFormatIndex.character)
+                                                        .WithTitleEditable(false)
                                                         .WithNew(ButtonGeneralObjectiveNew)
                                                         .WithEdit(ButtonGeneralObjectiveEdit)
                                                         .WithDelete(ButtonGeneralObjectiveDelete)
@@ -100,13 +101,14 @@ namespace Programacion123
             var configCompetences = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralCompetences)
                                                         .WithParentStorageId(_gradeTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_gradeTemplate.GeneralCompetences.ToList()))
-                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.character)
+                                                        .WithFormat(EntityFormatContent.description, EntityFormatIndex.character)
+                                                        .WithTitleEditable(false)
                                                         .WithNew(ButtonGeneralCompetenceNew)
                                                         .WithEdit(ButtonGeneralCompetenceEdit)
                                                         .WithDelete(ButtonGeneralCompetenceDelete)
                                                         .WithUpDown(ButtonGeneralCompetenceUp, ButtonGeneralCompetenceDown)
                                                         .WithDeleteConfirmQuestion("Esto eliminará permanentemente la competencia general seleccionada. ¿Estás seguro/a?")
-                                                        .WithEditorTitle("Competencia general")
+                                                        .WithEditorTitle("Competencias profesionales, personales y sociales")
                                                         .WithBlocker(Blocker);
 
             generalCompetencesController = new(configCompetences);
@@ -121,7 +123,7 @@ namespace Programacion123
                                                .WithEdit(ButtonKeyCapacitiesIntroductionEdit)
                                                .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
                                                .WithTitleEditable(false)
-                                               .WithEditorTitle("Introducción a las capacidades clave")
+                                               .WithEditorTitle("Introducción a las competencias clave")
                                                .WithBlocker(Blocker);
 
             keyCapacitiesIntroductionController = new(configKeyCapacitiesIntroduction);
@@ -131,7 +133,7 @@ namespace Programacion123
             var configKeyCapacities = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxKeyCapacities)
                                                         .WithParentStorageId(_gradeTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_gradeTemplate.KeyCapacities.ToList()))
-                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.character)
+                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
                                                         .WithNew(ButtonKeyCapacitiesNew)
                                                         .WithEdit(ButtonKeyCapacitiesEdit)
                                                         .WithDelete(ButtonKeyCapacitiesDelete)

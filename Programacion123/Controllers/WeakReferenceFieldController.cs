@@ -166,6 +166,11 @@ namespace Programacion123
             UpdateField();
 
         }
+
+        public void Finish()
+        {
+            if(buttonPick != null) { buttonPick.Click -= ButtonPick_Click; }
+        }
     }
 
 }

@@ -44,13 +44,14 @@ namespace Programacion123
                 {
                     string resultStorageId = Storage.FindParentStorageId(e.StorageId, e.StorageClassId);
                     int resultIndex = template.LearningResults.ToList().FindIndex(r => r.StorageId == resultStorageId);
-                    return String.Format("RA{0}.{1}: {2}", resultIndex + 1, i + 1, e.Title);
+                    return String.Format("RA{0}.{1}: {2}", resultIndex + 1, i + 1, e.Description);
                 };
 
             var configCriterias = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxCriterias)
                                                         .WithParentStorageId(_entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.Criterias.ToList()))
                                                         .WithFormatter(formatter)
+                                                        .WithTitleEditable(false)
                                                         .WithNew(ButtonCriteriaNew)
                                                         .WithEdit(ButtonCriteriaEdit)
                                                         .WithDelete(ButtonCriteriaDelete)
@@ -63,11 +64,8 @@ namespace Programacion123
 
             criteriasController.Changed += CriteriasController_Changed;
 
-            TextTitle.Text = _entity.Title;
-
             TextBoxDescription.Text = _entity.Description;
 
-            TextTitle.TextChanged += TextTitle_TextChanged;
             TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
 
             Validate();
@@ -87,7 +85,6 @@ namespace Programacion123
 
         void UpdateEntity()
         {
-            entity.Title = TextTitle.Text.Trim();
             entity.Description = TextBoxDescription.Text;
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
@@ -111,18 +108,12 @@ namespace Programacion123
             UpdateEntity();
             //entity.Save(parentStorageId);
 
-            TextTitle.TextChanged -= TextTitle_TextChanged;
             TextBoxDescription.TextChanged -= TextBoxDescription_TextChanged;
 
             Close();
 
         }
 
-        private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            UpdateEntity();
-            Validate();
-        }
 
         private void TextBoxDescription_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -132,9 +123,7 @@ namespace Programacion123
 
         public void SetEntityTitleEditable(bool editable)
         {
-            TextTitle.IsReadOnly = !editable;
-            TextTitle.IsReadOnlyCaretVisible = false;
-            TextTitle.Background = Brushes.LightGray;
+            // Nothing to do
         }
 
         public void SetEditorTitle(string title)

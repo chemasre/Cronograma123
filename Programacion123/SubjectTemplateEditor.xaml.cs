@@ -88,7 +88,7 @@ namespace Programacion123
 
                     if (canFormat)
                     {
-                        return String.Format("{0}: {1}", Utils.FormatLetterPrefixLowercase(objectiveIndex), e.Title);
+                        return String.Format("{0}: {1}", Utils.FormatLetterPrefixLowercase(objectiveIndex), e.Description);
                     }
                     else
                     {
@@ -146,7 +146,7 @@ namespace Programacion123
 
                     if (canFormat)
                     {
-                        return String.Format("{0}: {1}", Utils.FormatLetterPrefixLowercase(competenceIndex), e.Title);
+                        return String.Format("{0}: {1}", Utils.FormatLetterPrefixLowercase(competenceIndex), e.Description);
                     }
                     else
                     {
@@ -244,7 +244,7 @@ namespace Programacion123
             var configLearningResults = StrongReferencesBoxConfiguration<LearningResult>.CreateForList(ListBoxLearningResults)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<LearningResult>(_subjectTemplate.LearningResults.ToList()))
-                                                        .WithFormatter((e, i) => String.Format("RA{0}: {1}", i + 1, e.Title))
+                                                        .WithFormatter((e, i) => String.Format("RA{0}: {1}", i + 1, e.Description))
                                                         .WithNew(ButtonLearningResultsNew)
                                                         .WithEdit(ButtonLearningResultsEdit)
                                                         .WithDelete(ButtonLearningResultsDelete)
@@ -275,7 +275,7 @@ namespace Programacion123
             var configContents = StrongReferencesBoxConfiguration<Content>.CreateForList(ListBoxContents)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<Content>(_subjectTemplate.Contents.ToList()))
-                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
+                                                        .WithFormat(EntityFormatContent.description, EntityFormatIndex.number)
                                                         .WithNew(ButtonContentsNew)
                                                         .WithEdit(ButtonContentsEdit)
                                                         .WithDelete(ButtonContentsDelete)

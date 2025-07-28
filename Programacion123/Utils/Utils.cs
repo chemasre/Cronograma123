@@ -97,9 +97,11 @@
             return prefix + content;
         }
 
+        static string letters = "abcdefghijklmnñopqrstuvwxyz";
+
         public static string FormatLetterPrefixLowercase(int index)
         {
-            return System.Text.Encoding.ASCII.GetString(new byte[] { (byte)(65 + index) }).ToLower();
+            return (index / letters.Length > 0 ? FormatLetterPrefixLowercase(index / letters.Length) : "") +  letters[index % letters.Length];
         }
 
 

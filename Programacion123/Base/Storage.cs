@@ -1,22 +1,28 @@
 ﻿using System.IO;
+using System.IO.Compression;
 using System.Security.Principal;
 using System.Text.Json;
 
 namespace Programacion123
 {
-    internal class Storage
+    internal partial class Storage
     {
-        const string basePath = "Storage\\";
+        static string basePath = "Storage\\";
 
         public static void Init()
         {
             if(!Directory.Exists(basePath)) { Directory.CreateDirectory(basePath); }
         }
 
+        static string GetBasePath()
+        {
+            return (isArchiveOpen ? archiveExtractionPath : basePath);
+        }
+
         public static string? FindParentStorageId(string storageId, string storageClassId)
         {
             string? found = null;
-            string[] directories = Directory.GetDirectories(basePath);
+            string[] directories = Directory.GetDirectories(GetBasePath());
             int i = 0;
             while(i < directories.Length && found == null)
             {
@@ -111,13 +117,13 @@ namespace Programacion123
 
             if(parentStorageId != null)
             {   folder = parentStorageId + "\\";
-                if(!Directory.Exists(basePath + folder)) { result = false; }
+                if(!Directory.Exists(GetBasePath() + folder)) { result = false; }
             }
             else { folder = ""; }
 
             if(result)
             {
-                if(!File.Exists(basePath + folder + storageId + "." + storageClassId)) { result = false; }
+                if(!File.Exists(GetBasePath() + folder + storageId + "." + storageClassId)) { result = false; }
             }
             
             return result;
@@ -130,11 +136,11 @@ namespace Programacion123
 
             if(parentStorageId != null)
             {   folder = parentStorageId + "\\";
-                if(!Directory.Exists(basePath + folder)) { Directory.CreateDirectory(basePath + folder); }
+                if(!Directory.Exists(GetBasePath() + folder)) { Directory.CreateDirectory(GetBasePath() + folder); }
             }
             else { folder = ""; }
 
-            var stream = new FileStream(basePath + folder + storageId + "." + storageClassId, FileMode.Create, FileAccess.Write);
+            var stream = new FileStream(GetBasePath() + folder + storageId + "." + storageClassId, FileMode.Create, FileAccess.Write);
             var writer = new StreamWriter(stream);
             JsonSerializerOptions options = new JsonSerializerOptions(JsonSerializerOptions.Default);
             options.WriteIndented = true;
@@ -146,7 +152,7 @@ namespace Programacion123
         {
             string folder = (parentStorageId != null ? parentStorageId + "\\" : "");
 
-            var stream = new FileStream(basePath + folder + storageId + "." + storageClassId, FileMode.Open, FileAccess.Read);
+            var stream = new FileStream(GetBasePath() + folder + storageId + "." + storageClassId, FileMode.Open, FileAccess.Read);
             var reader = new StreamReader(stream);
             string text = reader.ReadToEnd();
             T data = JsonSerializer.Deserialize<T>(text);
@@ -159,9 +165,9 @@ namespace Programacion123
         {
             string folder = (parentStorageId != null ? parentStorageId + "\\" : "");
 
-            File.Delete(basePath + folder + storageId + "." + storageClassId);
+            File.Delete(GetBasePath() + folder + storageId + "." + storageClassId);
 
-            if(Directory.Exists(basePath + folder + storageId)) { Directory.Delete(basePath + folder + storageId); }
+            if(Directory.Exists(GetBasePath() + folder + storageId)) { Directory.Delete(GetBasePath() + folder + storageId); }
         }
 
         public static List<T> LoadDatas<T>(string storageClassId, string? parentStorageId = null) where T : StorageData
@@ -169,7 +175,7 @@ namespace Programacion123
             string folder = (parentStorageId != null ? parentStorageId + "\\" : "");
 
             List<T> result = new();
-            string[] files = Directory.GetFiles(basePath + folder + "", "*." + storageClassId);
+            string[] files = Directory.GetFiles(GetBasePath() + folder + "", "*." + storageClassId);
 
             Array.ForEach<string>(files, 
             (string e) =>
@@ -224,9 +230,9 @@ namespace Programacion123
             List<T> result = new();
             T entity = new T();
 
-            if(Directory.Exists(Directory.GetCurrentDirectory() + "\\" + basePath + folder))
+            if(Directory.Exists(GetBasePath() + folder))
             {
-                string[] files = Directory.GetFiles(Directory.GetCurrentDirectory() + "\\" + basePath + folder, "*." + entity.StorageClassId);
+                string[] files = Directory.GetFiles(GetBasePath() + folder, "*." + entity.StorageClassId);
                
                 Array.ForEach<string>(files,
                     (e) =>
@@ -248,7 +254,7 @@ namespace Programacion123
 
         public static void Reset()
         {
-            ResetRecursively(basePath);
+            ResetRecursively(GetBasePath());
         }
 
         static void ResetRecursively(string directory, int depth = 0)
@@ -265,6 +271,5 @@ namespace Programacion123
             }
 
         }
-
     }
 }

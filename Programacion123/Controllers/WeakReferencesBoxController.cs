@@ -270,6 +270,21 @@ namespace Programacion123
 
         }
 
+        public void Finish()
+        {
+            if (buttonUp != null)
+            {
+                buttonUp.Click -= ButtonUp_Click;
+                buttonDown.Click -= ButtonDown_Click;
+            }
+
+            if(buttonPickAdd != null)
+            {
+                buttonPickAdd.Click -= ButtonPickAdd_Click;
+                buttonPickRemove.Click -= ButtonPickRemove_Click;
+            }
+        }
+
     }
 
 }

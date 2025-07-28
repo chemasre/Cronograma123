@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -34,6 +34,8 @@
     <None Remove="Images\ButtonPick.png" />
     <None Remove="Images\ButtonReferenceAddBig.png" />
     <None Remove="Images\ButtonReset.png" />
+    <None Remove="Images\ButtonZipExport.png" />
+    <None Remove="Images\ButtonZipImport.png" />
     <None Remove="Images\IconWarning.png" />
     <None Remove="Images\ValidatorCapy.png" />
   </ItemGroup>
@@ -86,6 +88,8 @@
     <Resource Include="Images\ButtonReferenceAddBig.png" />
     <Resource Include="Images\ButtonReset.png" />
     <Resource Include="Images\ButtonWarning.png" />
+    <Resource Include="Images\ButtonZipExport.png" />
+    <Resource Include="Images\ButtonZipImport.png" />
     <Resource Include="Images\IconWarning.png" />
     <Resource Include="Images\ValidatorCapy.png" />
   </ItemGroup>
