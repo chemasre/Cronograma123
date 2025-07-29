@@ -7,6 +7,7 @@ namespace Programacion123
         public bool StartInNewDay { get; set; } = true;
         public int Hours { get; set; }
 
+
         public CommonText? Metodology = null;
 
         public SetProperty<CommonText> ContentPoints { get; } = new SetProperty<CommonText>();

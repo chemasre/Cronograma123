@@ -202,7 +202,7 @@ namespace Programacion123
                     
                     if(canFormat)
                     {
-                        return String.Format("{0}.{1}: {2}", contentIndex + 1, pointIndex + 1, e.Title);
+                        return String.Format("{0}.{1}: {2}", contentIndex + 1, pointIndex + 1, e.Description);
                     }
                     else
                     {
@@ -305,7 +305,7 @@ namespace Programacion123
                     
                     if(canFormat)
                     {
-                        return String.Format("RA{0}.{1}: {2}", resultIndex + 1, criteriaIndex + 1, e.Title);
+                        return String.Format("RA{0}.{1}: {2}", resultIndex + 1, criteriaIndex + 1, e.Description);
                     }
                     else
                     {
