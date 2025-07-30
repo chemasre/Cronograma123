@@ -2,8 +2,13 @@
 {
     public class ActivityData : StorageData
     {
-        public int Hours { get; set; }
-        public bool StartInNewDay { get; set; }
+        public ActivityStartType StartType { get; set; }
+        public DateTime StartDate { get; set; }
+        public DayOfWeek StartDayOfWeek { get; set; }
+
+        public float Duration { get; set; }
+        public bool NoActivitiesBefore { get; set; }
+        public bool NoActivitiesAfter { get; set; }
 
         public string? MetodologyWeakStorageId { get; set; } = null;
 

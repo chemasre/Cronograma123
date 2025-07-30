@@ -353,6 +353,12 @@
 
                     </Canvas>
                 </TabItem>
+                <TabItem Header="Temporización">
+                    <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Label Content="Temporización de las actividades" Canvas.Left="14" Canvas.Top="12" Width="199" Height="42" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <DataGrid x:Name="DataGridActivitiesSchedule" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="25" Canvas.Top="45" Height="217" HorizontalAlignment="Center" VerticalAlignment="Top" Width="408"/>
+                    </Canvas>
+                </TabItem>
             </TabControl>
             <Label Content="Plantilla vinculada" Canvas.Left="26" Canvas.Top="120" Width="169" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="Calendario vinculado" Canvas.Left="26" Canvas.Top="158" Width="169" HorizontalAlignment="Center" VerticalAlignment="Top"/>

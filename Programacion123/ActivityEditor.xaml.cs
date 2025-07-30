@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -73,12 +75,15 @@ namespace Programacion123
             entity.Title = TextTitle.Text;
             entity.Description = TextBoxDescription.Text;
 
-            int hours;
-            if(Int32.TryParse(TextHours.Text, out hours))  { entity.Hours = hours; }
-            else { entity.Hours = 0; }
+            entity.StartType = (ActivityStartType)ComboStartType.SelectedIndex;
+            entity.StartDate = DateStartDate.SelectedDate.Value;
+            entity.StartDayOfWeek = (DayOfWeek)(ComboStartWeekDay.SelectedIndex + 1);
 
-            entity.StartInNewDay = CheckboxStartInNewDay.IsChecked.GetValueOrDefault();
-            
+            entity.Duration = ComboDuration.SelectedIndex + ComboDurationFraction.SelectedIndex * 0.25f;
+
+            entity.NoActivitiesBefore = CheckboxNoActivitiesBefore.IsChecked.GetValueOrDefault();
+            entity.NoActivitiesAfter = CheckboxNoActivitiesAfter.IsChecked.GetValueOrDefault();
+
 
             entity.Metodology = metodologyController.GetEntity();
 
@@ -323,10 +328,23 @@ namespace Programacion123
 
             criteriasController = new(configCriterias);
 
+            for (int i = 0; i < 100; i++) { ComboDuration.Items.Add(i.ToString()); }
+            ComboDurationFraction.Items.Add(".0");
+            ComboDurationFraction.Items.Add(".25");
+            ComboDurationFraction.Items.Add(".5");
+            ComboDurationFraction.Items.Add(".75");
+
+            for (int i = 0; i < 5; i++) { ComboStartWeekDay.Items.Add(Utils.WeekdayToText(Utils.IndexToWeekday(i + 1)));  }
+
             TextTitle.Text = entity.Title;
             TextBoxDescription.Text = entity.Description;
-            TextHours.Text = entity.Hours.ToString();
-            CheckboxStartInNewDay.IsChecked = entity.StartInNewDay;
+            ComboStartType.SelectedIndex = (int)entity.StartType;
+            DateStartDate.SelectedDate = entity.StartDate;
+            ComboStartWeekDay.SelectedIndex = (int)(entity.StartDayOfWeek - 1);
+            ComboDuration.SelectedIndex = (int)entity.Duration;
+            ComboDurationFraction.SelectedIndex = (int)((entity.Duration - MathF.Floor(entity.Duration)) / 0.25f);
+            CheckboxNoActivitiesBefore.IsChecked = entity.NoActivitiesBefore;
+            CheckboxNoActivitiesAfter.IsChecked = entity.NoActivitiesAfter;
             CheckboxIsEvaluable.IsChecked = entity.IsEvaluable;
 
             TextActivityCode.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
@@ -344,9 +362,17 @@ namespace Programacion123
 
             TextTitle.TextChanged += TextTitle_TextChanged;
             TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
-            TextHours.TextChanged += TextHours_TextChanged;
-            CheckboxStartInNewDay.Checked += CheckboxStartInNewDay_Checked;
-            CheckboxStartInNewDay.Unchecked += CheckboxStartInNewDay_Unchecked;
+
+            ComboStartType.SelectionChanged += ComboStartType_SelectionChanged;
+            ComboStartWeekDay.SelectionChanged += ComboStartWeekDay_SelectionChanged;
+            DateStartDate.SelectedDateChanged += DateStartDate_SelectedDateChanged;
+
+            ComboDuration.SelectionChanged += ComboDuration_SelectionChanged;
+            ComboDurationFraction.SelectionChanged += ComboDurationFraction_SelectionChanged; ;
+            CheckboxNoActivitiesBefore.Checked += CheckboxNoActivitiesBefore_Checked;
+            CheckboxNoActivitiesBefore.Unchecked += CheckboxNoActivitiesBefore_Unchecked;
+            CheckboxNoActivitiesAfter.Checked += CheckboxNoActivitiesAfter_Checked;
+            CheckboxNoActivitiesAfter.Unchecked += CheckboxNoActivitiesAfter_Unchecked;
 
             metodologyController.Changed += MetodologyController_Changed;
             contentPointsController.Changed += ContentPointsController_Changed;
@@ -360,6 +386,7 @@ namespace Programacion123
 
             dataTableResultsWeight.RowChanged += DataTableResultsWeight_RowChanged;
 
+            UpdateStartTypeUI();
             UpdateActivityCodeUI();
             UpdateResultsWeightTableUI();
 
@@ -367,13 +394,77 @@ namespace Programacion123
 
         }
 
-        private void CheckboxStartInNewDay_Unchecked(object sender, RoutedEventArgs e)
+        private void DateStartDate_SelectedDateChanged(object? sender, SelectionChangedEventArgs e)
         {
             UpdateEntity();
             Validate();
         }
 
-        private void CheckboxStartInNewDay_Checked(object sender, RoutedEventArgs e)
+        private void ComboStartWeekDay_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void ComboStartType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+
+            UpdateStartTypeUI();
+        }
+
+        private void CheckboxNoActivitiesAfter_Unchecked(object sender, RoutedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void CheckboxNoActivitiesAfter_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        void CombosDurationApplyLimits()
+        {
+            if (ComboDuration.SelectedIndex == 0 && ComboDurationFraction.SelectedIndex == 0)
+            {
+                ComboDuration.SelectionChanged -= ComboDuration_SelectionChanged;
+                ComboDurationFraction.SelectionChanged -= ComboDurationFraction_SelectionChanged;
+
+                ComboDuration.SelectedIndex = 0;
+                ComboDurationFraction.SelectedIndex = 1;
+
+                ComboDuration.SelectionChanged += ComboDuration_SelectionChanged;
+                ComboDurationFraction.SelectionChanged += ComboDurationFraction_SelectionChanged;
+            }
+
+        }
+
+        private void ComboDurationFraction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CombosDurationApplyLimits();
+
+            UpdateEntity();
+            Validate();
+        }
+
+        private void ComboDuration_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CombosDurationApplyLimits();
+               
+            UpdateEntity();
+            Validate();
+        }
+
+        private void CheckboxNoActivitiesBefore_Unchecked(object sender, RoutedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void CheckboxNoActivitiesBefore_Checked(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
             Validate();
@@ -456,6 +547,14 @@ namespace Programacion123
             }
         }
 
+        void UpdateStartTypeUI()
+        {
+            ActivityStartType startType = (ActivityStartType)ComboStartType.SelectedIndex;
+            ComboStartWeekDay.Visibility = (startType == ActivityStartType.DayOfWeek ? Visibility.Visible : Visibility.Hidden);
+            DateStartDate.Visibility = (startType == ActivityStartType.Date ? Visibility.Visible : Visibility.Hidden);
+
+        }
+
         void UpdateResultsWeightTableUI()
         {
             dataTableResultsWeight.Clear();
@@ -504,16 +603,6 @@ namespace Programacion123
         {
             return entity;
         }
-
-        private void TextHours_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            int h;
-            if(!Int32.TryParse(TextHours.Text, out h)) { TextHours.Text = ""; }
-
-            UpdateEntity();
-            Validate();
-        }
-
 
         public HashSet<int> GetReferencedResults(List<CommonText> criteriasList, List<LearningResult> resultsList)
         {

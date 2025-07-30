@@ -59,7 +59,7 @@
 
                 while(d <= EndDay && !foundSchoolDay)
                 {
-                    if(!FreeDays.Contains(d)) { foundSchoolDay = true; }
+                    if(!FreeDays.Contains(d) && d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday) { foundSchoolDay = true; }
                     else { d = d.AddDays(1); }
                 }
 

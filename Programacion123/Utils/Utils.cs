@@ -69,9 +69,17 @@
 
         }
 
-        public static string FormatDate(DateTime d)
+        public enum FormatDateOptions
         {
-            return d.ToShortDateString();
+            numericYearMonthDay,
+            numericMonthDay
+        }
+
+        public static string FormatDate(DateTime d, FormatDateOptions options = FormatDateOptions.numericYearMonthDay)
+        {
+            if (options == FormatDateOptions.numericYearMonthDay) { return d.ToShortDateString(); }
+            else // options == FormatDateOptions.numericMonthDay
+            { return String.Format("{0:0}/{1:0}", d.Day, d.Month); }
         }
 
         public static string FormatEntity<T>(T entity, EntityFormatContent formatContent) where T:Entity
@@ -104,7 +112,20 @@
             return (index / letters.Length > 0 ? FormatLetterPrefixLowercase(index / letters.Length) : "") +  letters[index % letters.Length];
         }
 
-
+        public static bool IsSchoolDay(DateTime day, Calendar calendar, WeekSchedule weekSchedule)
+        {
+            if (day >= calendar.StartDay && day <= calendar.EndDay &&
+               day.DayOfWeek != DayOfWeek.Saturday && day.DayOfWeek != DayOfWeek.Sunday &&
+               weekSchedule.HoursPerWeekDay[day.DayOfWeek] > 0 &&
+               !calendar.FreeDays.Contains(day))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
     }
 }

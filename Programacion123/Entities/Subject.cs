@@ -1,6 +1,6 @@
 ﻿namespace Programacion123
 {
-    public class Subject : Entity
+    public partial class Subject : Entity
     {
         public SubjectTemplate? Template { get; set; }
         public Calendar? Calendar { get; set; }
@@ -159,7 +159,6 @@
             data.SubjectTemplateWeakStorageId = Template?.StorageId;
             data.CalendarWeakStorageId = Calendar?.StorageId;
             data.WeekScheduleWeakStorageId = WeekSchedule?.StorageId;
-
 
             data.MetodologiesIntroductionStorageId = MetodologiesIntroduction.StorageId;
             MetodologiesIntroduction.Save(StorageId);

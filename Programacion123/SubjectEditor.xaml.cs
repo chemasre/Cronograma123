@@ -42,6 +42,8 @@ namespace Programacion123
         DataTable dataTableResultsWeight;
         DataTable dataTableActivitiesWeight;
 
+        DataTable dataTableActivitiesSchedule;
+
 
         public SubjectEditor()
         {
@@ -275,6 +277,17 @@ namespace Programacion123
             DataGridActivitiesWeight.CanUserResizeColumns = false;
             DataGridActivitiesWeight.CanUserResizeRows = false;
 
+            dataTableActivitiesSchedule = new DataTable();
+
+            DataGridActivitiesSchedule.ItemsSource = dataTableActivitiesSchedule.DefaultView;
+            DataGridActivitiesSchedule.FrozenColumnCount = 1;
+            DataGridActivitiesSchedule.CanUserAddRows = false;
+            DataGridActivitiesSchedule.CanUserDeleteRows = false;
+            DataGridActivitiesSchedule.CanUserReorderColumns = false;
+            DataGridActivitiesSchedule.CanUserSortColumns = false;
+            DataGridActivitiesSchedule.CanUserResizeColumns = false;
+            DataGridActivitiesSchedule.CanUserResizeRows = false;
+
             UpdateEntityTemplateReferences();
 
             dataTableResultsWeight.RowChanged += DataTableResultsWeight_RowChanged;
@@ -282,6 +295,7 @@ namespace Programacion123
 
             UpdateActivityWeightsUIFromEntity();
             UpdateWeightsUIFromEntity();
+            UpdateScheduleUIFromEntity();
 
 
             Validate();
@@ -400,6 +414,84 @@ namespace Programacion123
             DataGridActivitiesWeight.ItemsSource = dataTableActivitiesWeight.DefaultView;
         }
 
+        void UpdateScheduleUIFromEntity()
+        {
+            dataTableActivitiesSchedule.Clear();
+            dataTableActivitiesSchedule.Rows.Clear();
+            dataTableActivitiesSchedule.Columns.Clear();
+
+            if(entity.CanScheduleActivities())
+            {
+                List<ActivitySchedule> scheduledActivities = entity.ScheduleActivities();
+
+                Dictionary<string, int> activityStorageIdToBlockIndex = new();
+                Dictionary<string, int> activityStorageIdToActivityIndex = new();
+
+                int bIndex = 0;
+                int aIndex = 0;
+                entity.Blocks.ToList().ForEach(
+                b =>
+                {
+                    b.Activities.ToList().ForEach(
+                    a => 
+                    {
+                        if(a.IsEvaluable)
+                        {
+                            activityStorageIdToBlockIndex.Add(a.StorageId, bIndex);
+                            activityStorageIdToActivityIndex.Add(a.StorageId, aIndex);
+                            aIndex++;
+                        }
+                    });
+                    aIndex = 0;
+                    bIndex++;
+                });
+
+                dataTableActivitiesSchedule.Columns.Add("Actividad", typeof(string));
+                dataTableActivitiesSchedule.Columns.Add("Inicio", typeof(string));
+                dataTableActivitiesSchedule.Columns.Add("Fin", typeof(string));
+                dataTableActivitiesSchedule.Columns.Add("Horas", typeof(float));
+                dataTableActivitiesSchedule.Columns.Add("Sesiones", typeof(float));
+
+
+                foreach (ActivitySchedule s in scheduledActivities)
+                {
+                    DataRow row = dataTableActivitiesSchedule.NewRow();
+
+                    row["Actividad"] =  s.activity.IsEvaluable ?
+                                            String.Format("B{0:00}-A{1:00}",
+                                            activityStorageIdToBlockIndex[s.activity.StorageId] + 1,
+                                            activityStorageIdToActivityIndex[s.activity.StorageId] + 1) :
+                                            s.activity.Title.Substring(0, Math.Min(s.activity.Title.Length, 20)) + 
+                                            (s.activity.Title.Length > 20 ? "..." : "");
+
+                    row["horas"] = s.activity.Duration;
+
+                    row["Inicio"] = Utils.WeekdayToText(s.start.day.DayOfWeek) + " " +
+                                    Utils.FormatDate(s.start.day, Utils.FormatDateOptions.numericMonthDay) +
+                                    (s.start.hour != 0 ? " +" + s.start.hour + "h" : "");
+                    row["Fin"] = Utils.WeekdayToText(s.end.day.DayOfWeek) + " " +
+                                 Utils.FormatDate(s.end.day, Utils.FormatDateOptions.numericMonthDay) +
+                                 (s.end.hour != entity.WeekSchedule.HoursPerWeekDay[s.end.day.DayOfWeek] ? " +" + s.end.hour + "h" : "");
+
+                    float count = 0;
+                    for (DateTime d = s.start.day; d <= s.end.day; d = d.AddDays(1))
+                    {
+                        if (Utils.IsSchoolDay(d, entity.Calendar, entity.WeekSchedule)) { count ++; }
+                    }
+
+                    row["Sesiones"] = count;
+
+                    dataTableActivitiesSchedule.Rows.Add(row);
+                }
+
+
+
+            }
+
+            DataGridActivitiesSchedule.ItemsSource = null;
+            DataGridActivitiesSchedule.ItemsSource = dataTableActivitiesSchedule.DefaultView;
+        }
+
         private void BlocksIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
             UpdateEntity();
@@ -452,12 +544,14 @@ namespace Programacion123
         private void WeekScheduleController_Changed(WeakReferenceFieldController<WeekSchedule, EntityPicker<WeekSchedule> > controller)
         {
             UpdateEntity();
+            UpdateScheduleUIFromEntity();
             Validate();
         }
 
         private void CalendarController_Changed(WeakReferenceFieldController<Calendar, EntityPicker<Calendar>> controller)
         {
             UpdateEntity();
+            UpdateScheduleUIFromEntity();
             Validate();
         }
 
@@ -475,6 +569,7 @@ namespace Programacion123
             entity.Blocks.Set(Storage.LoadOrCreateEntities<Block>(blocksController.StorageIds, entity.StorageId));
 
             UpdateActivityWeightsUIFromEntity();
+            UpdateScheduleUIFromEntity();
             UpdateEntity();
             Validate();
 

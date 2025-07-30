@@ -45,6 +45,16 @@ namespace Programacion123
                         List<LearningResult> results = subject.Template.LearningResults.ToList();
                         foreach(LearningResult r in results) { a.LearningResultsWeights.Add(r, 0); }
                     }
+
+                    if(subject.Calendar != null)
+                    {
+                        a.StartDate = subject.Calendar.StartDay;    
+                    }
+                    else
+                    {
+                        DateTime now = DateTime.Now;
+                        a.StartDate = new DateTime(now.Year, now.Month, now.Day);
+                    }
                 };
 
             var configActivities = StrongReferencesBoxConfiguration<Activity>.CreateForList(ListBoxPoints)

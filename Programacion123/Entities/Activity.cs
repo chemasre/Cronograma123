@@ -2,11 +2,23 @@
 
 namespace Programacion123
 {
+    public enum ActivityStartType
+    {
+        AsSoonAsPossible,
+        Date,
+        DayOfWeek
+    };
+
     public class Activity: Entity
     {
-        public bool StartInNewDay { get; set; } = true;
-        public int Hours { get; set; }
+        public ActivityStartType StartType { get; set; } = ActivityStartType.AsSoonAsPossible;
+        public DateTime StartDate { get; set; }
+        public DayOfWeek StartDayOfWeek { get; set; } = DayOfWeek.Monday;
 
+        public float Duration { get; set; } = 1;
+
+        public bool NoActivitiesBefore { get; set; } = true;
+        public bool NoActivitiesAfter { get; set; } = true;
 
         public CommonText? Metodology = null;
 
@@ -88,8 +100,12 @@ namespace Programacion123
 
             data.Title = Title;
             data.Description = Description;
-            data.Hours = Hours;
-            data.StartInNewDay = StartInNewDay;
+            data.StartType = StartType;
+            data.StartDate = StartDate;
+            data.StartDayOfWeek = StartDayOfWeek;
+            data.Duration = Duration;
+            data.NoActivitiesBefore = NoActivitiesBefore;
+            data.NoActivitiesAfter = NoActivitiesAfter;
 
 
             data.MetodologyWeakStorageId = Metodology?.StorageId;
@@ -129,8 +145,13 @@ namespace Programacion123
             
             Title = data.Title;
             Description = data.Description;
-            Hours = data.Hours;
-            StartInNewDay = data.StartInNewDay;
+
+            StartType = data.StartType;
+            StartDate = data.StartDate;
+            StartDayOfWeek = data.StartDayOfWeek;
+            Duration = data.Duration;
+            NoActivitiesBefore = data.NoActivitiesBefore;
+            NoActivitiesAfter = data.NoActivitiesAfter;
 
             string subjectStorageId = Storage.FindParentStorageId(Storage.FindParentStorageId(StorageId, StorageClassId), new Block().StorageClassId);
             Metodology = data.MetodologyWeakStorageId != null ? Storage.FindEntity<CommonText>(data.MetodologyWeakStorageId, subjectStorageId) : null;
