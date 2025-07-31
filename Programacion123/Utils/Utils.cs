@@ -127,5 +127,21 @@
             }
         }
 
+        public static string FormatStartDayHour(DateTime day, float hour, WeekSchedule weekSchedule)
+        {
+            return Utils.WeekdayToText(day.DayOfWeek) + " " + 
+                    Utils.FormatDate(day, Utils.FormatDateOptions.numericMonthDay) +
+                    (hour != 0 ? " +" + hour + "h" : "");
+        }
+
+        public static string FormatEndDayHour(DateTime day, float hour, WeekSchedule weekSchedule)
+        {
+            return Utils.WeekdayToText(day.DayOfWeek) + " " +
+                    Utils.FormatDate(day, Utils.FormatDateOptions.numericMonthDay) +
+                    (hour != weekSchedule.HoursPerWeekDay[day.DayOfWeek] ? " +" + hour + "h" : "");
+        }
+
+
+
     }
 }

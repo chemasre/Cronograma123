@@ -34,6 +34,8 @@ namespace Programacion123
         WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > criteriasController;
 
 
+        string subjectStorageId;
+        string blockStorageId;
         Subject? subject;
         Block? block;
 
@@ -110,6 +112,12 @@ namespace Programacion123
             }
 
             entity.Save(parentStorageId);
+
+            subject = new Subject();
+            subject.LoadOrCreate(subjectStorageId);
+            block = new Block();
+            block.LoadOrCreate(blockStorageId, subjectStorageId);
+
         }
 
         void Validate()
@@ -133,8 +141,8 @@ namespace Programacion123
 
             block = new();
 
-            string blockStorageId = _parentStorageId;
-            string subjectStorageId = Storage.FindParentStorageId(blockStorageId, block.StorageClassId);
+            blockStorageId = _parentStorageId;
+            subjectStorageId = Storage.FindParentStorageId(blockStorageId, block.StorageClassId);
 
             subject = new Subject();
             subject.LoadOrCreate(subjectStorageId);
@@ -350,6 +358,15 @@ namespace Programacion123
             TextActivityCode.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
             TextActivityCode.IsReadOnly = true;
 
+            TextScheduledStartDay.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
+            TextScheduledStartDay.IsReadOnly = true;
+
+            TextScheduledEndDay.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
+            TextScheduledEndDay.IsReadOnly = true;
+
+            TextScheduledSessions.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
+            TextScheduledSessions.IsReadOnly = true;
+
             dataTableResultsWeight = new DataTable();
             
             DataGridLearningResultsWeight.ItemsSource = dataTableResultsWeight.DefaultView;
@@ -388,6 +405,7 @@ namespace Programacion123
 
             UpdateStartTypeUI();
             UpdateActivityCodeUI();
+            UpdateActivityScheduleUI();
             UpdateResultsWeightTableUI();
 
             Validate();
@@ -398,12 +416,14 @@ namespace Programacion123
         {
             UpdateEntity();
             Validate();
+            UpdateActivityScheduleUI();
         }
 
         private void ComboStartWeekDay_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateEntity();
             Validate();
+            UpdateActivityScheduleUI();
         }
 
         private void ComboStartType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -412,18 +432,22 @@ namespace Programacion123
             Validate();
 
             UpdateStartTypeUI();
+            UpdateActivityScheduleUI();
+
         }
 
         private void CheckboxNoActivitiesAfter_Unchecked(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
             Validate();
+            UpdateActivityScheduleUI();
         }
 
         private void CheckboxNoActivitiesAfter_Checked(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
             Validate();
+            UpdateActivityScheduleUI();
         }
 
         void CombosDurationApplyLimits()
@@ -448,6 +472,7 @@ namespace Programacion123
 
             UpdateEntity();
             Validate();
+            UpdateActivityScheduleUI();
         }
 
         private void ComboDuration_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -456,18 +481,21 @@ namespace Programacion123
                
             UpdateEntity();
             Validate();
+            UpdateActivityScheduleUI();
         }
 
         private void CheckboxNoActivitiesBefore_Unchecked(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
             Validate();
+            UpdateActivityScheduleUI();
         }
 
         private void CheckboxNoActivitiesBefore_Checked(object sender, RoutedEventArgs e)
         {
             UpdateEntity();
             Validate();
+            UpdateActivityScheduleUI();
         }
 
         private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
@@ -555,6 +583,46 @@ namespace Programacion123
 
         }
 
+        void UpdateActivityScheduleUI()
+        {
+            bool cannotSchedule = false;
+
+            if(subject.CanScheduleActivities())
+            {
+                List<ActivitySchedule> schedules = subject.ScheduleActivities();
+                ActivitySchedule? schedule = schedules.Find(s => s.activity.StorageId == entity.StorageId);
+                
+                if(schedule != null)
+                {
+                    TextScheduledStartDay.Text = Utils.FormatStartDayHour(schedule.Value.start.day, schedule.Value.start.hour, subject.WeekSchedule);
+                    TextScheduledEndDay.Text = Utils.FormatStartDayHour(schedule.Value.end.day, schedule.Value.end.hour, subject.WeekSchedule);
+
+                    int count = 0;
+                    for(DateTime d = schedule.Value.start.day; d <= schedule.Value.end.day; d = d.AddDays(1))
+                    {
+                        if(Utils.IsSchoolDay(d, subject.Calendar, subject.WeekSchedule)) { count++; }
+                    }
+
+                    TextScheduledSessions.Text = count.ToString();
+                }
+                else
+                {
+                    cannotSchedule = true;
+                }
+            }
+            else
+            {
+                cannotSchedule = true;
+            }
+
+            if(cannotSchedule)
+            {
+                TextScheduledStartDay.Text = "<no planificable>";
+                TextScheduledEndDay.Text = "<no planificable>";
+                TextScheduledSessions.Text = "<no planificable>";
+            }
+        }
+
         void UpdateResultsWeightTableUI()
         {
             dataTableResultsWeight.Clear();
@@ -580,23 +648,6 @@ namespace Programacion123
 
             dataTableResultsWeight.Rows.Add(row);
 
-            //List<Tuple<int, float>> rIndexWeights = new();
-            //List<KeyValuePair<LearningResult, float>> rWeightsList = entity.LearningResultsWeights.ToList();
-            //foreach(var rWeight in rWeightsList)
-            //{
-            //    int rIndex = .FindIndex(r => r.StorageId == rWeight.Key.StorageId);
-            //    rIndexWeights.Add(Tuple.Create<int, float>(rIndex, rWeight.Value));
-            //}
-
-            //rIndexWeights.Sort((e1, e2) => e1.Item1.CompareTo(e2.Item1) );
-
-            //foreach(var rIndexWeight in rIndexWeights)
-            //{ dataTableResultsWeight.Columns.Add(String.Format("RA{0}", rIndexWeight.Item1 + 1), typeof(float)); }
-
-            //DataRow row = dataTableResultsWeight.NewRow();
-            //foreach(var rIndexWeight in rIndexWeights)
-            //{ row[String.Format("RA{0}", rIndexWeight.Item1 + 1)] = rIndexWeight.Item2; }
-            //dataTableResultsWeight.Rows.Add(row);
         }
 
         public Activity GetEntity()

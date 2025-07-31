@@ -347,7 +347,7 @@
                             </Button.Foreground>
                         </Button>
                         <Label Content="Pesos de las actividades" Canvas.Left="14" Canvas.Top="41" Width="153" Height="42" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <DataGrid x:Name="DataGridActivitiesWeight" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="25" Canvas.Top="74" HorizontalAlignment="Center" Height="130" VerticalAlignment="Top"/>
+                        <DataGrid x:Name="DataGridActivitiesWeight" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="25" Canvas.Top="74" HorizontalAlignment="Center" Height="130" VerticalAlignment="Top" IsSynchronizedWithCurrentItem="False"/>
                         <Label Content="Pesos de los resultados de aprendizaje" Canvas.Left="14" Canvas.Top="211" Width="247" Height="42" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <DataGrid x:Name="DataGridLearningResultsWeight" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="25" Canvas.Top="241" Height="61" HorizontalAlignment="Left" VerticalAlignment="Center" Width="409"/>
 
@@ -356,7 +356,7 @@
                 <TabItem Header="Temporización">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Label Content="Temporización de las actividades" Canvas.Left="14" Canvas.Top="12" Width="199" Height="42" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <DataGrid x:Name="DataGridActivitiesSchedule" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="25" Canvas.Top="45" Height="217" HorizontalAlignment="Center" VerticalAlignment="Top" Width="408"/>
+                        <DataGrid x:Name="DataGridActivitiesSchedule" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="25" Canvas.Top="45" Height="217" HorizontalAlignment="Center" VerticalAlignment="Top" Width="408" IsSynchronizedWithCurrentItem="False"/>
                     </Canvas>
                 </TabItem>
             </TabControl>

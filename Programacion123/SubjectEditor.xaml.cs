@@ -292,6 +292,7 @@ namespace Programacion123
 
             dataTableResultsWeight.RowChanged += DataTableResultsWeight_RowChanged;
             dataTableActivitiesWeight.RowChanged += DataTableActivitiesWeight_RowChanged;
+            dataTableActivitiesSchedule.RowChanged += DataTableActivitiesSchedule_RowChanged;
 
             UpdateActivityWeightsUIFromEntity();
             UpdateWeightsUIFromEntity();
@@ -301,6 +302,7 @@ namespace Programacion123
             Validate();
 
         }
+
 
         private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -325,6 +327,14 @@ namespace Programacion123
             UpdateEntity();
             Validate();
         }
+
+        private void DataTableActivitiesSchedule_RowChanged(object sender, DataRowChangeEventArgs e)
+        {
+            UpdateEntity();
+            UpdateScheduleUIFromEntity(true);
+            Validate();
+        }
+
 
         void UpdateWeightsUIFromEntity()
         {
@@ -414,7 +424,7 @@ namespace Programacion123
             DataGridActivitiesWeight.ItemsSource = dataTableActivitiesWeight.DefaultView;
         }
 
-        void UpdateScheduleUIFromEntity()
+        void UpdateScheduleUIFromEntity(bool dontChangeItemSource = false)
         {
             dataTableActivitiesSchedule.Clear();
             dataTableActivitiesSchedule.Rows.Clear();
@@ -446,11 +456,24 @@ namespace Programacion123
                     bIndex++;
                 });
 
-                dataTableActivitiesSchedule.Columns.Add("Actividad", typeof(string));
-                dataTableActivitiesSchedule.Columns.Add("Inicio", typeof(string));
-                dataTableActivitiesSchedule.Columns.Add("Fin", typeof(string));
-                dataTableActivitiesSchedule.Columns.Add("Horas", typeof(float));
-                dataTableActivitiesSchedule.Columns.Add("Sesiones", typeof(float));
+                DataColumn column = new DataColumn("Actividad", typeof(string));
+                column.ReadOnly = true;
+                dataTableActivitiesSchedule.Columns.Add(column);
+
+                column = new DataColumn("Inicio", typeof(string));
+                column.ReadOnly = true;
+                dataTableActivitiesSchedule.Columns.Add(column);
+
+                column = new DataColumn("Fin", typeof(string));
+                column.ReadOnly = true;
+                dataTableActivitiesSchedule.Columns.Add(column);
+
+                column = new DataColumn("Horas", typeof(float));
+                dataTableActivitiesSchedule.Columns.Add(column);
+
+                column = new DataColumn("Sesiones", typeof(float));
+                column.ReadOnly = true;
+                dataTableActivitiesSchedule.Columns.Add(column);
 
 
                 foreach (ActivitySchedule s in scheduledActivities)
@@ -464,32 +487,33 @@ namespace Programacion123
                                             s.activity.Title.Substring(0, Math.Min(s.activity.Title.Length, 20)) + 
                                             (s.activity.Title.Length > 20 ? "..." : "");
 
-                    row["horas"] = s.activity.Duration;
+                    row["Horas"] = s.activity.Duration;
 
-                    row["Inicio"] = Utils.WeekdayToText(s.start.day.DayOfWeek) + " " +
-                                    Utils.FormatDate(s.start.day, Utils.FormatDateOptions.numericMonthDay) +
-                                    (s.start.hour != 0 ? " +" + s.start.hour + "h" : "");
-                    row["Fin"] = Utils.WeekdayToText(s.end.day.DayOfWeek) + " " +
-                                 Utils.FormatDate(s.end.day, Utils.FormatDateOptions.numericMonthDay) +
-                                 (s.end.hour != entity.WeekSchedule.HoursPerWeekDay[s.end.day.DayOfWeek] ? " +" + s.end.hour + "h" : "");
+                    row["Inicio"] = Utils.FormatStartDayHour(s.start.day, s.start.hour, entity.WeekSchedule);
+                    row["Fin"] = Utils.FormatEndDayHour(s.end.day, s.end.hour, entity.WeekSchedule);
 
                     float count = 0;
                     for (DateTime d = s.start.day; d <= s.end.day; d = d.AddDays(1))
                     {
-                        if (Utils.IsSchoolDay(d, entity.Calendar, entity.WeekSchedule)) { count ++; }
+                        if (Utils.IsSchoolDay(d, entity.Calendar, entity.WeekSchedule)) { count++; }
                     }
 
                     row["Sesiones"] = count;
 
+                    dataTableActivitiesSchedule.RowChanged -= DataTableActivitiesSchedule_RowChanged;
                     dataTableActivitiesSchedule.Rows.Add(row);
+                    dataTableActivitiesSchedule.RowChanged += DataTableActivitiesSchedule_RowChanged;
                 }
-
-
 
             }
 
-            DataGridActivitiesSchedule.ItemsSource = null;
-            DataGridActivitiesSchedule.ItemsSource = dataTableActivitiesSchedule.DefaultView;
+            // Fixes Index out of range exception in ShowDialog, that maybe occurs because the ItemSource reset is done two times in the same event
+            if(!dontChangeItemSource)
+            {
+                DataGridActivitiesSchedule.ItemsSource = null;
+                DataGridActivitiesSchedule.ItemsSource = dataTableActivitiesSchedule.DefaultView;
+            }
+
         }
 
         private void BlocksIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
@@ -652,7 +676,29 @@ namespace Programacion123
                     {
                         a.LearningResultsWeights.Clear();
                     }
-                    
+
+
+                }
+            }
+
+            int activityScheduleIndex = 0;
+
+            foreach (Block b in blocksList)
+            {
+                List<Activity> activitiesList = b.Activities.ToList();
+                foreach (Activity a in activitiesList)
+                {
+                    if (activityScheduleIndex < dataTableActivitiesSchedule.Rows.Count)
+                    {
+                        DataRow row = dataTableActivitiesSchedule.Rows[activityScheduleIndex];
+
+                        float h = (int)((float)row["Horas"] / 0.25f) *0.25f;
+                        if (h <= 0) { h = 0.25f; }
+
+                        a.Duration = h;
+                    }
+
+                    activityScheduleIndex++;
                 }
             }
 

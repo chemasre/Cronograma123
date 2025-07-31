@@ -47,14 +47,12 @@
                 <TabItem Header="Temporización">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Label Content="Duración (h)" Canvas.Left="14" Canvas.Top="59" Width="129" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Label Content="Finaliza sesión" Canvas.Left="15" Canvas.Top="147" Width="129" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Finaliza sesión" Canvas.Left="15" Canvas.Top="138" Width="129" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <CheckBox x:Name="CheckboxNoActivitiesBefore"
                             Canvas.Top="104" Canvas.Left="146" Content="" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <ComboBox x:Name="ComboDuration" Width="54" Canvas.Left="148" Canvas.Top="63" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
                         <ComboBox x:Name="ComboDurationFraction" Width="53" Canvas.Left="207" Canvas.Top="63" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
                         <Label Content="Inicio" Canvas.Left="15" Canvas.Top="19" Width="129" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <DataGrid x:Name="DataGridSessions" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="23" Canvas.Top="239" Height="128" Width="409" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Label Content="Sesiones" Canvas.Left="14" Canvas.Top="208" Width="129" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <ComboBox x:Name="ComboStartType" Width="122" Canvas.Left="149" Canvas.Top="21" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}">
                             <ComboBoxItem Content="Lo antes posible"/>
                             <ComboBoxItem Content="Fecha exacta"/>
@@ -64,7 +62,13 @@
                         <DatePicker x:Name="DateStartDate" Canvas.Left="287" Canvas.Top="21" Effect="{DynamicResource EffectDropShadow}"/>
                         <ComboBox x:Name="ComboStartWeekDay" Width="145" Canvas.Left="287" Canvas.Top="21" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         <CheckBox x:Name="CheckboxNoActivitiesAfter"
-                            Canvas.Top="151" Canvas.Left="146" Content="" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            Canvas.Top="142" Canvas.Left="146" Content="" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <TextBox x:Name="TextScheduledStartDay" Canvas.Left="146" Canvas.Top="179" Width="163" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Fecha de inicio" Canvas.Left="14" Canvas.Top="176" Width="153" Height="24" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <TextBox x:Name="TextScheduledEndDay" Canvas.Left="146" Canvas.Top="218" Width="163" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Fecha de fin" Canvas.Left="14" Canvas.Top="215" Width="153" Height="24" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <TextBox x:Name="TextScheduledSessions" Canvas.Left="146" Canvas.Top="260" Width="56" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <Label Content="Sesiones" Canvas.Left="14" Canvas.Top="257" Width="153" Height="24" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                     </Canvas>
                 </TabItem>
                 <TabItem Header="Contenidos">
