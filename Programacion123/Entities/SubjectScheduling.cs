@@ -61,7 +61,7 @@ namespace Programacion123
 
                 if (skipToNewDay || activity.NoActivitiesBefore && hour > 0) { lookupDay = lookupDay.AddDays(1); hour = 0; skipToNewDay = false; }
 
-                    bool found = false;
+                bool found = false;
 
                 while (!found && lookupDay <= calendar.EndDay)
                 {

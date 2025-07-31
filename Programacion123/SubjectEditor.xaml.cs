@@ -430,81 +430,104 @@ namespace Programacion123
             dataTableActivitiesSchedule.Rows.Clear();
             dataTableActivitiesSchedule.Columns.Clear();
 
-            if(entity.CanScheduleActivities())
+            List<Activity> activities = new();
+
+            List<ActivitySchedule>? scheduledActivities = null;
+
+            if (entity.CanScheduleActivities())
             {
-                List<ActivitySchedule> scheduledActivities = entity.ScheduleActivities();
+                scheduledActivities = entity.ScheduleActivities();
+            }
 
-                Dictionary<string, int> activityStorageIdToBlockIndex = new();
-                Dictionary<string, int> activityStorageIdToActivityIndex = new();
+            Dictionary<string, int> activityStorageIdToBlockIndex = new();
+            Dictionary<string, int> activityStorageIdToActivityIndex = new();
 
-                int bIndex = 0;
-                int aIndex = 0;
-                entity.Blocks.ToList().ForEach(
-                b =>
+            int bIndex = 0;
+            int aIndex = 0;
+            entity.Blocks.ToList().ForEach(
+            b =>
+            {
+                b.Activities.ToList().ForEach(
+                a => 
                 {
-                    b.Activities.ToList().ForEach(
-                    a => 
+                    if(a.IsEvaluable)
                     {
-                        if(a.IsEvaluable)
-                        {
-                            activityStorageIdToBlockIndex.Add(a.StorageId, bIndex);
-                            activityStorageIdToActivityIndex.Add(a.StorageId, aIndex);
-                            aIndex++;
-                        }
-                    });
-                    aIndex = 0;
-                    bIndex++;
+                        activityStorageIdToBlockIndex.Add(a.StorageId, bIndex);
+                        activityStorageIdToActivityIndex.Add(a.StorageId, aIndex);
+                        aIndex++;
+                    }
+
+                    activities.Add(a);
                 });
+                aIndex = 0;
+                bIndex++;
+            });
 
-                DataColumn column = new DataColumn("Actividad", typeof(string));
-                column.ReadOnly = true;
-                dataTableActivitiesSchedule.Columns.Add(column);
+            DataColumn column = new DataColumn("Actividad", typeof(string));
+            column.ReadOnly = true;
+            dataTableActivitiesSchedule.Columns.Add(column);
 
-                column = new DataColumn("Inicio", typeof(string));
-                column.ReadOnly = true;
-                dataTableActivitiesSchedule.Columns.Add(column);
+            column = new DataColumn("Inicio", typeof(string));
+            column.ReadOnly = true;
+            dataTableActivitiesSchedule.Columns.Add(column);
 
-                column = new DataColumn("Fin", typeof(string));
-                column.ReadOnly = true;
-                dataTableActivitiesSchedule.Columns.Add(column);
+            column = new DataColumn("Fin", typeof(string));
+            column.ReadOnly = true;
+            dataTableActivitiesSchedule.Columns.Add(column);
 
-                column = new DataColumn("Horas", typeof(float));
-                dataTableActivitiesSchedule.Columns.Add(column);
+            column = new DataColumn("Horas", typeof(float));
+            dataTableActivitiesSchedule.Columns.Add(column);
 
-                column = new DataColumn("Sesiones", typeof(float));
-                column.ReadOnly = true;
-                dataTableActivitiesSchedule.Columns.Add(column);
+            column = new DataColumn("Sesiones", typeof(float));
+            column.ReadOnly = true;
+            dataTableActivitiesSchedule.Columns.Add(column);
 
+            int activityIndex = 0;
 
-                foreach (ActivitySchedule s in scheduledActivities)
+            foreach (Activity a in activities)
+            {
+                DataRow row = dataTableActivitiesSchedule.NewRow();
+
+                row["Actividad"] =  a.IsEvaluable ?
+                                        String.Format("B{0:00}-A{1:00}",
+                                        activityStorageIdToBlockIndex[a.StorageId] + 1,
+                                        activityStorageIdToActivityIndex[a.StorageId] + 1) :
+                                        a.Title.Substring(0, Math.Min(a.Title.Length, 20)) + 
+                                        (a.Title.Length > 20 ? "..." : "");
+
+                row["Horas"] = a.Duration;
+
+                ActivitySchedule? schedule = null;
+                if (scheduledActivities != null)
                 {
-                    DataRow row = dataTableActivitiesSchedule.NewRow();
+                    if (activityIndex < scheduledActivities.Count) { schedule = scheduledActivities[activityIndex]; }
+                }
 
-                    row["Actividad"] =  s.activity.IsEvaluable ?
-                                            String.Format("B{0:00}-A{1:00}",
-                                            activityStorageIdToBlockIndex[s.activity.StorageId] + 1,
-                                            activityStorageIdToActivityIndex[s.activity.StorageId] + 1) :
-                                            s.activity.Title.Substring(0, Math.Min(s.activity.Title.Length, 20)) + 
-                                            (s.activity.Title.Length > 20 ? "..." : "");
-
-                    row["Horas"] = s.activity.Duration;
-
-                    row["Inicio"] = Utils.FormatStartDayHour(s.start.day, s.start.hour, entity.WeekSchedule);
-                    row["Fin"] = Utils.FormatEndDayHour(s.end.day, s.end.hour, entity.WeekSchedule);
+                if(schedule.HasValue)
+                {
+                    row["Inicio"] = Utils.FormatStartDayHour(schedule.Value.start.day, schedule.Value.start.hour, entity.WeekSchedule);
+                    row["Fin"] = Utils.FormatEndDayHour(schedule.Value.end.day, schedule.Value.end.hour, entity.WeekSchedule);
 
                     float count = 0;
-                    for (DateTime d = s.start.day; d <= s.end.day; d = d.AddDays(1))
+                    for (DateTime d = schedule.Value.start.day; d <= schedule.Value.end.day; d = d.AddDays(1))
                     {
                         if (Utils.IsSchoolDay(d, entity.Calendar, entity.WeekSchedule)) { count++; }
                     }
 
                     row["Sesiones"] = count;
-
-                    dataTableActivitiesSchedule.RowChanged -= DataTableActivitiesSchedule_RowChanged;
-                    dataTableActivitiesSchedule.Rows.Add(row);
-                    dataTableActivitiesSchedule.RowChanged += DataTableActivitiesSchedule_RowChanged;
+                }
+                else
+                {
+                    row["Inicio"] = "<no planificable>";
+                    row["Fin"] = "<no planificable>";
+                    row["Sesiones"] = 0;
                 }
 
+                dataTableActivitiesSchedule.RowChanged -= DataTableActivitiesSchedule_RowChanged;
+                dataTableActivitiesSchedule.Rows.Add(row);
+                dataTableActivitiesSchedule.RowChanged += DataTableActivitiesSchedule_RowChanged;
+
+                activityIndex ++;
             }
 
             // Fixes Index out of range exception in ShowDialog, that maybe occurs because the ItemSource reset is done two times in the same event

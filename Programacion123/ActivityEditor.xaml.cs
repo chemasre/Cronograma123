@@ -100,14 +100,14 @@ namespace Programacion123
             entity.Criterias.Set(criteriasController.GetSelectedEntities());
             entity.LearningResultsWeights.Clear();
 
-            if(subject.Template != null)
+            if (subject.Template != null)
             {
                 int resultIndex = 0;
                 List<LearningResult> results = subject.Template.LearningResults.ToList();
-                foreach(DataColumn c in dataTableResultsWeight.Columns)
+                foreach (DataColumn c in dataTableResultsWeight.Columns)
                 {
                     entity.LearningResultsWeights.Add(results[resultIndex], (float)dataTableResultsWeight.Rows[0][c.ColumnName]);
-                    resultIndex ++;
+                    resultIndex++;
                 }
             }
 
@@ -406,9 +406,27 @@ namespace Programacion123
             UpdateStartTypeUI();
             UpdateActivityCodeUI();
             UpdateActivityScheduleUI();
+            UpdateEvaluableUI();
             UpdateResultsWeightTableUI();
 
             Validate();
+
+        }
+
+        private void UpdateEvaluableUI()
+        {
+            Visibility visibility = entity.IsEvaluable ? Visibility.Visible : Visibility.Hidden;
+            LabelActivityCode.Visibility = visibility;
+            TextActivityCode.Visibility = visibility;
+            LabelEvaluationInstrument.Visibility = visibility;
+            TextEvaluationInstrument.Visibility = visibility;
+            ButtonEvaluationInstrumentPick.Visibility = visibility;
+            LabelCriterias.Visibility = visibility;
+            ButtonCriteriaReferenceAdd.Visibility = visibility;
+            ButtonCriteriaReferenceRemove.Visibility = visibility;
+            ListBoxCriterias.Visibility = visibility;
+            LabelLearningResultsWeight.Visibility = visibility;
+            DataGridLearningResultsWeight.Visibility = visibility;
 
         }
 
@@ -558,6 +576,7 @@ namespace Programacion123
             UpdateActivityCodeUI();
             UpdateEntity();
             Validate();
+            UpdateEvaluableUI();
             UpdateResultsWeightTableUI();
         }
 
@@ -590,15 +609,17 @@ namespace Programacion123
             if(subject.CanScheduleActivities())
             {
                 List<ActivitySchedule> schedules = subject.ScheduleActivities();
-                ActivitySchedule? schedule = schedules.Find(s => s.activity.StorageId == entity.StorageId);
+                int scheduleIndex = schedules.FindIndex(s => s.activity.StorageId == entity.StorageId);
                 
-                if(schedule != null)
+                if(scheduleIndex >= 0)
                 {
-                    TextScheduledStartDay.Text = Utils.FormatStartDayHour(schedule.Value.start.day, schedule.Value.start.hour, subject.WeekSchedule);
-                    TextScheduledEndDay.Text = Utils.FormatStartDayHour(schedule.Value.end.day, schedule.Value.end.hour, subject.WeekSchedule);
+                    ActivitySchedule schedule = schedules[scheduleIndex];
+
+                    TextScheduledStartDay.Text = Utils.FormatStartDayHour(schedule.start.day, schedule.start.hour, subject.WeekSchedule);
+                    TextScheduledEndDay.Text = Utils.FormatStartDayHour(schedule.end.day, schedule.end.hour, subject.WeekSchedule);
 
                     int count = 0;
-                    for(DateTime d = schedule.Value.start.day; d <= schedule.Value.end.day; d = d.AddDays(1))
+                    for(DateTime d = schedule.start.day; d <= schedule.end.day; d = d.AddDays(1))
                     {
                         if(Utils.IsSchoolDay(d, subject.Calendar, subject.WeekSchedule)) { count++; }
                     }
@@ -619,7 +640,7 @@ namespace Programacion123
             {
                 TextScheduledStartDay.Text = "<no planificable>";
                 TextScheduledEndDay.Text = "<no planificable>";
-                TextScheduledSessions.Text = "<no planificable>";
+                TextScheduledSessions.Text = "<n/p>";
             }
         }
 
@@ -630,7 +651,7 @@ namespace Programacion123
             dataTableResultsWeight.Columns.Clear();
 
             List<LearningResult> learningResultList = subject.Template.LearningResults.ToList();
-            for(int i = 0; i < learningResultList.Count; i++)
+            for (int i = 0; i < learningResultList.Count; i++)
             {
                 string columnName = String.Format("RA{0}", i + 1);
                 dataTableResultsWeight.Columns.Add(columnName, typeof(float));
@@ -640,14 +661,13 @@ namespace Programacion123
 
             DataRow row = dataTableResultsWeight.NewRow();
 
-            for(int i = 0; i < learningResultList.Count; i++)
+            for (int i = 0; i < learningResultList.Count; i++)
             {
                 string columnName = String.Format("RA{0}", i + 1);
                 row[columnName] = learningResultsWeightList[i].Value;
             }
 
             dataTableResultsWeight.Rows.Add(row);
-
         }
 
         public Activity GetEntity()

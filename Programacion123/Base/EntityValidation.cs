@@ -78,6 +78,7 @@ namespace Programacion123
             else if (code == ValidationCode.activityNotLinkedToSpaceResource) { return "La actividad no está vinculada a ningún recurso didáctico de tipo espacio."; }
             else if (code == ValidationCode.activityReferencesResultWithoutWeight) { return String.Format("El resultado de aprendizaje {0} está referenciado por al menos un criterio de evaluación pero su peso es cero.", index + 1); }
             else if (code == ValidationCode.activityDoesntReferenceResultButHasWeight) { return String.Format("El resultado de aprendizaje {0} tiene un peso mayor que cero y no está referenciado por ningún criterio de evaluación.", index + 1); }
+            else if (code == ValidationCode.activityCannotSchedule) { return "La actividad no se puede planificar."; }
             else if (code == ValidationCode.contentNoPoints) { return "El contenido debe incluir al menos un punto."; }
             else if (code == ValidationCode.contentPointInvalid) { return String.Format("El punto {0} presenta algún problema.", index + 1); }
             else if (code == ValidationCode.learningResultNoCriterias) { return "El resultado de aprendizaje al menos debe contar con un criterio."; }
@@ -175,5 +176,6 @@ namespace Programacion123
         blockNoActivities,
         blockActivityInvalid,
         activityNotLinkedToSpaceResource,
+        activityCannotSchedule,
     };
 }

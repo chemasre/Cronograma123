@@ -83,6 +83,13 @@ namespace Programacion123
                 }
             }
 
+            string subjectStorageId = Storage.FindParentStorageId(Storage.FindParentStorageId(StorageId, StorageClassId), new Block().StorageClassId);
+            Subject subject = new Subject();
+            subject.LoadOrCreate(subjectStorageId);
+
+            if (!subject.CanScheduleActivities()) { return ValidationResult.Create(ValidationCode.activityCannotSchedule);  }
+            if (subject.ScheduleActivities().FindIndex(s => s.activity.StorageId == StorageId) < 0) { return ValidationResult.Create(ValidationCode.activityCannotSchedule); }
+
             return ValidationResult.Create(ValidationCode.success);
 
         }
