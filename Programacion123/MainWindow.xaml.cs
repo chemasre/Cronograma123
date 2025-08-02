@@ -11,7 +11,6 @@ using static Programacion123.ExportImportDialog;
 
 namespace Programacion123
 {
-
     public interface IEntityEditor<T>
     {
         void SetEntityTitleEditable(bool editable);
@@ -275,5 +274,14 @@ namespace Programacion123
             InitUI();
         }
 
+        private void ButtonGenerateDocument_Click(object sender, RoutedEventArgs e)
+        {
+            Subject? subject = subjectsController.GetSelectedEntity();
+            if(subject != null)
+            {
+                HTMLGenerator generator = new HTMLGenerator();
+                generator.Generate(subject, "test.html");
+            }
+        }
     }
 }

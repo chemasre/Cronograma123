@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="Programador123" Height="660" Width="604" Background="{x:Null}" Foreground="{x:Null}" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown_1" Topmost="True" FontFamily="{DynamicResource Font}">
+        Title="Programador123" Height="916" Width="604" Background="{x:Null}" Foreground="{x:Null}" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown_1" Topmost="True" FontFamily="{DynamicResource Font}">
     <Window.Resources>
         <Color x:Key="ColorInvalid">#FFFDFF21</Color>
         <Color x:Key="ColorValid">#FFBAFFA7</Color>
@@ -59,7 +59,7 @@
                     <ImageBrush ImageSource="/Images/ButtonClose.png" Opacity="1"/>
                 </Button.Background>
             </Button>
-            <Border BorderThickness="1" Height="444" Width="525" Canvas.Left="32" Canvas.Top="117" HorizontalAlignment="Center" VerticalAlignment="Top" CornerRadius="30,30,30,30">
+            <Border BorderThickness="1" Height="536" Width="525" Canvas.Left="32" Canvas.Top="117" HorizontalAlignment="Center" VerticalAlignment="Top" CornerRadius="30,30,30,30">
                 <Border.Background>
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </Border.Background>
@@ -164,7 +164,7 @@
                     <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                 </Button.Foreground>
             </Button>
-            <Label Content="Programador123" FontSize="48" FontWeight="Bold" Width="466" Canvas.Left="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="{DynamicResource WindowTitleFont}" Canvas.Top="5"/>
+            <Label Content="Programador17" FontSize="48" FontWeight="Bold" Width="466" Canvas.Left="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="{DynamicResource WindowTitleFont}" Canvas.Top="5"/>
             <Label Content="2" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="209" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="3" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="291" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="4" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="370" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -173,7 +173,7 @@
             <Label Content="Define el calendario" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="374" Canvas.Left="105" Canvas.Top="297" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="Define el horario" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="374" Canvas.Left="108" Canvas.Top="373" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="Programa el módulo" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="409" Canvas.Left="107" Canvas.Top="457" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Button x:Name="ButtonHome" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="427" Canvas.Top="581" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonHome_Click">
+            <Button x:Name="ButtonHome" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="433" Canvas.Top="827" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonHome_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonHome.png"/>
                 </Button.Background>
@@ -181,7 +181,7 @@
                     <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                 </Button.Foreground>
             </Button>
-            <Button x:Name="ButtonHelp" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="481" Canvas.Top="581" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonHelp_Click">
+            <Button x:Name="ButtonHelp" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="486" Canvas.Top="827" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ButtonHelp_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonHelp.png"/>
                 </Button.Background>
@@ -189,7 +189,7 @@
                     <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                 </Button.Foreground>
             </Button>
-            <Button x:Name="ButtonReset" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="374" Canvas.Top="581" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonReset_Click">
+            <Button x:Name="ButtonReset" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="156" Canvas.Top="827" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ButtonReset_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonReset.png"/>
                 </Button.Background>
@@ -225,7 +225,7 @@
             <Label Content="1" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="133" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="Define la plantilla del ciclo" FontSize="22" Width="374" Canvas.Left="105" Canvas.Top="140" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-5" Canvas.Top="-5" Height="658" Width="598" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
-            <Button x:Name="ButtonExport" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="321" Canvas.Top="581" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="ButtonExport_Click">
+            <Button x:Name="ButtonExport" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="103" Canvas.Top="827" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ButtonExport_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonZipExport.png"/>
                 </Button.Background>
@@ -233,7 +233,7 @@
                     <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                 </Button.Foreground>
             </Button>
-            <Button x:Name="ButtonImport" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="268" Canvas.Top="581" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="ButtonImport_Click">
+            <Button x:Name="ButtonImport" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="50" Canvas.Top="827" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center" Click="ButtonImport_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonZipImport.png"/>
                 </Button.Background>
@@ -241,6 +241,42 @@
                     <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                 </Button.Foreground>
             </Button>
+            <ComboBox x:Name="ComboDocGenerators" Width="323" Canvas.Left="108" Canvas.Top="588" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button x:Name="ButtonDocGeneratorEdit" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="439" Canvas.Top="587"  Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                </Button.Background>
+                <Button.Foreground>
+                    <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                </Button.Foreground>
+            </Button>
+            <Label Content="6" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="543" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Define un formato para el documento" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="409" Canvas.Left="107" Canvas.Top="546" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Border BorderThickness="1" Height="126" Width="331" Canvas.Left="32" Canvas.Top="672" CornerRadius="30,30,30,30" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Border.Background>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                </Border.Background>
+            </Border>
+            <Label Content="7" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="701" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Genera el&#xD;&#xA;documento" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="142" Canvas.Left="105" Canvas.Top="698" Foreground="#7F093AD0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Button x:Name="ButtonGenerateDocument" Content="" Width="72" Height="72" BorderBrush="{x:Null}" Canvas.Left="267" Canvas.Top="697" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ButtonGenerateDocument_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/ButtonBigGenerateDoc.png"/>
+                </Button.Background>
+                <Button.Foreground>
+                    <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                </Button.Foreground>
+            </Button>
+            <Image Height="150" Canvas.Left="368" Canvas.Top="660" Width="200" Source="/Images/ValidatorCapyBig.png" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
         </Canvas>
     </Border>
 </Window>

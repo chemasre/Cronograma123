@@ -28,6 +28,7 @@
     <None Remove="Images\ButonReferenceRemove.png" />
     <None Remove="Images\ButonReferenceSetBig.png" />
     <None Remove="Images\ButtonAccept.png" />
+    <None Remove="Images\ButtonBigGenerateDoc.png" />
     <None Remove="Images\ButtonCancel.png" />
     <None Remove="Images\ButtonHelp.png" />
     <None Remove="Images\ButtonHome.png" />
@@ -38,6 +39,7 @@
     <None Remove="Images\ButtonZipImport.png" />
     <None Remove="Images\IconWarning.png" />
     <None Remove="Images\ValidatorCapy.png" />
+    <None Remove="Images\ValidatorCapyBig.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -68,6 +70,7 @@
     <Resource Include="Images\ButonReferenceAdd.png" />
     <Resource Include="Images\ButonReferenceRemove.png" />
     <Resource Include="Images\ButonReferenceSetBig.png" />
+    <Resource Include="Images\ButtonBigGenerateDoc.png" />
     <Resource Include="Images\ButtonHelp.png" />
     <Resource Include="Images\ButtonHome.png" />
     <Resource Include="Images\ButtonMoveDown.png" />
@@ -92,6 +95,7 @@
     <Resource Include="Images\ButtonZipImport.png" />
     <Resource Include="Images\IconWarning.png" />
     <Resource Include="Images\ValidatorCapy.png" />
+    <Resource Include="Images\ValidatorCapyBig.png" />
   </ItemGroup>
 
 </Project>
