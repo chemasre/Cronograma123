@@ -43,7 +43,7 @@ namespace Programacion123
                 return WithInnerList(tagList);
             }
             internal Tag WithParam(string param, string value) { parameters.Add(new(param, value)); return this; }
-            internal Tag WithClassName(string className) { parameters.Add(new("class", className)); return this; }
+            internal Tag WithClass(string className) { parameters.Add(new("class", className)); return this; }
             internal Tag WithId(string id) { parameters.Add(new("id", id)); return this; }
 
             public override string ToString()
@@ -125,71 +125,6 @@ namespace Programacion123
 
 
         }
-
-        //class Table : Tag
-        //{
-        //    InnerElement?[,] elements;
-        //    int[,] colspans;
-        //    int[,] rowspans;
-
-        //    List< < List<InnerElement> > rows;
-
-        //    internal static Table Create(int rows, int columns)
-        //    {
-        //        Table t = new Table(){ elements = new InnerElement?[rows, columns], rowspans = new int[rows, columns], colspans = new int[rows, columns] };
-        //        for(int i = 0; i < t.rowspans.GetLength(0); i++) { for(int j = 0; j < t.rowspans.GetLength(1); j++) { t.rowspans[i, j] = 1; } } 
-        //        for(int i = 0; i < t.colspans.GetLength(0); i++) { for(int j = 0; j < t.colspans.GetLength(1); j++) { t.colspans[i, j] = 1; } } 
-        //        return t;
-        //    }
-
-        //    internal Table WithInnerElementAt(int row, int column, Tag tag, int _rowspan = 1, int _colspan = 1)
-        //    {
-        //        elements[row, column] = new InnerElement() { tag = tag };
-        //        rowspans[row, column] = _rowspan;
-        //        colspans[row, column] = _colspan;
-        //        return this;
-        //    }
-
-        //    internal Table WithInnerElementAt(int row, int column, string text, int _rowspan = 1, int _colspan = 1)
-        //    {
-        //        elements[row, column] = new InnerElement() { text = text };
-        //        rowspans[row, column] = _rowspan;
-        //        colspans[row, column] = _colspan;
-        //        return this;
-        //    }
-
-        //    public override string ToString()
-        //    {
-        //        List<Tag> rows = new();
-        //        for(int i = 0; i < elements.GetLength(0); i++)
-        //        {
-        //            List<Tag> columns = new();
-        //            for(int j = 0; j < elements.GetLength(1); j++)
-        //            {
-        //                Tag cell = Tag.Create("td")
-        //                                  .WithParam("colspan", colspans[i,j].ToString())
-        //                                  .WithParam("rowspan", rowspans[i,j].ToString());
-
-        //                if(elements[i, j].HasValue)
-        //                {
-        //                    if(elements[i, j].Value.tag != null) { cell.WithInner(elements[i, j].Value.tag); }
-        //                    else if(elements[i, j].Value.tag != null) { cell.WithInner(elements[i, j].Value.tag); }
-        //                    else { cell.WithInner("&nbsp;"); }
-        //                }
-        //                else { cell.WithInner("&nbsp;"); }
-
-        //                columns.Add(cell);
-        //            }
-
-        //            rows.Add(Tag.Create("tr").WithInnerList(columns));
-        //        }
-
-        //        return Tag.Create("table").WithInnerList(rows).ToString();
-
-        //    }
-
-
-        //}
 
         public override void Generate(Subject _subject, string path)
         {
