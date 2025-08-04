@@ -28,17 +28,13 @@ namespace Programacion123
             else if (code == ValidationCode.subjectNotLinkedToTemplate) { return "El módulo ha de estar vinculado a una plantilla."; }
             else if (code == ValidationCode.subjectNotLinkedToCalendar) { return "El módulo ha de estar vinculado a un calendario."; }
             else if (code == ValidationCode.subjectNotLinkedToWeekSchedule) { return "El módulo ha de estar vinculado a un horario."; }
-            else if (code == ValidationCode.subjectMetodologiesIntroductionInvalid) { return "El texto introductorio a las metodologías presenta algún problema."; }
             else if (code == ValidationCode.subjectMetodologiesInvalid) { return String.Format("La metodología {0} presenta algún problema.", index + 1); }
             else if (code == ValidationCode.subjectTemplateInvalid) { return "La plantilla vinculada a el módulo presenta algún problema."; }
             else if (code == ValidationCode.subjectCalendarInvalid) { return "El calendario vinculado a el módulo presenta algún problema."; }
             else if (code == ValidationCode.subjectWeekScheduleInvalid) { return "El horario vinculado a el módulo presenta algún problema."; }
-            else if (code == ValidationCode.subjectResourcesIntroductionInvalid) { return "El texto introductorio a los recursos presenta algún problema."; }
             else if (code == ValidationCode.subjectSpaceResourceInvalid) { return String.Format("En la pestaña de recursos educativos, el espacio {0} presenta algún problema.", index + 1); }
             else if (code == ValidationCode.subjectMaterialResourceInvalid) { return String.Format("En la pestaña de recursos educativos, el material {0} presenta algún problema.", index + 1); }
-            else if (code == ValidationCode.subjectEvaluationInstrumentTypesIntroductionInvalid) { return "El texto introductorio a los tipos de instrumento de evaluación presenta algún problema."; }
             else if (code == ValidationCode.subjectInstrumentTypeInvalid) { return String.Format("El tipo de instrumento de evaluación {0} presenta algún problema.", index + 1); }
-            else if (code == ValidationCode.subjectBlocksIntroductionInvalid) { return "El texto introductorio a los bloques presenta algún problema."; }
             else if (code == ValidationCode.subjectBlockInvalid) { return String.Format("El bloque {0} presenta algún problema.", index + 1); }
             //else if (code == ValidationCode.subjectLearningResultWeightInvalid) { return String.Format("Hay un problema en el peso de resultado de aprendizaje que ocupa la posición {0}.", index + 1); }
             else if (code == ValidationCode.subjectLearningResultsWeightNotHundredPercent) { return "La suma de los pesos de los resultados de aprendizaje en la pestaña evaluación no es 100."; }
@@ -52,11 +48,8 @@ namespace Programacion123
             else if (code == ValidationCode.subjectCalendarAndWeekScheduleLeaveNoSchoolDays) { return "La combinación de calendario y horario no permite ningún día lectivo."; }
             else if (code == ValidationCode.templateGradeNameEmpty) { return "El nombre del ciclo está vacío."; }
             else if (code == ValidationCode.templateGradeFamilyNameEmpty) { return "El nombre de la familia profesional está vacío."; }
-            else if (code == ValidationCode.templateGradeGeneralObjectivesIntroductionInvalid) { return "El texto introductorio a los objetivos generales presenta algún problema."; }
             else if (code == ValidationCode.templateGradeGeneralObjectiveInvalid) { return String.Format("El objetivo general {0} presenta algún problema.", index + 1); }
-            else if (code == ValidationCode.templateGradeGeneralCompetencesIntroductionInvalid) { return "El texto introductorio a las competencias generales presenta algún problema."; }
             else if (code == ValidationCode.templateGradeGeneralCompetenceInvalid) { return String.Format("La competencia general {0} presenta algún problema.", index + 1); }
-            else if (code == ValidationCode.templateGradeKeyCapacitiesIntroductionInvalid) { return "El texto introductorio a las capacidades clave presenta algún problema."; }
             else if (code == ValidationCode.templateGradeKeyCapacitiesInvalid) { return String.Format("La capacidad clave {0} presenta algún problema.", index + 1); }
             else if (code == ValidationCode.templateGradeNoGeneralObjectives) { return "La plantilla al menos debe contar con un objetivo general."; }
             else if (code == ValidationCode.templateGradeNoGeneralCompetences) { return "La plantilla al menos debe contar con una competencia general."; }
@@ -112,17 +105,13 @@ namespace Programacion123
         subjectNotLinkedToTemplate,
         subjectNotLinkedToCalendar,
         subjectNotLinkedToWeekSchedule,
-        subjectMetodologiesIntroductionInvalid,
         subjectMetodologiesInvalid,
         subjectTemplateInvalid,
         subjectCalendarInvalid,
         subjectWeekScheduleInvalid,
-        subjectResourcesIntroductionInvalid,
         subjectSpaceResourceInvalid,
         subjectMaterialResourceInvalid,
-        subjectEvaluationInstrumentTypesIntroductionInvalid,
         subjectInstrumentTypeInvalid,
-        subjectBlocksIntroductionInvalid,
         subjectBlockInvalid,
         //subjectLearningResultWeightInvalid,
         subjectLearningResultsWeightNotHundredPercent,
@@ -134,14 +123,12 @@ namespace Programacion123
         subjectLearningResultNotReferencedByActivities,
         subjectActivitiesLearningResultWeightNotHundredPercent,
         subjectCalendarAndWeekScheduleLeaveNoSchoolDays,
+        subjectCommonTextInvalid,
 
         templateGradeNameEmpty,
         templateGradeFamilyNameEmpty,
-        templateGradeGeneralObjectivesIntroductionInvalid,
         templateGradeGeneralObjectiveInvalid,
-        templateGradeGeneralCompetencesIntroductionInvalid,
         templateGradeGeneralCompetenceInvalid,
-        templateGradeKeyCapacitiesIntroductionInvalid,
         templateGradeKeyCapacitiesInvalid,
         templateGradeNoGeneralObjectives,
         templateGradeNoGeneralCompetences,

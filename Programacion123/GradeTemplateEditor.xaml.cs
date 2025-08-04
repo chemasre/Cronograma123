@@ -21,11 +21,8 @@ namespace Programacion123
     {
         GradeTemplate entity;
         string? parentStorageId;
-        StrongReferenceFieldController<CommonText, CommonTextEditor> generalObjectivesIntroductionController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> generalObjectivesController;
-        StrongReferenceFieldController<CommonText, CommonTextEditor> generalCompetencesIntroductionController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> generalCompetencesController;
-        StrongReferenceFieldController<CommonText, CommonTextEditor> keyCapacitiesIntroductionController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> keyCapacitiesController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> commonTextsController;
 
@@ -47,22 +44,6 @@ namespace Programacion123
             entity = _gradeTemplate;
             parentStorageId = _parentStorageId;
 
-
-            var configObjectivesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextGeneralObjectivesIntroduction)
-                                               .WithStorageId(entity.GeneralObjectivesIntroduction.StorageId)
-                                               .WithParentStorageId(entity.StorageId)
-                                               .WithFormat(EntityFormatContent.description)
-                                               .WithNew(ButtonGeneralObjectivesIntroductionNew)
-                                               .WithEdit(ButtonGeneralObjectivesIntroductionEdit)
-                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
-                                               .WithTitleEditable(false)
-                                               .WithEditorTitle("Introducción a los objetivos generales")
-                                               .WithBlocker(Blocker);
-
-            generalObjectivesIntroductionController = new(configObjectivesIntroduction);
-
-            generalObjectivesIntroductionController.Changed += GeneralObjectivesIntroductionController_Changed;
-
             var configObjectives = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralObjectives)
                                                         .WithParentStorageId(_gradeTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_gradeTemplate.GeneralObjectives.ToList()))
@@ -80,21 +61,6 @@ namespace Programacion123
 
             generalObjectivesController.Changed += GeneralObjectivesController_Changed;
 
-            var configCompetencesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextGeneralCompetencesIntroduction)
-                                               .WithStorageId(entity.GeneralCompetencesIntroduction.StorageId)
-                                               .WithParentStorageId(entity.StorageId)
-                                               .WithFormat(EntityFormatContent.description)
-                                               .WithNew(ButtonGeneralCompetencesIntroductionNew)
-                                               .WithEdit(ButtonGeneralCompetencesIntroductionEdit)
-                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
-                                               .WithTitleEditable(false)
-                                               .WithEditorTitle("Introducción a las competencias generales")
-                                               .WithBlocker(Blocker);
-
-            generalCompetencesIntroductionController = new(configCompetencesIntroduction);
-
-            generalCompetencesIntroductionController.Changed += GeneralCompetencesIntroductionController_Changed;
-
             var configCompetences = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxGeneralCompetences)
                                                         .WithParentStorageId(_gradeTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_gradeTemplate.GeneralCompetences.ToList()))
@@ -111,21 +77,6 @@ namespace Programacion123
             generalCompetencesController = new(configCompetences);
 
             generalCompetencesController.Changed += GeneralCompetencesController_Changed;
-
-            var configKeyCapacitiesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextKeyCapacitiesIntroduction)
-                                               .WithStorageId(entity.KeyCapacitiesIntroduction.StorageId)
-                                               .WithParentStorageId(entity.StorageId)
-                                               .WithFormat(EntityFormatContent.description)
-                                               .WithNew(ButtonKeyCapacitiesIntroductionNew)
-                                               .WithEdit(ButtonKeyCapacitiesIntroductionEdit)
-                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
-                                               .WithTitleEditable(false)
-                                               .WithEditorTitle("Introducción a las competencias clave")
-                                               .WithBlocker(Blocker);
-
-            keyCapacitiesIntroductionController = new(configKeyCapacitiesIntroduction);
-
-            keyCapacitiesIntroductionController.Changed += KeyCapacitiesIntroductionController_Changed;
 
             var configKeyCapacities = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxKeyCapacities)
                                                         .WithParentStorageId(_gradeTemplate.StorageId)
@@ -233,23 +184,12 @@ namespace Programacion123
             Validate();
         }
 
-        private void ContentsIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
         private void GeneralCompetencesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
             UpdateEntity();
             Validate();
         }
 
-        private void GeneralCompetencesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
 
         private void GeneralObjectivesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
@@ -257,20 +197,12 @@ namespace Programacion123
             Validate();
         }
 
-        private void GeneralObjectivesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
 
         private void UpdateEntity()
         {
             entity.Title = TextTitle.Text;
-            entity.GeneralObjectivesIntroduction = Storage.LoadOrCreateEntity<CommonText>(generalObjectivesIntroductionController.StorageId, entity.StorageId);
             entity.GeneralObjectives.Set(Storage.LoadOrCreateEntities<CommonText>(generalObjectivesController.StorageIds, entity.StorageId));
-            entity.GeneralCompetencesIntroduction = Storage.LoadOrCreateEntity<CommonText>(generalCompetencesIntroductionController.StorageId, entity.StorageId);
             entity.GeneralCompetences.Set(Storage.LoadOrCreateEntities<CommonText>(generalCompetencesController.StorageIds, entity.StorageId));
-            entity.KeyCapacitiesIntroduction = Storage.LoadOrCreateEntity<CommonText>(keyCapacitiesIntroductionController.StorageId, entity.StorageId);
             entity.KeyCapacities.Set(Storage.LoadOrCreateEntities<CommonText>(keyCapacitiesController.StorageIds, entity.StorageId));
 
             for(int i = 0; i < commonTextsController.StorageIds.Count; i++)

@@ -203,63 +203,22 @@ namespace Programacion123
                                               .WithRow().WithCell("Bloques de enseñanza").WithCellClass("tableHeader2")
                                                         .WithCell("RAs").WithCellClass("tableHeader2")
                                                         .WithCell("CEs").WithCellClass("tableHeader2")
-                                                        .WithCell("Duration").WithCellClass("tableHeader2")
+                                                        .WithCell("Duración").WithCellClass("tableHeader2")
                                                         .WithCell("Fecha de inicio").WithCellClass("tableHeader2")
                                                         .WithCell("Fecha de fin").WithCellClass("tableHeader2")
                                               .WithRowForeach<Block>(subject.Blocks.ToList(),
                                                         (b, i, t) =>
                                                         {
-                                                            HashSet<int> rasIndexes = new();
-                                                            Dictionary<int, HashSet<int>> criteriaIndexes = new();
-                                                            foreach(Activity a in b.Activities.ToList())
-                                                            {
-                                                                if(a.IsEvaluable)
-                                                                {   
-                                                                    foreach(var c in a.Criterias.ToList())
-                                                                    {
-                                                                        int raIndex = 0;
-                                                                        
-                                                                        subjectTemplate.LearningResults.ToList().ForEach(
-                                                                             (r) =>
-                                                                             {
-                                                                                 int foundIndex = r.Criterias.ToList().FindIndex(k => k.StorageId == c.StorageId);
-                                                                                 if(foundIndex > 0)
-                                                                                 {
-                                                                                     if(!criteriaIndexes.ContainsKey(raIndex))
-                                                                                     { criteriaIndexes.Add(raIndex, new HashSet<int>()); }
-                                                                                     criteriaIndexes[raIndex].Add(foundIndex);
-                                                                                     rasIndexes.Add(raIndex);
-                                                                                  }
-                                                                                 raIndex ++;
-                                                                             }
-                                                                        );
-
-                                                                    }
-                                                                }
-                                                            }
-
-                                                            List<int> raIndexesList = rasIndexes.ToList();
-                                                            raIndexesList.Sort();
+                                                            List<int> referencedResults = subject.GetBlockReferencedLearningResultIndexes(i);
+                                                            List<SubjectLearningResultCriteriaIndex> referencedCriterias = subject.GetBlockReferencedLearningResultCriteriaIndexes(i);
 
                                                             string rasText = "";
                                                             bool first = true;
-                                                            raIndexesList.ForEach((i) => { rasText += (first?"":", ") + String.Format("RA{0}", i + 1); first = false; });
+                                                            referencedResults.ForEach((i) => { rasText += (first?"":", ") + String.Format("RA{0}", i + 1); first = false; });
 
                                                             string criteriasText = "";
                                                             first = true;
-                                                            raIndexesList.ForEach(
-                                                                (i) =>
-                                                                {
-                                                                    List<int> raCriteriaIndexes = criteriaIndexes[i].ToList();
-                                                                    raCriteriaIndexes.Sort();
-
-                                                                    foreach(int j in raCriteriaIndexes)
-                                                                    {
-                                                                        criteriasText += (first?"":", ") + String.Format("{0}.{1}", i + 1, j + 1);
-                                                                        first = false;
-                                                                    } 
-                                                                }
-                                                            );
+                                                            referencedCriterias.ForEach((c) => { criteriasText += (first ? "" : ", ") + String.Format("{0}.{1}", c.learningResultIndex + 1, c.criteriaIndex + 1); first = false; });
 
                                                             float hours = 0;
 
@@ -285,7 +244,7 @@ namespace Programacion123
                                                             t.WithCell(String.Format("<b>Bloque {0}:</b> {1}", i + 1, b.Title));
                                                             t.WithCell(rasText);
                                                             t.WithCell(criteriasText);
-                                                            t.WithCell(hours.ToString());
+                                                            t.WithCell(String.Format("{0}h", hours));
                                                             t.WithCell(startActivitySchedule.HasValue ? Utils.FormatDate(startActivitySchedule.Value.start.day) : "");
                                                             t.WithCell(endActivitySchedule.HasValue ? Utils.FormatDate(endActivitySchedule.Value.start.day) : "");
                                                         }
@@ -294,9 +253,7 @@ namespace Programacion123
                             .WithInner(Tag.Create("h1").WithInner("Justificación de la importancia del módulo"))
                             .WithInner(Tag.Create("h1").WithInner("Elementos curriculares"))
                             .WithInner(Tag.Create("h2").WithInner("Objetivos generales relacionados con el módulo"))
-                            .WithInner(Tag.Create("div").WithInner(Tag.Create("div").WithInner(gradeTemplate.GeneralObjectivesIntroduction.Description)))
                             .WithInner(Tag.Create("h2").WithInner("Competencias profesionales, personales y sociales"))
-                            .WithInner(Tag.Create("div").WithInner(Tag.Create("div").WithInner(gradeTemplate.GeneralCompetencesIntroduction.Description)))
                             .WithInner(Tag.Create("h2").WithInner("Capacidades clave"))
                             .WithInnerForeach<CommonText>(subjectTemplate.KeyCapacities.ToList(),
                                 (c, i, l) =>

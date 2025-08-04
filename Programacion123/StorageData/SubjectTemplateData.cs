@@ -12,5 +12,6 @@
         public List<string> KeyCapacitiesWeakStorageIds { get; set; } = new List<string>();
         public List<string> LearningResultsStorageIds { get; set; } = new List<string>();
         public List<string> ContentsStorageIds { get; set; } = new List<string>();
+
     }
 }

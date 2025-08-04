@@ -11,6 +11,9 @@ namespace Programacion123
 
     public enum GradeCommonTextId
     {
+        introductionToGeneralObjectives,
+        introductionToGeneralCompetences,
+        introductionToKeyCapacities,
         introductionToContents,
         introductionToLearningResults,
         introductionToEvaluationInstruments,
@@ -30,11 +33,8 @@ namespace Programacion123
         public GradeType GradeType { get; set; } = GradeType.superior;
         public string GradeName { get; set; } = "Nombre completo del ciclo";
         public string GradeFamilyName { get; set; } = "Nombre de la familia profesional";
-        public CommonText GeneralObjectivesIntroduction { get; set; } = new CommonText();
         public ListProperty<CommonText> GeneralObjectives { get; } = new ListProperty<CommonText>();
-        public CommonText GeneralCompetencesIntroduction { get; set; } = new CommonText();
         public ListProperty<CommonText> GeneralCompetences { get; } = new ListProperty<CommonText>();
-        public CommonText KeyCapacitiesIntroduction { get; set; } = new CommonText();
         public ListProperty<CommonText> KeyCapacities { get; } = new ListProperty<CommonText>();
         public DictionaryProperty<GradeCommonTextId, CommonText> CommonTexts { get; } = new DictionaryProperty<GradeCommonTextId, CommonText>();
      
@@ -47,6 +47,9 @@ namespace Programacion123
                 CommonTexts.Add(id, new CommonText());
             }
 
+            CommonTexts[GradeCommonTextId.introductionToGeneralObjectives].Title = "Introducción a los objectivos generales";
+            CommonTexts[GradeCommonTextId.introductionToGeneralCompetences].Title = "Introducción a las competencias profesionales, personales y sociales";
+            CommonTexts[GradeCommonTextId.introductionToKeyCapacities].Title = "Introducción a las capacidades clave";
             CommonTexts[GradeCommonTextId.introductionToContents].Title = "Introducción a los contenidos";
             CommonTexts[GradeCommonTextId.introductionToLearningResults].Title = "Introducción a los resultados de aprendizaje";
             CommonTexts[GradeCommonTextId.introductionToEvaluationInstruments].Title = "Introducción a los instrumentos de evaluación";
@@ -70,24 +73,17 @@ namespace Programacion123
             if (GradeName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNameEmpty); }
             if(GradeFamilyName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateGradeFamilyNameEmpty); }
 
-            if(GeneralObjectivesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeGeneralObjectivesIntroductionInvalid); }
-
             List<CommonText> objectivesList = GeneralObjectives.ToList();
             if (objectivesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoGeneralObjectives);  }
             for(int i = 0; i < objectivesList.Count; i++) { if(objectivesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeGeneralObjectiveInvalid).WithIndex(i); } }
-
-            if(GeneralCompetencesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeGeneralCompetencesIntroductionInvalid); }
 
             List<CommonText> competencesList = GeneralCompetences.ToList();
             if (competencesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoGeneralCompetences); }
             for (int i = 0; i < competencesList.Count; i++) { if(competencesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeGeneralCompetenceInvalid).WithIndex(i); } }
 
-            if(KeyCapacitiesIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeKeyCapacitiesIntroductionInvalid); }
-
             List<CommonText> capacitiesList = KeyCapacities.ToList();
             if (capacitiesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoKeyCapacities); }
             for (int i = 0; i < capacitiesList.Count; i++) { if(capacitiesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeKeyCapacitiesInvalid).WithIndex(i); } }
-
 
             List<KeyValuePair<GradeCommonTextId, CommonText> > commonTexts = CommonTexts.ToList();
             for(int i = 0; i < commonTexts.Count; i++)
@@ -116,22 +112,13 @@ namespace Programacion123
             data.GradeName = GradeName;
             data.GradeFamilyName = GradeFamilyName;
 
-            data.GeneralObjectivesIntroductionStorageId = GeneralObjectivesIntroduction.StorageId;
-            GeneralObjectivesIntroduction.Save(StorageId);
-
             List<CommonText> list = GeneralObjectives.ToList();
             list.ForEach(e => e.Save(StorageId));            
             data.GeneralObjectivesStorageIds = Storage.GetStorageIds<CommonText>(list);
 
-            data.GeneralCompetencesIntroductionStorageId = GeneralCompetencesIntroduction.StorageId;
-            GeneralCompetencesIntroduction.Save(StorageId);
-
             list = GeneralCompetences.ToList();
             list.ForEach(e => e.Save(StorageId));
             data.GeneralCompetencesStorageIds = Storage.GetStorageIds<CommonText>(list);
-
-            data.KeyCapacitiesIntroductionStorageId = KeyCapacitiesIntroduction.StorageId;
-            KeyCapacitiesIntroduction.Save(StorageId);
 
             list = KeyCapacities.ToList();
             list.ForEach(e => e.Save(StorageId));
@@ -159,15 +146,9 @@ namespace Programacion123
             GradeName = data.GradeName;
             GradeFamilyName = data.GradeFamilyName;
 
-            GeneralObjectivesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.GeneralObjectivesIntroductionStorageId, storageId);
-
             GeneralObjectives.Set(Storage.LoadOrCreateEntities<CommonText>(data.GeneralObjectivesStorageIds, storageId));
 
-            GeneralCompetencesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.GeneralCompetencesIntroductionStorageId, storageId);
-
             GeneralCompetences.Set(Storage.LoadOrCreateEntities<CommonText>(data.GeneralCompetencesStorageIds, storageId));
-
-            KeyCapacitiesIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.KeyCapacitiesIntroductionStorageId, storageId);
 
             KeyCapacities.Set(Storage.LoadOrCreateEntities<CommonText>(data.KeyCapacitiesStorageIds, storageId));
 
@@ -180,11 +161,8 @@ namespace Programacion123
         {
             base.Delete(parentStorageId);
 
-            GeneralObjectivesIntroduction.Delete(StorageId);
             GeneralObjectives.ToList().ForEach(e => e.Delete(StorageId));
-            GeneralCompetencesIntroduction.Delete(StorageId);
             GeneralCompetences.ToList().ForEach(e => e.Delete(StorageId));
-            KeyCapacitiesIntroduction.Delete(StorageId);
             KeyCapacities.ToList().ForEach(e => e.Delete(StorageId));
             CommonTexts.ToList().ForEach(e => e.Value.Delete(StorageId));
 

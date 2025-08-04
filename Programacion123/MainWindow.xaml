@@ -224,7 +224,6 @@
             </Button>
             <Label Content="1" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="133" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="Define la plantilla del ciclo" FontSize="22" Width="374" Canvas.Left="105" Canvas.Top="140" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-5" Canvas.Top="-5" Height="658" Width="598" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
             <Button x:Name="ButtonExport" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="103" Canvas.Top="827" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ButtonExport_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonZipExport.png"/>
@@ -258,7 +257,7 @@
                 </Border.Background>
             </Border>
             <Label Content="7" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="701" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label Content="Genera el&#xD;&#xA;documento" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="142" Canvas.Left="105" Canvas.Top="698" Foreground="#7F093AD0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label Content="Genera el&#xD;&#xA;documento" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="157" Canvas.Left="105" Canvas.Top="698" Foreground="#7F093AD0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Button x:Name="ButtonGenerateDocument" Content="" Width="72" Height="72" BorderBrush="{x:Null}" Canvas.Left="267" Canvas.Top="697" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ButtonGenerateDocument_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonBigGenerateDoc.png"/>
@@ -277,6 +276,7 @@
                     </TransformGroup>
                 </Image.RenderTransform>
             </Image>
+            <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-5" Canvas.Top="-5" Height="913" Width="598" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" />
         </Canvas>
     </Border>
 </Window>

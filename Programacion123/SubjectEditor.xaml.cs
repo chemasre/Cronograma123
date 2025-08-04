@@ -27,16 +27,12 @@ namespace Programacion123
         WeakReferenceFieldController<Calendar, EntityPicker<Calendar>> calendarController;
         WeakReferenceFieldController<WeekSchedule, EntityPicker<WeekSchedule>> weekScheduleController;
 
-        StrongReferenceFieldController<CommonText, CommonTextEditor > metodologiesIntroductionController;
+        StrongReferencesBoxController<CommonText, CommonTextEditor> commonTextsController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> metodologiesController;
-        StrongReferenceFieldController<CommonText, CommonTextEditor > resourcesIntroductionController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> spaceResourcesController;
         StrongReferencesBoxController<CommonText, CommonTextEditor > materialResourcesController;
-        StrongReferenceFieldController<CommonText, CommonTextEditor> evaluationInstrumentTypesIntroductionController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> evaluationInstrumentTypesController;
-        StrongReferenceFieldController<CommonText, CommonTextEditor> evaluationIntroductionController;
 
-        StrongReferenceFieldController<CommonText, CommonTextEditor > blocksIntroductionController;
         StrongReferencesBoxController<Block, BlockEditor> blocksController;
         
         DataTable dataTableResultsWeight;
@@ -97,21 +93,6 @@ namespace Programacion123
 
             weekScheduleController.Changed += WeekScheduleController_Changed;
 
-            var configMetodologiesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextMetodologyIntroduction)
-                                               .WithStorageId(entity.MetodologiesIntroduction.StorageId)
-                                               .WithParentStorageId(entity.StorageId)
-                                               .WithFormat(EntityFormatContent.description)
-                                               .WithNew(ButtonMetodologiesIntroductionNew)
-                                               .WithEdit(ButtonMetodologiesIntroductionEdit)
-                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
-                                               .WithTitleEditable(false)
-                                               .WithEditorTitle("Introducción a las metodologías")
-                                               .WithBlocker(Blocker);
-
-            metodologiesIntroductionController = new(configMetodologiesIntroduction);
-
-            metodologiesIntroductionController.Changed += MetodologiesIntroductionController_Changed;
-
             var configMetodologies = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxMetodologies)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.Metodologies.ToList()))
@@ -128,25 +109,10 @@ namespace Programacion123
 
             metodologiesController.Changed += MetodologiesController_Changed;
 
-            var configResourcesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextResourcesIntroduction)
-                                               .WithStorageId(entity.ResourcesIntroduction.StorageId)
-                                               .WithParentStorageId(entity.StorageId)
-                                               .WithFormat(EntityFormatContent.description)
-                                               .WithNew(ButtonResourcesIntroductionNew)
-                                               .WithEdit(ButtonResourcesIntroductionEdit)
-                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
-                                               .WithTitleEditable(false)
-                                               .WithEditorTitle("Introducción a los recursos")
-                                               .WithBlocker(Blocker);
-
-            resourcesIntroductionController = new(configResourcesIntroduction);
-
-            resourcesIntroductionController.Changed += ResourcesIntroductionController_Changed;
-
             var configSpaceResources = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxSpaceResources)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.SpaceResources.ToList()))
-                                                        .WithFormat(EntityFormatContent.title)
+                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
                                                         .WithNew(ButtonSpaceResourceNew)
                                                         .WithEdit(ButtonSpaceResourceEdit)
                                                         .WithDelete(ButtonSpaceResourceDelete)
@@ -162,7 +128,7 @@ namespace Programacion123
             var configMaterialResources = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxMaterialResources)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.MaterialResources.ToList()))
-                                                        .WithFormat(EntityFormatContent.title)
+                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
                                                         .WithNew(ButtonMaterialResourceNew)
                                                         .WithEdit(ButtonMaterialResourceEdit)
                                                         .WithDelete(ButtonMaterialResourceDelete)
@@ -175,25 +141,10 @@ namespace Programacion123
 
             materialResourcesController.Changed += MaterialResourcesController_Changed;
 
-            var configEvaluationInstrumentTypesIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextEvaluationInstrumentTypesIntroduction)
-                                               .WithStorageId(entity.EvaluationInstrumentTypesIntroduction.StorageId)
-                                               .WithParentStorageId(entity.StorageId)
-                                               .WithFormat(EntityFormatContent.description)
-                                               .WithNew(ButtonEvaluationInstrumentTypesIntroductionNew)
-                                               .WithEdit(ButtonEvaluationInstrumentTypesIntroductionEdit)
-                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
-                                               .WithTitleEditable(false)
-                                               .WithEditorTitle("Introducción a los instrumentos de evaluación")
-                                               .WithBlocker(Blocker);
-
-            evaluationInstrumentTypesIntroductionController = new(configEvaluationInstrumentTypesIntroduction);
-
-            evaluationInstrumentTypesIntroductionController.Changed += EvaluationInstrumentTypesIntroductionController_Changed;
-
             var configEvaluationInstrumentTypes = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxEvaluationInstrumentTypes)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.EvaluationInstrumentsTypes.ToList()))
-                                                        .WithFormat(EntityFormatContent.title)
+                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
                                                         .WithNew(ButtonEvaluationInstrumentTypeNew)
                                                         .WithEdit(ButtonEvaluationInstrumentTypeEdit)
                                                         .WithDelete(ButtonEvaluationInstrumentTypeDelete)
@@ -205,22 +156,6 @@ namespace Programacion123
             evaluationInstrumentTypesController = new(configEvaluationInstrumentTypes);
 
             evaluationInstrumentTypesController.Changed += EvaluationInstrumentTypesController_Changed;
-
-            var configBlocksIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextBlocksIntroduction)
-                                               .WithStorageId(entity.BlocksIntroduction.StorageId)
-                                               .WithParentStorageId(entity.StorageId)
-                                               .WithFormat(EntityFormatContent.description)
-                                               .WithNew(ButtonBlocksIntroductionNew)
-                                               .WithEdit(ButtonBlocksIntroductionEdit)
-                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
-                                               .WithTitleEditable(false)
-                                               .WithEditorTitle("Introducción a los bloques")
-                                               .WithBlocker(Blocker);
-
-
-            blocksIntroductionController = new(configBlocksIntroduction);
-
-            blocksIntroductionController.Changed += BlocksIntroductionController_Changed;
 
             var configBlocks = StrongReferencesBoxConfiguration<Block>.CreateForList(ListBoxBlocks)
                                                         .WithParentStorageId(entity.StorageId)
@@ -238,20 +173,24 @@ namespace Programacion123
 
             blocksController.Changed += BlocksController_Changed;
 
-            var configEvaluationIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextEvaluationIntroduction)
-                                               .WithStorageId(entity.EvaluationIntroduction.StorageId)
-                                               .WithParentStorageId(entity.StorageId)
-                                               .WithFormat(EntityFormatContent.description)
-                                               .WithNew(ButtonEvaluationIntroductionNew)
-                                               .WithEdit(ButtonEvaluationIntroductionEdit)
-                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
-                                               .WithTitleEditable(false)
-                                               .WithEditorTitle("Introducción a la evaluación")
-                                               .WithBlocker(Blocker);
 
-            evaluationIntroductionController = new(configEvaluationIntroduction);
+            List<string> commonTextsIds = new();
+            foreach (SubjectCommonTextId id in Enum.GetValues<SubjectCommonTextId>()) { commonTextsIds.Add(entity.CommonTexts[id].StorageId); }
 
-            evaluationIntroductionController.Changed += EvaluationIntroductionController_Changed;
+            ListBoxCommonTexts.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
+
+            var configCommonTexts = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxCommonTexts)
+                                                        .WithParentStorageId(_subject.StorageId)
+                                                        .WithStorageIds(commonTextsIds)
+                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
+                                                        .WithTitleEditable(false)
+                                                        .WithEdit(ButtonCommonTextsEdit)
+                                                        .WithEditorTitle("Texto común")
+                                                        .WithBlocker(Blocker);
+
+            commonTextsController = new(configCommonTexts);
+
+            commonTextsController.Changed += CommonTextsController_Changed;
 
             TextTitle.Text = entity.Title;
 
@@ -303,6 +242,11 @@ namespace Programacion123
 
         }
 
+        private void CommonTextsController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
+        {
+            UpdateEntity();
+            Validate();
+        }
 
         private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -539,19 +483,7 @@ namespace Programacion123
 
         }
 
-        private void BlocksIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
         private void EvaluationInstrumentTypesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
-        private void EvaluationInstrumentTypesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
             UpdateEntity();
             Validate();
@@ -570,19 +502,7 @@ namespace Programacion123
             Validate();
         }
 
-        private void ResourcesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
         private void MetodologiesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
-        private void MetodologiesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
             UpdateEntity();
             Validate();
@@ -630,20 +550,17 @@ namespace Programacion123
             entity.Calendar = calendarController.GetEntity();
             entity.WeekSchedule = weekScheduleController.GetEntity();
 
-            entity.MetodologiesIntroduction = Storage.LoadOrCreateEntity<CommonText>(metodologiesIntroductionController.StorageId, entity.StorageId);
+            for (int i = 0; i < commonTextsController.StorageIds.Count; i++)
+            { entity.CommonTexts.Set((SubjectCommonTextId)i, Storage.LoadOrCreateEntity<CommonText>(commonTextsController.StorageIds[i], entity.StorageId)); }
+
             entity.Metodologies.Set(Storage.LoadOrCreateEntities<CommonText>(metodologiesController.StorageIds, entity.StorageId));
 
-            entity.ResourcesIntroduction = Storage.LoadOrCreateEntity<CommonText>(resourcesIntroductionController.StorageId, entity.StorageId);
             entity.SpaceResources.Set(Storage.LoadOrCreateEntities<CommonText>(spaceResourcesController.StorageIds, entity.StorageId));
             entity.MaterialResources.Set(Storage.LoadOrCreateEntities<CommonText>(materialResourcesController.StorageIds, entity.StorageId));
 
-            entity.EvaluationInstrumentTypesIntroduction = Storage.LoadOrCreateEntity<CommonText>(evaluationInstrumentTypesIntroductionController.StorageId, entity.StorageId);
             entity.EvaluationInstrumentsTypes.Set(Storage.LoadOrCreateEntities<CommonText>(evaluationInstrumentTypesController.StorageIds, entity.StorageId));
 
-            entity.BlocksIntroduction = Storage.LoadOrCreateEntity<CommonText>(blocksIntroductionController.StorageId, entity.StorageId);
             entity.Blocks.Set(Storage.LoadOrCreateEntities<Block>(blocksController.StorageIds, entity.StorageId));
-
-            entity.EvaluationIntroduction = Storage.LoadOrCreateEntity<CommonText>(evaluationIntroductionController.StorageId, entity.StorageId);
 
             entity.LearningResultsWeights.Clear();
             if(entity.Template != null)

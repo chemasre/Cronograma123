@@ -42,9 +42,8 @@
                 </TabItem>
                 <TabItem Header="Objetivos generales">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Label Content="Objetivos generales&#xD;&#xA;relacionados&#xD;&#xA;con el módulo" Canvas.Left="14" Canvas.Top="48" Width="129" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <ListBox x:Name="ListBoxGeneralObjectives" Height="104" Width="286" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="148" Canvas.Top="57" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
-                        <Button x:Name="ButtonGeneralObjectiveReferenceAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="148" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <ListBox x:Name="ListBoxGeneralObjectives" Height="188" Width="388" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="54" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
+                        <Button x:Name="ButtonGeneralObjectiveReferenceAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="39" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButonReferenceAdd.png"/>
                             </Button.Background>
@@ -52,7 +51,7 @@
                                 <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                             </Button.Foreground>
                         </Button>
-                        <Button x:Name="ButtonGeneralObjectiveReferenceRemove" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="177" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Button x:Name="ButtonGeneralObjectiveReferenceRemove" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="68" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButonReferenceRemove.png"/>
                             </Button.Background>
@@ -64,9 +63,8 @@
                 </TabItem>
                 <TabItem Header="Competencias profesionales, personales y sociales">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Label Content="Competencias&#xD;&#xA;relacionadas con&#xD;&#xA;el módulo" Canvas.Left="14" Canvas.Top="48" Width="158" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <ListBox x:Name="ListBoxGeneralCompetences" Height="104" Width="286" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="148" Canvas.Top="57" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Button x:Name="ButtonGeneralCompetenceReferenceAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="148" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <ListBox x:Name="ListBoxGeneralCompetences" Height="188" Width="388" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="54" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Button x:Name="ButtonGeneralCompetenceReferenceAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="39" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButonReferenceAdd.png"/>
                             </Button.Background>
@@ -74,7 +72,7 @@
                                 <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                             </Button.Foreground>
                         </Button>
-                        <Button x:Name="ButtonGeneralCompetenceReferenceRemove" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="177" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Button x:Name="ButtonGeneralCompetenceReferenceRemove" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="68" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButonReferenceRemove.png"/>
                             </Button.Background>
@@ -86,9 +84,8 @@
                 </TabItem>
                 <TabItem Header="Competencias clave">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Label Content="Capacidades clave&#xD;&#xA;relacionadas con&#xD;&#xA;el módulo" Canvas.Left="14" Canvas.Top="48" Width="158" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <ListBox x:Name="ListBoxKeyCapacities" Height="104" Width="286" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="148" Canvas.Top="57" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Button x:Name="ButtonKeyCapacitiesReferenceAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="148" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <ListBox x:Name="ListBoxKeyCapacities" Height="188" Width="388" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="54" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <Button x:Name="ButtonKeyCapacitiesReferenceAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="39" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButonReferenceAdd.png"/>
                             </Button.Background>
@@ -96,7 +93,7 @@
                                 <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                             </Button.Foreground>
                         </Button>
-                        <Button x:Name="ButtonKeyCapacitiesReferenceRemove" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="177" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Button x:Name="ButtonKeyCapacitiesReferenceRemove" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="68" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButonReferenceRemove.png"/>
                             </Button.Background>
@@ -109,9 +106,8 @@
                 </TabItem>
                 <TabItem Header="Resultados de aprendizaje">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Label Content="Resultados de&#xD;&#xA;aprendizaje" Canvas.Left="14" Canvas.Top="48" Width="158" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <ListBox x:Name="ListBoxLearningResults" Height="104" Width="286" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="148" Canvas.Top="57" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Button x:Name="ButtonLearningResultsNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="148" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <ListBox x:Name="ListBoxLearningResults" Height="188" Width="388" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="54" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <Button x:Name="ButtonLearningResultsNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="39" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                             </Button.Background>
@@ -119,7 +115,7 @@
                                 <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                             </Button.Foreground>
                         </Button>
-                        <Button x:Name="ButtonLearningResultsEdit" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="177" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Button x:Name="ButtonLearningResultsEdit" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="68" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
                             </Button.Background>
@@ -127,7 +123,7 @@
                                 <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
                             </Button.Foreground>
                         </Button>
-                        <Button x:Name="ButtonLearningResultsDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="206" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Button x:Name="ButtonLearningResultsDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="97" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/ButtonDelete.png"/>
                             </Button.Background>
@@ -135,7 +131,7 @@
                                 <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                             </Button.Foreground>
                         </Button>
-                        <Button x:Name="ButtonLearningResultsDown" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="235" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Button x:Name="ButtonLearningResultsDown" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="126" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButtonMoveDown.png"/>
                             </Button.Background>
@@ -143,7 +139,7 @@
                                 <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                             </Button.Foreground>
                         </Button>
-                        <Button x:Name="ButtonLearningResultsUp" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="264" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Button x:Name="ButtonLearningResultsUp" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="155" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButtonMoveUp.png"/>
                             </Button.Background>
@@ -155,9 +151,8 @@
                 </TabItem>
                 <TabItem Header="Contenidos">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Label Content="Contenidos" Canvas.Left="14" Canvas.Top="48" Width="158" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <ListBox x:Name="ListBoxContents" Height="104" Width="286" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="148" Canvas.Top="57" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Button x:Name="ButtonContentsNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="148" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <ListBox x:Name="ListBoxContents" Height="188" Width="388" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="54" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <Button x:Name="ButtonContentsNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="39" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                             </Button.Background>
@@ -165,7 +160,7 @@
                                 <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                             </Button.Foreground>
                         </Button>
-                        <Button x:Name="ButtonContentsEdit" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="177" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Button x:Name="ButtonContentsEdit" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="68" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
                             </Button.Background>
@@ -173,7 +168,7 @@
                                 <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
                             </Button.Foreground>
                         </Button>
-                        <Button x:Name="ButtonContentsDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="206" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Button x:Name="ButtonContentsDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="97" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/ButtonDelete.png"/>
                             </Button.Background>
@@ -181,7 +176,7 @@
                                 <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                             </Button.Foreground>
                         </Button>
-                        <Button x:Name="ButtonContentsDown" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="235" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Button x:Name="ButtonContentsDown" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="126" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButtonMoveDown.png"/>
                             </Button.Background>
@@ -189,7 +184,7 @@
                                 <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                             </Button.Foreground>
                         </Button>
-                        <Button x:Name="ButtonContentsUp" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="264" Canvas.Top="28" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Button x:Name="ButtonContentsUp" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="155" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButtonMoveUp.png"/>
                             </Button.Background>
