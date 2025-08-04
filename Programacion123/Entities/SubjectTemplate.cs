@@ -14,9 +14,7 @@ namespace Programacion123
         public ListProperty<CommonText> GeneralObjectives { get; } = new ListProperty<CommonText>();
         public ListProperty<CommonText> GeneralCompetences { get; } = new ListProperty<CommonText>();
         public ListProperty<CommonText> KeyCapacities { get; } = new ListProperty<CommonText>();
-        public CommonText LearningResultsIntroduction { get; set; } = new CommonText();
         public ListProperty<LearningResult> LearningResults { get; } = new ListProperty<LearningResult>();
-        public CommonText ContentsIntroduction { get; set; } = new CommonText();
         public ListProperty<Content> Contents { get; } = new ListProperty<Content>();
 
         public SubjectTemplate() : base()
@@ -45,13 +43,9 @@ namespace Programacion123
             List<CommonText> capacitiesList = KeyCapacities.ToList();
             if (capacitiesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoKeyCapacitiesReferenced); }
 
-            if(LearningResultsIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateSubjectLearningResultsIntroductionInvalid); }
-
             List<LearningResult> resultsList = LearningResults.ToList();
             if (resultsList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoLearningResults); }
             for (int i = 0; i < resultsList.Count; i++) { if(resultsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateSubjectLearningResultsInvalid).WithIndex(i); } }
-
-            if(ContentsIntroduction.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateSubjectContentsIntroductionInvalid); }
 
             List<Content> contentsList = Contents.ToList();
             if (contentsList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoContents); }
@@ -91,15 +85,9 @@ namespace Programacion123
             list = KeyCapacities.ToList();
             data.KeyCapacitiesWeakStorageIds= Storage.GetStorageIds<CommonText>(list);
 
-            data.LearningResultsIntroductionStorageId = LearningResultsIntroduction.StorageId;
-            LearningResultsIntroduction.Save(StorageId);
-
             List<LearningResult> listLearningResults = LearningResults.ToList();
             listLearningResults.ForEach(e => e.Save(StorageId));            
             data.LearningResultsStorageIds = Storage.GetStorageIds<LearningResult>(listLearningResults);
-
-            data.ContentsIntroductionStorageId = ContentsIntroduction.StorageId;
-            ContentsIntroduction.Save(StorageId);
 
             List<Content> listContents = Contents.ToList();
             listContents.ForEach(e => e.Save(StorageId));            
@@ -133,11 +121,7 @@ namespace Programacion123
 
             KeyCapacities.Set(Storage.FindChildEntities<CommonText>(data.KeyCapacitiesWeakStorageIds));
 
-            LearningResultsIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.LearningResultsIntroductionStorageId, storageId);
-
             LearningResults.Set(Storage.LoadOrCreateEntities<LearningResult>(data.LearningResultsStorageIds, storageId));
-
-            ContentsIntroduction = Storage.LoadOrCreateEntity<CommonText>(data.ContentsIntroductionStorageId, storageId);
 
             Contents.Set(Storage.LoadOrCreateEntities<Content>(data.ContentsStorageIds, storageId));
 
@@ -147,9 +131,7 @@ namespace Programacion123
         {
             base.Delete(parentStorageId);
 
-            LearningResultsIntroduction.Delete(StorageId);
             LearningResults.ToList().ForEach(e => e.Delete(StorageId));
-            ContentsIntroduction.Delete(StorageId);
             Contents.ToList().ForEach(e => e.Delete(StorageId));
 
             Storage.DeleteData(StorageId, StorageClassId, parentStorageId);

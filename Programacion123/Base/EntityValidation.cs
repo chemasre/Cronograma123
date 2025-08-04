@@ -61,12 +61,11 @@ namespace Programacion123
             else if (code == ValidationCode.templateGradeNoGeneralObjectives) { return "La plantilla al menos debe contar con un objetivo general."; }
             else if (code == ValidationCode.templateGradeNoGeneralCompetences) { return "La plantilla al menos debe contar con una competencia general."; }
             else if (code == ValidationCode.templateGradeNoKeyCapacities) { return "La plantilla al menos debe contar con una capacidad clave."; }
+            else if (code == ValidationCode.templateGradeCommonTextInvalid) { return String.Format("El texto común {0} presenta algún problema", index + 1); }
             else if (code == ValidationCode.templateSubjectNameEmpty) { return "El nombre oficial del módulo está vacío."; }
             else if (code == ValidationCode.templateSubjectCodeEmpty) { return "El código del módulo está vacío."; }
             else if (code == ValidationCode.templateSubjectClassroomHoursZero) { return "El módulo al menos debe contar con una hora de clase en el centro."; }
-            else if (code == ValidationCode.templateSubjectLearningResultsIntroductionInvalid) { return "El texto introductorio a los resultados de aprendizaje presenta algún problema."; }
             else if (code == ValidationCode.templateSubjectLearningResultsInvalid) { return String.Format("El resultado de aprendizaje {0} presenta algún problema.", index + 1); }
-            else if (code == ValidationCode.templateSubjectContentsIntroductionInvalid) { return "El texto introductorio a los contenidos presenta algún problema."; }
             else if (code == ValidationCode.templateSubjectContentsInvalid) { return String.Format("El contenido {0} presenta algún problema.", index + 1); }
             else if (code == ValidationCode.templateSubjectNoLearningResults) { return "La plantilla al menos debe contar con un resultado de aprendizaje."; }
             else if (code == ValidationCode.templateSubjectNoContents) { return "La plantilla al menos debe incluir un contenido."; }
@@ -147,13 +146,12 @@ namespace Programacion123
         templateGradeNoGeneralObjectives,
         templateGradeNoGeneralCompetences,
         templateGradeNoKeyCapacities,
+        templateGradeCommonTextInvalid,
 
         templateSubjectNameEmpty,
         templateSubjectCodeEmpty,
         templateSubjectClassroomHoursZero,
-        templateSubjectLearningResultsIntroductionInvalid,
         templateSubjectLearningResultsInvalid,
-        templateSubjectContentsIntroductionInvalid,
         templateSubjectContentsInvalid,
         templateSubjectNoLearningResults,
         templateSubjectNoContents,
@@ -169,6 +167,7 @@ namespace Programacion123
         activityEvaluableAndNotLinkedToResultsWeights,
         activityReferencesResultWithoutWeight,
         activityDoesntReferenceResultButHasWeight,
+
         contentNoPoints,
         contentPointInvalid,
         learningResultNoCriterias,

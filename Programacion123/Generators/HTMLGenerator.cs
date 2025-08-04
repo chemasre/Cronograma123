@@ -75,6 +75,17 @@ namespace Programacion123
                 return t;
             }
 
+            internal Table WithRowForeach<TElement>(List<TElement> input, Action<TElement, int, Table> action)
+            {
+                for(int i = 0; i < input.Count; i ++)
+                {
+                    rows.Add(new());
+                    action.Invoke(input[i], i, this);
+                }
+
+                return this;
+            }
+
             internal Table WithRow()
             {
                 rows.Add(new());
@@ -85,6 +96,14 @@ namespace Programacion123
             internal Table WithCell(Tag content, int rowspan = 1, int colspan = 1)
             {
                 WithCell(new InnerContent() { tag = content }, rowspan, colspan);            
+
+                return this;
+            }
+
+            internal Table WithCellClass(string className)
+            {
+                List<Tag> rowTags = rows[rows.Count - 1];
+                rowTags[rowTags.Count - 1].WithClass(className);
 
                 return this;
             }
@@ -131,28 +150,155 @@ namespace Programacion123
             FileStreamOptions options = new() { Access = FileAccess.Write, Mode = FileMode.Create };
             StreamWriter writer = new(path, Encoding.UTF8, options);
 
+            Subject subject = _subject;
+            SubjectTemplate? subjectTemplate = _subject.Template;
+            GradeTemplate? gradeTemplate = subjectTemplate?.GradeTemplate;
+            Func<GradeCommonTextId, string?> getGradeCommonText = (id) => { return gradeTemplate?.CommonTexts[id].Description; };
+
+            string? gradeTypeName = (gradeTemplate.GradeType == GradeType.superior ?
+                                    "Ciclo formativo de grado superior" : "Ciclo formativo de grado medio");
+
+            List<ActivitySchedule>? schedule = null;
+            
+            if(subject.CanScheduleActivities()) { schedule = subject.ScheduleActivities(); }
+
+            string css = ":root {  --paragraphSeparation:30pt; --backgroundColor1: #0070C0; --backgroundColor2: #92D050; --textColor1: #000000; --textColor2: #FFFFFF; --textColor3: #0070C0; --borderColor1: #000000}\n" +
+                         "body { width: 21cm; padding: 0.5cm; text-align: justify; font-family:sans-serif; color: var(--textColor1) }\n" +
+                         "table { width: 100%; border-style: solid; border-width:1pt; border-color:var(--borderColor1); border-spacing: 0pt; margin-bottom: var(--paragraphSeparation) }\n" +
+                         "td { border-style: solid; border-width:1pt; border-color:var(--borderColor1); padding: 5pt }\n" +
+                         ".tableHeader1 { background-color: var(--backgroundColor1); font-weight:bold; color: var(--textColor2) }\n" +
+                         ".tableHeader2 { background-color: var(--backgroundColor2); color: var(--textColor1) }\n" +
+                         "h1 { color: var(--textColor3) }";
+
+
             string html =
                 
                 Tag.Create("html").WithInner(
-                    Tag.Create("header").WithInner(
-                        Tag.Create("title").WithInner("Programación didáctica del módulo " + _subject.Template.SubjectName)
-                        ).WithInner(
-                            Tag.Create("style").WithInner("body { color = 'red'; }")
-                        )
-                    ).WithInner(
+                        Tag.Create("header")
+                            .WithInner(Tag.Create("title").WithInner("Programación didáctica del módulo " + subjectTemplate.SubjectName))
+                            .WithInner(Tag.Create("style").WithInner(css)
+                            )
+                    )
+                    .WithInner(
                         Tag.Create("body")
-                            .WithInner(Tag.Create("h2").WithInner("Módulo profesional " + _subject.Template.SubjectCode))
-                            .WithInner(Tag.Create("h1").WithInner(_subject.Template.SubjectName))
-                            .WithInner(Tag.Create("h3").WithInner(_subject.Template.GradeTemplate.GradeType == GradeType.superior ?
-                                                                  "Ciclo formativo de grado superior" : "Ciclo formativo de grado medio"))
-                            .WithInner(Tag.Create("h2").WithInner(_subject.Template.GradeTemplate.GradeName))
+                            .WithInner(Tag.Create("h2").WithInner("Módulo profesional " + subjectTemplate.SubjectCode))
+                            .WithInner(Tag.Create("h1").WithInner(subjectTemplate.SubjectName))
+                            .WithInner(Tag.Create("h3").WithInner(gradeTypeName)
+                            .WithInner(Tag.Create("h2").WithInner(gradeTemplate.GradeName))
                             .WithInner(Tag.Create("h1").WithInner("Organización del módulo"))
+                            .WithInner(
+                                Table.Create().WithRow().WithCell(gradeTypeName + " - " + gradeTemplate.GradeName, 1, 3).WithCellClass("tableHeader1")
+                                              .WithRow().WithCell("<b>Módulo profesional:</b> MP" + subjectTemplate.SubjectCode + " - " + subjectTemplate.SubjectName, 1, 3).WithCellClass("tableHeader2")
+                                              .WithRow().WithCell("<b>Horas centro educativo:</b> " + subjectTemplate.GradeClassroomHours)
+                                                        .WithCell("<b>Horas empresa:</b> " + subjectTemplate.GradeCompanyHours)
+                                                        .WithCell("<b>Horas totales:</b> " + (subjectTemplate.GradeClassroomHours + subjectTemplate.GradeCompanyHours))
+                                              .WithRow().WithCell("<b>Modalidad:</b> Presencial", 1, 2)
+                                                        .WithCell("<b>Régimen:</b> Anual")
+                                              .WithRow().WithCell("<b>Familia profesional:</b> " + gradeTemplate.GradeFamilyName, 1, 3)
+                            )
+                            .WithInner(
+                                Table.Create().WithRow().WithCell("MP" + subjectTemplate.SubjectCode + ": " + subjectTemplate.SubjectName, 1, 3).WithCellClass("tableHeader1")
+                                                        .WithCell("Horas totales/mínimas", 1, 2).WithCellClass("tableHeader1")
+                                                        .WithCell(subjectTemplate.GradeClassroomHours + "h").WithCellClass("tableHeader1")
+                                              .WithRow().WithCell("Bloques de enseñanza").WithCellClass("tableHeader2")
+                                                        .WithCell("RAs").WithCellClass("tableHeader2")
+                                                        .WithCell("CEs").WithCellClass("tableHeader2")
+                                                        .WithCell("Duration").WithCellClass("tableHeader2")
+                                                        .WithCell("Fecha de inicio").WithCellClass("tableHeader2")
+                                                        .WithCell("Fecha de fin").WithCellClass("tableHeader2")
+                                              .WithRowForeach<Block>(subject.Blocks.ToList(),
+                                                        (b, i, t) =>
+                                                        {
+                                                            HashSet<int> rasIndexes = new();
+                                                            Dictionary<int, HashSet<int>> criteriaIndexes = new();
+                                                            foreach(Activity a in b.Activities.ToList())
+                                                            {
+                                                                if(a.IsEvaluable)
+                                                                {   
+                                                                    foreach(var c in a.Criterias.ToList())
+                                                                    {
+                                                                        int raIndex = 0;
+                                                                        
+                                                                        subjectTemplate.LearningResults.ToList().ForEach(
+                                                                             (r) =>
+                                                                             {
+                                                                                 int foundIndex = r.Criterias.ToList().FindIndex(k => k.StorageId == c.StorageId);
+                                                                                 if(foundIndex > 0)
+                                                                                 {
+                                                                                     if(!criteriaIndexes.ContainsKey(raIndex))
+                                                                                     { criteriaIndexes.Add(raIndex, new HashSet<int>()); }
+                                                                                     criteriaIndexes[raIndex].Add(foundIndex);
+                                                                                     rasIndexes.Add(raIndex);
+                                                                                  }
+                                                                                 raIndex ++;
+                                                                             }
+                                                                        );
+
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            List<int> raIndexesList = rasIndexes.ToList();
+                                                            raIndexesList.Sort();
+
+                                                            string rasText = "";
+                                                            bool first = true;
+                                                            raIndexesList.ForEach((i) => { rasText += (first?"":", ") + String.Format("RA{0}", i + 1); first = false; });
+
+                                                            string criteriasText = "";
+                                                            first = true;
+                                                            raIndexesList.ForEach(
+                                                                (i) =>
+                                                                {
+                                                                    List<int> raCriteriaIndexes = criteriaIndexes[i].ToList();
+                                                                    raCriteriaIndexes.Sort();
+
+                                                                    foreach(int j in raCriteriaIndexes)
+                                                                    {
+                                                                        criteriasText += (first?"":", ") + String.Format("{0}.{1}", i + 1, j + 1);
+                                                                        first = false;
+                                                                    } 
+                                                                }
+                                                            );
+
+                                                            float hours = 0;
+
+                                                            ActivitySchedule? startActivitySchedule = null;
+                                                            ActivitySchedule? endActivitySchedule = null;
+
+                                                            int aIndex = 0;
+                                                            List<Activity> activitiesList = b.Activities.ToList();
+                                                            foreach(Activity a in activitiesList)
+                                                            {
+                                                                hours += a.Duration;
+
+                                                                if(schedule != null)
+                                                                {
+                                                                    if(aIndex == 0) { startActivitySchedule = schedule.Find(s => s.activity.StorageId == a.StorageId); }
+                                                                    if(aIndex == activitiesList.Count - 1) { endActivitySchedule = schedule.Find(s => s.activity.StorageId == a.StorageId); }
+                                                                }
+
+                                                                aIndex ++;
+                                                            }
+
+
+                                                            t.WithCell(String.Format("<b>Bloque {0}:</b> {1}", i + 1, b.Title));
+                                                            t.WithCell(rasText);
+                                                            t.WithCell(criteriasText);
+                                                            t.WithCell(hours.ToString());
+                                                            t.WithCell(startActivitySchedule.HasValue ? Utils.FormatDate(startActivitySchedule.Value.start.day) : "");
+                                                            t.WithCell(endActivitySchedule.HasValue ? Utils.FormatDate(endActivitySchedule.Value.start.day) : "");
+                                                        }
+                                               )
+                            )
                             .WithInner(Tag.Create("h1").WithInner("Justificación de la importancia del módulo"))
                             .WithInner(Tag.Create("h1").WithInner("Elementos curriculares"))
                             .WithInner(Tag.Create("h2").WithInner("Objetivos generales relacionados con el módulo"))
+                            .WithInner(Tag.Create("div").WithInner(Tag.Create("div").WithInner(gradeTemplate.GeneralObjectivesIntroduction.Description)))
                             .WithInner(Tag.Create("h2").WithInner("Competencias profesionales, personales y sociales"))
+                            .WithInner(Tag.Create("div").WithInner(Tag.Create("div").WithInner(gradeTemplate.GeneralCompetencesIntroduction.Description)))
                             .WithInner(Tag.Create("h2").WithInner("Capacidades clave"))
-                            .WithInnerForeach<CommonText>(_subject.Template.KeyCapacities.ToList(),
+                            .WithInnerForeach<CommonText>(subjectTemplate.KeyCapacities.ToList(),
                                 (c, i, l) =>
                                 {
                                     l.Add(Tag.Create("h3").WithInner(c.Title));
@@ -160,8 +306,10 @@ namespace Programacion123
                                 }
                              )                                
                             .WithInner(Tag.Create("h1").WithInner("Metodología. Orientaciones didácticas"))
+                            .WithInner(Tag.Create("div").WithInner(getGradeCommonText.Invoke(GradeCommonTextId.introductionToMetodologies)))
                             .WithInner(Tag.Create("h2").WithInner("Metodología general y específica de la materia"))
-                            .WithInnerForeach<CommonText>(_subject.Metodologies.ToList(),
+                            .WithInner(Tag.Create("div").WithInner(getGradeCommonText.Invoke(GradeCommonTextId.schoolPolicyMetodology)))
+                            .WithInnerForeach<CommonText>(subject.Metodologies.ToList(),
                                 (c, i, l) =>
                                 {
                                     l.Add(Tag.Create("h3").WithInner(c.Title));
@@ -169,10 +317,12 @@ namespace Programacion123
                                 }
                             )
                             .WithInner(Tag.Create("h2").WithInner("Medidas de atención al alumnado con necesidad específica de apoyo educativo o con necesidad de compensación educativa: atención a la diversidad"))
+                            .WithInner(Tag.Create("div").WithInner(getGradeCommonText.Invoke(GradeCommonTextId.introductionToDiversity)))
                             .WithInner(Tag.Create("h3").WithInner("Medidas generales del centro"))
+                            .WithInner(Tag.Create("div").WithInner(getGradeCommonText.Invoke(GradeCommonTextId.schoolPolicyDiversity)))
                             .WithInner(Tag.Create("h1").WithInner("Sistema de evaluación"))
                             .WithInner(Tag.Create("h1").WithInner("Instrumentos de evaluación"))
-                            .WithInnerForeach<CommonText>(_subject.EvaluationInstrumentsTypes.ToList(),
+                            .WithInnerForeach<CommonText>(subject.EvaluationInstrumentsTypes.ToList(),
                                 (c, i, l) =>
                                 {
                                     l.Add(Tag.Create("h3").WithInner(c.Title));
@@ -182,7 +332,7 @@ namespace Programacion123
                             .WithInner(Tag.Create("h1").WithInner("Evaluación del funcionamiento de la programación"))
                             .WithInner(Tag.Create("h1").WithInner("Recursos didácticos y organizativos"))
                             .WithInner(Tag.Create("h2").WithInner("Espacios requeridos"))
-                            .WithInnerForeach<CommonText>(_subject.SpaceResources.ToList(),
+                            .WithInnerForeach<CommonText>(subject.SpaceResources.ToList(),
                                 (c, i, l) =>
                                 {
                                     l.Add(Tag.Create("h3").WithInner(c.Title));
@@ -190,7 +340,7 @@ namespace Programacion123
                                 }
                              )
                             .WithInner(Tag.Create("h2").WithInner("Materiales y herramientas"))
-                            .WithInnerForeach<CommonText>(_subject.MaterialResources.ToList(),
+                            .WithInnerForeach<CommonText>(subject.MaterialResources.ToList(),
                                 (c, i, l) =>
                                 {
                                     l.Add(Tag.Create("h3").WithInner(c.Title));
@@ -200,25 +350,28 @@ namespace Programacion123
                             .WithInner(Tag.Create("h1").WithInner("Programación del módulo profesional"))
                             .WithInner(Tag.Create("h2").WithInner("Resultados de aprendizaje, criterios de evaluación y contenidos"))
                             .WithInner(Tag.Create("h3").WithInner("Resultados de aprendizaje y criterios de evaluación"))
-                            .WithInnerForeach<LearningResult>(_subject.Template.LearningResults.ToList(),
+                            .WithInner(Tag.Create("div").WithInner(getGradeCommonText.Invoke(GradeCommonTextId.introductionToLearningResults)))
+                            .WithInnerForeach<LearningResult>(subjectTemplate.LearningResults.ToList(),
                                 (r, i, l) =>
                                 {
                                     l.Add(Tag.Create("h4").WithInner(String.Format("RA{0}: ", i + 1) + r.Description)
-                                        .WithInnerForeach<CommonText>(_subject.Template.LearningResults.ToList()[i].Criterias.ToList(),
+                                        .WithInner(Tag.Create("h5").WithInner("Criterios"))
+                                        .WithInnerForeach<CommonText>(subjectTemplate.LearningResults.ToList()[i].Criterias.ToList(),
                                             (c, j, l) =>
                                             {
-                                                l.Add(Tag.Create("h5").WithInner(String.Format("{0}.{1}: ", i + 1, j + 1) + c.Description));
+                                                l.Add(Tag.Create("h6").WithInner(String.Format("{0}.{1}: ", i + 1, j + 1) + c.Description));
                                             }
                                         )
                                     );
                                 }
                              )
                             .WithInner(Tag.Create("h3").WithInner("Contenidos"))
-                            .WithInnerForeach<Content>(_subject.Template.Contents.ToList(),
+                            .WithInner(Tag.Create("div").WithInner(getGradeCommonText.Invoke(GradeCommonTextId.introductionToContents)))
+                            .WithInnerForeach<Content>(subjectTemplate.Contents.ToList(),
                                 (c, i, l) =>
                                 {
                                     l.Add(Tag.Create("h4").WithInner(String.Format("{0}: ", i + 1) + c.Description)
-                                        .WithInnerForeach<CommonText>(_subject.Template.Contents.ToList()[i].Points.ToList(),
+                                        .WithInnerForeach<CommonText>(subjectTemplate.Contents.ToList()[i].Points.ToList(),
                                             (p, j, l) =>
                                             {
                                                 l.Add(Tag.Create("h5").WithInner(String.Format("{0}.{1}: ", i + 1, j + 1) + p.Description));
@@ -228,7 +381,7 @@ namespace Programacion123
                                 }
                             )
                             .WithInner(Tag.Create("h3").WithInner("Bloques de enseñanza y aprendizaje"))
-                            .WithInnerForeach<Block>(_subject.Blocks.ToList(),
+                            .WithInnerForeach<Block>(subject.Blocks.ToList(),
                                 (b, i, l) =>
                                 {
                                     l.Add(
@@ -243,7 +396,7 @@ namespace Programacion123
                             .WithInner(Tag.Create("h1").WithInner("Programación del módulo profesional"))
 
                     )
-                
+                )
                 .ToString();
 
             writer.Write(html);

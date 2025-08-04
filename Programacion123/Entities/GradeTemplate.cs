@@ -9,6 +9,22 @@ namespace Programacion123
         medium
     }
 
+    public enum GradeCommonTextId
+    {
+        introductionToContents,
+        introductionToLearningResults,
+        introductionToEvaluationInstruments,
+        introductionToResources,
+        introductionToMetodologies,
+        introductionToDiversity,
+        introductionToEvaluation,
+        schoolPolicyDiversity,
+        schoolPolicyMetodology,
+        schoolPolicyEvaluation,
+        schoolPolicyOrdinaryEvaluation,
+        schoolPolicyExtraordinaryEvaluation
+    }
+
     public class GradeTemplate : Entity
     {
         public GradeType GradeType { get; set; } = GradeType.superior;
@@ -20,10 +36,29 @@ namespace Programacion123
         public ListProperty<CommonText> GeneralCompetences { get; } = new ListProperty<CommonText>();
         public CommonText KeyCapacitiesIntroduction { get; set; } = new CommonText();
         public ListProperty<CommonText> KeyCapacities { get; } = new ListProperty<CommonText>();
+        public DictionaryProperty<GradeCommonTextId, CommonText> CommonTexts { get; } = new DictionaryProperty<GradeCommonTextId, CommonText>();
      
         public GradeTemplate() : base()
         {
             StorageClassId = "gradetemplate";
+
+            foreach(GradeCommonTextId id in Enum.GetValues<GradeCommonTextId>())
+            {
+                CommonTexts.Add(id, new CommonText());
+            }
+
+            CommonTexts[GradeCommonTextId.introductionToContents].Title = "Introducción a los contenidos";
+            CommonTexts[GradeCommonTextId.introductionToLearningResults].Title = "Introducción a los resultados de aprendizaje";
+            CommonTexts[GradeCommonTextId.introductionToEvaluationInstruments].Title = "Introducción a los instrumentos de evaluación";
+            CommonTexts[GradeCommonTextId.introductionToResources].Title = "Introducción a los recursos";
+            CommonTexts[GradeCommonTextId.introductionToMetodologies].Title = "Introducción a las metodologías";
+            CommonTexts[GradeCommonTextId.introductionToDiversity].Title = "Introducción a atención a la diversidad";
+            CommonTexts[GradeCommonTextId.introductionToEvaluation].Title = "Introducción a la evaluación";
+            CommonTexts[GradeCommonTextId.schoolPolicyDiversity].Title = "Líneas generales de atención a la diversidad del centro educativo";
+            CommonTexts[GradeCommonTextId.schoolPolicyMetodology].Title = "Líneas metodológicas generales del centro educativo";
+            CommonTexts[GradeCommonTextId.schoolPolicyEvaluation].Title = "Líneas generales del centro educativo para la evaluación";
+            CommonTexts[GradeCommonTextId.schoolPolicyOrdinaryEvaluation].Title = "Líneas generales del centro educativo para la evaluación ordinaria";
+            CommonTexts[GradeCommonTextId.schoolPolicyExtraordinaryEvaluation].Title = "Líneas generales del centro educativo para la evaluación extraordinaria";
         }
 
         public override ValidationResult Validate()
@@ -52,6 +87,13 @@ namespace Programacion123
             List<CommonText> capacitiesList = KeyCapacities.ToList();
             if (capacitiesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoKeyCapacities); }
             for (int i = 0; i < capacitiesList.Count; i++) { if(capacitiesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeKeyCapacitiesInvalid).WithIndex(i); } }
+
+
+            List<KeyValuePair<GradeCommonTextId, CommonText> > commonTexts = CommonTexts.ToList();
+            for(int i = 0; i < commonTexts.Count; i++)
+            {
+                if(commonTexts[i].Value.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeCommonTextInvalid).WithIndex((int)commonTexts[i].Key); }
+            }
 
             return ValidationResult.Create(ValidationCode.success);
         }
@@ -95,6 +137,9 @@ namespace Programacion123
             list.ForEach(e => e.Save(StorageId));
             data.KeyCapacitiesStorageIds= Storage.GetStorageIds<CommonText>(list);
 
+            List<KeyValuePair<GradeCommonTextId, CommonText>> commonTextList = CommonTexts.ToList();
+            commonTextList.ForEach(e => { e.Value.Save(StorageId); data.CommonTextsStorageIds.Add(e.Key, e.Value.StorageId); });
+
             Storage.SaveData<GradeTemplateData>(StorageId, StorageClassId, data, parentStorageId);
 
         }
@@ -126,6 +171,9 @@ namespace Programacion123
 
             KeyCapacities.Set(Storage.LoadOrCreateEntities<CommonText>(data.KeyCapacitiesStorageIds, storageId));
 
+            foreach(KeyValuePair<GradeCommonTextId, string> keyValue in data.CommonTextsStorageIds)
+            { CommonTexts.Set(keyValue.Key, Storage.LoadOrCreateEntity<CommonText>(keyValue.Value, storageId)); }
+
         }
 
         public override void Delete(string? parentStorageId = null)
@@ -138,6 +186,7 @@ namespace Programacion123
             GeneralCompetences.ToList().ForEach(e => e.Delete(StorageId));
             KeyCapacitiesIntroduction.Delete(StorageId);
             KeyCapacities.ToList().ForEach(e => e.Delete(StorageId));
+            CommonTexts.ToList().ForEach(e => e.Value.Delete(StorageId));
 
             Storage.DeleteData(StorageId, StorageClassId, parentStorageId);
 

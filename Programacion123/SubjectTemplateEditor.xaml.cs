@@ -17,10 +17,7 @@ namespace Programacion123
         WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> generalCompetencesController;
         WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> keyCapacitiesController;
 
-        StrongReferenceFieldController<CommonText, CommonTextEditor> learningResultsIntroductionController;
         StrongReferencesBoxController<LearningResult, LearningResultEditor> learningResultsController;
-
-        StrongReferenceFieldController<CommonText, CommonTextEditor> contentsIntroductionController;
         StrongReferencesBoxController<Content, ContentEditor> contentsController;
 
         public SubjectTemplateEditor()
@@ -226,21 +223,6 @@ namespace Programacion123
 
             keyCapacitiesController.Changed += KeyCapacitiesController_Changed;
 
-            var configLearningResultsIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextLearningResultsIntroduction)
-                                               .WithStorageId(entity.LearningResultsIntroduction.StorageId)
-                                               .WithParentStorageId(entity.StorageId)
-                                               .WithFormat(EntityFormatContent.description)
-                                               .WithNew(ButtonLearningResultsIntroductionNew)
-                                               .WithEdit(ButtonLearningResultsIntroductionEdit)
-                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
-                                               .WithTitleEditable(false)
-                                               .WithEditorTitle("Introducción a los resultados de aprendizaje")
-                                               .WithBlocker(Blocker);
-
-            learningResultsIntroductionController = new(configLearningResultsIntroduction);
-
-            learningResultsIntroductionController.Changed += LearningResultsIntroductionController_Changed;
-
             var configLearningResults = StrongReferencesBoxConfiguration<LearningResult>.CreateForList(ListBoxLearningResults)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<LearningResult>(_subjectTemplate.LearningResults.ToList()))
@@ -256,21 +238,6 @@ namespace Programacion123
             learningResultsController = new(configLearningResults);
 
             learningResultsController.Changed += LearningResultsController_Changed;
-
-            var configContentsIntroduction = StrongReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextContentsIntroduction)
-                                               .WithStorageId(entity.ContentsIntroduction.StorageId)
-                                               .WithParentStorageId(entity.StorageId)
-                                               .WithFormat(EntityFormatContent.description)
-                                               .WithNew(ButtonContentsIntroductionNew)
-                                               .WithEdit(ButtonContentsIntroductionEdit)
-                                               .WithReplaceConfirmQuestion("Esto sustituirá la introducción anterior por una nueva. ¿Estás seguro/a?")
-                                               .WithTitleEditable(false)
-                                               .WithEditorTitle("Introducción a los contenidos")
-                                               .WithBlocker(Blocker);
-
-            contentsIntroductionController = new(configContentsIntroduction);
-
-            contentsIntroductionController.Changed += ContentsIntroductionController_Changed;
 
             var configContents = StrongReferencesBoxConfiguration<Content>.CreateForList(ListBoxContents)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
@@ -370,19 +337,7 @@ namespace Programacion123
             Validate();
         }
 
-        private void ContentsIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
         private void LearningResultsController_Changed(StrongReferencesBoxController<LearningResult, LearningResultEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
-        private void LearningResultsIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
         {
             UpdateEntity();
             Validate();
@@ -411,9 +366,7 @@ namespace Programacion123
             entity.GeneralCompetences.Set(generalCompetencesController.GetSelectedEntities());
             entity.KeyCapacities.Set(keyCapacitiesController.GetSelectedEntities());
 
-            entity.LearningResultsIntroduction = Storage.LoadOrCreateEntity<CommonText>(learningResultsIntroductionController.StorageId, entity.StorageId);
             entity.LearningResults.Set(Storage.LoadOrCreateEntities<LearningResult>(learningResultsController.StorageIds, entity.StorageId));
-            entity.ContentsIntroduction = Storage.LoadOrCreateEntity<CommonText>(contentsIntroductionController.StorageId, entity.StorageId);
             entity.Contents.Set(Storage.LoadOrCreateEntities<Content>(contentsController.StorageIds, entity.StorageId));
 
             entity.SubjectName = TextSubjectName.Text;

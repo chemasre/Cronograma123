@@ -10,9 +10,7 @@
         public List<string> GeneralObjectivesWeakStorageIds { get; set; } = new List<string>();
         public List<string> GeneralCompetencesWeakStorageIds { get; set; } = new List<string>();
         public List<string> KeyCapacitiesWeakStorageIds { get; set; } = new List<string>();
-        public string LearningResultsIntroductionStorageId { get; set; }
         public List<string> LearningResultsStorageIds { get; set; } = new List<string>();
-        public string ContentsIntroductionStorageId { get; set; }
         public List<string> ContentsStorageIds { get; set; } = new List<string>();
     }
 }

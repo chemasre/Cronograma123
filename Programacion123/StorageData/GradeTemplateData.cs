@@ -11,5 +11,6 @@
         public List<string> GeneralCompetencesStorageIds { get; set; } = new List<string>();
         public string KeyCapacitiesIntroductionStorageId { get; set; }
         public List<string> KeyCapacitiesStorageIds { get; set; } = new List<string>();
+        public Dictionary<GradeCommonTextId, string> CommonTextsStorageIds { get; set; } = new Dictionary<GradeCommonTextId, string>();
     }
 }

@@ -27,10 +27,7 @@ namespace Programacion123
         StrongReferencesBoxController<CommonText, CommonTextEditor> generalCompetencesController;
         StrongReferenceFieldController<CommonText, CommonTextEditor> keyCapacitiesIntroductionController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> keyCapacitiesController;
-        StrongReferenceFieldController<CommonText, CommonTextEditor> learningResultsIntroductionController;
-        StrongReferencesBoxController<LearningResult, LearningResultEditor> learningResultsController;
-        StrongReferenceFieldController<CommonText, CommonTextEditor> contentsIntroductionController;
-        StrongReferencesBoxController<Content, ContentEditor> contentsController;
+        StrongReferencesBoxController<CommonText, CommonTextEditor> commonTextsController;
 
         public GradeTemplateEditor()
         {
@@ -146,6 +143,24 @@ namespace Programacion123
 
             keyCapacitiesController.Changed += KeyCapacitiesController_Changed;
 
+            List<string> commonTextsIds = new();
+            foreach(GradeCommonTextId id in Enum.GetValues<GradeCommonTextId>()) { commonTextsIds.Add(entity.CommonTexts[id].StorageId); }
+
+            ListBoxCommonTexts.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
+
+            var configCommonTexts = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxCommonTexts)
+                                                        .WithParentStorageId(_gradeTemplate.StorageId)
+                                                        .WithStorageIds(commonTextsIds)
+                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
+                                                        .WithTitleEditable(false)
+                                                        .WithEdit(ButtonCommonTextsEdit)
+                                                        .WithEditorTitle("Texto común")
+                                                        .WithBlocker(Blocker);
+
+            commonTextsController = new(configCommonTexts);
+
+            commonTextsController.Changed += CommonTextsController_Changed;
+
             TextTitle.Text = _gradeTemplate.Title;
 
             ComboType.SelectedIndex = (int)_gradeTemplate.GradeType;
@@ -158,6 +173,12 @@ namespace Programacion123
 
             Validate();
 
+        }
+
+        private void CommonTextsController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
+        {
+            UpdateEntity();
+            Validate();
         }
 
         private void KeyCapacitiesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
@@ -251,6 +272,9 @@ namespace Programacion123
             entity.GeneralCompetences.Set(Storage.LoadOrCreateEntities<CommonText>(generalCompetencesController.StorageIds, entity.StorageId));
             entity.KeyCapacitiesIntroduction = Storage.LoadOrCreateEntity<CommonText>(keyCapacitiesIntroductionController.StorageId, entity.StorageId);
             entity.KeyCapacities.Set(Storage.LoadOrCreateEntities<CommonText>(keyCapacitiesController.StorageIds, entity.StorageId));
+
+            for(int i = 0; i < commonTextsController.StorageIds.Count; i++)
+            { entity.CommonTexts.Set((GradeCommonTextId)i, Storage.LoadOrCreateEntity<CommonText>(commonTextsController.StorageIds[i], entity.StorageId)); }
 
             entity.GradeName = TextName.Text;
             entity.GradeType = (GradeType)(ComboType.SelectedIndex >= 0 ? ComboType.SelectedIndex : 0);

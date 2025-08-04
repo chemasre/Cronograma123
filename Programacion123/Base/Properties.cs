@@ -40,6 +40,7 @@
             dictionary.Clear();
             foreach(KeyValuePair<K, T> e in other) { dictionary.Add(e.Key, e.Value); OnAdded?.Invoke(e.Key, e.Value); }
         }
+        public void Set(K key, T value) { dictionary[key] = value; OnUpdated?.Invoke(key, value); }
         public void Remove(K key) { dictionary.Remove(key); OnRemoved?.Invoke(key); }
         public int Count { get => dictionary.Count; }
         public List< KeyValuePair<K, T> > ToList() { return new List<KeyValuePair<K, T>>(dictionary); }
@@ -48,8 +49,10 @@
         public bool ContainsKey(K key) { return dictionary.ContainsKey(key); }
         public delegate void AddedHandler(K key, T value);
         public delegate void RemovedHandler(K key);
+        public delegate void UpdatedHandler(K key, T value);
         public event AddedHandler OnAdded;
         public event RemovedHandler OnRemoved;
+        public event UpdatedHandler OnUpdated;
 
         Dictionary<K, T> dictionary;
 
