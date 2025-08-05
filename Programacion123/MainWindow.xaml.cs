@@ -279,9 +279,13 @@ namespace Programacion123
             Subject? subject = subjectsController.GetSelectedEntity();
             if(subject != null)
             {
-                HTMLGenerator generator = new HTMLGenerator();
-                generator.Generate(subject, "test.html");
+                HTMLGeneratorDialog generatorDialog = new();
+
+                generatorDialog.Init(subject);
+                generatorDialog.ShowDialog();
+
             }
         }
+
     }
 }
