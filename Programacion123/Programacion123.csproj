@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -38,6 +38,14 @@
     <None Remove="Images\ButtonReset.png" />
     <None Remove="Images\ButtonZipExport.png" />
     <None Remove="Images\ButtonZipImport.png" />
+    <None Remove="Images\CaptionColor.png" />
+    <None Remove="Images\CaptionPaddingBottom.png" />
+    <None Remove="Images\CaptionPaddingLeft.png" />
+    <None Remove="Images\CaptionPaddingRight.png" />
+    <None Remove="Images\CaptionPaddingTop.png" />
+    <None Remove="Images\CaptionSeparationBottom.png" />
+    <None Remove="Images\CaptionSeparationTop.png" />
+    <None Remove="Images\CaptionWidth.png" />
     <None Remove="Images\IconWarning.png" />
     <None Remove="Images\ValidatorCapy.png" />
     <None Remove="Images\ValidatorCapyBig.png" />
@@ -104,6 +112,14 @@
     <Resource Include="Images\ButtonWarning.png" />
     <Resource Include="Images\ButtonZipExport.png" />
     <Resource Include="Images\ButtonZipImport.png" />
+    <Resource Include="Images\CaptionColor.png" />
+    <Resource Include="Images\CaptionPaddingBottom.png" />
+    <Resource Include="Images\CaptionPaddingLeft.png" />
+    <Resource Include="Images\CaptionPaddingRight.png" />
+    <Resource Include="Images\CaptionPaddingTop.png" />
+    <Resource Include="Images\CaptionSeparationBottom.png" />
+    <Resource Include="Images\CaptionSeparationTop.png" />
+    <Resource Include="Images\CaptionWidth.png" />
     <Resource Include="Images\IconWarning.png" />
     <Resource Include="Images\ValidatorCapy.png" />
     <Resource Include="Images\ValidatorCapyBig.png" />

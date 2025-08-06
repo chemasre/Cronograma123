@@ -164,7 +164,7 @@
                     <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                 </Button.Foreground>
             </Button>
-            <Label Content="Programador17" FontSize="48" FontWeight="Bold" Width="466" Canvas.Left="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="{DynamicResource WindowTitleFont}" Canvas.Top="5"/>
+            <Label Content="Programador16" FontSize="48" FontWeight="Bold" Width="466" Canvas.Left="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="{DynamicResource WindowTitleFont}" Canvas.Top="5"/>
             <Label Content="2" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="209" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="3" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="291" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="4" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="370" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -245,7 +245,7 @@
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
-            <Label Content="7" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="633" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="6" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="633" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="Genera el&#xD;&#xA;documento" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="157" Canvas.Left="105" Canvas.Top="630" Foreground="#7F093AD0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Button x:Name="ButtonGenerateDocument" Content="" Width="72" Height="72" BorderBrush="{x:Null}" Canvas.Left="267" Canvas.Top="629" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonGenerateDocument_Click">
                 <Button.Background>

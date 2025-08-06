@@ -8,52 +8,6 @@ namespace Programacion123
 {
     public partial class HTMLGenerator : Generator
     {
-            const string defaultCss =
-@"body
-{
-    width: 21cm;
-    padding: 0.5cm;
-    text-align: justify;
-    font-family:sans-serif;
-    color: #000000;
-}
-
-table
-{
-    width: 100%;
-    border-style: solid;
-    border-width:1pt;
-    border-color:#000000;
-    border-spacing: 0pt;
-    margin-bottom:30pt;
-}
-
-td
-{
-    border-style: solid;
-    border-width:1pt;
-    border-color:#000000;
-    padding: 5pt
-}
-
-.tableHeader1
-{
-    background-color: #0070C0;
-    font-weight:bold;
-    color: #FFFFFF
-}
-
-.tableHeader2
-{
-    background-color: #92D050;
-    color: #000000
-}
-
-h1
-{
-    color: #0070C0;
-}";
-
         public string GenerateHTML()
         {
             SubjectTemplate? subjectTemplate = Subject.Template;
@@ -74,12 +28,12 @@ h1
                         Tag.Create("head")
                             .WithInner(Tag.Create("meta").WithParam("charset", "UTF-8"))
                             .WithInner(Tag.Create("title").WithInner("Programación didáctica del módulo " + subjectTemplate.SubjectName))
-                            .WithInner(Tag.Create("style").WithInner(AdditionalCss)
+                            .WithInner(Tag.Create("style").WithInner(GenerateCSS())
                             )
                     )
                     .WithInner(
                         Tag.Create("body")
-                            .WithInner(Tag.Create("img").WithParam("src","data:image/png;base64," + LogoBase64))
+                            .WithInner(Tag.Create("img").WithParam("src","data:image/png;base64," + DocumentStyle.LogoBase64))
                             .WithInner(Tag.Create("h2").WithInner("Módulo profesional " + subjectTemplate.SubjectCode))
                             .WithInner(Tag.Create("h1").WithInner(subjectTemplate.SubjectName))
                             .WithInner(Tag.Create("h3").WithInner(gradeTypeName)
