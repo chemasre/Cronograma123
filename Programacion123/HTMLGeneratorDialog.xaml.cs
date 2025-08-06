@@ -62,7 +62,7 @@ namespace Programacion123
 
             ComboCoverElement.SelectedIndex = 0;
 
-            for(int i = 0; i < 100; i ++)
+            for(int i = 0; i < 300; i ++)
             {
                 ComboCoverElementPositionTop.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
                 ComboCoverElementPositionBottom.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
@@ -123,7 +123,12 @@ namespace Programacion123
             ComboTextElementFontFamily.Items.Add("Sans Serif");
             ComboTextElementFontFamily.Items.Add("Serif");
 
-            for(int i = 0; i < 100; i ++) { ComboTextElementFontSize.Items.Add(String.Format("{0}pt", i + 1)); }
+            ComboTextElementAlign.Items.Add("Izquierda");
+            ComboTextElementAlign.Items.Add("Centro");
+            ComboTextElementAlign.Items.Add("Derecha");
+            ComboTextElementAlign.Items.Add("Justificar");
+
+            for (int i = 0; i < 100; i ++) { ComboTextElementFontSize.Items.Add(String.Format("{0}pt", i + 1)); }
 
             AddColorNamesToCombo(ComboTextElementFontColor);
 
@@ -200,6 +205,7 @@ namespace Programacion123
             {
                 ComboTextElement.SelectionChanged += ComboTextElement_SelectionChanged;
                 ComboTextElementFontFamily.SelectionChanged += ComboTextElementFontFamily_SelectionChanged;
+                ComboTextElementAlign.SelectionChanged += ComboTextElementAlign_SelectionChanged;
                 ComboTextElementFontSize.SelectionChanged += ComboTextElementFontSize_SelectionChanged;
                 ComboTextElementFontColor.SelectionChanged += ComboTextElementFontColor_SelectionChanged;
                 CheckboxTextElementBold.Checked += CheckboxTextElementBold_Checked;
@@ -215,6 +221,7 @@ namespace Programacion123
             {
                 ComboTextElement.SelectionChanged -= ComboTextElement_SelectionChanged;
                 ComboTextElementFontFamily.SelectionChanged -= ComboTextElementFontFamily_SelectionChanged;
+                ComboTextElementAlign.SelectionChanged -= ComboTextElementAlign_SelectionChanged;
                 ComboTextElementFontSize.SelectionChanged -= ComboTextElementFontSize_SelectionChanged;
                 ComboTextElementFontColor.SelectionChanged -= ComboTextElementFontColor_SelectionChanged;
                 CheckboxTextElementBold.Checked -= CheckboxTextElementBold_Checked;
@@ -228,6 +235,7 @@ namespace Programacion123
             }
             
         }
+
 
         void AddColorNamesToCombo(ComboBox combo)
         {
@@ -405,6 +413,7 @@ namespace Programacion123
             CheckboxTextElementUnderscore.IsChecked = style.Underscore;
 
             ComboTextElementFontFamily.SelectedIndex = (int)style.FontFamily;
+            ComboTextElementAlign.SelectedIndex = (int)style.Align;
             ComboTextElementFontColor.SelectedIndex = (int)style.FontColor;
             UpdateDocumentTextElementColorUI();
 
@@ -463,6 +472,13 @@ namespace Programacion123
                 ComboTableElementPaddingLeft.SelectionChanged -= ComboTableElementPaddingLeft_SelectionChanged;
                 ComboTableElementPaddingRight.SelectionChanged -= ComboTableElementPaddingRight_SelectionChanged;
             }
+        }
+
+        private void ComboTextElementAlign_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateGenerator();
+            Validate();
+            UpdatePreviewUI();
         }
 
         private void ComboCoverElementPositionTop_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -837,6 +853,7 @@ namespace Programacion123
                                         FontColor = (DocumentElementColor)ComboTextElementFontColor.SelectedIndex,
                                         FontSize = ComboTextElementFontSize.SelectedIndex + 1,
                                         FontFamily = (DocumentTextElementFontFamily)ComboTextElementFontFamily.SelectedIndex,
+                                        Align = (DocumentTextElementAlign)ComboTextElementAlign.SelectedIndex,
                                         Margins = new()
                                                   { 
                                                     Top = ComboTextElementMarginTop.SelectedIndex,

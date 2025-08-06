@@ -92,7 +92,8 @@ namespace Programacion123
             {
                 string json = File.ReadAllText(path, Encoding.UTF8);
                 GeneratorData config = JsonSerializer.Deserialize<GeneratorData>(json);
-    
+
+                CoverElementStyles = config.CoverElementStyles;
                 DocumentStyle = config.DocumentStyle;
                 TextElementStyles = config.TextElementStyles;
                 TableElementStyles = config.TableElementStyles;
@@ -103,7 +104,8 @@ namespace Programacion123
         public override void Save(string path)
         {
             GeneratorData config = new();
-    
+
+            config.CoverElementStyles = CoverElementStyles;
             config.DocumentStyle = DocumentStyle;
             config.TextElementStyles = TextElementStyles;
             config.TableElementStyles = TableElementStyles;
