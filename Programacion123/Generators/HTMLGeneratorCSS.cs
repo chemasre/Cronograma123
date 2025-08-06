@@ -57,6 +57,14 @@ namespace Programacion123
         Serif        
     }
 
+    public enum DocumentTextElementAlign
+    {
+        Left,
+        Center,
+        Right,
+        Justify
+    }
+
     public struct DocumentCoverElementStyle
     {
         public DocumentCoverElementPosition Position { get; set; }
@@ -71,6 +79,7 @@ namespace Programacion123
         public bool Bold { get; set; }
         public bool Italic { get; set; }
         public bool Underscore { get; set; }
+        public DocumentTextElementAlign Align { get; set; }
         public DocumentTextElementMargins Margins { get; set; }
     
     }
@@ -153,6 +162,15 @@ namespace Programacion123
             builder.AppendLine(String.Format("margin-top:{0}pt;", style.Margins.Top));
             builder.AppendLine(String.Format("margin-bottom:{0}pt;", style.Margins.Bottom));
 
+            string align;
+            if (style.Align == DocumentTextElementAlign.Left) { align = "left"; }
+            else if (style.Align == DocumentTextElementAlign.Center) { align = "center"; }
+            else if (style.Align == DocumentTextElementAlign.Right) { align = "right"; }
+            else // (style.Align == DocumentTextElementAlign.Justify)
+            { align = "justify"; }
+
+            builder.AppendLine(String.Format("text-align:{0};", align));
+
             int r; int g; int b;
             GetRGBFromColor(style.FontColor, out r, out g, out b);
             builder.AppendLine(String.Format("color:rgb({0},{1},{2});", r, g, b));
@@ -192,13 +210,25 @@ namespace Programacion123
             StringBuilder builder = new();
             builder.AppendLine("body {");
             builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "width:{0:0.00}cm;", width));
-            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "height:{0:0.00}cm;", height));
             builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "padding:{0:0.00}cm {1:0.00}cm {2:0.00}cm {3:0.00}cm;",
                                                     DocumentStyle.Margins.Top,
                                                     DocumentStyle.Margins.Right,
                                                     DocumentStyle.Margins.Bottom,
                                                     DocumentStyle.Margins.Left));
             builder.AppendLine("}");
+
+            float marginHorizontal = (DocumentStyle.Margins.Left + DocumentStyle.Margins.Right);
+            float marginVertical = (DocumentStyle.Margins.Top + DocumentStyle.Margins.Bottom);
+
+
+            builder.AppendLine(".cover {");
+            builder.AppendLine("position:relative;");
+            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "width:{0:0.00}cm;", width - marginHorizontal));
+            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "height:{0:0.00}cm;", height - marginVertical));
+            builder.AppendLine("padding:0cm; margin: 0cm;");
+            builder.AppendLine("}");
+
+            Enum.GetValues<DocumentCoverElementId>().ToList().ForEach(e => AppendCSSCoverElement(e, builder));
 
             Enum.GetValues<DocumentTextElementId>().ToList().ForEach(e => AppendCSSTextElement(e, builder));
 

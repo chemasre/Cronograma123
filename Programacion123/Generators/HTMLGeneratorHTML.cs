@@ -60,7 +60,8 @@ namespace Programacion123
 
             string html =
                 "<!DOCTYPE html>" +
-                Tag.Create("html").WithInner(
+                Tag.Create("html")
+                    .WithInner(
                         Tag.Create("head")
                             .WithInner(Tag.Create("meta").WithParam("charset", "UTF-8"))
                             .WithInner(Tag.Create("title").WithInner("Programación didáctica del módulo " + subjectTemplate.SubjectName))
@@ -69,11 +70,13 @@ namespace Programacion123
                     )
                     .WithInner(
                         Tag.Create("body")
-                            .WithInner(Tag.Create("img").WithClass("coverLogo").WithParam("src","data:image/png;base64," + DocumentStyle.LogoBase64))
-                            .WithInner(Tag.Create("div").WithClass("coverSubjectCode").WithInner("Módulo profesional " + subjectTemplate.SubjectCode))
-                            .WithInner(Tag.Create("div").WithClass("coverSubjectName").WithInner(subjectTemplate.SubjectName))
-                            .WithInner(Tag.Create("div").WithClass("coverGradeTypeName").WithInner(gradeTypeName)
-                            .WithInner(Tag.Create("div").WithClass("coverGradeName").WithInner(gradeTemplate.GradeName))
+                            .WithInner(Tag.Create("div").WithClass("cover")
+                               .WithInner(Tag.Create("img").WithClass("coverLogo").WithParam("src", "data:image/png;base64," + DocumentStyle.LogoBase64))
+                               .WithInner(Tag.Create("div").WithClass("coverSubjectCode").WithInner("Módulo profesional " + subjectTemplate.SubjectCode))
+                               .WithInner(Tag.Create("div").WithClass("coverSubjectName").WithInner(subjectTemplate.SubjectName))
+                               .WithInner(Tag.Create("div").WithClass("coverGradeTypeName").WithInner(gradeTypeName))
+                               .WithInner(Tag.Create("div").WithClass("coverGradeName").WithInner(gradeTemplate.GradeName))
+                             )
                             .WithInner(Tag.Create("h1").WithInner("Organización del módulo"))
                             .WithInner(
                                 Table.Create().WithRow().WithCell(gradeTypeName + " - " + gradeTemplate.GradeName, 1, 3).WithCellClass("tableHeader1")
@@ -241,7 +244,7 @@ namespace Programacion123
                             )
                             .WithInner(Tag.Create("h1").WithInner("Programación del módulo profesional"))
 
-                    )
+
                 )
                 .ToString();
 

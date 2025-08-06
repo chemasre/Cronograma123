@@ -129,14 +129,16 @@
                         <ComboBox x:Name="ComboTextElementFontFamily" Width="133" Canvas.Left="119" Canvas.Top="84" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Label Content="S" Height="28" Canvas.Left="284" Canvas.Top="114" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         <CheckBox x:Name="CheckboxTextElementUnderscore" Content="" Canvas.Left="300" Canvas.Top="120" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <Label Content="Espaciado&#xD;&#xA;antes/después" Height="41" Canvas.Left="22" Canvas.Top="171" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <ComboBox x:Name="ComboTextElementMarginBottom" Width="68" Canvas.Left="145" Canvas.Top="178" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <ComboBox x:Name="ComboTextElementMarginTop" Width="68" Canvas.Left="247" Canvas.Top="178" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Espaciado&#xD;&#xA;antes/después" Height="41" Canvas.Left="22" Canvas.Top="208" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboTextElementMarginBottom" Width="68" Canvas.Left="145" Canvas.Top="215" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboTextElementMarginTop" Width="68" Canvas.Left="247" Canvas.Top="215" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Label Content="Elemento" Height="28" Canvas.Left="22" Canvas.Top="24" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Image Height="20" Width="20" Canvas.Left="120" Canvas.Top="178" HorizontalAlignment="Center" VerticalAlignment="Top" Source="/Images/CaptionSeparationBottom.png"/>
-                        <Image Height="20" Width="20" Canvas.Left="222" Canvas.Top="179" Source="/Images/CaptionSeparationTop.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Image Height="20" Width="20" Canvas.Left="120" Canvas.Top="215" HorizontalAlignment="Center" VerticalAlignment="Top" Source="/Images/CaptionSeparationBottom.png"/>
+                        <Image Height="20" Width="20" Canvas.Left="222" Canvas.Top="216" Source="/Images/CaptionSeparationTop.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Image Height="20" Width="20" Canvas.Left="118" Canvas.Top="118" Source="/Images/CaptionColor.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Rectangle x:Name="RectangleTextElementColor" Height="18" Canvas.Left="119" Stroke="Black" Canvas.Top="119" Width="19" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="Black"/>
+                        <ComboBox x:Name="ComboTextElementAlign" Width="93" Canvas.Left="119" Canvas.Top="166" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <Label Content="Alineación" Height="31" Canvas.Left="22" Canvas.Top="163" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                     </Canvas>
                 </TabItem>
                 <TabItem Header="Tablas">
