@@ -14,6 +14,33 @@ namespace Programacion123
 
     public partial class Subject : Entity
     {
+        public float GetBlockDuration(int blockIndex)
+        {
+            float hours = 0;
+            Blocks[blockIndex].Activities.ToList().ForEach(a => hours += a.Duration);
+            return hours;
+
+        }
+
+        public List<int> GetBlockReferencedContentIndexes(int blockIndex)
+        {
+            List<int> referencedList;
+
+            HashSet<int> referencedSet = new();
+            foreach (Activity a in Blocks[blockIndex].Activities.ToList())
+            {
+                a.ContentPoints.ToList().ForEach(p => referencedSet.Add(FindContentPointContentIndex(p)));
+            }
+
+            referencedList = referencedSet.ToList();
+            referencedList.Sort();
+
+
+            return referencedList;
+
+        }
+
+
         public List<int> GetBlockReferencedLearningResultIndexes(int blockIndex)
         {
             List<int> referencedList;
@@ -85,6 +112,16 @@ namespace Programacion123
         int FindCriteriaLearningResultIndex(CommonText criteria)
         {
             return Template.LearningResults.ToList().FindIndex(r => FindCriteriaIndex(r, criteria) >= 0);
+        }
+
+        int FindContentPointIndex(Content content, CommonText contentPoint)
+        {
+            return content.Points.ToList().FindIndex(p => contentPoint.StorageId == p.StorageId);
+        }
+
+        int FindContentPointContentIndex(CommonText contentPoint)
+        {
+            return Template.Contents.ToList().FindIndex(c => FindContentPointIndex(c, contentPoint) >= 0);
         }
     }
 }
