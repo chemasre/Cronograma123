@@ -1,0 +1,211 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Programacion123
+{
+    public struct DocumentCoverElementPosition
+    {
+        public float Top { get; set; }
+        public float Bottom { get; set; }
+        public float Left { get; set; }
+        public float Right { get; set; }
+
+    }
+
+    public struct DocumentMargins
+    {
+        public float Top { get; set; }
+        public float Bottom { get; set; }
+        public float Left { get; set; }
+        public float Right {  get; set; }
+    }
+
+    public struct DocumentTableElementPadding
+    {
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+        public int Left { get; set; }
+        public int Right {  get; set; }
+    }
+
+    public struct DocumentTextElementMargins
+    {
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+    }
+
+
+    public enum DocumentSize
+    {
+        A4,
+        A5
+    }
+
+    public enum DocumentOrientation
+    {
+        Portrait,
+        Landscape
+    }
+
+    public enum DocumentTextElementFontFamily
+    {
+        SansSerif,
+        Serif        
+    }
+
+    public struct DocumentCoverElementStyle
+    {
+        public DocumentCoverElementPosition Position { get; set; }
+    
+    }
+
+    public struct DocumentTextElementStyle
+    {
+        public DocumentTextElementFontFamily FontFamily { get; set; }
+        public int FontSize { get; set; }
+        public DocumentElementColor FontColor { get; set; }
+        public bool Bold { get; set; }
+        public bool Italic { get; set; }
+        public bool Underscore { get; set; }
+        public DocumentTextElementMargins Margins { get; set; }
+    
+    }
+    
+    public struct DocumentTableElementStyle
+    {
+        public DocumentElementColor BackgroundColor { get; set; }
+        public DocumentTableElementPadding Padding { get; set; }
+    }
+    
+    public struct DocumentStyle
+    {
+        public string? LogoBase64 { get; set; }
+        public DocumentSize Size { get; set; }
+        public DocumentOrientation Orientation { get; set; }
+        public DocumentMargins Margins { get; set; }
+    }
+
+    public partial class HTMLGenerator : Generator
+    {
+        public void GetDimensionsFromSizeAndOrientation(DocumentSize size, DocumentOrientation orientation, out float width, out float height)
+        {
+            float w;
+            float h;
+            if(size == DocumentSize.A4) { w = 21; h = 29.7f; }
+            else  // size == DocumentSize.A5)
+            { w = 29.7f / 2.0f; h = 21; }
+    
+            if(orientation == DocumentOrientation.Landscape) { float t = w; w = h; h = t; }
+    
+            width = w;
+            height = h;
+        }
+
+        void AppendCSSCoverElement(DocumentCoverElementId id, StringBuilder builder)
+        {
+            if(id == DocumentCoverElementId.Logo) { builder.AppendLine(".coverLogo {"); }
+            else if(id == DocumentCoverElementId.SubjectCode) { builder.AppendLine(".coverSubjectCode {"); }
+            else if(id == DocumentCoverElementId.SubjectName) { builder.AppendLine(".coverSubjectName {"); }
+            else if(id == DocumentCoverElementId.GradeTypeName) { builder.AppendLine(".coverGradeTypeName {"); }
+            else if(id == DocumentCoverElementId.GradeName) { builder.AppendLine(".coverGradeName{"); }
+
+            if(!CoverElementStyles.ContainsKey(id)) { CoverElementStyles.Add(id, new DocumentCoverElementStyle()); }
+            DocumentCoverElementStyle style = CoverElementStyles[id];
+
+            builder.AppendLine(String.Format("position:absolute;"));
+            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "top:{0}cm;", style.Position.Top));
+            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "left:{0}cm;", style.Position.Left));
+            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "bottom:{0}cm;", style.Position.Bottom));
+            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "right:{0}cm;", style.Position.Right));
+
+            builder.AppendLine("}");
+        }
+
+        void AppendCSSTextElement(DocumentTextElementId id, StringBuilder builder)
+        {
+            if(id == DocumentTextElementId.Header1) { builder.AppendLine("h1 {"); }
+            else if(id == DocumentTextElementId.Header2) { builder.AppendLine("h2 {"); }
+            else if(id == DocumentTextElementId.Header3) { builder.AppendLine("h3 {"); }
+            else if(id == DocumentTextElementId.Header4) { builder.AppendLine("h4 {"); }
+            else if(id == DocumentTextElementId.Header5) { builder.AppendLine("h5 {"); }
+            else if(id == DocumentTextElementId.Header6) { builder.AppendLine("h6 {"); }
+            else if(id == DocumentTextElementId.NormalText) { builder.AppendLine("div {"); }
+            else if(id == DocumentTextElementId.Table) { builder.AppendLine("table {"); }
+            else if(id == DocumentTextElementId.TableHeader1Text) { builder.AppendLine(".tableHeader1 {"); }
+            else if(id == DocumentTextElementId.TableHeader1Text) { builder.AppendLine(".tableHeader2 {"); }
+            else if(id == DocumentTextElementId.CoverSubjectCode) { builder.AppendLine(".coverSubjectCode {"); }
+            else if(id == DocumentTextElementId.CoverSubjectName) { builder.AppendLine(".coverSubjectName {"); }
+            else if(id == DocumentTextElementId.CoverGradeTypeName) { builder.AppendLine(".coverGradeTypeName {"); }
+            else if(id == DocumentTextElementId.CoverGradeName) { builder.AppendLine(".coverGradeName{"); }
+
+            if(!TextElementStyles.ContainsKey(id)) { TextElementStyles.Add(id, new DocumentTextElementStyle()); }
+            DocumentTextElementStyle style = TextElementStyles[id];
+
+            builder.AppendLine(String.Format("font-size:{0}pt;", style.FontSize));
+            builder.AppendLine(String.Format("font-family:{0};", style.FontFamily == DocumentTextElementFontFamily.SansSerif ? "sans-serif" : "serif"));
+            builder.AppendLine(String.Format("font-weight:{0};",style.Bold ? "bold" : "normal"));
+            builder.AppendLine(String.Format("font-style:{0};",style.Italic ? "italic" : "normal"));
+            builder.AppendLine(String.Format("text-decoration:{0};",style.Underscore ? "underline" : "none"));
+            builder.AppendLine(String.Format("margin-top:{0}pt;", style.Margins.Top));
+            builder.AppendLine(String.Format("margin-bottom:{0}pt;", style.Margins.Bottom));
+
+            int r; int g; int b;
+            GetRGBFromColor(style.FontColor, out r, out g, out b);
+            builder.AppendLine(String.Format("color:rgb({0},{1},{2});", r, g, b));
+
+            builder.AppendLine("}");
+        }
+
+        void AppendCSSTableElement(DocumentTableElementId id, StringBuilder builder)
+        {
+            
+            if(id == DocumentTableElementId.TableNormalCell) { builder.AppendLine("td {"); }
+            else if(id == DocumentTableElementId.TableHeader1Cell) { builder.AppendLine(".tableHeader1 {"); }
+            else // id == DocumentTableElementId.TableHeader2Cell
+            { builder.AppendLine(".tableHeader2 {"); }
+
+            if(!TableElementStyles.ContainsKey(id)) { TableElementStyles.Add(id, new DocumentTableElementStyle()); }
+            DocumentTableElementStyle style = TableElementStyles[id];
+
+            int r; int g; int b;
+            GetRGBFromColor(style.BackgroundColor, out r, out g, out b);
+            builder.AppendLine(String.Format("background-color:rgb({0},{1},{2});", r, g, b));
+
+            builder.AppendLine(String.Format("padding-top:{0}pt;", style.Padding.Top));
+            builder.AppendLine(String.Format("padding-bottom:{0}pt;", style.Padding.Bottom));
+            builder.AppendLine(String.Format("padding-left:{0}pt;", style.Padding.Left));
+            builder.AppendLine(String.Format("padding-right:{0}pt;", style.Padding.Right));
+
+            builder.AppendLine("}");
+        }
+
+        internal string GenerateCSS()
+        {
+            float width;
+            float height;
+            GetDimensionsFromSizeAndOrientation(DocumentStyle.Size, DocumentStyle.Orientation, out width, out height);
+
+            StringBuilder builder = new();
+            builder.AppendLine("body {");
+            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "width:{0:0.00}cm;", width));
+            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "height:{0:0.00}cm;", height));
+            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "padding:{0:0.00}cm {1:0.00}cm {2:0.00}cm {3:0.00}cm;",
+                                                    DocumentStyle.Margins.Top,
+                                                    DocumentStyle.Margins.Right,
+                                                    DocumentStyle.Margins.Bottom,
+                                                    DocumentStyle.Margins.Left));
+            builder.AppendLine("}");
+
+            Enum.GetValues<DocumentTextElementId>().ToList().ForEach(e => AppendCSSTextElement(e, builder));
+
+            Enum.GetValues<DocumentTableElementId>().ToList().ForEach(e => AppendCSSTableElement(e, builder));
+
+            return builder.ToString();
+
+        }
+    }
+}

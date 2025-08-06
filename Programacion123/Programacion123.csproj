@@ -43,7 +43,11 @@
     <None Remove="Images\CaptionPaddingLeft.png" />
     <None Remove="Images\CaptionPaddingRight.png" />
     <None Remove="Images\CaptionPaddingTop.png" />
+    <None Remove="Images\CaptionPositionX.png" />
+    <None Remove="Images\CaptionPositionY.png" />
     <None Remove="Images\CaptionSeparationBottom.png" />
+    <None Remove="Images\CaptionSeparationLeft.png" />
+    <None Remove="Images\CaptionSeparationRight.png" />
     <None Remove="Images\CaptionSeparationTop.png" />
     <None Remove="Images\CaptionWidth.png" />
     <None Remove="Images\IconWarning.png" />
@@ -117,7 +121,11 @@
     <Resource Include="Images\CaptionPaddingLeft.png" />
     <Resource Include="Images\CaptionPaddingRight.png" />
     <Resource Include="Images\CaptionPaddingTop.png" />
+    <Resource Include="Images\CaptionPositionX.png" />
+    <Resource Include="Images\CaptionPositionY.png" />
     <Resource Include="Images\CaptionSeparationBottom.png" />
+    <Resource Include="Images\CaptionSeparationLeft.png" />
+    <Resource Include="Images\CaptionSeparationRight.png" />
     <Resource Include="Images\CaptionSeparationTop.png" />
     <Resource Include="Images\CaptionWidth.png" />
     <Resource Include="Images\IconWarning.png" />

@@ -1,11 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Programacion123
 {
+    public enum DocumentCoverElementId
+    {
+        Logo,
+        SubjectCode,
+        SubjectName,
+        GradeTypeName,
+        GradeName
+    }
+
+    public enum DocumentTextElementId
+    {
+        Header1,
+        Header2,
+        Header3,
+        Header4,
+        Header5,
+        Header6,
+        NormalText,
+        Table,
+        TableHeader1Text,
+        TableHeader2Text,
+        CoverSubjectCode,
+        CoverSubjectName,
+        CoverGradeTypeName,
+        CoverGradeName
+    }
+
+    public enum DocumentTableElementId
+    {
+        TableNormalCell,
+        TableHeader1Cell,
+        TableHeader2Cell
+    
+    }
+
     public partial class HTMLGenerator : Generator
     {
         public string GenerateHTML()
@@ -33,11 +69,11 @@ namespace Programacion123
                     )
                     .WithInner(
                         Tag.Create("body")
-                            .WithInner(Tag.Create("img").WithParam("src","data:image/png;base64," + DocumentStyle.LogoBase64))
-                            .WithInner(Tag.Create("h2").WithInner("Módulo profesional " + subjectTemplate.SubjectCode))
-                            .WithInner(Tag.Create("h1").WithInner(subjectTemplate.SubjectName))
-                            .WithInner(Tag.Create("h3").WithInner(gradeTypeName)
-                            .WithInner(Tag.Create("h2").WithInner(gradeTemplate.GradeName))
+                            .WithInner(Tag.Create("img").WithClass("coverLogo").WithParam("src","data:image/png;base64," + DocumentStyle.LogoBase64))
+                            .WithInner(Tag.Create("div").WithClass("coverSubjectCode").WithInner("Módulo profesional " + subjectTemplate.SubjectCode))
+                            .WithInner(Tag.Create("div").WithClass("coverSubjectName").WithInner(subjectTemplate.SubjectName))
+                            .WithInner(Tag.Create("div").WithClass("coverGradeTypeName").WithInner(gradeTypeName)
+                            .WithInner(Tag.Create("div").WithClass("coverGradeName").WithInner(gradeTemplate.GradeName))
                             .WithInner(Tag.Create("h1").WithInner("Organización del módulo"))
                             .WithInner(
                                 Table.Create().WithRow().WithCell(gradeTypeName + " - " + gradeTemplate.GradeName, 1, 3).WithCellClass("tableHeader1")

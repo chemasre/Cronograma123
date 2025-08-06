@@ -254,12 +254,6 @@ namespace Programacion123
             Validate();
         }
 
-        private void EvaluationIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
         private void DataTableActivitiesWeight_RowChanged(object sender, DataRowChangeEventArgs e)
         {
             UpdateEntity();

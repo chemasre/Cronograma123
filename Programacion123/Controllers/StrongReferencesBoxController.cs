@@ -8,6 +8,19 @@ using System.Windows;
 
 namespace Programacion123
 {
+    public enum EntityFormatContent
+    {
+        title,
+        description
+    }
+
+    public enum EntityFormatIndex
+    {
+        none,
+        number,
+        character
+    }
+
     public struct StrongReferencesBoxConfiguration<TEntity>
     {
         public string? parentStorageId;

@@ -66,14 +66,14 @@
                 <TabControl.Background>
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </TabControl.Background>
-                <TabItem Header="Documento">
+                <TabItem Header="Portada">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Border
                             Background="#33000000" Width="196" Canvas.Top="23" Canvas.Left="120" Height="68" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <Border BorderBrush="Black" BorderThickness="1" Height="68" Width="196" Background="#33000000" Canvas.Left="120" Canvas.Top="23" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <Image x:Name="ImageDocumentLogo" Height="68" Width="196" Canvas.Left="120" Canvas.Top="23" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Image x:Name="ImageCoverLogo" Height="68" Width="196" Canvas.Left="120" Canvas.Top="23" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <Label Content="Logotipo" Canvas.Left="21" Canvas.Top="17" Width="113" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <Button x:Name="ButtonLogoOpen" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="325" Canvas.Top="23" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Button x:Name="ButtonCoverLogoOpen" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="325" Canvas.Top="23" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButtonFolder.png"/>
                             </Button.Background>
@@ -81,23 +81,39 @@
                                 <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                             </Button.Foreground>
                         </Button>
-                        <Label Content="Tamaño&#xD;&#xA;de página" Height="46" Canvas.Left="20" Canvas.Top="103" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <ComboBox x:Name="ComboDocumentSize" Width="101" Canvas.Left="120" Canvas.Top="111" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBox x:Name="TextDocumentWidth" Canvas.Left="143" Canvas.Top="147" Width="70" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBox x:Name="TextDocumentHeight" Canvas.Left="246" Canvas.Top="147" Width="70" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="ComboDocumentOrientation" Width="90" Canvas.Left="226" Canvas.Top="111" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <Image Height="20" Width="20" Canvas.Left="118" Canvas.Top="145" Source="/Images/CaptionWidth.png" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <Image Height="20" Width="20" Canvas.Left="222" Canvas.Top="147" Source="/Images/CaptionHeight.png" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <Label Content="Márgenes" Height="46" Canvas.Left="21" Canvas.Top="184" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <Image Height="20" Width="20" Canvas.Left="74" Canvas.Top="254" Source="/Images/CaptionPaddingLeft.png" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <Image Height="20" Width="20" Canvas.Left="326" Canvas.Top="254" Source="/Images/CaptionPaddingRight.png" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <Image Height="20" Width="20" Canvas.Left="200" Canvas.Top="186" Source="/Images/CaptionPaddingTop.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Image Height="20" Width="20" Canvas.Left="198" Canvas.Top="327" Source="/Images/CaptionPaddingBottom.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Rectangle Height="62" Width="59" Canvas.Left="180" Canvas.Top="235" HorizontalAlignment="Center" VerticalAlignment="Top" Fill="White" Stroke="#FF585858"/>
-                        <ComboBox x:Name="ComboDocumentMarginTop" Width="76" Canvas.Left="171" Canvas.Top="206" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="ComboDocumentMarginBottom" Width="76" Canvas.Left="171" Canvas.Top="302" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="ComboDocumentMarginLeft" Width="76" Canvas.Left="95" Canvas.Top="254" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <ComboBox x:Name="ComboDocumentMarginRight" Width="76" Canvas.Left="246" Canvas.Top="253" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboCoverElement" Width="195" Canvas.Left="120" Canvas.Top="119" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Elemento" Height="28" Canvas.Left="22" Canvas.Top="116" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Posición" Height="41" Canvas.Left="22" Canvas.Top="158" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboCoverElementPositionLeft" Width="68" Canvas.Left="145" Canvas.Top="165" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboCoverElementPositionTop" Width="68" Canvas.Left="247" Canvas.Top="165" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Image Height="20" Width="20" Canvas.Left="120" Canvas.Top="165" Source="/Images/CaptionSeparationLeft.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Image Height="20" Width="20" Canvas.Left="222" Canvas.Top="166" Source="/Images/CaptionSeparationBottom.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboCoverElementPositionBottom" Width="68" Canvas.Left="145" Canvas.Top="200" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboCoverElementPositionRight" Width="68" Canvas.Left="247" Canvas.Top="200" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Image Height="20" Width="20" Canvas.Left="120" Canvas.Top="200" Source="/Images/CaptionSeparationTop.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Image Height="20" Width="20" Canvas.Left="222" Canvas.Top="201" Source="/Images/CaptionSeparationRight.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    </Canvas>
+                </TabItem>
+                <TabItem Header="Documento">
+                    <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
+
+                        <Label Content="Tamaño&#xD;&#xA;de página" Height="46" Canvas.Left="20" Canvas.Top="19" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboDocumentSize" Width="101" Canvas.Left="120" Canvas.Top="27" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <TextBox x:Name="TextDocumentWidth" Canvas.Left="143" Canvas.Top="63" Width="70" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <TextBox x:Name="TextDocumentHeight" Canvas.Left="246" Canvas.Top="63" Width="70" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboDocumentOrientation" Width="90" Canvas.Left="226" Canvas.Top="27" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Image Height="20" Width="20" Canvas.Left="118" Canvas.Top="61" Source="/Images/CaptionWidth.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Image Height="20" Width="20" Canvas.Left="222" Canvas.Top="63" Source="/Images/CaptionHeight.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Márgenes" Height="46" Canvas.Left="21" Canvas.Top="100" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Image Height="20" Width="20" Canvas.Left="74" Canvas.Top="170" Source="/Images/CaptionPaddingLeft.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Image Height="20" Width="20" Canvas.Left="326" Canvas.Top="170" Source="/Images/CaptionPaddingRight.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Image Height="20" Width="20" Canvas.Left="200" Canvas.Top="102" Source="/Images/CaptionPaddingTop.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Image Height="20" Width="20" Canvas.Left="198" Canvas.Top="243" Source="/Images/CaptionPaddingBottom.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Rectangle Height="62" Width="59" Canvas.Left="180" Canvas.Top="151" HorizontalAlignment="Center" VerticalAlignment="Top" Fill="White" Stroke="#FF585858"/>
+                        <ComboBox x:Name="ComboDocumentMarginTop" Width="76" Canvas.Left="171" Canvas.Top="122" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboDocumentMarginBottom" Width="76" Canvas.Left="171" Canvas.Top="218" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboDocumentMarginLeft" Width="76" Canvas.Left="95" Canvas.Top="170" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboDocumentMarginRight" Width="76" Canvas.Left="246" Canvas.Top="169" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                     </Canvas>
                 </TabItem>
                 <TabItem Header="Textos">

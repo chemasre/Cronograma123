@@ -138,11 +138,6 @@ namespace Programacion123
             Validate();
         }
 
-        private void KeyCapacitiesIntroductionController_Changed(StrongReferenceFieldController<CommonText, CommonTextEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
 
         private void TextSubjectCode_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {

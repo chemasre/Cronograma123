@@ -54,6 +54,23 @@ namespace Programacion123
             subjectController.Changed += SubjectController_Changed;
 
 
+            ComboCoverElement.Items.Add("Logotipo");
+            ComboCoverElement.Items.Add("Código del módulo");
+            ComboCoverElement.Items.Add("Nombre del módulo");
+            ComboCoverElement.Items.Add("Tipo de ciclo");
+            ComboCoverElement.Items.Add("Nombre del ciclo");
+
+            ComboCoverElement.SelectedIndex = 0;
+
+            for(int i = 0; i < 100; i ++)
+            {
+                ComboCoverElementPositionTop.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
+                ComboCoverElementPositionBottom.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
+                ComboCoverElementPositionLeft.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
+                ComboCoverElementPositionRight.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
+            }
+
+
             ComboDocumentSize.Items.Add("A4");
             ComboDocumentSize.Items.Add("A5");
 
@@ -93,9 +110,13 @@ namespace Programacion123
             ComboTextElement.Items.Add("Encabezado de nivel 5");
             ComboTextElement.Items.Add("Encabezado de nivel 6");
             ComboTextElement.Items.Add("Texto normal");
-            ComboTextElement.Items.Add("Tabla");
-            ComboTextElement.Items.Add("Encabezado de tabla de nivel 1");
-            ComboTextElement.Items.Add("Encabezado de tabla de nivel 2");
+            ComboTextElement.Items.Add("Tablas");
+            ComboTextElement.Items.Add("Tablas: Encabezado de nivel 1");
+            ComboTextElement.Items.Add("Tablas: Encabezado de nivel 2");
+            ComboTextElement.Items.Add("Portada: Código del módulo");
+            ComboTextElement.Items.Add("Portada: Nombre del módulo");
+            ComboTextElement.Items.Add("Portada: Tipo de ciclo");
+            ComboTextElement.Items.Add("Portada: Nombre del ciclo");
 
             ComboTextElement.SelectedIndex = 0;
 
@@ -131,11 +152,12 @@ namespace Programacion123
             SetTextElementEventListenersEnabled(true);
             SetTableElementEventListenersEnabled(true);
 
+            UpdateCoverElementStyleUI();
             UpdateTextElementStyleUI();
             UpdateTableElementStyleUI();
 
 
-            ButtonLogoOpen.Click += ButtonLogoOpen_Click;
+            ButtonCoverLogoOpen.Click += ButtonCoverLogoOpen_Click;
             ComboDocumentSize.SelectionChanged += ComboDocumentSize_SelectionChanged;
             ComboDocumentOrientation.SelectionChanged += ComboDocumentOrientation_SelectionChanged;
             ComboDocumentMarginTop.SelectionChanged += ComboDocumentMarginTop_SelectionChanged;
@@ -149,6 +171,27 @@ namespace Programacion123
             WebPreview.LoadCompleted += WebPreview_LoadCompleted;
             UpdatePreviewUI();
 
+        }
+
+        private void SetCoverElementEventListenersEnabled(bool enabled)
+        {
+            if(enabled)
+            {
+                ComboCoverElement.SelectionChanged += ComboCoverElement_SelectionChanged;
+                ComboCoverElementPositionTop.SelectionChanged += ComboCoverElementPositionTop_SelectionChanged;
+                ComboCoverElementPositionLeft.SelectionChanged += ComboCoverElementPositionLeft_SelectionChanged;
+                ComboCoverElementPositionBottom.SelectionChanged += ComboCoverElementPositionBottom_SelectionChanged;
+                ComboCoverElementPositionRight.SelectionChanged += ComboCoverElementPositionRight_SelectionChanged;
+            }
+            else
+            {
+                ComboCoverElement.SelectionChanged -= ComboCoverElement_SelectionChanged;
+                ComboCoverElementPositionTop.SelectionChanged -= ComboCoverElementPositionTop_SelectionChanged;
+                ComboCoverElementPositionLeft.SelectionChanged -= ComboCoverElementPositionLeft_SelectionChanged;
+                ComboCoverElementPositionBottom.SelectionChanged -= ComboCoverElementPositionBottom_SelectionChanged;
+                ComboCoverElementPositionRight.SelectionChanged -= ComboCoverElementPositionRight_SelectionChanged;
+            }
+            
         }
 
         private void SetTextElementEventListenersEnabled(bool enabled)
@@ -330,6 +373,24 @@ namespace Programacion123
             combo.Items.Add("Amarillo Verdoso");
         }
 
+        void UpdateCoverElementStyleUI()
+        {
+            DocumentCoverElementId id = (DocumentCoverElementId)ComboCoverElement.SelectedIndex;
+            if(!generator.CoverElementStyles.ContainsKey(id)) { generator.CoverElementStyles.Add(id, new DocumentCoverElementStyle()); }
+
+            DocumentCoverElementStyle style = generator.CoverElementStyles[id];
+
+            SetCoverElementEventListenersEnabled(false);
+
+            ComboCoverElementPositionTop.SelectedIndex = (int)(style.Position.Top / 0.1f);
+            ComboCoverElementPositionBottom.SelectedIndex = (int)(style.Position.Bottom / 0.1f);
+            ComboCoverElementPositionRight.SelectedIndex = (int)(style.Position.Right / 0.1f);
+            ComboCoverElementPositionLeft.SelectedIndex = (int)(style.Position.Left / 0.1f);
+
+            SetCoverElementEventListenersEnabled(true);
+        }
+
+
         void UpdateTextElementStyleUI()
         {
             DocumentTextElementId id = (DocumentTextElementId)ComboTextElement.SelectedIndex;
@@ -402,6 +463,34 @@ namespace Programacion123
                 ComboTableElementPaddingLeft.SelectionChanged -= ComboTableElementPaddingLeft_SelectionChanged;
                 ComboTableElementPaddingRight.SelectionChanged -= ComboTableElementPaddingRight_SelectionChanged;
             }
+        }
+
+        private void ComboCoverElementPositionTop_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateGenerator();
+            Validate();
+            UpdatePreviewUI();
+        }
+
+        private void ComboCoverElementPositionLeft_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateGenerator();
+            Validate();
+            UpdatePreviewUI();
+        }
+
+        private void ComboCoverElementPositionBottom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateGenerator();
+            Validate();
+            UpdatePreviewUI();
+        }
+
+        private void ComboCoverElementPositionRight_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateGenerator();
+            Validate();
+            UpdatePreviewUI();
         }
 
         private void ComboTableElementPaddingRight_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -523,6 +612,11 @@ namespace Programacion123
             UpdatePreviewUI();
         }
 
+        private void ComboCoverElement_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateCoverElementStyleUI();
+        }
+
         private void ComboTextElement_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateTextElementStyleUI();
@@ -593,13 +687,13 @@ namespace Programacion123
 
         string? GetBase64LogoImageFromUI()
         {
-            if(ImageDocumentLogo.Source != null)
+            if(ImageCoverLogo.Source != null)
             {
                 //https://stackoverflow.com/questions/553611/wpf-image-to-byte
 
                 MemoryStream memoryStream = new();              
                 PngBitmapEncoder encoder = new();
-                BitmapFrame frame = BitmapFrame.Create((BitmapImage)ImageDocumentLogo.Source);
+                BitmapFrame frame = BitmapFrame.Create((BitmapImage)ImageCoverLogo.Source);
                 encoder.Frames.Add(frame);
                 encoder.Save(memoryStream);
 
@@ -625,12 +719,12 @@ namespace Programacion123
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.EndInit();
 
-                ImageDocumentLogo.Source = bitmap;
+                ImageCoverLogo.Source = bitmap;
 
             }
             else
             {
-                ImageDocumentLogo.Source = null;
+                ImageCoverLogo.Source = null;
             }
         }
 
@@ -656,7 +750,7 @@ namespace Programacion123
             RectangleTextElementColor.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)r, (byte)g, (byte)b));
         }
 
-        private void ButtonLogoOpen_Click(object sender, RoutedEventArgs e)
+        private void ButtonCoverLogoOpen_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFile = new();
             openFile.Title = "Elige imagen para usar como logotipo";
@@ -707,6 +801,20 @@ namespace Programacion123
         void UpdateGenerator()
         {
             generator.Subject = subjectController.GetEntity();
+
+            generator.CoverElementStyles[(DocumentCoverElementId)ComboCoverElement.SelectedIndex] = new()
+                                      {
+                                        Position = new()
+                                                  { 
+                                                    Top = ComboCoverElementPositionTop.SelectedIndex * 0.1f,
+                                                    Left = ComboCoverElementPositionLeft.SelectedIndex * 0.1f,
+                                                    Bottom = ComboCoverElementPositionBottom.SelectedIndex * 0.1f,
+                                                    Right = ComboCoverElementPositionRight.SelectedIndex * 0.1f
+                                                  }
+
+                                      };
+
+
             generator.DocumentStyle = new()
                                       {
                                         LogoBase64 = GetBase64LogoImageFromUI(),
