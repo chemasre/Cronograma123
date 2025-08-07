@@ -10,15 +10,15 @@ namespace Programacion123
 {
     public enum EntityFormatContent
     {
-        title,
-        description
+        Title,
+        Description
     }
 
     public enum EntityFormatIndex
     {
-        none,
-        number,
-        character
+        None,
+        Number,
+        Character
     }
 
     public struct StrongReferencesBoxConfiguration<TEntity>
@@ -45,7 +45,7 @@ namespace Programacion123
         public static StrongReferencesBoxConfiguration<TEntity> CreateForList(ListBox _list) { StrongReferencesBoxConfiguration<TEntity> c = new(); c.listBox = _list; c.storageIds = new(); return c; }
         public StrongReferencesBoxConfiguration<TEntity> WithStorageIds(List<string> _storageIds) { storageIds.AddRange(_storageIds); return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithEntityInitializer(Action<TEntity> _entityInitializer) { entityInitializer = _entityInitializer; return this; }
-        public StrongReferencesBoxConfiguration<TEntity> WithFormat(EntityFormatContent _formatContent, EntityFormatIndex _formatIndex = EntityFormatIndex.none) { formatContent = _formatContent; formatIndex = _formatIndex; return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithFormat(EntityFormatContent _formatContent, EntityFormatIndex _formatIndex = EntityFormatIndex.None) { formatContent = _formatContent; formatIndex = _formatIndex; return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithFormatter(Func<TEntity, int, string> _formatter) { formatter = _formatter; return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithNew(Button _buttonNew) { buttonNew = _buttonNew; return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithEdit(Button _buttonEdit) { buttonEdit = _buttonEdit; return this; }

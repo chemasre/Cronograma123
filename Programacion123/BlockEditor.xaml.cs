@@ -61,7 +61,7 @@ namespace Programacion123
                                                         .WithEntityInitializer(activityInitializer)
                                                         .WithParentStorageId(_entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<Activity>(_entity.Activities.ToList()))
-                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
+                                                        .WithFormat(EntityFormatContent.Title, EntityFormatIndex.Number)
                                                         .WithNew(ButtonPointNew)
                                                         .WithEdit(ButtonPointEdit)
                                                         .WithDelete(ButtonPointDelete)

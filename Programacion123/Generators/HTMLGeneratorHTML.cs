@@ -169,6 +169,7 @@ namespace Programacion123
                             /////////////////////////////////////////////////////////////////////////////////////
 
                             .WithInner(Tag.Create("h1").WithInner("Justificación de la importancia del módulo"))
+                            .WithInner(Tag.Create("div").WithInner(getSubjectCommonText.Invoke(SubjectCommonTextId.subjectImportanceJustification)))
 
                             /////////////////////////////////////////////////////////////////
                             ///////////// Nivel 1: Elementos curriculares ///////////////////
@@ -418,14 +419,20 @@ namespace Programacion123
                             //////////////////////////////////////////////////////////////////////
                             
                             .WithInner(Tag.Create("h1").WithInner("Referencias bibliográficas del módulo"))
+                            .WithInner(Tag.Create("div")
+                                .WithInnerForeach<CommonText>(Subject.Citations.ToList(),
+                                    (c, i, l) =>
+                                    {
+                                        l.Add(Tag.Create("div").WithInner(String.Format("{0}- {1}", i + 1, c.Description)));
+                                    }
+                                )
+                             )
 
                             //////////////////////////////////////////////////
                             ////////////// Nivel 1: Anexos ///////////////////
                             //////////////////////////////////////////////////
                             
                             .WithInner(Tag.Create("h1").WithInner("Anexos"))
-
-
                 )
                 .ToString();
 

@@ -22,7 +22,7 @@ namespace Programacion123
     public interface IEntityPicker<T>
     {
         void SetPickerTitle(string title);
-        void SetFormat(EntityFormatContent formatContent, EntityFormatIndex formatIndex = EntityFormatIndex.none);
+        void SetFormat(EntityFormatContent formatContent, EntityFormatIndex formatIndex = EntityFormatIndex.None);
         void SetFormatter(Func<T, int, string>? formatter);
         void SetSinglePickerEntities(T? selectedEntity, List<T> entities);
         void SetMultiPickerEntities(List<T> selectedEntities, List<T> pickableEntities);

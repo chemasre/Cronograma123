@@ -58,7 +58,7 @@ namespace Programacion123
         {
             var configGradeTemplates = WeakReferencesBoxConfiguration<GradeTemplate>.CreateForList(ListBoxGradeTemplates)
                                                         .WithStorageIds(config.gradeTemplateStorageIds)
-                                                        .WithFormat(EntityFormatContent.title)
+                                                        .WithFormat(EntityFormatContent.Title)
                                                         .WithPick(ButtonGradeTemplateReferenceAdd, ButtonGradeTemplateReferenceRemove)
                                                         .WithPickerTitle("Plantillas de ciclo")
                                                         .WithBlocker(Blocker);
@@ -67,7 +67,7 @@ namespace Programacion123
 
             var configSubjectTemplates = WeakReferencesBoxConfiguration<SubjectTemplate>.CreateForList(ListBoxSubjectTemplates)
                                                         .WithStorageIds(config.subjectTemplatesStorageIds)
-                                                        .WithFormat(EntityFormatContent.title)
+                                                        .WithFormat(EntityFormatContent.Title)
                                                         .WithPick(ButtonSubjectTemplateReferenceAdd, ButtonSubjectTemplateReferenceRemove)
                                                         .WithPickerTitle("Plantillas de módulo")
                                                         .WithBlocker(Blocker);
@@ -76,7 +76,7 @@ namespace Programacion123
 
             var configCalendars = WeakReferencesBoxConfiguration<Calendar>.CreateForList(ListBoxCalendars)
                                                         .WithStorageIds(config.calendarsStorageIds)
-                                                        .WithFormat(EntityFormatContent.title)
+                                                        .WithFormat(EntityFormatContent.Title)
                                                         .WithPick(ButtonCalendarReferenceAdd, ButtonCalendarReferenceRemove)
                                                         .WithPickerTitle("Calendarios")
                                                         .WithBlocker(Blocker);
@@ -85,7 +85,7 @@ namespace Programacion123
 
             var configWeekSchedules = WeakReferencesBoxConfiguration<WeekSchedule>.CreateForList(ListBoxWeekSchedules)
                                                         .WithStorageIds(config.weekSchedulesStorageIds)
-                                                        .WithFormat(EntityFormatContent.title)
+                                                        .WithFormat(EntityFormatContent.Title)
                                                         .WithPick(ButtonWeekScheduleReferenceAdd, ButtonWeekScheduleReferenceRemove)
                                                         .WithPickerTitle("Horarios")
                                                         .WithBlocker(Blocker);
@@ -94,7 +94,7 @@ namespace Programacion123
 
             var configSubjects = WeakReferencesBoxConfiguration<Subject>.CreateForList(ListBoxSubjects)
                                                         .WithStorageIds(config.subjectsStorageIds)
-                                                        .WithFormat(EntityFormatContent.title)
+                                                        .WithFormat(EntityFormatContent.Title)
                                                         .WithPick(ButtonSubjectReferenceAdd, ButtonSubjectReferenceRemove)
                                                         .WithPickerTitle("Programaciones")
                                                         .WithBlocker(Blocker);

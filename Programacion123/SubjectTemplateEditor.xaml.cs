@@ -40,7 +40,7 @@ namespace Programacion123
             var configGradeTemplate = WeakReferenceFieldConfiguration<GradeTemplate>.CreateForTextBox(TextGradeTemplate)
                                                .WithStorageId(entity.GradeTemplate?.StorageId)
                                                .WithPick(ButtonGradeTemplatePick)
-                                               .WithFormat(EntityFormatContent.title)
+                                               .WithFormat(EntityFormatContent.Title)
                                                .WithPickerTitle("Selecciona una plantilla de ciclo")
                                                .WithBlocker(Blocker);
 
@@ -229,7 +229,7 @@ namespace Programacion123
             var configContents = StrongReferencesBoxConfiguration<Content>.CreateForList(ListBoxContents)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<Content>(_subjectTemplate.Contents.ToList()))
-                                                        .WithFormat(EntityFormatContent.description, EntityFormatIndex.number)
+                                                        .WithFormat(EntityFormatContent.Description, EntityFormatIndex.Number)
                                                         .WithNew(ButtonContentsNew)
                                                         .WithEdit(ButtonContentsEdit)
                                                         .WithDelete(ButtonContentsDelete)

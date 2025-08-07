@@ -13,6 +13,8 @@
 
         public List<string> EvaluationInstrumentsTypesStorageIds  { get; set; } = new List<string>();
 
+        public List<string> CitationsStorageIds{ get; set; } = new List<string>();
+
         public List<string> BlocksStorageIds  { get; set; } = new List<string>();
 
         public List< KeyValuePair<string, float> > LearningResultsWeakStorageIdsWeights { get; set; } = new List<KeyValuePair<string, float>>();

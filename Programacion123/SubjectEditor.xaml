@@ -86,6 +86,51 @@
                         </Button>
                     </Canvas>
                 </TabItem>
+                <TabItem Header="Referencias bibliográficas">
+                    <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <ListBox x:Name="ListBoxCitations" Height="235" Width="394" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="31" Canvas.Top="45" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button x:Name="ButtonCitationNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="31" Canvas.Top="16" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonCitationEdit" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="60" Canvas.Top="16" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonEdit.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonCitationDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="89" Canvas.Top="16" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/ButtonDelete.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonCitationDown" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="118" Canvas.Top="16" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonMoveDown.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonCitationUp" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="147" Canvas.Top="16" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonMoveUp.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                            </Button.Foreground>
+                        </Button>
+                    </Canvas>
+                </TabItem>
                 <TabItem Header="Instrumentos de evaluación">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
                         <ListBox x:Name="ListBoxEvaluationInstrumentTypes" Height="235" Width="394" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="31" Canvas.Top="45" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>

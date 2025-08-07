@@ -165,7 +165,7 @@ namespace Programacion123
             }
         }
 
-        public void SetFormat(EntityFormatContent _formatContent, EntityFormatIndex _formatIndex = EntityFormatIndex.none)
+        public void SetFormat(EntityFormatContent _formatContent, EntityFormatIndex _formatIndex = EntityFormatIndex.None)
         {
             formatContent = _formatContent;
             formatIndex = _formatIndex;

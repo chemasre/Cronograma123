@@ -9,7 +9,8 @@
         subjectPolicyOrdinaryEvaluation,
         subjectPolicyExtraordinaryEvaluation,
         subjectTraversalReadingAndTIC,
-        subjectTraversalCommunicationEntrepreneurshipAndEducation
+        subjectTraversalCommunicationEntrepreneurshipAndEducation,
+        subjectImportanceJustification
     }
 
 
@@ -23,12 +24,14 @@
         public ListProperty<CommonText> SpaceResources { get; } = new ListProperty<CommonText>();
         public ListProperty<CommonText> MaterialResources { get; } = new ListProperty<CommonText>();
         public ListProperty<CommonText> EvaluationInstrumentsTypes { get; } = new ListProperty<CommonText>();
+        public ListProperty<CommonText> Citations { get; } = new ListProperty<CommonText>();
 
         public ListProperty<Block> Blocks { get; } = new ListProperty<Block>();
 
         public DictionaryProperty<LearningResult, float> LearningResultsWeights  { get; } = new DictionaryProperty<LearningResult, float>();
 
         public DictionaryProperty<SubjectCommonTextId, CommonText> CommonTexts { get; } = new DictionaryProperty<SubjectCommonTextId, CommonText>();
+
 
         public Subject() : base()
         {
@@ -46,6 +49,7 @@
             CommonTexts[SubjectCommonTextId.subjectPolicyExtraordinaryEvaluation].Title = "Líneas del módulo para la evaluación extraordinaria";
             CommonTexts[SubjectCommonTextId.subjectTraversalReadingAndTIC].Title = "Elemento transversal: Fomento de la lectura y tecnologías de la información y de comunicación";
             CommonTexts[SubjectCommonTextId.subjectTraversalCommunicationEntrepreneurshipAndEducation].Title = "Elemento transversal: Comunicación audiovisual, emprendimiento, educación cívica y constitucional";
+            CommonTexts[SubjectCommonTextId.subjectImportanceJustification].Title = "Justificación de la importancia del módulo";
 
         }
 
@@ -77,6 +81,9 @@
             List<CommonText> instrumentsList = EvaluationInstrumentsTypes.ToList();
             if (instrumentsList.Count <= 0) { return ValidationResult.Create(ValidationCode.subjectNoEvaluationInstrumentTypes); }
             for (int i = 0; i < instrumentsList.Count; i++) { if (instrumentsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectInstrumentTypeInvalid).WithIndex(i); } }
+
+            List<CommonText> citationsList = Citations.ToList();
+            for(int i = 0; i < citationsList.Count; i++) { if (citationsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectCitationInvalid).WithIndex(i); } }
 
             List<Block> blocksList = Blocks.ToList();
             if (blocksList.Count <= 0) { return ValidationResult.Create(ValidationCode.subjectNoBlocks); }
@@ -196,6 +203,10 @@
             list.ForEach(e => e.Save(StorageId));            
             data.EvaluationInstrumentsTypesStorageIds = Storage.GetStorageIds<CommonText>(list);
 
+            list = Citations.ToList();
+            list.ForEach(e => e.Save(StorageId));            
+            data.CitationsStorageIds = Storage.GetStorageIds<CommonText>(list);
+
             List<Block> blockList = Blocks.ToList();
             blockList.ForEach(e => e.Save(StorageId));            
             data.BlocksStorageIds = Storage.GetStorageIds<Block>(blockList);
@@ -234,6 +245,8 @@
 
             EvaluationInstrumentsTypes.Set(Storage.LoadOrCreateEntities<CommonText>(data.EvaluationInstrumentsTypesStorageIds, storageId));
 
+            Citations.Set(Storage.LoadOrCreateEntities<CommonText>(data.CitationsStorageIds, storageId));
+
             Blocks.Set(Storage.LoadOrCreateEntities<Block>(data.BlocksStorageIds, storageId));
 
             List< KeyValuePair<string, float> > resultsWithIds = data.LearningResultsWeakStorageIdsWeights;
@@ -257,6 +270,7 @@
             SpaceResources.ToList().ForEach(e => e.Delete(StorageId));
             MaterialResources.ToList().ForEach(e => e.Delete(StorageId));
             EvaluationInstrumentsTypes.ToList().ForEach(e => e.Delete(StorageId));
+            Citations.ToList().ForEach(e => e.Delete(StorageId));
 
             Blocks.ToList().ForEach(e => e.Delete(StorageId));
 

@@ -85,7 +85,7 @@
         public static string FormatEntity<T>(T entity, EntityFormatContent formatContent) where T:Entity
         {
             string content;
-            if(formatContent == EntityFormatContent.title) { content = entity.Title; }
+            if(formatContent == EntityFormatContent.Title) { content = entity.Title; }
             else // formatContent == EntityFormatContent.description
             { content = entity.Description; }
             if(content.Length > 100) { content = content.Substring(0, Math.Min(100, content.Length)) + "..."; }
@@ -97,8 +97,8 @@
         {
             string content = FormatEntity<T>(entity, formatContent);
             string prefix;
-            if(formatIndex == EntityFormatIndex.none) { prefix = ""; }
-            else if(formatIndex == EntityFormatIndex.number) { prefix = (index + 1).ToString() + ": "; }
+            if(formatIndex == EntityFormatIndex.None) { prefix = ""; }
+            else if(formatIndex == EntityFormatIndex.Number) { prefix = (index + 1).ToString() + ": "; }
             else // formatIndex == EntityFormatIndex.character
             { prefix = FormatLetterPrefixLowercase(index) + ": "; }
 

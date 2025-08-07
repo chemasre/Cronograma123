@@ -46,6 +46,8 @@ namespace Programacion123
             else if (code == ValidationCode.subjectLearningResultNotReferencedByActivities) { return String.Format("Ninguna actividad hace referencia al resultado de aprendizaje {0} en sus criterios de evaluación.", index + 1); }
             else if (code == ValidationCode.subjectActivitiesLearningResultWeightNotHundredPercent) { return String.Format("En el resultado de aprendizaje {0}, la suma de los pesos de las actividades evaluables debe ser cien.", index + 1); }
             else if (code == ValidationCode.subjectCalendarAndWeekScheduleLeaveNoSchoolDays) { return "La combinación de calendario y horario no permite ningún día lectivo."; }
+            else if (code == ValidationCode.subjectCommonTextInvalid) { return String.Format("El texto común {0} presenta algún problema.",index + 1); }
+            else if (code == ValidationCode.subjectCitationInvalid) { return String.Format("La cita {0} presenta algún problema.",index + 1); }
             else if (code == ValidationCode.templateGradeNameEmpty) { return "El nombre del ciclo está vacío."; }
             else if (code == ValidationCode.templateGradeFamilyNameEmpty) { return "El nombre de la familia profesional está vacío."; }
             else if (code == ValidationCode.templateGradeGeneralObjectiveInvalid) { return String.Format("El objetivo general {0} presenta algún problema.", index + 1); }
@@ -124,6 +126,7 @@ namespace Programacion123
         subjectActivitiesLearningResultWeightNotHundredPercent,
         subjectCalendarAndWeekScheduleLeaveNoSchoolDays,
         subjectCommonTextInvalid,
+        subjectCitationInvalid,
 
         templateGradeNameEmpty,
         templateGradeFamilyNameEmpty,

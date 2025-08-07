@@ -30,7 +30,7 @@ namespace Programacion123
         public static WeakReferenceFieldConfiguration<TEntity> CreateForTextBox(TextBox _textBox) { WeakReferenceFieldConfiguration<TEntity> c = new(); c.textBox = _textBox; return c; }
         public WeakReferenceFieldConfiguration<TEntity> WithStorageId(string _storageId) { storageId = _storageId; return this; }
         public WeakReferenceFieldConfiguration<TEntity> WithParentStorageId(string _parentStorageId) { parentStorageId = _parentStorageId; return this; }
-        public WeakReferenceFieldConfiguration<TEntity> WithFormat(EntityFormatContent _formatContent, EntityFormatIndex _formatIndex = EntityFormatIndex.none) { formatContent = _formatContent; formatIndex = _formatIndex; return this; }
+        public WeakReferenceFieldConfiguration<TEntity> WithFormat(EntityFormatContent _formatContent, EntityFormatIndex _formatIndex = EntityFormatIndex.None) { formatContent = _formatContent; formatIndex = _formatIndex; return this; }
         public WeakReferenceFieldConfiguration<TEntity> WithFormatter(Func<TEntity, int, string>? _formatter) { formatter = _formatter; return this; }
         public WeakReferenceFieldConfiguration<TEntity> WithTitleEditable(bool _titleEditable) { titleEditable = _titleEditable; return this; }
         public WeakReferenceFieldConfiguration<TEntity> WithEditorTitle(string _editorTitle) { editorTitle = _editorTitle; return this; }
@@ -109,7 +109,7 @@ namespace Programacion123
                 TEntity entity = Storage.LoadOrCreateEntity<TEntity>(storageId, parentStorageId);
 
                 if(formatter != null) { textBox.Text = formatter.Invoke(entity, 0); }
-                string s = (formatContent == EntityFormatContent.description ? entity.Description : entity.Title).Trim();
+                string s = (formatContent == EntityFormatContent.Description ? entity.Description : entity.Title).Trim();
                 textBox.Text = s.Substring(0, Math.Min(100, s.Length)) + "...";
             }
         }

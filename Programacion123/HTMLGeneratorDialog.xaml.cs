@@ -45,7 +45,7 @@ namespace Programacion123
             var configSubject = WeakReferenceFieldConfiguration<Subject>.CreateForTextBox(TextSubject)
                                                        .WithStorageId(_subject?.StorageId)
                                                        .WithPick(ButtonSubjectPick)
-                                                       .WithFormat(EntityFormatContent.title)
+                                                       .WithFormat(EntityFormatContent.Title)
                                                        .WithPickerTitle("Selecciona una programación de módulo")
                                                        .WithBlocker(Blocker);
 

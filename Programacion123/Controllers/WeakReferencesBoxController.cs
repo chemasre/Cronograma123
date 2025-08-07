@@ -29,7 +29,7 @@ namespace Programacion123
 
         public static WeakReferencesBoxConfiguration<TEntity> CreateForList(ListBox _list) { WeakReferencesBoxConfiguration<TEntity> c = new(); c.listBox = _list; c.storageIds = new(); return c; }
         public WeakReferencesBoxConfiguration<TEntity> WithStorageIds(List<string> _storageIds) { storageIds.AddRange(_storageIds); return this; }
-        public WeakReferencesBoxConfiguration<TEntity> WithFormat(EntityFormatContent _formatContent, EntityFormatIndex _formatIndex = EntityFormatIndex.none) { formatContent = _formatContent; formatIndex = _formatIndex; return this; }
+        public WeakReferencesBoxConfiguration<TEntity> WithFormat(EntityFormatContent _formatContent, EntityFormatIndex _formatIndex = EntityFormatIndex.None) { formatContent = _formatContent; formatIndex = _formatIndex; return this; }
         public WeakReferencesBoxConfiguration<TEntity> WithFormatter(Func<TEntity, int, string> _formatter) { formatter = _formatter; return this; }
         public WeakReferencesBoxConfiguration<TEntity> WithUpDown(Button _buttonUp, Button _buttonDown) { buttonUp = _buttonUp; buttonDown = _buttonDown; return this; }
         public WeakReferencesBoxConfiguration<TEntity> WithPick(Button _buttonPickAdd, Button _buttonPickRemove) { buttonPickAdd = _buttonPickAdd; buttonPickRemove = _buttonPickRemove; return this; }

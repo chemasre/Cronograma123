@@ -158,7 +158,7 @@ namespace Programacion123
                                                .WithParentStorageId(subject.StorageId)
                                                .WithPick(ButtonMetodologyPick)
                                                .WithPickerTitle("Elige una metodología")
-                                               .WithFormat(EntityFormatContent.title)
+                                               .WithFormat(EntityFormatContent.Title)
                                                .WithPickListQuery(() => Storage.GetStorageIds<CommonText>(subject.Metodologies.ToList()) )
                                                .WithBlocker(Blocker);
 
@@ -302,7 +302,7 @@ namespace Programacion123
 
             var configSpaceResources = WeakReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxSpaceResources)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.SpaceResources.ToList()))
-                                                        .WithFormat(EntityFormatContent.title)
+                                                        .WithFormat(EntityFormatContent.Title)
                                                         .WithPick(ButtonSpaceResourceReferenceAdd, ButtonSpaceResourceReferenceRemove)
                                                         .WithPickListQuery(() => Storage.GetStorageIds<CommonText>(subject.SpaceResources.ToList()))
                                                         .WithPickerTitle("Espacios")
@@ -312,7 +312,7 @@ namespace Programacion123
 
             var configMaterialResources = WeakReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxMaterialResources)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.MaterialResources.ToList()))
-                                                        .WithFormat(EntityFormatContent.title)
+                                                        .WithFormat(EntityFormatContent.Title)
                                                         .WithPick(ButtonMaterialResourceReferenceAdd, ButtonMaterialResourceReferenceRemove)
                                                         .WithPickListQuery(() => Storage.GetStorageIds<CommonText>(subject.MaterialResources.ToList()))
                                                         .WithPickerTitle("Recursos materiales")
@@ -326,7 +326,7 @@ namespace Programacion123
                                                .WithParentStorageId(subject.StorageId)
                                                .WithPick(ButtonEvaluationInstrumentPick)
                                                .WithPickerTitle("Elige un instrumento de evaluación")
-                                               .WithFormat(EntityFormatContent.title)
+                                               .WithFormat(EntityFormatContent.Title)
                                                .WithPickListQuery(() => Storage.GetStorageIds<CommonText>(subject.EvaluationInstrumentsTypes.ToList()) )
                                                .WithBlocker(Blocker);
 

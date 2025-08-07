@@ -32,6 +32,7 @@ namespace Programacion123
         StrongReferencesBoxController<CommonText, CommonTextEditor> spaceResourcesController;
         StrongReferencesBoxController<CommonText, CommonTextEditor > materialResourcesController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> evaluationInstrumentTypesController;
+        StrongReferencesBoxController<CommonText, CommonTextEditor> citationsController;
 
         StrongReferencesBoxController<Block, BlockEditor> blocksController;
         
@@ -63,7 +64,7 @@ namespace Programacion123
             var configTemplate = WeakReferenceFieldConfiguration<SubjectTemplate>.CreateForTextBox(TextTemplate)
                                                .WithStorageId(entity.Template?.StorageId)
                                                .WithPick(ButtonTemplatePick)
-                                               .WithFormat(EntityFormatContent.title)
+                                               .WithFormat(EntityFormatContent.Title)
                                                .WithPickerTitle("Selecciona una plantilla")
                                                .WithBlocker(Blocker);
 
@@ -74,7 +75,7 @@ namespace Programacion123
             var configCalendar = WeakReferenceFieldConfiguration<Calendar>.CreateForTextBox(TextCalendar)
                                                .WithStorageId(entity.Calendar?.StorageId)
                                                .WithPick(ButtonCalendarPick)
-                                               .WithFormat(EntityFormatContent.title)
+                                               .WithFormat(EntityFormatContent.Title)
                                                .WithPickerTitle("Selecciona un calendario")
                                                .WithBlocker(Blocker);
 
@@ -85,7 +86,7 @@ namespace Programacion123
             var configWeekSchedule = WeakReferenceFieldConfiguration<WeekSchedule>.CreateForTextBox(TextWeekSchedule)
                                                .WithStorageId(entity.WeekSchedule?.StorageId)
                                                .WithPick(ButtonWeekSchedulePick)
-                                               .WithFormat(EntityFormatContent.title)
+                                               .WithFormat(EntityFormatContent.Title)
                                                .WithPickerTitle("Selecciona un horario")
                                                .WithBlocker(Blocker);
 
@@ -96,7 +97,7 @@ namespace Programacion123
             var configMetodologies = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxMetodologies)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.Metodologies.ToList()))
-                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
+                                                        .WithFormat(EntityFormatContent.Title, EntityFormatIndex.Number)
                                                         .WithNew(ButtonMetodologyNew)
                                                         .WithEdit(ButtonMetodologyEdit)
                                                         .WithDelete(ButtonMetodologyDelete)
@@ -112,7 +113,7 @@ namespace Programacion123
             var configSpaceResources = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxSpaceResources)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.SpaceResources.ToList()))
-                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
+                                                        .WithFormat(EntityFormatContent.Title, EntityFormatIndex.Number)
                                                         .WithNew(ButtonSpaceResourceNew)
                                                         .WithEdit(ButtonSpaceResourceEdit)
                                                         .WithDelete(ButtonSpaceResourceDelete)
@@ -128,7 +129,7 @@ namespace Programacion123
             var configMaterialResources = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxMaterialResources)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.MaterialResources.ToList()))
-                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
+                                                        .WithFormat(EntityFormatContent.Title, EntityFormatIndex.Number)
                                                         .WithNew(ButtonMaterialResourceNew)
                                                         .WithEdit(ButtonMaterialResourceEdit)
                                                         .WithDelete(ButtonMaterialResourceDelete)
@@ -144,7 +145,7 @@ namespace Programacion123
             var configEvaluationInstrumentTypes = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxEvaluationInstrumentTypes)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.EvaluationInstrumentsTypes.ToList()))
-                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
+                                                        .WithFormat(EntityFormatContent.Title, EntityFormatIndex.Number)
                                                         .WithNew(ButtonEvaluationInstrumentTypeNew)
                                                         .WithEdit(ButtonEvaluationInstrumentTypeEdit)
                                                         .WithDelete(ButtonEvaluationInstrumentTypeDelete)
@@ -157,10 +158,27 @@ namespace Programacion123
 
             evaluationInstrumentTypesController.Changed += EvaluationInstrumentTypesController_Changed;
 
+            var configCitations = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxCitations)
+                                                        .WithParentStorageId(entity.StorageId)
+                                                        .WithStorageIds(Storage.GetStorageIds<CommonText>(entity.Citations.ToList()))
+                                                        .WithFormat(EntityFormatContent.Description, EntityFormatIndex.Number)
+                                                        .WithTitleEditable(false)
+                                                        .WithNew(ButtonCitationNew)
+                                                        .WithEdit(ButtonCitationEdit)
+                                                        .WithDelete(ButtonCitationDelete)
+                                                        .WithUpDown(ButtonCitationUp, ButtonCitationDown)
+                                                        .WithDeleteConfirmQuestion("Esto eliminará permanentemente la referencia bibliográfia seleccionada. ¿Estás seguro/a?")
+                                                        .WithEditorTitle("Referencia bibliográfica")
+                                                        .WithBlocker(Blocker);
+
+            citationsController = new(configCitations);
+
+            citationsController.Changed += CitationsController_Changed;
+
             var configBlocks = StrongReferencesBoxConfiguration<Block>.CreateForList(ListBoxBlocks)
                                                         .WithParentStorageId(entity.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<Block>(entity.Blocks.ToList()))
-                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
+                                                        .WithFormat(EntityFormatContent.Title, EntityFormatIndex.Number)
                                                         .WithNew(ButtonBlockNew)
                                                         .WithEdit(ButtonBlockEdit)
                                                         .WithDelete(ButtonBlockDelete)
@@ -182,7 +200,7 @@ namespace Programacion123
             var configCommonTexts = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxCommonTexts)
                                                         .WithParentStorageId(_subject.StorageId)
                                                         .WithStorageIds(commonTextsIds)
-                                                        .WithFormat(EntityFormatContent.title, EntityFormatIndex.number)
+                                                        .WithFormat(EntityFormatContent.Title, EntityFormatIndex.Number)
                                                         .WithTitleEditable(false)
                                                         .WithEdit(ButtonCommonTextsEdit)
                                                         .WithEditorTitle("Texto común")
@@ -241,38 +259,6 @@ namespace Programacion123
             Validate();
 
         }
-
-        private void CommonTextsController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
-        private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
-        private void DataTableActivitiesWeight_RowChanged(object sender, DataRowChangeEventArgs e)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
-        private void DataTableResultsWeight_RowChanged(object sender, DataRowChangeEventArgs e)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
-        private void DataTableActivitiesSchedule_RowChanged(object sender, DataRowChangeEventArgs e)
-        {
-            UpdateEntity();
-            UpdateScheduleUIFromEntity(true);
-            Validate();
-        }
-
 
         void UpdateWeightsUIFromEntity()
         {
@@ -502,6 +488,43 @@ namespace Programacion123
             Validate();
         }
 
+        private void CitationsController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void CommonTextsController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void DataTableActivitiesWeight_RowChanged(object sender, DataRowChangeEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void DataTableResultsWeight_RowChanged(object sender, DataRowChangeEventArgs e)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void DataTableActivitiesSchedule_RowChanged(object sender, DataRowChangeEventArgs e)
+        {
+            UpdateEntity();
+            UpdateScheduleUIFromEntity(true);
+            Validate();
+        }
+
         private void WeekScheduleController_Changed(WeakReferenceFieldController<WeekSchedule, EntityPicker<WeekSchedule> > controller)
         {
             UpdateEntity();
@@ -553,6 +576,8 @@ namespace Programacion123
             entity.MaterialResources.Set(Storage.LoadOrCreateEntities<CommonText>(materialResourcesController.StorageIds, entity.StorageId));
 
             entity.EvaluationInstrumentsTypes.Set(Storage.LoadOrCreateEntities<CommonText>(evaluationInstrumentTypesController.StorageIds, entity.StorageId));
+
+            entity.Citations.Set(Storage.LoadOrCreateEntities<CommonText>(citationsController.StorageIds, entity.StorageId));
 
             entity.Blocks.Set(Storage.LoadOrCreateEntities<Block>(blocksController.StorageIds, entity.StorageId));
 
