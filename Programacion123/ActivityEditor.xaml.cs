@@ -28,6 +28,7 @@ namespace Programacion123
 
         WeakReferenceFieldController<CommonText, EntityPicker<CommonText> > metodologyController;
         WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > contentPointsController;
+        WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > keyCompetencesController;
         WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > spaceResourcesController;
         WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > materialResourcesController;
         WeakReferenceFieldController<CommonText, EntityPicker<CommonText> > evaluationInstrumentController;
@@ -90,6 +91,7 @@ namespace Programacion123
             entity.Metodology = metodologyController.GetEntity();
 
             entity.ContentPoints.Set(contentPointsController.GetSelectedEntities());
+            entity.KeyCompetences.Set(keyCompetencesController.GetSelectedEntities());
 
             entity.SpaceResources.Set(spaceResourcesController.GetSelectedEntities());
             entity.MaterialResources.Set(materialResourcesController.GetSelectedEntities());
@@ -223,6 +225,61 @@ namespace Programacion123
                     }
                 };
 
+            Func<List<string>> pickKeyCompetenceQuery =
+                () =>
+                {
+                    List<string> keyCompetences = new();
+                    if(subject.Template != null)
+                    {
+                        if(subject.Template.GradeTemplate != null)
+                        {
+                            List<CommonText> competencesList = subject.Template.GradeTemplate.KeyCapacities.ToList();
+
+                            foreach(CommonText c in competencesList)
+                            {
+                                keyCompetences.Add(c.StorageId);
+                            }
+                        }
+                    }
+
+                    return keyCompetences;
+                };
+
+            Func<CommonText, int, string> keyCompetenceFormatter =
+                (c, i) =>
+                {
+                    bool canFormat;                    
+                    SubjectTemplate? template = null;
+                    GradeTemplate? gradeTemplate = null;
+                    int capacityIndex = -1;
+
+                    canFormat = (subject.Template != null);
+                    if(canFormat)
+                    {
+                        template = subject.Template;
+                        canFormat = subject.Template.GradeTemplate != null;
+                    }
+                    if(canFormat)
+                    {
+                        gradeTemplate = template.GradeTemplate;
+                        canFormat = (gradeTemplate != null);
+                    }
+                    if(canFormat)
+                    {   
+                        capacityIndex = gradeTemplate.KeyCapacities.ToList().FindIndex(k => k.StorageId == c.StorageId);
+                        canFormat = (capacityIndex >= 0);
+                    }
+                    
+                    if(canFormat)
+                    {
+                        return String.Format("{0}: {1}", capacityIndex + 1, c.Title);
+                    }
+                    else
+                    {
+                        return "<no se encuentra la referencia>";    
+                    }
+                };
+
             var configContents = WeakReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxContents)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.ContentPoints.ToList()))
                                                         .WithFormatter(contentsFormatter)
@@ -232,6 +289,16 @@ namespace Programacion123
                                                         .WithBlocker(Blocker);
 
             contentPointsController = new(configContents);
+
+            var configKeyCompetences = WeakReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxKeyCompetences)
+                                                        .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.KeyCompetences.ToList()))
+                                                        .WithFormatter(keyCompetenceFormatter)
+                                                        .WithPick(ButtonKeyCompetenceReferenceAdd, ButtonKeyCompetenceReferenceRemove)
+                                                        .WithPickListQuery(pickKeyCompetenceQuery)
+                                                        .WithPickerTitle("Competencias clave")
+                                                        .WithBlocker(Blocker);
+
+            keyCompetencesController = new(configKeyCompetences);
 
             var configSpaceResources = WeakReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxSpaceResources)
                                                         .WithStorageIds(Storage.GetStorageIds<CommonText>(_entity.SpaceResources.ToList()))
@@ -393,6 +460,7 @@ namespace Programacion123
 
             metodologyController.Changed += MetodologyController_Changed;
             contentPointsController.Changed += ContentPointsController_Changed;
+            keyCompetencesController.Changed += KeyCompetencesController_Changed;
             spaceResourcesController.Changed += SpaceResourcesController_Changed;
             materialResourcesController.Changed += MaterialResourcesController_Changed;
             evaluationInstrumentController.Changed += EvaluationInstrumentController_Changed;
@@ -412,6 +480,7 @@ namespace Programacion123
             Validate();
 
         }
+
 
         private void UpdateEvaluableUI()
         {
@@ -566,6 +635,12 @@ namespace Programacion123
         }
 
         void ContentPointsController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > controller)
+        {
+            UpdateEntity();
+            Validate();
+        }
+
+        private void KeyCompetencesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
             Validate();

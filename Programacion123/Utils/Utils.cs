@@ -127,6 +127,16 @@
             }
         }
 
+        public static string FormatStartDayHour(Subject.SchoolDayHour dayHour, WeekSchedule weekSchedule)
+        {
+            return FormatStartDayHour(dayHour.day, dayHour.hour, weekSchedule);
+        }
+
+        public static string FormatEndDayHour(Subject.SchoolDayHour dayHour, WeekSchedule weekSchedule)
+        {
+            return FormatEndDayHour(dayHour.day, dayHour.hour, weekSchedule);
+        }
+
         public static string FormatStartDayHour(DateTime day, float hour, WeekSchedule weekSchedule)
         {
             return Utils.WeekdayToText(day.DayOfWeek) + " " + 
@@ -139,6 +149,11 @@
             return Utils.WeekdayToText(day.DayOfWeek) + " " +
                     Utils.FormatDate(day, Utils.FormatDateOptions.numericMonthDay) +
                     (hour != weekSchedule.HoursPerWeekDay[day.DayOfWeek] ? " +" + hour + "h" : "");
+        }
+
+        public static string FormatEvaluableActivity(int blockIndex, int activityIndex)
+        {
+            return String.Format("B{0}-A{1}", blockIndex + 1, activityIndex + 1);
         }
 
 

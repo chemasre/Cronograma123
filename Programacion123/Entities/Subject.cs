@@ -7,7 +7,9 @@
         subjectPolicyMetodology,
         subjectPolicyEvaluation,
         subjectPolicyOrdinaryEvaluation,
-        subjectPolicyExtraordinaryEvaluation
+        subjectPolicyExtraordinaryEvaluation,
+        subjectTraversalReadingAndTIC,
+        subjectTraversalCommunicationEntrepreneurshipAndEducation
     }
 
 
@@ -42,6 +44,8 @@
             CommonTexts[SubjectCommonTextId.subjectPolicyEvaluation].Title = "Líneas del módulo para la evaluación";
             CommonTexts[SubjectCommonTextId.subjectPolicyOrdinaryEvaluation].Title = "Líneas del módulo para la evaluación ordinaria";
             CommonTexts[SubjectCommonTextId.subjectPolicyExtraordinaryEvaluation].Title = "Líneas del módulo para la evaluación extraordinaria";
+            CommonTexts[SubjectCommonTextId.subjectTraversalReadingAndTIC].Title = "Elemento transversal: Fomento de la lectura y tecnologías de la información y de comunicación";
+            CommonTexts[SubjectCommonTextId.subjectTraversalCommunicationEntrepreneurshipAndEducation].Title = "Elemento transversal: Comunicación audiovisual, emprendimiento, educación cívica y constitucional";
 
         }
 

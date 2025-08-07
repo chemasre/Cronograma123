@@ -234,6 +234,8 @@ namespace Programacion123
 
             Enum.GetValues<DocumentTableElementId>().ToList().ForEach(e => AppendCSSTableElement(e, builder));
 
+            builder.AppendLine("table { width:100%; }");
+
             return builder.ToString();
 
         }

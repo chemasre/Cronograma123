@@ -49,6 +49,7 @@ namespace Programacion123
             SubjectTemplate? subjectTemplate = Subject.Template;
             GradeTemplate? gradeTemplate = subjectTemplate?.GradeTemplate;
             Func<GradeCommonTextId, string?> getGradeCommonText = (id) => { return gradeTemplate?.CommonTexts[id].Description; };
+            Func<SubjectCommonTextId, string?> getSubjectCommonText = (id) => { return Subject.CommonTexts[id].Description; };
 
             string? gradeTypeName = (gradeTemplate.GradeType == GradeType.superior ?
                                     "Ciclo formativo de grado superior" : "Ciclo formativo de grado medio");
@@ -57,6 +58,23 @@ namespace Programacion123
             
             if(Subject.CanScheduleActivities()) { schedule = Subject.ScheduleActivities(); }
 
+            Func<Activity, string> getSpacesText =
+                (Activity a) =>
+                {
+                    string spacesText = "";
+                    bool first = true;
+                    foreach(CommonText s in a.SpaceResources.ToList()) { spacesText += (first?"":"<br>") + s.Title; }
+                    return spacesText;
+                };
+
+            Func<Activity, string> getMaterialsText =
+                (Activity a) =>
+                {
+                    string materialsText = "";
+                    bool first = true;
+                    foreach(CommonText s in a.MaterialResources.ToList()) { materialsText += (first?"":"<br>") + s.Title; }
+                    return materialsText.Length > 0 ? materialsText : "-";
+                };
 
             string html =
                 "<!DOCTYPE html>" +
@@ -178,11 +196,11 @@ namespace Programacion123
                                 )
                              )
                             .WithInner(Tag.Create("h2").WithInner("Capacidades clave"))
-                            .WithInnerForeach<CommonText>(subjectTemplate.KeyCapacities.ToList(),
+                            .WithInnerForeach<int>(Subject.GetReferencedKeyCompetencesIndexes(),
                                 (c, i, l) =>
                                 {
-                                    l.Add(Tag.Create("h3").WithInner(c.Title));
-                                    l.Add(Tag.Create("div").WithInner(c.Description));
+                                    l.Add(Tag.Create("h3").WithInner(gradeTemplate.KeyCapacities[c].Title));
+                                    l.Add(Tag.Create("div").WithInner(gradeTemplate.KeyCapacities[c].Description));
                                 }
                              )
 
@@ -226,6 +244,12 @@ namespace Programacion123
                             ///////////////////////////////////////////////////////////////////
 
                             .WithInner(Tag.Create("h1").WithInner("Elementos transversales"))
+                            .WithInner(Tag.Create("h2").WithInner("Fomento de la lectura y tecnologías de la información y de comunicación"))
+                            .WithInner(Tag.Create("div").WithInner(getSubjectCommonText.Invoke(SubjectCommonTextId.subjectTraversalReadingAndTIC)))
+                            .WithInner(Tag.Create("h2").WithInner("Comunicación audiovisual, emprendimiento, educación cívica y constitucional"))
+                            .WithInner(Tag.Create("div").WithInner(getSubjectCommonText.Invoke(SubjectCommonTextId.subjectTraversalCommunicationEntrepreneurshipAndEducation)))
+
+
 
                             //////////////////////////////////////////////////////////////////////////////
                             ////////////// Nivel 1: Recursos didácticos y organizativos //////////////////
@@ -308,7 +332,7 @@ namespace Programacion123
                                     .WithRowForeach<Block>(Subject.Blocks.ToList(),
                                         (b, i, t) =>
                                         {
-                                            t.WithCell(String.Format("Bloque {0}", i + 1));
+                                            t.WithCell(String.Format("<b>Bloque {0}</b>", i + 1));
                                             t.WithCell(String.Format(CultureInfo.InvariantCulture, "{0} horas", Subject.GetBlockDuration(i)));
 
                                             string raText = "";
@@ -335,14 +359,59 @@ namespace Programacion123
                                                 }
                                             );
 
-                                            t.WithCell(raText);
-                                            t.WithCell(contentText);
-                                            t.WithCell(criteriaText);
+                                            string evaluableActivitiesText = "";
+                                            first = true;
+                                            Subject.GetBlockEvaluableActivityIndexes(i).ForEach(
+                                                (aIndex) =>
+                                                {
+                                                    evaluableActivitiesText += (first ? "" : "<br>") + Utils.FormatEvaluableActivity(i, aIndex);
+                                                    first = false;
+                                                }
+                                            );
 
+                                            t.WithCell(raText, 2, 1);
+                                            t.WithCell(contentText, 2, 1);
+                                            t.WithCell(criteriaText, 2, 1);
+                                            t.WithCell(evaluableActivitiesText, 2, 1);
+                                            t.WithRow().WithCell(b.Description, 1, 2);
                                         }
                                     )
                             )
                             .WithInner(Tag.Create("h2").WithInner("Programación de actividades de enseñanza-aprendizaje"))
+                            .WithInnerForeach<Block>(Subject.Blocks.ToList(),
+                                (b, i, l) =>
+                                {
+                                    l.Add(Tag.Create("h3").WithInner(String.Format("Bloque {0}", i + 1)));
+
+                                    List<Activity> activities = b.Activities.ToList();
+                                    foreach(Activity a in activities)
+                                    {
+                                        l.Add(
+                                            Table.Create()
+                                                    .WithRow()
+                                                        .WithCell(a.Title, 1, 7).WithCellClass("tableHeader1")
+                                                    .WithRow()
+                                                        .WithCell(a.Description, 1, 7)
+                                                    .WithRow()
+                                                        .WithCell("Metodología").WithCellClass("tableHeader2")
+                                                        .WithCell("Espacios").WithCellClass("tableHeader2")
+                                                        .WithCell("Materiales").WithCellClass("tableHeader2")
+                                                        .WithCell("Duración").WithCellClass("tableHeader2")
+                                                        .WithCell("Fecha de inicio").WithCellClass("tableHeader2")
+                                                        .WithCell("Fecha de fin").WithCellClass("tableHeader2")
+                                                        .WithCell("Sesiones").WithCellClass("tableHeader2")
+                                                    .WithRow()
+                                                        .WithCell(a.Metodology.Title)
+                                                        .WithCell(getSpacesText.Invoke(a))
+                                                        .WithCell(getMaterialsText.Invoke(a))
+                                                        .WithCell(String.Format(CultureInfo.InvariantCulture, "{0:0}h", a.Duration))
+                                                        .WithCell(Utils.FormatStartDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).start, Subject.WeekSchedule))
+                                                        .WithCell(Utils.FormatEndDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).end, Subject.WeekSchedule))
+                                                        .WithCell(Subject.CountActivitySessions(schedule.Find(_a => _a.activity.StorageId == a.StorageId)).ToString())
+                                        );
+                                    }
+                                }
+                            )
 
                             //////////////////////////////////////////////////////////////////////
                             ////////////// Nivel 1: Referencias bibliográficas ///////////////////

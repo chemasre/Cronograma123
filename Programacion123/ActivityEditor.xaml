@@ -28,6 +28,27 @@
                 <TabControl.Background>
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </TabControl.Background>
+                <TabItem Header="Competencias clave">
+                    <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <ListBox x:Name="ListBoxKeyCompetences" Height="301" Width="393" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="33" Canvas.Top="41" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Button x:Name="ButtonKeyCompetenceReferenceAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="33" Canvas.Top="12" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButonReferenceAdd.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Button x:Name="ButtonKeyCompetenceReferenceRemove" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="62" Canvas.Top="12" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButonReferenceRemove.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
+                            </Button.Foreground>
+                        </Button>
+                    </Canvas>
+                </TabItem>
                 <TabItem Header="Datos esenciales">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Label Content="Metodología" Canvas.Left="14" Canvas.Top="151" Width="129" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -74,7 +95,7 @@
                 <TabItem Header="Contenidos">
                     <Canvas HorizontalAlignment="Center" VerticalAlignment="Center">
                         <ListBox x:Name="ListBoxContents" Height="301" Width="393" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="-197" Canvas.Top="-145" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Button x:Name="ButtonContentReferenceAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="-197" Canvas.Top="-174" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Button x:Name="ButtonContentReferenceAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="-197" Canvas.Top="-174" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButonReferenceAdd.png"/>
                             </Button.Background>

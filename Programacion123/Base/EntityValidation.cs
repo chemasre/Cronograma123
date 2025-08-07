@@ -64,6 +64,7 @@ namespace Programacion123
             else if (code == ValidationCode.templateSubjectNoContents) { return "La plantilla al menos debe incluir un contenido."; }
             else if (code == ValidationCode.activityNotLinkedToMetodology) { return "En la pestaña de datos esenciales, la actividad no está vinculada a ninguna metodología."; }
             else if (code == ValidationCode.activityNotLinkedToContents) { return "La actividad no está vinculada a ningún contenido."; }
+            else if (code == ValidationCode.activityNotLinkedToKeyCompetences) { return "La actividad no hace referencia a ninguna competencia clave."; }
             else if (code == ValidationCode.activityEvaluableAndNotLinkedToEvaluationInstrumentType) { return "La actividad es evaluable pero no está vinculada a ningún instrumento de evaluación."; }
             else if (code == ValidationCode.activityEvaluableAndNotLinkedToCriterias) { return "La actividad es evauable pero no está vinculada a ningún criterio de evaluación."; }
             else if (code == ValidationCode.activityEvaluableAndNotLinkedToResultsWeights) { return "La actividad es evaluable pero no tiene peso en ningún resultado de aprendizaje."; }
@@ -79,7 +80,6 @@ namespace Programacion123
             else if (code == ValidationCode.templateSubjectNotLinkedToGradeTemplate) { return "La plantilla de módulo no está vinculada a una plantilla de ciclo."; }
             else if (code == ValidationCode.templateSubjectNoGeneralObjectivesReferenced) { return "La plantilla de módulo no hace referencia a ningún objetivo general."; }
             else if (code == ValidationCode.templateSubjectNoGeneralCompetencesReferenced) { return "La plantilla de módulo no hace referencia a ninguna competencia general."; }
-            else if (code == ValidationCode.templateSubjectNoKeyCapacitiesReferenced) {  return "La plantilla de módulo no hace referencia a ninguna capacidad clave."; }
             else // code == ValidationCode.blockActivityInvalid)
             { return String.Format("La actividad {0} presenta algún problema.", index + 1); }
 
@@ -145,15 +145,17 @@ namespace Programacion123
         templateSubjectNotLinkedToGradeTemplate,
         templateSubjectNoGeneralObjectivesReferenced,
         templateSubjectNoGeneralCompetencesReferenced,
-        templateSubjectNoKeyCapacitiesReferenced,
 
         activityNotLinkedToMetodology,
         activityNotLinkedToContents,
+        activityNotLinkedToKeyCompetences,
+        activityNotLinkedToSpaceResource,
         activityEvaluableAndNotLinkedToEvaluationInstrumentType,
         activityEvaluableAndNotLinkedToCriterias,
         activityEvaluableAndNotLinkedToResultsWeights,
         activityReferencesResultWithoutWeight,
         activityDoesntReferenceResultButHasWeight,
+        activityCannotSchedule,
 
         contentNoPoints,
         contentPointInvalid,
@@ -161,7 +163,5 @@ namespace Programacion123
         learningResultCriteriaInvalid,
         blockNoActivities,
         blockActivityInvalid,
-        activityNotLinkedToSpaceResource,
-        activityCannotSchedule,
     };
 }

@@ -82,28 +82,6 @@
                         </Button>
                     </Canvas>
                 </TabItem>
-                <TabItem Header="Competencias clave">
-                    <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <ListBox x:Name="ListBoxKeyCapacities" Height="188" Width="388" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="54" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <Button x:Name="ButtonKeyCapacitiesReferenceAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="39" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <Button.Background>
-                                <ImageBrush ImageSource="/Images/ButonReferenceAdd.png"/>
-                            </Button.Background>
-                            <Button.Foreground>
-                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
-                            </Button.Foreground>
-                        </Button>
-                        <Button x:Name="ButtonKeyCapacitiesReferenceRemove" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="68" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <Button.Background>
-                                <ImageBrush ImageSource="/Images/ButonReferenceRemove.png"/>
-                            </Button.Background>
-                            <Button.Foreground>
-                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
-                            </Button.Foreground>
-                        </Button>
-
-                    </Canvas>
-                </TabItem>
                 <TabItem Header="Resultados de aprendizaje">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
                         <ListBox x:Name="ListBoxLearningResults" Height="188" Width="388" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="54" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>

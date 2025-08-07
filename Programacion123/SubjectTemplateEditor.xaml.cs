@@ -15,7 +15,6 @@ namespace Programacion123
         WeakReferenceFieldController<GradeTemplate, EntityPicker<GradeTemplate>> gradeTemplateController;
         WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > generalObjectivesController;
         WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> generalCompetencesController;
-        WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> keyCapacitiesController;
 
         StrongReferencesBoxController<LearningResult, LearningResultEditor> learningResultsController;
         StrongReferencesBoxController<Content, ContentEditor> contentsController;
@@ -211,18 +210,6 @@ namespace Programacion123
 
 
 
-            var configCapacities = WeakReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxKeyCapacities)
-                                                        .WithStorageIds(Storage.GetStorageIds<CommonText>(_subjectTemplate.KeyCapacities.ToList()))
-                                                        .WithFormatter(keyCapacitiesFormatter)
-                                                        .WithPick(ButtonKeyCapacitiesReferenceAdd, ButtonKeyCapacitiesReferenceRemove)
-                                                        .WithPickListQuery(pickKeyCapacitiesQuery)
-                                                        .WithPickerTitle("Capacidades clave")
-                                                        .WithBlocker(Blocker);
-
-            keyCapacitiesController = new(configCapacities);
-
-            keyCapacitiesController.Changed += KeyCapacitiesController_Changed;
-
             var configLearningResults = StrongReferencesBoxConfiguration<LearningResult>.CreateForList(ListBoxLearningResults)
                                                         .WithParentStorageId(_subjectTemplate.StorageId)
                                                         .WithStorageIds(Storage.GetStorageIds<LearningResult>(_subjectTemplate.LearningResults.ToList()))
@@ -364,7 +351,6 @@ namespace Programacion123
 
             entity.GeneralObjectives.Set(generalObjectivesController.GetSelectedEntities());
             entity.GeneralCompetences.Set(generalCompetencesController.GetSelectedEntities());
-            entity.KeyCapacities.Set(keyCapacitiesController.GetSelectedEntities());
 
             entity.LearningResults.Set(Storage.LoadOrCreateEntities<LearningResult>(learningResultsController.StorageIds, entity.StorageId));
             entity.Contents.Set(Storage.LoadOrCreateEntities<Content>(contentsController.StorageIds, entity.StorageId));

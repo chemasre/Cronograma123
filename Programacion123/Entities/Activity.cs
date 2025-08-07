@@ -23,6 +23,7 @@ namespace Programacion123
         public CommonText? Metodology = null;
 
         public SetProperty<CommonText> ContentPoints { get; } = new SetProperty<CommonText>();
+        public SetProperty<CommonText> KeyCompetences { get; }= new SetProperty<CommonText>();
         public SetProperty<CommonText> SpaceResources { get; } = new SetProperty<CommonText>();
         public SetProperty<CommonText> MaterialResources { get; } = new SetProperty<CommonText>();
 
@@ -49,6 +50,7 @@ namespace Programacion123
             if(Metodology == null) { return ValidationResult.Create(ValidationCode.activityNotLinkedToMetodology); }
 
             if(ContentPoints.Count <= 0) { return ValidationResult.Create(ValidationCode.activityNotLinkedToContents); } 
+            if(KeyCompetences.Count <= 0) { return ValidationResult.Create(ValidationCode.activityNotLinkedToKeyCompetences); } 
 
             if(IsEvaluable)
             {
@@ -120,6 +122,9 @@ namespace Programacion123
             List<CommonText> list = ContentPoints.ToList();
             data.ContentPointsWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
 
+            list = KeyCompetences.ToList();
+            data.KeyCompetencesWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
+
             list = SpaceResources.ToList();
             data.SpaceResourcesWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
 
@@ -164,6 +169,7 @@ namespace Programacion123
             Metodology = data.MetodologyWeakStorageId != null ? Storage.FindEntity<CommonText>(data.MetodologyWeakStorageId, subjectStorageId) : null;
 
             ContentPoints.Set(Storage.FindChildEntities<CommonText>(data.ContentPointsWeakStorageIds));
+            KeyCompetences.Set(Storage.FindChildEntities<CommonText>(data.KeyCompetencesWeakStorageIds));
             SpaceResources.Set(Storage.FindChildEntities<CommonText>(data.SpaceResourcesWeakStorageIds));
             MaterialResources.Set(Storage.FindChildEntities<CommonText>(data.MaterialResourcesWeakStorageIds));
 

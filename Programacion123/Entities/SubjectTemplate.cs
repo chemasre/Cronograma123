@@ -13,7 +13,6 @@ namespace Programacion123
         public int GradeCompanyHours { get; set; } = 50;
         public ListProperty<CommonText> GeneralObjectives { get; } = new ListProperty<CommonText>();
         public ListProperty<CommonText> GeneralCompetences { get; } = new ListProperty<CommonText>();
-        public ListProperty<CommonText> KeyCapacities { get; } = new ListProperty<CommonText>();
         public ListProperty<LearningResult> LearningResults { get; } = new ListProperty<LearningResult>();
         public ListProperty<Content> Contents { get; } = new ListProperty<Content>();
 
@@ -39,9 +38,6 @@ namespace Programacion123
             
             List<CommonText> competencesList = GeneralCompetences.ToList();
             if (competencesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoGeneralCompetencesReferenced); }
-
-            List<CommonText> capacitiesList = KeyCapacities.ToList();
-            if (capacitiesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoKeyCapacitiesReferenced); }
 
             List<LearningResult> resultsList = LearningResults.ToList();
             if (resultsList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoLearningResults); }
@@ -82,9 +78,6 @@ namespace Programacion123
             list = GeneralCompetences.ToList();
             data.GeneralCompetencesWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
 
-            list = KeyCapacities.ToList();
-            data.KeyCapacitiesWeakStorageIds= Storage.GetStorageIds<CommonText>(list);
-
             List<LearningResult> listLearningResults = LearningResults.ToList();
             listLearningResults.ForEach(e => e.Save(StorageId));            
             data.LearningResultsStorageIds = Storage.GetStorageIds<LearningResult>(listLearningResults);
@@ -118,8 +111,6 @@ namespace Programacion123
             GeneralObjectives.Set(Storage.FindChildEntities<CommonText>(data.GeneralObjectivesWeakStorageIds));
 
             GeneralCompetences.Set(Storage.FindChildEntities<CommonText>(data.GeneralCompetencesWeakStorageIds));
-
-            KeyCapacities.Set(Storage.FindChildEntities<CommonText>(data.KeyCapacitiesWeakStorageIds));
 
             LearningResults.Set(Storage.LoadOrCreateEntities<LearningResult>(data.LearningResultsStorageIds, storageId));
 
