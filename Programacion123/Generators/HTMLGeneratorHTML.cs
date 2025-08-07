@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Programacion123
 {
@@ -165,6 +166,16 @@ namespace Programacion123
                 new IndexItem(){ Title = "Anexos", Subitems = new () { } }
             };
 
+            // https://awkwardcoder.blogspot.com/2011/08/manipulating-web-browser-scroll.html
+
+            string javascript = 
+            @"function getVerticalScrollPosition() {
+            return document.documentElement.scrollTop.toString();
+            }
+            function setVerticalScrollPosition(position) {
+            document.documentElement.scrollTop = position;
+            }";
+
 
             string html =
                 "<!DOCTYPE html>" +
@@ -173,8 +184,8 @@ namespace Programacion123
                         Tag.Create("head")
                             .WithInner(Tag.Create("meta").WithParam("charset", "UTF-8"))
                             .WithInner(Tag.Create("title").WithInner("Programación didáctica del módulo " + subjectTemplate.SubjectName))
-                            .WithInner(Tag.Create("style").WithInner(GenerateCSS())
-                            )
+                            .WithInner(Tag.Create("style").WithInner(GenerateCSS()))
+                            .WithInner(Tag.Create("script").WithInner(javascript))
                     )
                     .WithInner(
                         Tag.Create("body")
@@ -190,30 +201,29 @@ namespace Programacion123
                             ///////////////////// ÍNDICE DE CONTENIDOS  //////////////////////
                             //////////////////////////////////////////////////////////////////
 
-                            .WithInner(Tag.Create("h1").WithInner("Contenidos").WithId("Indice").WithClass("index")
-                                .WithInnerForeach<IndexItem>(indexItems,
-                                    (item, i, l) =>
+                            .WithInner(Tag.Create("h1").WithInner("Contenidos").WithId("Indice").WithClass("index"))
+                            .WithInnerForeach<IndexItem>(indexItems,
+                                (item, i, l) =>
+                                {
+                                    l.Add(Tag.Create("div").WithInner(Tag.Create("a").WithParam("href", String.Format("#Apartado{0}", i + 1))
+                                                            .WithInner(item.Title)).WithClass("indexLevel1"));
+
+                                    int subitemIndex = 0;
+                                    foreach(IndexItem subitem in item.Subitems)
                                     {
-                                        l.Add(Tag.Create("div").WithInner(Tag.Create("a").WithParam("href", String.Format("#Apartado{0}", i + 1))
-                                                                .WithInner(item.Title)).WithClass("indexLevel1"));
-
-                                        int subitemIndex = 0;
-                                        foreach(IndexItem subitem in item.Subitems)
+                                        l.Add(Tag.Create("div").WithInner(Tag.Create("a").WithParam("href", String.Format("#Apartado{0}-{1}", i + 1, subitemIndex + 1))
+                                                                .WithInner(subitem.Title)).WithClass("indexLevel2"));
+                                        int subSubitemIndex = 0;
+                                        foreach(IndexItem subsubitem in subitem.Subitems)
                                         {
-                                            l.Add(Tag.Create("div").WithInner(Tag.Create("a").WithParam("href", String.Format("#Apartado{0}-{1}", i + 1, subitemIndex + 1))
-                                                                    .WithInner(subitem.Title)).WithClass("indexLevel2"));
-                                            int subSubitemIndex = 0;
-                                            foreach(IndexItem subsubitem in subitem.Subitems)
-                                            {
-                                                l.Add(Tag.Create("div").WithInner(Tag.Create("a").WithParam("href", String.Format("#Apartado{0}-{1}-{2}", i + 1, subitemIndex + 1, subSubitemIndex + 1))
-                                                                        .WithInner(subsubitem.Title)).WithClass("indexLevel3"));
-                                                subSubitemIndex++;
-                                            }
-
-                                            subitemIndex++;
+                                            l.Add(Tag.Create("div").WithInner(Tag.Create("a").WithParam("href", String.Format("#Apartado{0}-{1}-{2}", i + 1, subitemIndex + 1, subSubitemIndex + 1))
+                                                                    .WithInner(subsubitem.Title)).WithClass("indexLevel3"));
+                                            subSubitemIndex++;
                                         }
+
+                                        subitemIndex++;
                                     }
-                                 )
+                                }
                             )
 
                             //////////////////////////////////////////////////////////////////

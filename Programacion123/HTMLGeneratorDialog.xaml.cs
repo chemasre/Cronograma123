@@ -31,6 +31,9 @@ namespace Programacion123
 
         HTMLGenerator generator;
 
+        object? webPreviewLastScrollPosition;
+        bool webPreviewReady;
+
         public HTMLGeneratorDialog()
         {
             InitializeComponent();
@@ -65,9 +68,7 @@ namespace Programacion123
             for(int i = 0; i < 300; i ++)
             {
                 ComboCoverElementPositionTop.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
-                ComboCoverElementPositionBottom.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
                 ComboCoverElementPositionLeft.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
-                ComboCoverElementPositionRight.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
             }
 
 
@@ -110,7 +111,7 @@ namespace Programacion123
             ComboTextElement.Items.Add("Encabezado de nivel 5");
             ComboTextElement.Items.Add("Encabezado de nivel 6");
             ComboTextElement.Items.Add("Texto normal");
-            ComboTextElement.Items.Add("Tablas");
+            ComboTextElement.Items.Add("Tablas: General");
             ComboTextElement.Items.Add("Tablas: Encabezado de nivel 1");
             ComboTextElement.Items.Add("Tablas: Encabezado de nivel 2");
             ComboTextElement.Items.Add("Portada: Código del módulo");
@@ -178,6 +179,8 @@ namespace Programacion123
             
             Validate();
 
+            webPreviewLastScrollPosition = null;
+            webPreviewReady = false;
             WebPreview.LoadCompleted += WebPreview_LoadCompleted;
             UpdatePreviewUI();
 
@@ -190,16 +193,12 @@ namespace Programacion123
                 ComboCoverElement.SelectionChanged += ComboCoverElement_SelectionChanged;
                 ComboCoverElementPositionTop.SelectionChanged += ComboCoverElementPositionTop_SelectionChanged;
                 ComboCoverElementPositionLeft.SelectionChanged += ComboCoverElementPositionLeft_SelectionChanged;
-                ComboCoverElementPositionBottom.SelectionChanged += ComboCoverElementPositionBottom_SelectionChanged;
-                ComboCoverElementPositionRight.SelectionChanged += ComboCoverElementPositionRight_SelectionChanged;
             }
             else
             {
                 ComboCoverElement.SelectionChanged -= ComboCoverElement_SelectionChanged;
                 ComboCoverElementPositionTop.SelectionChanged -= ComboCoverElementPositionTop_SelectionChanged;
                 ComboCoverElementPositionLeft.SelectionChanged -= ComboCoverElementPositionLeft_SelectionChanged;
-                ComboCoverElementPositionBottom.SelectionChanged -= ComboCoverElementPositionBottom_SelectionChanged;
-                ComboCoverElementPositionRight.SelectionChanged -= ComboCoverElementPositionRight_SelectionChanged;
             }
             
         }
@@ -400,8 +399,6 @@ namespace Programacion123
             SetCoverElementEventListenersEnabled(false);
 
             ComboCoverElementPositionTop.SelectedIndex = (int)(style.Position.Top / 0.1f);
-            ComboCoverElementPositionBottom.SelectedIndex = (int)(style.Position.Bottom / 0.1f);
-            ComboCoverElementPositionRight.SelectedIndex = (int)(style.Position.Right / 0.1f);
             ComboCoverElementPositionLeft.SelectedIndex = (int)(style.Position.Left / 0.1f);
 
             SetCoverElementEventListenersEnabled(true);
@@ -500,20 +497,6 @@ namespace Programacion123
         }
 
         private void ComboCoverElementPositionLeft_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            UpdateGenerator();
-            Validate();
-            UpdatePreviewUI();
-        }
-
-        private void ComboCoverElementPositionBottom_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            UpdateGenerator();
-            Validate();
-            UpdatePreviewUI();
-        }
-
-        private void ComboCoverElementPositionRight_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateGenerator();
             Validate();
@@ -710,6 +693,10 @@ namespace Programacion123
 
         void UpdatePreviewUI()
         {
+            if(webPreviewReady)
+            {
+                webPreviewLastScrollPosition = WebPreview.InvokeScript("getVerticalScrollPosition");
+            }
             string html = generator.GenerateHTML();
             WebPreview.NavigateToString(html);
         }
@@ -722,6 +709,13 @@ namespace Programacion123
             IHTMLStyleSheet style = htmlDocument.createStyleSheet("",0);
 
             style.cssText = generator.GenerateCSS();
+
+            if(webPreviewReady && webPreviewLastScrollPosition != null)
+            {
+                WebPreview.InvokeScript("setVerticalScrollPosition", webPreviewLastScrollPosition.ToString());
+            }
+
+            webPreviewReady = true;
 
         }
 
@@ -849,8 +843,6 @@ namespace Programacion123
                                                   { 
                                                     Top = ComboCoverElementPositionTop.SelectedIndex * 0.1f,
                                                     Left = ComboCoverElementPositionLeft.SelectedIndex * 0.1f,
-                                                    Bottom = ComboCoverElementPositionBottom.SelectedIndex * 0.1f,
-                                                    Right = ComboCoverElementPositionRight.SelectedIndex * 0.1f
                                                   }
 
                                       };
@@ -944,7 +936,12 @@ namespace Programacion123
             Close();
         }
 
-
-
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DragMove();
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="HTMLGeneratorSettings" Height="758" Width="1147" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="None" Background="{x:Null}">
+        Title="HTMLGeneratorSettings" Height="758" Width="1147" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="None" Background="{x:Null}" MouseDown="Window_MouseDown">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>
@@ -88,10 +88,6 @@
                         <ComboBox x:Name="ComboCoverElementPositionTop" Width="68" Canvas.Left="247" Canvas.Top="165" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Image Height="20" Width="20" Canvas.Left="120" Canvas.Top="165" Source="/Images/CaptionSeparationLeft.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Image Height="20" Width="20" Canvas.Left="222" Canvas.Top="166" Source="/Images/CaptionSeparationBottom.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <ComboBox x:Name="ComboCoverElementPositionBottom" Width="68" Canvas.Left="145" Canvas.Top="200" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <ComboBox x:Name="ComboCoverElementPositionRight" Width="68" Canvas.Left="247" Canvas.Top="200" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Image Height="20" Width="20" Canvas.Left="120" Canvas.Top="200" Source="/Images/CaptionSeparationTop.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Image Height="20" Width="20" Canvas.Left="222" Canvas.Top="201" Source="/Images/CaptionSeparationRight.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                     </Canvas>
                 </TabItem>
                 <TabItem Header="Documento">

@@ -10,9 +10,7 @@ namespace Programacion123
     public struct DocumentCoverElementPosition
     {
         public float Top { get; set; }
-        public float Bottom { get; set; }
         public float Left { get; set; }
-        public float Right { get; set; }
 
     }
 
@@ -130,8 +128,6 @@ namespace Programacion123
             builder.AppendLine(String.Format("position:absolute;"));
             builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "top:{0}cm;", style.Position.Top));
             builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "left:{0}cm;", style.Position.Left));
-            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "bottom:{0}cm;", style.Position.Bottom));
-            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "right:{0}cm;", style.Position.Right));
 
             builder.AppendLine("}");
         }
@@ -149,7 +145,7 @@ namespace Programacion123
             else if (id == DocumentTextElementId.NormalText) { selector = "div"; }
             else if (id == DocumentTextElementId.Table) { selector = "table"; }
             else if (id == DocumentTextElementId.TableHeader1Text) { selector = ".tableHeader1"; }
-            else if (id == DocumentTextElementId.TableHeader1Text) { selector = ".tableHeader2"; }
+            else if (id == DocumentTextElementId.TableHeader2Text) { selector = ".tableHeader2"; }
             else if (id == DocumentTextElementId.CoverSubjectCode) { selector = ".coverSubjectCode"; }
             else if (id == DocumentTextElementId.CoverSubjectName) { selector = ".coverSubjectName"; }
             else if (id == DocumentTextElementId.CoverGradeTypeName) { selector = ".coverGradeTypeName"; }
