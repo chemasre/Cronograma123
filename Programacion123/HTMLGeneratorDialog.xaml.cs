@@ -117,6 +117,9 @@ namespace Programacion123
             ComboTextElement.Items.Add("Portada: Nombre del módulo");
             ComboTextElement.Items.Add("Portada: Tipo de ciclo");
             ComboTextElement.Items.Add("Portada: Nombre del ciclo");
+            ComboTextElement.Items.Add("Índice de nivel 1");
+            ComboTextElement.Items.Add("Índice de nivel 2");
+            ComboTextElement.Items.Add("Índice de nivel 3");
 
             ComboTextElement.SelectedIndex = 0;
 

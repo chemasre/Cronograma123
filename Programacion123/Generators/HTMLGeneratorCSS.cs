@@ -136,22 +136,30 @@ namespace Programacion123
 
         void AppendCSSTextElement(DocumentTextElementId id, StringBuilder builder)
         {
-            if(id == DocumentTextElementId.Header1) { builder.AppendLine("h1 {"); }
-            else if(id == DocumentTextElementId.Header2) { builder.AppendLine("h2 {"); }
-            else if(id == DocumentTextElementId.Header3) { builder.AppendLine("h3 {"); }
-            else if(id == DocumentTextElementId.Header4) { builder.AppendLine("h4 {"); }
-            else if(id == DocumentTextElementId.Header5) { builder.AppendLine("h5 {"); }
-            else if(id == DocumentTextElementId.Header6) { builder.AppendLine("h6 {"); }
-            else if(id == DocumentTextElementId.NormalText) { builder.AppendLine("div {"); }
-            else if(id == DocumentTextElementId.Table) { builder.AppendLine("table {"); }
-            else if(id == DocumentTextElementId.TableHeader1Text) { builder.AppendLine(".tableHeader1 {"); }
-            else if(id == DocumentTextElementId.TableHeader1Text) { builder.AppendLine(".tableHeader2 {"); }
-            else if(id == DocumentTextElementId.CoverSubjectCode) { builder.AppendLine(".coverSubjectCode {"); }
-            else if(id == DocumentTextElementId.CoverSubjectName) { builder.AppendLine(".coverSubjectName {"); }
-            else if(id == DocumentTextElementId.CoverGradeTypeName) { builder.AppendLine(".coverGradeTypeName {"); }
-            else if(id == DocumentTextElementId.CoverGradeName) { builder.AppendLine(".coverGradeName{"); }
+            string selector;
 
-            if(!TextElementStyles.ContainsKey(id)) { TextElementStyles.Add(id, new DocumentTextElementStyle()); }
+            if (id == DocumentTextElementId.Header1) { selector = "h1"; }
+            else if (id == DocumentTextElementId.Header2) { selector = "h2"; }
+            else if (id == DocumentTextElementId.Header3) { selector = "h3"; }
+            else if (id == DocumentTextElementId.Header4) { selector = "h4"; }
+            else if (id == DocumentTextElementId.Header5) { selector = "h5"; }
+            else if (id == DocumentTextElementId.Header6) { selector = "h6"; }
+            else if (id == DocumentTextElementId.NormalText) { selector = "div"; }
+            else if (id == DocumentTextElementId.Table) { selector = "table"; }
+            else if (id == DocumentTextElementId.TableHeader1Text) { selector = ".tableHeader1"; }
+            else if (id == DocumentTextElementId.TableHeader1Text) { selector = ".tableHeader2"; }
+            else if (id == DocumentTextElementId.CoverSubjectCode) { selector = ".coverSubjectCode"; }
+            else if (id == DocumentTextElementId.CoverSubjectName) { selector = ".coverSubjectName"; }
+            else if (id == DocumentTextElementId.CoverGradeTypeName) { selector = ".coverGradeTypeName"; }
+            else if (id == DocumentTextElementId.CoverGradeName) { selector = ".coverGradeNam"; }
+            else if (id == DocumentTextElementId.IndexLevel1) { selector = ".indexLevel1"; }
+            else if (id == DocumentTextElementId.IndexLevel2) { selector = ".indexLevel2"; }
+            else // id == DocumentTextElementId.IndexLevel3
+            { selector = ".indexLevel3"; }
+
+            builder.AppendLine(String.Format("{0} {{", selector));
+
+            if (!TextElementStyles.ContainsKey(id)) { TextElementStyles.Add(id, new DocumentTextElementStyle()); }
             DocumentTextElementStyle style = TextElementStyles[id];
 
             builder.AppendLine(String.Format("font-size:{0}pt;", style.FontSize));
@@ -176,6 +184,12 @@ namespace Programacion123
             builder.AppendLine(String.Format("color:rgb({0},{1},{2});", r, g, b));
 
             builder.AppendLine("}");
+
+            builder.AppendLine(String.Format("{0} a:visited,a:hover,a:link,a:visited {{", selector));
+            builder.AppendLine(String.Format("color:rgb({0},{1},{2});", r, g, b));
+            builder.AppendLine("}");
+
+
         }
 
         void AppendCSSTableElement(DocumentTableElementId id, StringBuilder builder)
@@ -235,6 +249,7 @@ namespace Programacion123
             Enum.GetValues<DocumentTableElementId>().ToList().ForEach(e => AppendCSSTableElement(e, builder));
 
             builder.AppendLine("table { width:100%; }");
+            builder.AppendLine("a { text-decoration: none; }");
 
             return builder.ToString();
 

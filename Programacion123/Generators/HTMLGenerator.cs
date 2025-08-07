@@ -66,10 +66,13 @@ namespace Programacion123
             TextElementStyles[DocumentTextElementId.CoverSubjectName] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 32, Bold = true, Margins = new () { Bottom = 32 } };
             TextElementStyles[DocumentTextElementId.CoverGradeTypeName] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 22, Bold = true, Margins = new () { Bottom = 22 } };
             TextElementStyles[DocumentTextElementId.CoverGradeName] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 26, Bold = true, Margins = new () { Bottom = 26 } };
-    
-    
+            TextElementStyles[DocumentTextElementId.IndexLevel1] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 16, Bold = false, Margins = new() { Bottom = 16 } };
+            TextElementStyles[DocumentTextElementId.IndexLevel2] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 14, Bold = false, Margins = new() { Bottom = 14 } };
+            TextElementStyles[DocumentTextElementId.IndexLevel3] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 12, Bold = false, Margins = new() { Bottom = 12 } };
+
+
         }
-    
+
         public override void Generate(string outputPath)
         {
             FileStreamOptions options = new() { Access = FileAccess.Write, Mode = FileMode.Create };
