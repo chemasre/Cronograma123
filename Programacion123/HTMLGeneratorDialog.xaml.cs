@@ -139,6 +139,8 @@ namespace Programacion123
             {
                 ComboTextElementMarginTop.Items.Add(String.Format("{0}pt", i + 1));
                 ComboTextElementMarginBottom.Items.Add(String.Format("{0}pt", i + 1));
+                ComboTextElementMarginLeft.Items.Add(String.Format("{0}pt", i + 1));
+                ComboTextElementMarginRight.Items.Add(String.Format("{0}pt", i + 1));
             }
 
             ComboTableElement.Items.Add("Celda normal");
@@ -219,6 +221,8 @@ namespace Programacion123
                 CheckboxTextElementUnderscore.Unchecked += CheckboxTextElementUnderscore_Unchecked;
                 ComboTextElementMarginBottom.SelectionChanged += ComboTextElementMarginBottom_SelectionChanged;
                 ComboTextElementMarginTop.SelectionChanged += ComboTextElementMarginTop_SelectionChanged;
+                ComboTextElementMarginLeft.SelectionChanged += ComboTextElementMarginLeft_SelectionChanged;
+                ComboTextElementMarginRight.SelectionChanged += ComboTextElementMarginRight_SelectionChanged;
             }
             else
             {
@@ -235,6 +239,8 @@ namespace Programacion123
                 CheckboxTextElementUnderscore.Unchecked -= CheckboxTextElementUnderscore_Unchecked;
                 ComboTextElementMarginBottom.SelectionChanged -= ComboTextElementMarginBottom_SelectionChanged;
                 ComboTextElementMarginTop.SelectionChanged -= ComboTextElementMarginTop_SelectionChanged;
+                ComboTextElementMarginLeft.SelectionChanged -= ComboTextElementMarginLeft_SelectionChanged;
+                ComboTextElementMarginRight.SelectionChanged -= ComboTextElementMarginRight_SelectionChanged;
             }
             
         }
@@ -424,6 +430,8 @@ namespace Programacion123
 
             ComboTextElementMarginTop.SelectedIndex = style.Margins.Top;
             ComboTextElementMarginBottom.SelectedIndex = style.Margins.Bottom;
+            ComboTextElementMarginLeft.SelectedIndex = style.Margins.Left;
+            ComboTextElementMarginRight.SelectedIndex = style.Margins.Right;
 
             SetTextElementEventListenersEnabled(true);
         }
@@ -561,6 +569,20 @@ namespace Programacion123
         }
 
         private void ComboTextElementMarginBottom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateGenerator();
+            Validate();
+            UpdatePreviewUI();
+        }
+
+        private void ComboTextElementMarginLeft_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateGenerator();
+            Validate();
+            UpdatePreviewUI();
+        }
+
+        private void ComboTextElementMarginRight_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateGenerator();
             Validate();
@@ -860,7 +882,9 @@ namespace Programacion123
                                         Margins = new()
                                                   { 
                                                     Top = ComboTextElementMarginTop.SelectedIndex,
-                                                    Bottom = ComboTextElementMarginBottom.SelectedIndex
+                                                    Bottom = ComboTextElementMarginBottom.SelectedIndex,
+                                                    Left = ComboTextElementMarginLeft.SelectedIndex,
+                                                    Right = ComboTextElementMarginRight.SelectedIndex
                                                   }
 
                                       };

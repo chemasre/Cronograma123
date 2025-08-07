@@ -36,6 +36,8 @@ namespace Programacion123
     {
         public int Top { get; set; }
         public int Bottom { get; set; }
+        public int Left { get; set; }
+        public int Right { get; set; }
     }
 
 
@@ -169,6 +171,8 @@ namespace Programacion123
             builder.AppendLine(String.Format("text-decoration:{0};",style.Underscore ? "underline" : "none"));
             builder.AppendLine(String.Format("margin-top:{0}pt;", style.Margins.Top));
             builder.AppendLine(String.Format("margin-bottom:{0}pt;", style.Margins.Bottom));
+            builder.AppendLine(String.Format("margin-left:{0}pt;", style.Margins.Left));
+            builder.AppendLine(String.Format("margin-right:{0}pt;", style.Margins.Right));
 
             string align;
             if (style.Align == DocumentTextElementAlign.Left) { align = "left"; }
