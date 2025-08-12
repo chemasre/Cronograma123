@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Globalization;
+﻿using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Microsoft.Win32;
 using MSHTML;
 
@@ -62,6 +51,7 @@ namespace Programacion123
             ComboCoverElement.Items.Add("Nombre del módulo");
             ComboCoverElement.Items.Add("Tipo de ciclo");
             ComboCoverElement.Items.Add("Nombre del ciclo");
+            ComboCoverElement.Items.Add("Imagen de portada");
 
             ComboCoverElement.SelectedIndex = 0;
 
@@ -102,7 +92,8 @@ namespace Programacion123
             ComboDocumentMarginLeft.SelectedIndex = (int)(generator.DocumentStyle.Margins.Left / 0.1f);
             ComboDocumentMarginRight.SelectedIndex = (int)(generator.DocumentStyle.Margins.Right/ 0.1f);
 
-            SetBase64LogoImageInUI(generator.DocumentStyle.LogoBase64);
+            SetBase64ImageInUI(ImageCoverLogo, generator.DocumentStyle.LogoBase64);
+            SetBase64ImageInUI(ImageCoverCover, generator.DocumentStyle.CoverBase64);
 
             ComboTextElement.Items.Add("Encabezado de nivel 1");
             ComboTextElement.Items.Add("Encabezado de nivel 2");
@@ -169,6 +160,7 @@ namespace Programacion123
 
 
             ButtonCoverLogoOpen.Click += ButtonCoverLogoOpen_Click;
+            ButtonCoverCoverOpen.Click += ButtonCoverCoverOpen_Click;
             ComboDocumentSize.SelectionChanged += ComboDocumentSize_SelectionChanged;
             ComboDocumentOrientation.SelectionChanged += ComboDocumentOrientation_SelectionChanged;
             ComboDocumentMarginTop.SelectionChanged += ComboDocumentMarginTop_SelectionChanged;
@@ -697,7 +689,7 @@ namespace Programacion123
             {
                 webPreviewLastScrollPosition = WebPreview.InvokeScript("getVerticalScrollPosition");
             }
-            string html = generator.GenerateHTML();
+            string html = generator.GenerateHTML(true);
             WebPreview.NavigateToString(html);
         }
 
@@ -720,15 +712,15 @@ namespace Programacion123
         }
 
 
-        string? GetBase64LogoImageFromUI()
+        string? GetBase64ImageFromUI(Image image)
         {
-            if(ImageCoverLogo.Source != null)
+            if(image.Source != null)
             {
                 //https://stackoverflow.com/questions/553611/wpf-image-to-byte
 
                 MemoryStream memoryStream = new();              
                 PngBitmapEncoder encoder = new();
-                BitmapFrame frame = BitmapFrame.Create((BitmapImage)ImageCoverLogo.Source);
+                BitmapFrame frame = BitmapFrame.Create((BitmapImage)image.Source);
                 encoder.Frames.Add(frame);
                 encoder.Save(memoryStream);
 
@@ -740,7 +732,7 @@ namespace Programacion123
             }
         }
 
-        void SetBase64LogoImageInUI(string? imageBase64)
+        void SetBase64ImageInUI(Image image, string? imageBase64)
         {
             if(imageBase64 != null)
             {
@@ -754,12 +746,12 @@ namespace Programacion123
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.EndInit();
 
-                ImageCoverLogo.Source = bitmap;
+                image.Source = bitmap;
 
             }
             else
             {
-                ImageCoverLogo.Source = null;
+                image.Source = null;
             }
         }
 
@@ -785,7 +777,20 @@ namespace Programacion123
             RectangleTextElementColor.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)r, (byte)g, (byte)b));
         }
 
+
+
         private void ButtonCoverLogoOpen_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonCoverImageOpenClick(ImageCoverLogo);
+
+        }
+
+        private void ButtonCoverCoverOpen_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonCoverImageOpenClick(ImageCoverCover);
+        }
+
+        void ButtonCoverImageOpenClick(Image target)
         {
             OpenFileDialog openFile = new();
             openFile.Title = "Elige imagen para usar como logotipo";
@@ -804,7 +809,7 @@ namespace Programacion123
             {
                 byte[] bytes = File.ReadAllBytes(openFile.FileName);
                 string base64 = Convert.ToBase64String(bytes);
-                SetBase64LogoImageInUI(base64);
+                SetBase64ImageInUI(target, base64);
                 
                 UpdateGenerator();
                 Validate();
@@ -812,7 +817,6 @@ namespace Programacion123
                 UpdatePreviewUI();
 
             }
-
         }
 
         private void SubjectController_Changed(WeakReferenceFieldController<Subject, EntityPicker<Subject>> controller)
@@ -850,7 +854,8 @@ namespace Programacion123
 
             generator.DocumentStyle = new()
                                       {
-                                        LogoBase64 = GetBase64LogoImageFromUI(),
+                                        LogoBase64 = GetBase64ImageFromUI(ImageCoverLogo),
+                                        CoverBase64 = GetBase64ImageFromUI(ImageCoverCover),
                                         Orientation = (DocumentOrientation)ComboDocumentOrientation.SelectedIndex,
                                         Size = (DocumentSize)ComboDocumentSize.SelectedIndex,
                                         Margins = new()

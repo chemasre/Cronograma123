@@ -1,6 +1,4 @@
-﻿using Microsoft.Office.Interop.Excel;
-
-namespace Cronogramador
+﻿namespace Cronogramador
 {
     public class Config
     {

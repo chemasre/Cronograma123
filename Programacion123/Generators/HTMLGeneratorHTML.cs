@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Globalization;
 
 namespace Programacion123
 {
@@ -15,7 +8,8 @@ namespace Programacion123
         SubjectCode,
         SubjectName,
         GradeTypeName,
-        GradeName
+        GradeName,
+        Cover
     }
 
     public enum DocumentTextElementId
@@ -36,7 +30,7 @@ namespace Programacion123
         CoverGradeName,
         IndexLevel1,
         IndexLevel2,
-        IndexLevel3
+        IndexLevel3,
     }
 
     public enum DocumentTableElementId
@@ -55,7 +49,7 @@ namespace Programacion123
 
     public partial class HTMLGenerator : Generator
     {
-        public string GenerateHTML()
+        public string GenerateHTML(bool isPreview = false)
         {
             SubjectTemplate? subjectTemplate = Subject.Template;
             GradeTemplate? gradeTemplate = subjectTemplate?.GradeTemplate;
@@ -86,6 +80,75 @@ namespace Programacion123
                     foreach(CommonText s in a.MaterialResources.ToList()) { materialsText += (first?"":"<br>") + s.Title; }
                     return materialsText.Length > 0 ? materialsText : "-";
                 };
+
+            Func<Activity, string> getSessionsCountText =
+                (Activity a) =>
+                {
+                    return Subject.QueryActivitySessionsCount(schedule.Find(_a => _a.activity.StorageId == a.StorageId)).ToString();
+                };
+
+            Func<int, Activity, string> getContentsText =
+                (int blockIndex, Activity a) =>
+                {
+                    int activityIndex = Subject.QueryActivityIndex(blockIndex, a);
+                    List<ContentPointIndex> contentPoints = Subject.QueryActivityContentPointsIndexes(blockIndex, activityIndex);
+
+                    string contentsText = "";
+                    bool first = true;
+                    foreach(ContentPointIndex c in contentPoints.ToList()) { contentsText += (first?"":", ") + Utils.FormatContentPoint(c.contentIndex, c.pointIndex); first = false; }
+
+                    return contentsText;
+                };
+
+            Func<Activity, string> getKeyCapacitiesText =
+                (Activity a) =>
+                {
+                    string capacitiesText = "";
+                    bool first = true;
+                    foreach(CommonText capacity in a.KeyCompetences.ToList()) { capacitiesText += (first?"":"<br>") + capacity.Title; first = false; }
+
+                    return capacitiesText.Length > 0 ? capacitiesText : "-";
+                };
+
+            Func<int, Activity, string> getReferencedLearningResultsWeightsText =
+                (int blockIndex, Activity a) =>
+                {
+                    string resultsWeightsText = "";
+                    bool first = true;
+
+                    int activityIndex = Subject.QueryActivityIndex(blockIndex, a);
+                    List<SubjectLearningResultIndexesWeight> resultWeights = Subject.QueryActivityLearningResultsIndexesWeight(blockIndex, activityIndex);
+                    foreach(SubjectLearningResultIndexesWeight resultWeight in resultWeights)
+                    {
+                        if(resultWeight.weight > 0)
+                        {
+                            resultsWeightsText += (first?"":", ") + String.Format("RA{0}&nbsp;({1}%)", resultWeight.learningResultIndex + 1, resultWeight.weight);
+                            first = false;
+                        }
+                    }
+
+                    return resultsWeightsText.Length > 0 ? resultsWeightsText : "-";
+                };
+
+            Func<int, Activity, string> getReferencedCriteriasText =
+                (int blockIndex, Activity a) =>
+                {
+                    string criteriasText = "";
+                    bool first = true;
+
+                    int activityIndex = Subject.QueryActivityIndex(blockIndex, a);
+                    List<SubjectLearningResultCriteriaIndex> criterias = Subject.QueryActivityReferencedLearningResultCriteriaIndexes(blockIndex, activityIndex);
+                    foreach(SubjectLearningResultCriteriaIndex criteria in criterias)
+                    {
+                        string criteriaPrefix = Utils.FormatLearningResultCriteria(criteria.learningResultIndex, criteria.criteriaIndex);
+                        criteriasText += (first?"":", ") + String.Format("{0}", criteriaPrefix);
+                        first = false;
+                    }
+
+                    return criteriasText.Length > 0 ? criteriasText : "-";
+                };
+
+            
 
             List<IndexItem> indexMetodologies = new();
             Subject.Metodologies.ToList().ForEach(m => indexMetodologies.Add(new() { Title = m.Title, Subitems = new() }));
@@ -184,13 +247,14 @@ namespace Programacion123
                         Tag.Create("head")
                             .WithInner(Tag.Create("meta").WithParam("charset", "UTF-8"))
                             .WithInner(Tag.Create("title").WithInner("Programación didáctica del módulo " + subjectTemplate.SubjectName))
-                            .WithInner(Tag.Create("style").WithInner(GenerateCSS()))
+                            .WithInner(Tag.Create("style").WithInner(GenerateCSS(isPreview)))
                             .WithInner(Tag.Create("script").WithInner(javascript))
                     )
                     .WithInner(
                         Tag.Create("body")
                             .WithInner(Tag.Create("div").WithClass("cover")
                                .WithInner(Tag.Create("img").WithClass("coverLogo").WithParam("src", "data:image/png;base64," + DocumentStyle.LogoBase64))
+                               .WithInner(Tag.Create("img").WithClass("coverCover").WithParam("src", "data:image/png;base64," + DocumentStyle.CoverBase64))
                                .WithInner(Tag.Create("div").WithClass("coverSubjectCode").WithInner("Módulo profesional " + subjectTemplate.SubjectCode))
                                .WithInner(Tag.Create("div").WithClass("coverSubjectName").WithInner(subjectTemplate.SubjectName))
                                .WithInner(Tag.Create("div").WithClass("coverGradeTypeName").WithInner(gradeTypeName))
@@ -254,8 +318,8 @@ namespace Programacion123
                                               .WithRowForeach<Block>(Subject.Blocks.ToList(),
                                                         (b, i, t) =>
                                                         {
-                                                            List<int> referencedResults = Subject.GetBlockReferencedLearningResultIndexes(i);
-                                                            List<SubjectLearningResultCriteriaIndex> referencedCriterias = Subject.GetBlockReferencedLearningResultCriteriaIndexes(i);
+                                                            List<int> referencedResults = Subject.QueryBlockReferencedLearningResultIndexes(i);
+                                                            List<SubjectLearningResultCriteriaIndex> referencedCriterias = Subject.QueryBlockReferencedLearningResultCriteriaIndexes(i);
 
                                                             string rasText = "";
                                                             bool first = true;
@@ -265,7 +329,7 @@ namespace Programacion123
                                                             first = true;
                                                             referencedCriterias.ForEach((c) => { criteriasText += (first ? "" : ", ") + String.Format("{0}.{1}", c.learningResultIndex + 1, c.criteriaIndex + 1); first = false; });
 
-                                                            float hours = Subject.GetBlockDuration(i);
+                                                            float hours = Subject.QueryBlockDuration(i);
 
                                                             ActivitySchedule? startActivitySchedule = null;
                                                             ActivitySchedule? endActivitySchedule = null;
@@ -327,7 +391,7 @@ namespace Programacion123
                                 )
                              )
                             .WithInner(Tag.Create("h2").WithInner(indexItems[2].Subitems[2].Title).WithId("Apartado3-3"))
-                            .WithInnerForeach<int>(Subject.GetReferencedKeyCompetencesIndexes(),
+                            .WithInnerForeach<int>(Subject.QueryReferencedKeyCompetencesIndexes(),
                                 (c, i, l) =>
                                 {
                                     l.Add(Tag.Create("h3").WithInner(gradeTemplate.KeyCapacities[c].Title));
@@ -464,17 +528,17 @@ namespace Programacion123
                                         (b, i, t) =>
                                         {
                                             t.WithCell(String.Format("<b>Bloque {0}</b>", i + 1));
-                                            t.WithCell(String.Format(CultureInfo.InvariantCulture, "{0} horas", Subject.GetBlockDuration(i)));
+                                            t.WithCell(String.Format(CultureInfo.InvariantCulture, "{0} horas", Subject.QueryBlockDuration(i)));
 
                                             string raText = "";
                                             bool first = true;
-                                            Subject.GetBlockReferencedLearningResultIndexes(i).ForEach(
+                                            Subject.QueryBlockReferencedLearningResultIndexes(i).ForEach(
                                                 r => { raText += (first?"":", ") + "RA" + (r + 1); first = false;
                                             });
 
                                             string contentText = "";
                                             first = true;
-                                            Subject.GetBlockReferencedContentIndexes(i).ForEach(
+                                            Subject.QueryBlockReferencedContentIndexes(i).ForEach(
                                                 c =>
                                                 {
                                                     contentText += (first ? "" : ", ") + (c + 1); first = false;
@@ -482,7 +546,7 @@ namespace Programacion123
 
                                             string criteriaText = "";
                                             first = true;
-                                            Subject.GetBlockReferencedLearningResultCriteriaIndexes(i).ForEach(
+                                            Subject.QueryBlockReferencedLearningResultCriteriaIndexes(i).ForEach(
                                                 cIndex =>
                                                 {
                                                     criteriaText += (first ? "" : ", ") + (cIndex.learningResultIndex + 1) + "." + (cIndex.criteriaIndex + 1);
@@ -492,7 +556,7 @@ namespace Programacion123
 
                                             string evaluableActivitiesText = "";
                                             first = true;
-                                            Subject.GetBlockEvaluableActivityIndexes(i).ForEach(
+                                            Subject.QueryBlockEvaluableActivityIndexes(i).ForEach(
                                                 (aIndex) =>
                                                 {
                                                     evaluableActivitiesText += (first ? "" : "<br>") + Utils.FormatEvaluableActivity(i, aIndex);
@@ -520,25 +584,39 @@ namespace Programacion123
                                         l.Add(
                                             Table.Create()
                                                     .WithRow()
-                                                        .WithCell(a.Title, 1, 7).WithCellClass("tableHeader1")
+                                                        .WithCell(a.Title, 1, 4).WithCellClass("tableHeader1")
                                                     .WithRow()
-                                                        .WithCell(a.Description, 1, 7)
+                                                        .WithCell(a.Description, 1, 4)
                                                     .WithRow()
                                                         .WithCell("Metodología").WithCellClass("tableHeader2")
-                                                        .WithCell("Espacios").WithCellClass("tableHeader2")
-                                                        .WithCell("Materiales").WithCellClass("tableHeader2")
                                                         .WithCell("Duración").WithCellClass("tableHeader2")
                                                         .WithCell("Fecha de inicio").WithCellClass("tableHeader2")
                                                         .WithCell("Fecha de fin").WithCellClass("tableHeader2")
-                                                        .WithCell("Sesiones").WithCellClass("tableHeader2")
                                                     .WithRow()
                                                         .WithCell(a.Metodology.Title)
-                                                        .WithCell(getSpacesText.Invoke(a))
-                                                        .WithCell(getMaterialsText.Invoke(a))
-                                                        .WithCell(String.Format(CultureInfo.InvariantCulture, "{0:0}h", a.Duration))
+                                                        .WithCell(String.Format(CultureInfo.InvariantCulture, "{0:0}h ({1} sesiones)", a.Duration, getSessionsCountText.Invoke(a)))
                                                         .WithCell(Utils.FormatStartDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).start, Subject.WeekSchedule))
                                                         .WithCell(Utils.FormatEndDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).end, Subject.WeekSchedule))
-                                                        .WithCell(Subject.CountActivitySessions(schedule.Find(_a => _a.activity.StorageId == a.StorageId)).ToString())
+                                                    .WithRow()
+                                                        .WithCell("Espacios").WithCellClass("tableHeader2")
+                                                        .WithCell("Materiales").WithCellClass("tableHeader2")
+                                                        .WithCell("Contenidos").WithCellClass("tableHeader2")
+                                                        .WithCell("Capacidades clave").WithCellClass("tableHeader2")
+                                                     .WithRow()
+                                                        .WithCell(getSpacesText.Invoke(a))
+                                                        .WithCell(getMaterialsText.Invoke(a))
+                                                        .WithCell(getContentsText.Invoke(i, a))
+                                                        .WithCell(getKeyCapacitiesText.Invoke(a))
+                                                     .WithRowIf(a.IsEvaluable)
+                                                        .WithCell("Código de actividad evaluable").WithCellClass("tableHeader2")
+                                                        .WithCell("Instrumento de evaluación").WithCellClass("tableHeader2")
+                                                        .WithCell("Peso en los resultados de aprendizaje").WithCellClass("tableHeader2")
+                                                        .WithCell("Criterios de evaluación").WithCellClass("tableHeader2")
+                                                     .WithRowIf(a.IsEvaluable)
+                                                        .WithCell(a.IsEvaluable ? Utils.FormatEvaluableActivity(i, Subject.QueryEvaluableActivityIndex(i, a)) : "")
+                                                        .WithCell(a.IsEvaluable ? a.EvaluationInstrumentType.Title : "")
+                                                        .WithCell(getReferencedLearningResultsWeightsText.Invoke(i, a))
+                                                        .WithCell(getReferencedCriteriasText.Invoke(i, a))
                                         );
                                     }
                                 }
@@ -563,6 +641,53 @@ namespace Programacion123
                             //////////////////////////////////////////////////
                             
                             .WithInner(Tag.Create("h1").WithInner(indexItems[9].Title).WithId("Apartado10"))
+                            .WithInner(Tag.Create("h2").WithInner("Cuadro de distribución de pesos").WithId("Apartado10-1"))
+                            .WithInner(Table.Create()
+                                .WithRow()
+                                    .WithCell("&nbsp;", 1, 2)
+                                    .WithCellForeach<LearningResult>(subjectTemplate.LearningResults.ToList(),
+                                        (learningResult, i, table) =>
+                                        {
+                                            table.WithCellInner(String.Format("RA{0}", i + 1)).WithCellClass("tableHeader1");
+                                        }
+                                    )
+                                .WithRow()
+                                    .WithCell("Bloque").WithCellClass("tableHeader1")
+                                    .WithCell("Peso&nbsp;RA").WithCellClass("tableHeader1")
+                                    .WithCellForeach<SubjectLearningResultIndexesWeight>(Subject.QueryLearningResultsIndexesWeights(),
+                                        (resultWeight, i, table) =>
+                                        {
+                                            table.WithCellInner(String.Format("{0:0}%", resultWeight.weight)).WithCellClass("tableHeader2");
+                                        }
+                                    )
+                                .WithRowForeach<Block>(Subject.Blocks.ToList(),
+                                   (block, i, table) =>
+                                   {
+                                       List<int> activityIndexes = Subject.QueryBlockEvaluableActivityIndexes(i);
+
+                                       table.WithCell(String.Format("Bloque&nbsp;{0}", i + 1), activityIndexes.Count, 1).WithCellClass("tableHeader1");
+
+                                       bool first = true;
+
+                                       foreach(int activityIndex in activityIndexes)
+                                       {
+                                           if(!first) { table.WithRow(); }
+                                           table.WithCell(Utils.FormatEvaluableActivity(i, activityIndex)).WithCellClass("tableHeader2");
+
+                                           table.WithCellForeach<SubjectLearningResultIndexesWeight>(Subject.QueryActivityLearningResultsIndexesWeight(i, activityIndex),
+                                               (resultWeight, j, table) =>
+                                               {
+                                                   table.WithCellInner(resultWeight.weight > 0 ? String.Format("{0:0}%", resultWeight.weight) : "&nbsp;");
+                                               }
+
+                                           );
+
+                                           first = false;
+                                       }
+                                   }
+                                )
+                                    
+                            )
                 )
                 .ToString();
 

@@ -1,7 +1,4 @@
-﻿using Microsoft.Office.Interop.Word;
-using System.Windows.Media;
-
-namespace Programacion123
+﻿namespace Programacion123
 {
     public enum GradeType
     {

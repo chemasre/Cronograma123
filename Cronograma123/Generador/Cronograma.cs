@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Json;
-using Microsoft.Office.Interop.Excel;
 
 namespace Cronogramador
 {

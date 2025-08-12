@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
-
-namespace Programacion123
+﻿namespace Programacion123
 {
 
 
@@ -78,7 +68,7 @@ namespace Programacion123
     //        formatContent = configuration.formatContent;
     //        formatter = configuration.formatter;
     //        replaceConfirmQuestion = configuration.replaceConfirmQuestion;
-            
+
     //        buttonNew = configuration.buttonNew;
     //        buttonEdit = configuration.buttonEdit;
 
@@ -180,7 +170,7 @@ namespace Programacion123
     //        if(buttonEdit != null)  { buttonEdit.Click -= ButtonEdit_Click; }
     //    }
 
-        
+
     //}
 
 }

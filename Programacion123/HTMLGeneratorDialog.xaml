@@ -68,8 +68,6 @@
                 </TabControl.Background>
                 <TabItem Header="Portada">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Border
-                            Background="#33000000" Width="196" Canvas.Top="23" Canvas.Left="120" Height="68" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <Border BorderBrush="Black" BorderThickness="1" Height="68" Width="196" Background="#33000000" Canvas.Left="120" Canvas.Top="23" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <Image x:Name="ImageCoverLogo" Height="68" Width="196" Canvas.Left="120" Canvas.Top="23" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <Label Content="Logotipo" Canvas.Left="21" Canvas.Top="17" Width="113" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -81,13 +79,24 @@
                                 <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                             </Button.Foreground>
                         </Button>
-                        <ComboBox x:Name="ComboCoverElement" Width="195" Canvas.Left="120" Canvas.Top="119" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Label Content="Elemento" Height="28" Canvas.Left="22" Canvas.Top="116" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Label Content="Posición" Height="41" Canvas.Left="22" Canvas.Top="158" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <ComboBox x:Name="ComboCoverElementPositionLeft" Width="68" Canvas.Left="145" Canvas.Top="165" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <ComboBox x:Name="ComboCoverElementPositionTop" Width="68" Canvas.Left="247" Canvas.Top="165" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Image Height="20" Width="20" Canvas.Left="120" Canvas.Top="165" Source="/Images/CaptionSeparationLeft.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Image Height="20" Width="20" Canvas.Left="222" Canvas.Top="166" Source="/Images/CaptionSeparationBottom.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboCoverElement" Width="195" Canvas.Left="120" Canvas.Top="215" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Elemento" Height="28" Canvas.Left="22" Canvas.Top="212" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Posición" Height="41" Canvas.Left="22" Canvas.Top="254" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboCoverElementPositionLeft" Width="68" Canvas.Left="145" Canvas.Top="261" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboCoverElementPositionTop" Width="68" Canvas.Left="247" Canvas.Top="261" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Image Height="20" Width="20" Canvas.Left="120" Canvas.Top="261" Source="/Images/CaptionSeparationLeft.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Image Height="20" Width="20" Canvas.Left="222" Canvas.Top="262" Source="/Images/CaptionSeparationBottom.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Image x:Name="ImageCoverCover" Height="68" Width="196" Canvas.Left="120" Canvas.Top="119" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Label Content="Imagen&#xD;&#xA;de portada" Canvas.Left="21" Canvas.Top="113" Width="113" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Button x:Name="ButtonCoverCoverOpen" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="325" Canvas.Top="119" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/Images/ButtonFolder.png"/>
+                            </Button.Background>
+                            <Button.Foreground>
+                                <ImageBrush ImageSource="/Images/ButtonNew.png"/>
+                            </Button.Foreground>
+                        </Button>
+                        <Border BorderBrush="Black" BorderThickness="1" Height="68" Width="196" Background="#33000000" Canvas.Left="120" Canvas.Top="119" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                     </Canvas>
                 </TabItem>
                 <TabItem Header="Documento">

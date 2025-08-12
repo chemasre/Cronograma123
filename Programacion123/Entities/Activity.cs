@@ -1,6 +1,4 @@
-﻿using Microsoft.Office.Interop.Word;
-
-namespace Programacion123
+﻿namespace Programacion123
 {
     public enum ActivityStartType
     {

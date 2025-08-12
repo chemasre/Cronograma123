@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace Programacion123
+﻿namespace Programacion123
 {
     public enum StorageState
     {

@@ -1,10 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Reflection;
-using System.Security.Policy;
+﻿using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
 using static Programacion123.ExportImportDialog;

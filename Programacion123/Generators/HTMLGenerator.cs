@@ -1,18 +1,6 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Net.NetworkInformation;
-using System.Reflection.Emit;
-using System.Runtime.InteropServices.JavaScript;
+﻿using System.IO;
 using System.Text;
 using System.Text.Json;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media.Media3D;
-using System.Windows.Shapes;
-using Microsoft.Office.Interop.Excel;
-using Microsoft.Office.Interop.Word;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Programacion123
 {
@@ -38,6 +26,7 @@ namespace Programacion123
             DocumentStyle = new DocumentStyle()
             {
                 LogoBase64 = null,
+                CoverBase64 = null,
                 Size = DocumentSize.A4,
                 Orientation = DocumentOrientation.Portrait,
                 Margins = new() { Top = 2.0f, Bottom = 2.5f, Left = 1.5f, Right = 1.0f }

@@ -156,7 +156,14 @@
             return String.Format("B{0}-A{1}", blockIndex + 1, activityIndex + 1);
         }
 
+        internal static string FormatContentPoint(int contentIndex, int pointIndex)
+        {
+            return String.Format("{0}.{1}", contentIndex + 1, pointIndex + 1);
+        }
 
-
+        internal static string FormatLearningResultCriteria(int learningResultIndex, int criteriaIndex)
+        {
+            return String.Format("{0}.{1}", learningResultIndex + 1, criteriaIndex + 1);
+        }
     }
 }

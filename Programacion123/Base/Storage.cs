@@ -1,6 +1,4 @@
 ﻿using System.IO;
-using System.IO.Compression;
-using System.Security.Principal;
 using System.Text.Json;
 
 namespace Programacion123

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Programacion123
 {
@@ -93,6 +89,7 @@ namespace Programacion123
     public struct DocumentStyle
     {
         public string? LogoBase64 { get; set; }
+        public string? CoverBase64 { get; set; }
         public DocumentSize Size { get; set; }
         public DocumentOrientation Orientation { get; set; }
         public DocumentMargins Margins { get; set; }
@@ -121,6 +118,8 @@ namespace Programacion123
             else if(id == DocumentCoverElementId.SubjectName) { builder.AppendLine(".coverSubjectName {"); }
             else if(id == DocumentCoverElementId.GradeTypeName) { builder.AppendLine(".coverGradeTypeName {"); }
             else if(id == DocumentCoverElementId.GradeName) { builder.AppendLine(".coverGradeName{"); }
+            else // id == DocumentCoverElementId.Cover
+            { builder.AppendLine(".coverCover {"); }
 
             if(!CoverElementStyles.ContainsKey(id)) { CoverElementStyles.Add(id, new DocumentCoverElementStyle()); }
             DocumentCoverElementStyle style = CoverElementStyles[id];
@@ -215,7 +214,7 @@ namespace Programacion123
             builder.AppendLine("}");
         }
 
-        internal string GenerateCSS()
+        internal string GenerateCSS(bool isPreview = false)
         {
             float width;
             float height;
@@ -250,6 +249,11 @@ namespace Programacion123
 
             builder.AppendLine("table { width:100%; }");
             builder.AppendLine("a { text-decoration: none; }");
+
+            if(isPreview)
+            {
+                builder.Append(".cover {border-style:dashed; border-width:2pt; border-color:black; }");
+            }
 
             return builder.ToString();
 
