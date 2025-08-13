@@ -239,6 +239,8 @@ namespace Programacion123
             document.documentElement.scrollTop = position;
             }";
 
+            // https://stackoverflow.com/questions/8218377/rendering-page-breaks-in-word-with-html
+            Tag pageBreak = Tag.Create(isPreview ? "div" : "br").WithClass("pageBreak").WithInnerIf(isPreview, "Salto de página");
 
             string html =
                 "<!DOCTYPE html>" +
@@ -260,6 +262,7 @@ namespace Programacion123
                                .WithInner(Tag.Create("div").WithClass("coverGradeTypeName").WithInner(gradeTypeName))
                                .WithInner(Tag.Create("div").WithClass("coverGradeName").WithInner(gradeTemplate.GradeName))
                              )
+                            .WithInner(pageBreak)
 
                             //////////////////////////////////////////////////////////////////
                             ///////////////////// ÍNDICE DE CONTENIDOS  //////////////////////
@@ -289,6 +292,7 @@ namespace Programacion123
                                     }
                                 }
                             )
+                            .WithInner(pageBreak)
 
                             //////////////////////////////////////////////////////////////////
                             ///////////// Nivel 1: Organización del módulo ///////////////////
@@ -357,6 +361,7 @@ namespace Programacion123
                                                         }
                                                )
                             )
+                            .WithInner(pageBreak)
 
                             /////////////////////////////////////////////////////////////////////////////////////
                             ///////////// Nivel 1: Justificación de la importancia del módulo ///////////////////
@@ -364,6 +369,7 @@ namespace Programacion123
 
                             .WithInner(Tag.Create("h1").WithInner(indexItems[1].Title).WithId("Apartado2"))
                             .WithInner(Tag.Create("div").WithInner(getSubjectCommonText.Invoke(SubjectCommonTextId.subjectImportanceJustification)))
+                            .WithInner(pageBreak)
 
                             /////////////////////////////////////////////////////////////////
                             ///////////// Nivel 1: Elementos curriculares ///////////////////
@@ -398,6 +404,7 @@ namespace Programacion123
                                     l.Add(Tag.Create("div").WithInner(gradeTemplate.KeyCapacities[c].Description));
                                 }
                              )
+                            .WithInner(pageBreak)
 
                             /////////////////////////////////////////////////////////////////////////////////
                             ///////////// Nivel 1: Metodología y orientaciones didácticas ///////////////////
@@ -418,6 +425,7 @@ namespace Programacion123
                             .WithInner(Tag.Create("div").WithInner(getGradeCommonText.Invoke(GradeCommonTextId.introductionToDiversity)))
                             .WithInner(Tag.Create("h3").WithInner("Medidas generales del centro").WithId("Apartado4-2-1"))
                             .WithInner(Tag.Create("div").WithInner(getGradeCommonText.Invoke(GradeCommonTextId.schoolPolicyDiversity)))
+                            .WithInner(pageBreak)
 
                             ////////////////////////////////////////////////////////////////
                             ///////////// Nivel 1: Sistema de evaluación ///////////////////
@@ -433,6 +441,7 @@ namespace Programacion123
                                 }
                             )
                             .WithInner(Tag.Create("h2").WithInner("Evaluación del funcionamiento de la programación").WithId("Apartado5-2"))
+                            .WithInner(pageBreak)
 
                             ///////////////////////////////////////////////////////////////////
                             ////////////// Nivel 1: Elementos transversales ///////////////////
@@ -443,6 +452,7 @@ namespace Programacion123
                             .WithInner(Tag.Create("div").WithInner(getSubjectCommonText.Invoke(SubjectCommonTextId.subjectTraversalReadingAndTIC)))
                             .WithInner(Tag.Create("h2").WithInner("Comunicación audiovisual, emprendimiento, educación cívica y constitucional").WithId("Apartado6-2"))
                             .WithInner(Tag.Create("div").WithInner(getSubjectCommonText.Invoke(SubjectCommonTextId.subjectTraversalCommunicationEntrepreneurshipAndEducation)))
+                            .WithInner(pageBreak)
 
 
 
@@ -469,6 +479,7 @@ namespace Programacion123
                                     l.Add(Tag.Create("div").WithInner(c.Description));
                                 }
                              )
+                            .WithInner(pageBreak)
 
                             ///////////////////////////////////////////////////////////////////////////////
                             ////////////// Nivel 1: Programación del módulo profesional ///////////////////
@@ -621,6 +632,7 @@ namespace Programacion123
                                     }
                                 }
                             )
+                            .WithInner(pageBreak)
 
                             //////////////////////////////////////////////////////////////////////
                             ////////////// Nivel 1: Referencias bibliográficas ///////////////////
@@ -635,6 +647,7 @@ namespace Programacion123
                                     }
                                 )
                              )
+                            .WithInner(pageBreak)
 
                             //////////////////////////////////////////////////
                             ////////////// Nivel 1: Anexos ///////////////////

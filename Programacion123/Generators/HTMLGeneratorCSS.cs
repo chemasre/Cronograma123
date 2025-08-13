@@ -250,10 +250,24 @@ namespace Programacion123
             builder.AppendLine("table { width:100%; }");
             builder.AppendLine("a { text-decoration: none; }");
 
+
             if(isPreview)
             {
                 builder.Append(".cover {border-style:dashed; border-width:2pt; border-color:black; }");
+                builder.Append(".pageBreak {border-bottom-style:dashed; border-bottom-width:2pt; border-color:black; display:block; text-align:center; }");
             }
+            else
+            {
+                builder.AppendLine(".pageBreak {page-break-after:always; display:inline; }");
+                builder.AppendLine("h1 {page-break-after:avoid; }");
+                builder.AppendLine("h2 {page-break-after:avoid; }");
+                builder.AppendLine("h3 {page-break-after:avoid; }");
+                builder.AppendLine("h4 {page-break-after:avoid; }");
+                builder.AppendLine("h5 {page-break-after:avoid; }");
+                builder.AppendLine("h6 {page-break-after:avoid; }");
+                builder.AppendLine("tr {page-break-after:avoid; }");
+            }
+
 
             return builder.ToString();
 
