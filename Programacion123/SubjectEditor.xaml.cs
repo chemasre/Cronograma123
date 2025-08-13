@@ -304,17 +304,18 @@ namespace Programacion123
                 {
                     Block block = entity.Blocks[b];
 
-                    int evaluableActivityIndex = 0;
-    
                     for(int a = 0; a < block.Activities.Count; a++)
                     {
                         Activity activity = block.Activities[a];
                         //activity = Storage.LoadOrCreateEntity<Activity>(activity.StorageId, block.StorageId);
 
-                        if(activity.IsEvaluable)
+                        if(activity.EvaluationType != ActivityEvaluationType.NotEvaluable)
                         {
                             DataRow row = dataTableActivitiesWeight.NewRow();
-                            row["Actividad"] = String.Format("B{0:00}-A{1:00}", b + 1, evaluableActivityIndex + 1);
+
+                            int evaluableActivityIndex = entity.QueryEvaluableActivityTypeIndex(b, activity);
+                            row["Actividad"] = String.Format(activity.EvaluationType == ActivityEvaluationType.Continous ? "B{0}-A{1}" : "B{0}-EX{1}",
+                                                            b + 1, evaluableActivityIndex + 1);
 
                             List<KeyValuePair<LearningResult, float>> resultsWeightsList = activity.LearningResultsWeights.ToList();
 
@@ -328,8 +329,6 @@ namespace Programacion123
                             dataTableActivitiesWeight.RowChanged -= DataTableActivitiesWeight_RowChanged;
                             dataTableActivitiesWeight.Rows.Add(row);
                             dataTableActivitiesWeight.RowChanged += DataTableActivitiesWeight_RowChanged;
-
-                            evaluableActivityIndex ++;
                         }
                     }
                 }
@@ -365,7 +364,7 @@ namespace Programacion123
                 b.Activities.ToList().ForEach(
                 a => 
                 {
-                    if(a.IsEvaluable)
+                    if(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
                     {
                         activityStorageIdToBlockIndex.Add(a.StorageId, bIndex);
                         activityStorageIdToActivityIndex.Add(a.StorageId, aIndex);
@@ -403,7 +402,7 @@ namespace Programacion123
             {
                 DataRow row = dataTableActivitiesSchedule.NewRow();
 
-                row["Actividad"] =  a.IsEvaluable ?
+                row["Actividad"] =  a.EvaluationType != ActivityEvaluationType.NotEvaluable ?
                                         String.Format("B{0:00}-A{1:00}",
                                         activityStorageIdToBlockIndex[a.StorageId] + 1,
                                         activityStorageIdToActivityIndex[a.StorageId] + 1) :
@@ -597,7 +596,7 @@ namespace Programacion123
                 List<Activity> activitiesList = b.Activities.ToList();
                 foreach(Activity a in activitiesList)
                 {
-                    if(a.IsEvaluable)
+                    if(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
                     {
                         if(entity.Template != null)
                         {

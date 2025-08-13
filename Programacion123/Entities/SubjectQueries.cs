@@ -9,7 +9,9 @@
     public struct EvaluableActivityIndex
     {
         public int blockIndex;
-        public int evaluableActivityIndex;
+        public int activityIndex;
+        public ActivityEvaluationType evaluationType;
+        public int activityTypeIndex;
     }
 
     public struct SubjectLearningResultIndexesWeight
@@ -43,12 +45,38 @@
         }
 
 
-        public List<int> QueryBlockEvaluableActivityIndexes(int blockIndex)
+        public List<EvaluableActivityIndex> QueryBlockEvaluableActivityIndexes(int blockIndex)
         {
-            List<int> result = new();
+            List<EvaluableActivityIndex> result = new();
 
-            int index = 0;
-            Blocks[blockIndex].Activities.ToList().ForEach(a => { if(a.IsEvaluable) { result.Add(index); index ++; } });
+            Dictionary<ActivityEvaluationType, int> typeIndexes = new();
+            foreach(ActivityEvaluationType type in Enum.GetValues<ActivityEvaluationType>())
+            {
+                typeIndexes.Add(type, 0);
+            }
+            
+            int activityIndex = 0;
+            int typeIndex = 0;
+            Blocks[blockIndex].Activities.ToList().ForEach(
+                a =>
+                {
+                    if(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
+                    {
+                        result.Add(
+                            new EvaluableActivityIndex()
+                            {
+                                blockIndex = blockIndex,
+                                activityIndex = activityIndex,
+                                evaluationType = a.EvaluationType,
+                                activityTypeIndex = typeIndexes[a.EvaluationType]
+                            });
+                        
+                        typeIndexes[a.EvaluationType] ++;
+                        typeIndex ++;
+                    }
+
+                    activityIndex ++;
+                });
             
             return result;
         }
@@ -58,19 +86,41 @@
             List<EvaluableActivityIndex> result = new();
 
             int blockIndex = 0;
-            int activityIndex = 0;
+
+            Dictionary<ActivityEvaluationType, int> typeIndexes = new();
+            foreach(ActivityEvaluationType type in Enum.GetValues<ActivityEvaluationType>())
+            {
+                typeIndexes.Add(type, 0);
+            }
+
+
             Blocks.ToList().ForEach(
                 (b) =>
                 {
-                    activityIndex = 0;
-                    b.Activities.ToList().ForEach(
+                        foreach(ActivityEvaluationType type in Enum.GetValues<ActivityEvaluationType>())
+                        {
+                            typeIndexes[type] = 0;
+                        }
+
+                        int activityIndex = 0;
+            
+                        b.Activities.ToList().ForEach(
                         (a) =>
                         {
-                            if(a.IsEvaluable)
+                            if(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
                             {
-                                result.Add(new() { blockIndex = blockIndex, evaluableActivityIndex = activityIndex });
-                                activityIndex ++;
+                                result.Add(
+                                    new()
+                                    {
+                                        blockIndex = blockIndex,
+                                        activityIndex = activityIndex,
+                                        evaluationType = a.EvaluationType,
+                                        activityTypeIndex = typeIndexes[a.EvaluationType]
+                                    });
+                                typeIndexes[a.EvaluationType] ++;
                             }
+
+                            activityIndex ++;
                         }
                     );
 
@@ -80,6 +130,15 @@
 
             return result;
         }
+
+        public int QueryEvaluableActivityTypeIndex(int blockIndex, Activity activity)
+        {
+            return Blocks[blockIndex].Activities
+                    .ToList()
+                    .Where(a => a.EvaluationType == activity.EvaluationType)
+                    .ToList()
+                    .FindIndex(a => a.StorageId == activity.StorageId);
+        } 
 
         public float QueryBlockDuration(int blockIndex)
         {
@@ -133,7 +192,7 @@
             HashSet<int> referencedSet = new();
             foreach (Activity a in Blocks[blockIndex].Activities.ToList())
             {
-                if (a.IsEvaluable)
+                if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
                 {
                     a.Criterias.ToList().ForEach(c => referencedSet.Add(FindCriteriaLearningResultIndex(c)));
                 }
@@ -153,7 +212,7 @@
             HashSet<int> referencedSet = new();
             Activity a = Blocks[blockIndex].Activities[activityIndex];
 
-            if (a.IsEvaluable)
+            if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
             {
                 a.Criterias.ToList().ForEach(c => referencedSet.Add(FindCriteriaLearningResultIndex(c)));
             }
@@ -176,7 +235,7 @@
 
             Dictionary<int, HashSet<int>> referencedCriteriasByLearningResult = new();
 
-            if (a.IsEvaluable)
+            if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
             {
                 foreach (var c in a.Criterias.ToList())
                 {
@@ -220,7 +279,7 @@
 
             foreach (Activity a in Blocks[blockIndex].Activities.ToList())
             {
-                if (a.IsEvaluable)
+                if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
                 {
                     foreach (var c in a.Criterias.ToList())
                     {
@@ -352,12 +411,6 @@
         public int QueryActivityIndex(int blockIndex, Activity activity)
         {
             return Blocks[blockIndex].Activities.ToList().FindIndex(a => a.StorageId == activity.StorageId);
-        }
-
-        public int QueryEvaluableActivityIndex(int blockIndex, Activity activity)
-        {
-            List<Activity> evaluables = new List<Activity>(Blocks[blockIndex].Activities.ToList().Where(a => a.IsEvaluable));
-            return evaluables.FindIndex(a => a.StorageId == activity.StorageId);
         }
 
         int FindCriteriaIndex(LearningResult learningResult, CommonText criteria)

@@ -7,6 +7,13 @@
         DayOfWeek
     };
 
+    public enum ActivityEvaluationType
+    {
+        NotEvaluable,
+        Continous,
+        Exam
+    };
+
     public class Activity: Entity
     {
         public ActivityStartType StartType { get; set; } = ActivityStartType.AsSoonAsPossible;
@@ -25,7 +32,7 @@
         public SetProperty<CommonText> SpaceResources { get; } = new SetProperty<CommonText>();
         public SetProperty<CommonText> MaterialResources { get; } = new SetProperty<CommonText>();
 
-        public bool IsEvaluable = false;
+        public ActivityEvaluationType EvaluationType = ActivityEvaluationType.NotEvaluable;
         public CommonText? EvaluationInstrumentType = null;
         public SetProperty<CommonText> Criterias { get; }= new SetProperty<CommonText>();
 
@@ -50,7 +57,7 @@
             if(ContentPoints.Count <= 0) { return ValidationResult.Create(ValidationCode.activityNotLinkedToContents); } 
             if(KeyCompetences.Count <= 0) { return ValidationResult.Create(ValidationCode.activityNotLinkedToKeyCompetences); } 
 
-            if(IsEvaluable)
+            if(EvaluationType != ActivityEvaluationType.NotEvaluable)
             {
                 if(EvaluationInstrumentType == null) { return ValidationResult.Create(ValidationCode.activityEvaluableAndNotLinkedToEvaluationInstrumentType); }
 
@@ -129,7 +136,7 @@
             list = MaterialResources.ToList();
             data.MaterialResourcesWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
 
-            data.IsEvaluable = IsEvaluable;
+            data.EvaluationType = EvaluationType;
 
             data.EvaluationInstrumentTypeWeakStorageId = EvaluationInstrumentType?.StorageId;
 
@@ -171,7 +178,7 @@
             SpaceResources.Set(Storage.FindChildEntities<CommonText>(data.SpaceResourcesWeakStorageIds));
             MaterialResources.Set(Storage.FindChildEntities<CommonText>(data.MaterialResourcesWeakStorageIds));
 
-            IsEvaluable = data.IsEvaluable;
+            EvaluationType = data.EvaluationType;
 
             EvaluationInstrumentType = data.EvaluationInstrumentTypeWeakStorageId!= null ? Storage.FindEntity<CommonText>(data.EvaluationInstrumentTypeWeakStorageId, subjectStorageId) : null;
             Criterias.Set(Storage.FindChildEntities<CommonText>(data.CriteriasWeakStorageIds));

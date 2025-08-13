@@ -559,7 +559,7 @@ namespace Programacion123
                                             Subject.QueryBlockEvaluableActivityIndexes(i).ForEach(
                                                 (aIndex) =>
                                                 {
-                                                    evaluableActivitiesText += (first ? "" : "<br>") + Utils.FormatEvaluableActivity(i, aIndex);
+                                                    evaluableActivitiesText += (first ? "" : "<br>") + Utils.FormatEvaluableActivity(i, aIndex.evaluationType, aIndex.activityTypeIndex);
                                                     first = false;
                                                 }
                                             );
@@ -607,14 +607,14 @@ namespace Programacion123
                                                         .WithCell(getMaterialsText.Invoke(a))
                                                         .WithCell(getContentsText.Invoke(i, a))
                                                         .WithCell(getKeyCapacitiesText.Invoke(a))
-                                                     .WithRowIf(a.IsEvaluable)
+                                                     .WithRowIf(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
                                                         .WithCell("Código de actividad evaluable").WithCellClass("tableHeader2")
                                                         .WithCell("Instrumento de evaluación").WithCellClass("tableHeader2")
                                                         .WithCell("Peso en los resultados de aprendizaje").WithCellClass("tableHeader2")
                                                         .WithCell("Criterios de evaluación").WithCellClass("tableHeader2")
-                                                     .WithRowIf(a.IsEvaluable)
-                                                        .WithCell(a.IsEvaluable ? Utils.FormatEvaluableActivity(i, Subject.QueryEvaluableActivityIndex(i, a)) : "")
-                                                        .WithCell(a.IsEvaluable ? a.EvaluationInstrumentType.Title : "")
+                                                     .WithRowIf(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
+                                                        .WithCell(a.EvaluationType != ActivityEvaluationType.NotEvaluable ? Utils.FormatEvaluableActivity(i, a.EvaluationType, Subject.QueryEvaluableActivityTypeIndex(i, a)) : "")
+                                                        .WithCell(a.EvaluationType != ActivityEvaluationType.NotEvaluable ? a.EvaluationInstrumentType.Title : "")
                                                         .WithCell(getReferencedLearningResultsWeightsText.Invoke(i, a))
                                                         .WithCell(getReferencedCriteriasText.Invoke(i, a))
                                         );
@@ -663,18 +663,18 @@ namespace Programacion123
                                 .WithRowForeach<Block>(Subject.Blocks.ToList(),
                                    (block, i, table) =>
                                    {
-                                       List<int> activityIndexes = Subject.QueryBlockEvaluableActivityIndexes(i);
+                                       List<EvaluableActivityIndex> evaluableActivityIndexes = Subject.QueryBlockEvaluableActivityIndexes(i);
 
-                                       table.WithCell(String.Format("Bloque&nbsp;{0}", i + 1), activityIndexes.Count, 1).WithCellClass("tableHeader1");
+                                       table.WithCell(String.Format("Bloque&nbsp;{0}", i + 1), evaluableActivityIndexes.Count, 1).WithCellClass("tableHeader1");
 
                                        bool first = true;
 
-                                       foreach(int activityIndex in activityIndexes)
+                                       foreach(EvaluableActivityIndex activityInfo in evaluableActivityIndexes)
                                        {
                                            if(!first) { table.WithRow(); }
-                                           table.WithCell(Utils.FormatEvaluableActivity(i, activityIndex)).WithCellClass("tableHeader2");
+                                           table.WithCell(Utils.FormatEvaluableActivity(i, activityInfo.evaluationType, activityInfo.activityTypeIndex)).WithCellClass("tableHeader2");
 
-                                           table.WithCellForeach<SubjectLearningResultIndexesWeight>(Subject.QueryActivityLearningResultsIndexesWeight(i, activityIndex),
+                                           table.WithCellForeach<SubjectLearningResultIndexesWeight>(Subject.QueryActivityLearningResultsIndexesWeight(i, activityInfo.activityIndex),
                                                (resultWeight, j, table) =>
                                                {
                                                    table.WithCellInner(resultWeight.weight > 0 ? String.Format("{0:0}%", resultWeight.weight) : "&nbsp;");

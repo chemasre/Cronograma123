@@ -151,9 +151,9 @@
                     (hour != weekSchedule.HoursPerWeekDay[day.DayOfWeek] ? " +" + hour + "h" : "");
         }
 
-        public static string FormatEvaluableActivity(int blockIndex, int activityIndex)
+        public static string FormatEvaluableActivity(int blockIndex, ActivityEvaluationType evaluationType, int activityIndex)
         {
-            return String.Format("B{0}-A{1}", blockIndex + 1, activityIndex + 1);
+            return String.Format(evaluationType == ActivityEvaluationType.Continous ? "B{0}-A{1}" : "B{0}-EX{1}", blockIndex + 1, activityIndex + 1);
         }
 
         internal static string FormatContentPoint(int contentIndex, int pointIndex)

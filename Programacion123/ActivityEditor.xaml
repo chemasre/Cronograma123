@@ -113,7 +113,7 @@
                         </Button>
                     </Canvas>
                 </TabItem>
-                <TabItem Header="Recursos didácticos" Margin="-3,-1,-1,-1">
+                <TabItem Header="Recursos didácticos">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Label Content="Espacios" Canvas.Left="11" Canvas.Top="48" Width="129" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <ListBox x:Name="ListBoxSpaceResources" Height="104" Width="281" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="145" Canvas.Top="52" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -175,9 +175,7 @@
                         </Button>
                         <TextBox x:Name="TextActivityCode" Canvas.Left="146" Canvas.Top="55" Width="163" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Label x:Name="LabelActivityCode" Content="Código de actividad" Canvas.Left="14" Canvas.Top="52" Width="153" Height="24" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Label Content="Es evaluable" Canvas.Left="14" Canvas.Top="17" Width="153" Height="24" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <CheckBox x:Name="CheckboxIsEvaluable"
-                            Canvas.Top="23" Canvas.Left="147" Content="" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Tipo de evaluación" Canvas.Left="14" Canvas.Top="17" Width="153" Height="24" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Label x:Name="LabelEvaluationInstrument" Content="Tipo de instrumento&#xD;&#xA;evaluativo" Canvas.Left="14" Canvas.Top="90" Width="129" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <TextBox x:Name="TextEvaluationInstrument" Canvas.Left="146" Canvas.Top="95" Width="163" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Button x:Name="ButtonEvaluationInstrumentPick" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="314" Canvas.Top="92" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
@@ -190,6 +188,8 @@
                         </Button>
                         <Label x:Name="LabelLearningResultsWeight" Content="Pesos en los resultados de aprendizaje" Canvas.Left="12" Canvas.Top="276" Width="247" Height="42" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <DataGrid x:Name="DataGridLearningResultsWeight" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="23" Canvas.Top="306" Height="61" Width="409" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="ComboEvaluationType" Width="162" Canvas.Left="147" Canvas.Top="21" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        </ComboBox>
                     </Canvas>
                 </TabItem>
             </TabControl>

@@ -84,7 +84,7 @@ namespace Programacion123
             entity.SpaceResources.Set(spaceResourcesController.GetSelectedEntities());
             entity.MaterialResources.Set(materialResourcesController.GetSelectedEntities());
 
-            entity.IsEvaluable = CheckboxIsEvaluable.IsChecked.GetValueOrDefault();
+            entity.EvaluationType = (ActivityEvaluationType)ComboEvaluationType.SelectedIndex;
 
             entity.EvaluationInstrumentType = evaluationInstrumentController.GetEntity();
             entity.Criterias.Set(criteriasController.GetSelectedEntities());
@@ -399,6 +399,10 @@ namespace Programacion123
 
             for (int i = 0; i < 5; i++) { ComboStartWeekDay.Items.Add(Utils.WeekdayToText(Utils.IndexToWeekday(i + 1)));  }
 
+            ComboEvaluationType.Items.Add("No evaluable");
+            ComboEvaluationType.Items.Add("Evaluación continua");
+            ComboEvaluationType.Items.Add("Examen");
+
             TextTitle.Text = entity.Title;
             TextBoxDescription.Text = entity.Description;
             ComboStartType.SelectedIndex = (int)entity.StartType;
@@ -408,7 +412,7 @@ namespace Programacion123
             ComboDurationFraction.SelectedIndex = (int)((entity.Duration - MathF.Floor(entity.Duration)) / 0.25f);
             CheckboxNoActivitiesBefore.IsChecked = entity.NoActivitiesBefore;
             CheckboxNoActivitiesAfter.IsChecked = entity.NoActivitiesAfter;
-            CheckboxIsEvaluable.IsChecked = entity.IsEvaluable;
+            ComboEvaluationType.SelectedIndex = (int)entity.EvaluationType;
 
             TextActivityCode.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
             TextActivityCode.IsReadOnly = true;
@@ -454,8 +458,7 @@ namespace Programacion123
             evaluationInstrumentController.Changed += EvaluationInstrumentController_Changed;
             criteriasController.Changed += CriteriasController_Changed;
 
-            CheckboxIsEvaluable.Checked += CheckboxIsEvaluable_CheckedChanged;
-            CheckboxIsEvaluable.Unchecked += CheckboxIsEvaluable_CheckedChanged;
+            ComboEvaluationType.SelectionChanged += ComboEvaluationType_SelectionChanged;
 
             dataTableResultsWeight.RowChanged += DataTableResultsWeight_RowChanged;
 
@@ -470,9 +473,10 @@ namespace Programacion123
         }
 
 
+
         private void UpdateEvaluableUI()
         {
-            Visibility visibility = entity.IsEvaluable ? Visibility.Visible : Visibility.Hidden;
+            Visibility visibility = (entity.EvaluationType != ActivityEvaluationType.NotEvaluable) ? Visibility.Visible : Visibility.Hidden;
             LabelActivityCode.Visibility = visibility;
             TextActivityCode.Visibility = visibility;
             LabelEvaluationInstrument.Visibility = visibility;
@@ -634,22 +638,24 @@ namespace Programacion123
             Validate();
         }
 
-        void CheckboxIsEvaluable_CheckedChanged(object sender, RoutedEventArgs e)
+        private void ComboEvaluationType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateActivityCodeUI();
             UpdateEntity();
             Validate();
+            UpdateActivityCodeUI();
             UpdateEvaluableUI();
             UpdateResultsWeightTableUI();
         }
 
         void UpdateActivityCodeUI()
         {
-            if(CheckboxIsEvaluable.IsChecked.GetValueOrDefault())
+            ActivityEvaluationType evaluationType = (ActivityEvaluationType)ComboEvaluationType.SelectedIndex;
+
+            if (evaluationType != ActivityEvaluationType.NotEvaluable)
             {
-                int activityIndex = block.Activities.ToList().FindIndex((a => a.StorageId == entity.StorageId));
+                int activityIndex = block.Activities.ToList().Where(a => a.EvaluationType == entity.EvaluationType).ToList().FindIndex(a => a.StorageId == entity.StorageId);
                 int blockIndex = subject.Blocks.ToList().FindIndex((b) => b.StorageId == block.StorageId);
-                TextActivityCode.Text = String.Format("B{0:00}-A{1:00}", blockIndex + 1, activityIndex + 1);
+                TextActivityCode.Text = String.Format(entity.EvaluationType == ActivityEvaluationType.Continous ? "B{0}-A{1}":"B{0}-EX{1}", blockIndex + 1, activityIndex + 1);
             }
             else
             {

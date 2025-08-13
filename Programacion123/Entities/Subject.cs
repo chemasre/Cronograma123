@@ -115,7 +115,7 @@
 
                     criteriasList.ForEach(c => referencedLearningResults.Add(Storage.FindParentStorageId(c.StorageId, c.StorageClassId)));
 
-                    if(a.IsEvaluable)
+                    if(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
                     {
                         List<KeyValuePair<LearningResult, float>> weightsList = a.LearningResultsWeights.ToList();
 

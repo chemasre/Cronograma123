@@ -17,7 +17,7 @@
         public List<string> SpaceResourcesWeakStorageIds  { get; set; } = new List<string>();
         public List<string> MaterialResourcesWeakStorageIds  { get; set; } = new List<string>();
 
-        public bool IsEvaluable { get; set; }
+        public ActivityEvaluationType EvaluationType { get; set; }
 
         public string? EvaluationInstrumentTypeWeakStorageId  { get; set; } = null;
         public List<string> CriteriasWeakStorageIds  { get; set; } = new List<string>();
