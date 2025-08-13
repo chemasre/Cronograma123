@@ -40,10 +40,16 @@
             <Border x:Name="BorderContent" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="155" Canvas.Top="101" HorizontalAlignment="Left" VerticalAlignment="Center" Width="306" Height="113">
                 <TextBlock x:Name="TextContent" TextWrapping="Wrap" Text="TextBlock" Height="92" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="5,0,5,0"/>
             </Border>
-            <Label Content="Aceptar" FontSize="22" Width="158" Canvas.Left="65" Canvas.Top="250" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label Content="Cancelar" FontSize="22" Width="158" Canvas.Left="291" Canvas.Top="250" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label x:Name="LabelAccept" Content="Aceptar" FontSize="22" Width="158" Canvas.Left="65" Canvas.Top="250" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label x:Name="LabelCancel" Content="Cancelar" FontSize="22" Width="158" Canvas.Left="291" Canvas.Top="250" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Image x:Name="IconWarning" Height="100" Canvas.Left="34" Canvas.Top="103" Width="100" Source="/Images/IconWarning.png" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
             <Image x:Name="IconInfo" Height="100" Canvas.Left="34" Canvas.Top="103" Width="100" Source="/Images/IconInfo.png" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonAcceptSingle" Content="" Height="48" Width="48" Canvas.Left="228" BorderBrush="{x:Null}" Canvas.Top="246" Style="{DynamicResource PushableButton}" Click="ButtonAccept_Click" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/ButtonAccept.png"/>
+                </Button.Background>
+            </Button>
+            <Label x:Name="LabelAcceptSingle" Content="Aceptar" FontSize="22" Width="158" Canvas.Left="283" Canvas.Top="250" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
         </Canvas>
     </Border>

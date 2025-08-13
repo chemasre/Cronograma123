@@ -38,6 +38,7 @@ namespace Programacion123
             public List<string> calendarsStorageIds;
             public List<string> weekSchedulesStorageIds;
             public List<string> subjectsStorageIds;
+            public bool includeSettings;
             public Action<bool, ExportImportDialog>? closeAction;
             
         }
@@ -89,7 +90,13 @@ namespace Programacion123
 
             subjectsController = new(configSubjects);
 
-            if(config.isExport)
+
+            CheckboxSettings.IsChecked = config.includeSettings;
+
+            if (!config.isExport && !config.includeSettings) { CheckboxSettings.IsEnabled = false; }
+
+
+            if (config.isExport)
             {
                 TextTitle.Text = "Exportar elementos";
                 LabelAccept.Content = "Exportar";

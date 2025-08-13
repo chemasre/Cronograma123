@@ -47,6 +47,7 @@ namespace Programacion123
         {
             InitializeComponent();
 
+            Settings.Init();
             Storage.Init();
 
             InitUI();
@@ -151,12 +152,14 @@ namespace Programacion123
         private void ButtonReset_Click(object sender, RoutedEventArgs e)
         {
             ConfirmDialog confirm = new();
-            confirm.Init(ConfirmIconType.warning, "Confirmación", "Esto eliminará TODOS los datos guardados y devolverá la aplicación a su estado inicial ¿estás seguro/a?",
+            confirm.Init(ConfirmIconType.warning, "Confirmación", "Esto eliminará TODOS los datos y ajustes guardados, devolviendo la aplicación a su estado inicial ¿estás seguro/a?",
+                         ConfirmChooseType.acceptAndCancel,
                 (e) =>
                 {
                     if(e)
                     {
                         Storage.Reset();
+                        Settings.Reset();
                         RestartUI();
                     }
 
@@ -175,6 +178,7 @@ namespace Programacion123
             if(openFileDialog.ShowDialog().GetValueOrDefault())
             {
                 Storage.Archive_Open(openFileDialog.FileName);
+                Settings.Archive_Open(openFileDialog.FileName);
 
                 ExportImportDialogConfiguration config = new()
                 {
@@ -184,6 +188,7 @@ namespace Programacion123
                     calendarsStorageIds = Storage.GetStorageIds<Calendar>(Storage.LoadAllEntities<Calendar>()),
                     weekSchedulesStorageIds = Storage.GetStorageIds<WeekSchedule>(Storage.LoadAllEntities<WeekSchedule>()),
                     subjectsStorageIds = Storage.GetStorageIds<Subject>(Storage.LoadAllEntities<Subject>()),
+                    includeSettings = Settings.ExistSettings<HTMLGeneratorSettings>(HTMLGenerator.SettingsId),
                     closeAction =
                         (accepted, exportDialog) =>
                         {
@@ -197,9 +202,15 @@ namespace Programacion123
                                 storageIds.AddRange(exportDialog.SubjectsStorageIds);
 
                                 Storage.Archive_CopyStorageIdsToBase(storageIds);
+
+                                if(exportDialog.CheckboxSettings.IsChecked.GetValueOrDefault())
+                                {
+                                    Settings.Archive_CopyToBase();
+                                }
                             }
 
                             Storage.Archive_Close();
+                            Settings.Archive_Close();
 
                             if(accepted)
                             {
@@ -239,6 +250,11 @@ namespace Programacion123
                     storageIds.AddRange(dialog.WeekSchedulesStorageIds);
                     storageIds.AddRange(dialog.SubjectsStorageIds);
                     Storage.Archive_Create(storageIds, saveFileDialog.FileName);
+
+                    if(exportDialog.CheckboxSettings.IsChecked.GetValueOrDefault())
+                    {
+                        Settings.Archive_Add(saveFileDialog.FileName);
+                    }
                 }				
             };
 
@@ -250,6 +266,7 @@ namespace Programacion123
                 calendarsStorageIds = Storage.GetStorageIds<Calendar>(Storage.LoadAllEntities<Calendar>()),
                 weekSchedulesStorageIds = Storage.GetStorageIds<WeekSchedule>(Storage.LoadAllEntities<WeekSchedule>()),
                 subjectsStorageIds = Storage.GetStorageIds<Subject>(Storage.LoadAllEntities<Subject>()),
+                includeSettings = true,
                 closeAction = closeAction
             };
 
@@ -279,6 +296,13 @@ namespace Programacion123
                 generatorDialog.Init(subject);
                 generatorDialog.ShowDialog();
 
+            }
+            else
+            {
+                ConfirmDialog dialog = new();
+                dialog.Init(ConfirmIconType.warning, "Aviso", "No se puede generar el documento porque no se ha seleccionado una programación", ConfirmChooseType.acceptOnly, (b) => Blocker.Visibility = Visibility.Hidden);
+                Blocker.Visibility = Visibility.Visible;
+                dialog.ShowDialog();
             }
         }
 

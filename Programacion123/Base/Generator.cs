@@ -28,8 +28,8 @@
     public abstract class Generator
     {
         public abstract void Generate(string path);
-        public abstract void Save(string path);
-        public abstract void LoadOrCreate(string path);
+        public abstract void SaveSettings();
+        public abstract void LoadOrCreateSettings();
         public abstract GeneratorValidationResult Validate();
     }
 

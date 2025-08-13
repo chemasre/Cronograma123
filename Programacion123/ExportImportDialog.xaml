@@ -141,6 +141,8 @@
                     <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                 </Button.Foreground>
             </Button>
+            <Label Content="Ajustes del&#xD;&#xA;documento" Canvas.Left="446" Canvas.Top="409" Width="110" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <CheckBox x:Name="CheckboxSettings" Content="" Canvas.Left="562" Canvas.Top="415"/>
 
         </Canvas>
     </Border>

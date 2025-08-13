@@ -31,7 +31,9 @@ namespace Programacion123
         public void Init(Subject? _subject)
         {
             generator = new HTMLGenerator();
-            generator.LoadOrCreate("HTMLGenerator.json");
+
+            generator.LoadOrCreateSettings();
+
             generator.Subject = _subject;
 
             var configSubject = WeakReferenceFieldConfiguration<Subject>.CreateForTextBox(TextSubject)
@@ -899,7 +901,7 @@ namespace Programacion123
 
                                       };
 
-            generator.Save("HTMLGenerator.json");
+            generator.SaveSettings();
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)

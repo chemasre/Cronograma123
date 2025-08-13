@@ -8,6 +8,12 @@ namespace Programacion123
         warning
     }
 
+    public enum ConfirmChooseType
+    {
+        acceptAndCancel,
+        acceptOnly
+    }
+
 
     /// <summary>
     /// Lógica de interacción para ConfirmDialog.xaml
@@ -25,7 +31,7 @@ namespace Programacion123
             Closed += ConfirmDialog_Closed;
         }
 
-        public void Init(ConfirmIconType _iconType, string _title, string _content, Action<bool> _closeAction)
+        public void Init(ConfirmIconType _iconType, string _title, string _content, ConfirmChooseType _chooseType, Action<bool> _closeAction)
         {
             TextTitle.Text = _title;
             TextContent.Text = _content;
@@ -33,6 +39,14 @@ namespace Programacion123
 
             IconWarning.Visibility = (_iconType == ConfirmIconType.warning ? Visibility.Visible : Visibility.Hidden);
             IconInfo.Visibility = (_iconType == ConfirmIconType.info ? Visibility.Visible : Visibility.Hidden);
+
+            LabelAccept.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel ? Visibility.Visible : Visibility.Hidden);
+            LabelCancel.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel ? Visibility.Visible : Visibility.Hidden);
+            ButtonAccept.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel ? Visibility.Visible : Visibility.Hidden);
+            ButtonCancel.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel ? Visibility.Visible : Visibility.Hidden);
+
+            LabelAcceptSingle.Visibility = (_chooseType == ConfirmChooseType.acceptOnly ? Visibility.Visible : Visibility.Hidden);
+            ButtonAcceptSingle.Visibility = (_chooseType == ConfirmChooseType.acceptOnly ? Visibility.Visible : Visibility.Hidden);
         }
 
         private void ConfirmDialog_Closed(object? sender, EventArgs e)
