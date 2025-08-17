@@ -22,6 +22,7 @@ namespace Programacion123
 
         object? webPreviewLastScrollPosition;
         bool webPreviewReady;
+        bool webPreviewValid;
 
         public HTMLGeneratorDialog()
         {
@@ -175,6 +176,7 @@ namespace Programacion123
 
             webPreviewLastScrollPosition = null;
             webPreviewReady = false;
+            webPreviewValid = false;
             WebPreview.LoadCompleted += WebPreview_LoadCompleted;
             UpdatePreviewUI();
 
@@ -691,25 +693,71 @@ namespace Programacion123
             {
                 webPreviewLastScrollPosition = WebPreview.InvokeScript("getVerticalScrollPosition");
             }
-            string html = generator.GenerateHTML(true);
+
+            string html;
+            if(generator.Validate().code == GeneratorValidationCode.success)
+            {
+                webPreviewValid = true;
+                html = generator.GenerateHTML(true);
+            }
+            else
+            {
+                html = "<!DOCTYPE html>\n" +
+                       "<html lang='es'>\n" + 
+                       "<head>\n" + 
+                       "<meta charset='UTF-8'>\n" + 
+                       "<title>Programación no válida</title>\n" +
+                       "<style>" +
+                       "#cannotPreview" +
+                       "{ font-family: sans-serif;\n" +
+                       "  font-size:16pt;\n" +
+                       "  color:orange;\n" +
+                       "  margin-left:auto;\n" + 
+                       "  margin-right:auto;\n" + 
+                       "  width:10cm;\n" +
+                       "  height:auto;\n" + 
+                       "  text-align:center;\n" +
+                       "  margin-top:5cm;\n" +
+                       "  border-style:dashed;\n" +
+                       "  border-width:2pt;\n" +
+                       "  border-color:orange;\n" +
+                       "  padding:20pt;\n" +
+                       "}\n" +
+                       "</style>\n" +
+                       "</head>\n" +
+                       "<body>\n" +
+                       "<div id='cannotPreview'>Vista previa no disponible porque la programación del módulo presenta algún problema<div>\n" +
+                       "</body>\n" +
+                       "</html>";
+
+                webPreviewValid = false;
+            }
+            
             WebPreview.NavigateToString(html);
         }
 
         void WebPreview_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            // https://stackoverflow.com/questions/5496549/how-to-inject-css-in-webbrowser-control
-
-            HTMLDocument htmlDocument = (HTMLDocument)WebPreview.Document;
-            IHTMLStyleSheet style = htmlDocument.createStyleSheet("",0);
-
-            style.cssText = generator.GenerateCSS();
-
-            if(webPreviewReady && webPreviewLastScrollPosition != null)
+            if(webPreviewValid)
             {
-                WebPreview.InvokeScript("setVerticalScrollPosition", webPreviewLastScrollPosition.ToString());
-            }
+                // https://stackoverflow.com/questions/5496549/how-to-inject-css-in-webbrowser-control
 
-            webPreviewReady = true;
+                HTMLDocument htmlDocument = (HTMLDocument)WebPreview.Document;
+                IHTMLStyleSheet style = htmlDocument.createStyleSheet("",0);
+
+                style.cssText = generator.GenerateCSS();
+
+                if(webPreviewReady && webPreviewLastScrollPosition != null)
+                {
+                    WebPreview.InvokeScript("setVerticalScrollPosition", webPreviewLastScrollPosition.ToString());
+                }
+
+                webPreviewReady = true;
+            }
+            else
+            {
+                webPreviewReady = false;
+            }
 
         }
 
@@ -911,28 +959,46 @@ namespace Programacion123
 
         private void ButtonAccept_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog saveFile = new();
-            saveFile.Title = "Guardar programación como";
-            saveFile.Filter = "Ficheros html (*.html)|*.html|Todos los ficheros (*.*)|*.*";
-            saveFile.FilterIndex = 0;
-            saveFile.OverwritePrompt = true;
-            saveFile.FileName = "Programación didáctica";
-
-            Blocker.Visibility = Visibility.Visible;
-
-            if(saveFile.ShowDialog().GetValueOrDefault())
+            if(generator.Validate().code != GeneratorValidationCode.success) 
             {
-                generator.Generate(saveFile.FileName);
+                ConfirmDialog dialog = new();
+                dialog.Init(ConfirmIconType.warning,
+                            "Advertencia",
+                            "No se puede generar el documento porque la programación del módulo presenta algún problema",
+                            ConfirmChooseType.acceptOnly, 
+                            (r) => { Blocker.Visibility = Visibility.Hidden; });
 
-                Process process = new();
-                process.StartInfo = new ProcessStartInfo(saveFile.FileName);
-                process.StartInfo.UseShellExecute = true;
-                process.Start();
+                Blocker.Visibility = Visibility.Visible;
 
-                Close();
+                dialog.ShowDialog();
+                
             }
+            else
+            {
+                SaveFileDialog saveFile = new();
+                saveFile.Title = "Guardar programación como";
+                saveFile.Filter = "Ficheros html (*.html)|*.html|Todos los ficheros (*.*)|*.*";
+                saveFile.FilterIndex = 0;
+                saveFile.OverwritePrompt = true;
+                saveFile.FileName = "Programación didáctica";
+
+                Blocker.Visibility = Visibility.Visible;
+
+                if(saveFile.ShowDialog().GetValueOrDefault())
+                {
+                    generator.Generate(saveFile.FileName);
+
+                    Process process = new();
+                    process.StartInfo = new ProcessStartInfo(saveFile.FileName);
+                    process.StartInfo.UseShellExecute = true;
+                    process.Start();
+
+                    Close();
+                }
             
-            Blocker.Visibility = Visibility.Hidden;
+                Blocker.Visibility = Visibility.Hidden;
+            }
+
 
 
             
