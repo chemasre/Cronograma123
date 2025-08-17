@@ -9,7 +9,7 @@ namespace Programacion123
     public partial class ExportImportDialog : Window
     {
 
-        Action<bool, ExportImportDialog>? closeAction;
+        Func<bool, ExportImportDialog, bool>? closeAction;
 
         WeakReferencesBoxController<GradeTemplate, EntityPicker<GradeTemplate>> gradeTemplatesController;
         WeakReferencesBoxController<SubjectTemplate, EntityPicker<SubjectTemplate>> subjectTemplatesController;
@@ -39,7 +39,7 @@ namespace Programacion123
             public List<string> weekSchedulesStorageIds;
             public List<string> subjectsStorageIds;
             public bool includeSettings;
-            public Action<bool, ExportImportDialog>? closeAction;
+            public Func<bool, ExportImportDialog, bool>? closeAction;
             
         }
 
@@ -116,22 +116,22 @@ namespace Programacion123
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-            closeAction?.Invoke(false, this);
-            Close();
+            bool? cancel = closeAction?.Invoke(false, this);
+            if(!cancel.GetValueOrDefault()) { Close(); }
         }
 
         private void ButtonAccept_Click(object sender, RoutedEventArgs e)
         {
-            closeAction?.Invoke(true, this);
+            bool? cancel = closeAction?.Invoke(true, this);
 
-            Close();
+            if(!cancel.GetValueOrDefault()) { Close(); }
         }
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
-            closeAction?.Invoke(false, this);
+            bool? cancel = closeAction?.Invoke(false, this);
 
-            Close();
+            if(!cancel.GetValueOrDefault()) { Close(); }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

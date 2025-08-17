@@ -16,6 +16,8 @@ namespace Programacion123
     /// </summary>
     public partial class HTMLGeneratorDialog : Window
     {
+        Action<bool>? closeAction;
+
         WeakReferenceFieldController<Subject, EntityPicker<Subject> > subjectController;
 
         HTMLGenerator generator;
@@ -29,9 +31,11 @@ namespace Programacion123
             InitializeComponent();
         }
 
-        public void Init(Subject? _subject)
+        public void Init(Subject? _subject, Action<bool> _closeAction)
         {
             generator = new HTMLGenerator();
+
+            closeAction = _closeAction;
 
             generator.LoadOrCreateSettings();
 
@@ -994,6 +998,7 @@ namespace Programacion123
                     process.StartInfo.UseShellExecute = true;
                     process.Start();
 
+                    closeAction?.Invoke(true);
                     Close();
                 }
             
@@ -1007,6 +1012,7 @@ namespace Programacion123
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
+            closeAction?.Invoke(false);
             Close();
         }
 

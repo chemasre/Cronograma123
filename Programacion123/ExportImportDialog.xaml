@@ -56,7 +56,6 @@
                     <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                 </Button.Foreground>
             </Button>
-            <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-5" Canvas.Top="-5" Height="555" Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" />
             <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonAccept" Content="" Height="48" Width="48" Canvas.Left="370" BorderBrush="{x:Null}" Canvas.Top="618" Style="{DynamicResource PushableButton}" Click="ButtonAccept_Click" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonAccept.png"/>
@@ -143,6 +142,7 @@
             </Button>
             <Label Content="Ajustes del&#xD;&#xA;documento" Canvas.Left="446" Canvas.Top="409" Width="110" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <CheckBox x:Name="CheckboxSettings" Content="" Canvas.Left="562" Canvas.Top="415"/>
+            <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="700" Width="864" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
 
         </Canvas>
     </Border>

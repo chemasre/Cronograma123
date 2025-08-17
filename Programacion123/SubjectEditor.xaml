@@ -22,7 +22,7 @@
             <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="110" Canvas.Top="639" HorizontalAlignment="Left" VerticalAlignment="Center" Width="381">
                 <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Height="52" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="0,0,5,0"/>
             </Border>
-            <TextBox x:Name="TextTitle" Canvas.Left="185" Canvas.Top="93" Width="288" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
+            <TextBox x:Name="TextTitle" Canvas.Left="207" Canvas.Top="93" Width="266" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
             <Label Content="Título" Canvas.Left="25" Canvas.Top="87" HorizontalAlignment="Center" VerticalAlignment="Top" Width="169"/>
             <TabControl Height="369" Width="466" HorizontalAlignment="Center" Canvas.Top="247" VerticalAlignment="Top" Canvas.Left="26" BorderBrush="#00ACACAC">
                 <TabControl.Background>
@@ -325,12 +325,12 @@
                     </Canvas>
                 </TabItem>
             </TabControl>
-            <Label Content="Plantilla vinculada" Canvas.Left="26" Canvas.Top="120" Width="169" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Plantilla de módulo vinculada" Canvas.Left="26" Canvas.Top="120" Width="169" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="Calendario vinculado" Canvas.Left="26" Canvas.Top="158" Width="169" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="Horario vinculado" Canvas.Left="26" Canvas.Top="196" Width="169" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBox x:Name="TextTemplate" Canvas.Left="185" Canvas.Top="124" Width="255" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox x:Name="TextCalendar" Canvas.Left="185" Canvas.Top="162" Width="255" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox x:Name="TextWeekSchedule" Canvas.Left="185" Canvas.Top="200" Width="255" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="TextTemplate" Canvas.Left="207" Canvas.Top="124" Width="233" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="TextCalendar" Canvas.Left="207" Canvas.Top="162" Width="233" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="TextWeekSchedule" Canvas.Left="207" Canvas.Top="200" Width="233" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Button x:Name="ButtonTemplatePick" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="449" Canvas.Top="121" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonPick.png"/>

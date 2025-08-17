@@ -159,6 +159,8 @@ namespace Programacion123
 
         private void ButtonReset_Click(object sender, RoutedEventArgs e)
         {
+            Blocker.Visibility = Visibility.Visible;
+
             ConfirmDialog confirm = new();
             confirm.Init(ConfirmIconType.warning, "Confirmación", "Esto eliminará TODOS los datos y ajustes guardados, devolviendo la aplicación a su estado inicial ¿estás seguro/a?",
                          ConfirmChooseType.acceptAndCancel,
@@ -171,6 +173,8 @@ namespace Programacion123
                         RestartUI();
                     }
 
+                    Blocker.Visibility = Visibility.Hidden;
+
                 });
 
             confirm.ShowDialog();
@@ -179,12 +183,16 @@ namespace Programacion123
 
         private void ButtonImport_Click(object sender, RoutedEventArgs e)
         {
+
             OpenFileDialog openFileDialog = new();
             openFileDialog.Title = "Elige archivo para cargar";
             openFileDialog.Filter = "Ficheros zip (*.zip)|*.zip|Todos los ficheros (*.*)|*.*";
 
+            Blocker.Visibility = Visibility.Visible;
+
             if(openFileDialog.ShowDialog().GetValueOrDefault())
             {
+
                 Storage.Archive_Open(openFileDialog.FileName);
                 Settings.Archive_Open(openFileDialog.FileName);
 
@@ -215,10 +223,14 @@ namespace Programacion123
                                 {
                                     Settings.Archive_CopyToBase();
                                 }
+
                             }
 
+                            return false;
                             Storage.Archive_Close();
                             Settings.Archive_Close();
+
+                            Blocker.Visibility = Visibility.Hidden;
 
                             if(accepted)
                             {
@@ -236,34 +248,61 @@ namespace Programacion123
                 dialog.ShowDialog();
 
             }
+            else
+            {
+                Blocker.Visibility = Visibility.Hidden;
+            }
         }
 
         private void ButtonExport_Click(object sender, RoutedEventArgs e)
         {
+            Blocker.Visibility = Visibility.Visible;
+
             ExportImportDialog dialog = new();
 
-            Action<bool, ExportImportDialog> closeAction = 
+            Func<bool, ExportImportDialog, bool> closeAction = 
             (accepted, exportDialog) =>
             {
-                SaveFileDialog saveFileDialog = new();
-                saveFileDialog.Title = "Elige archivo para guardar";
-                saveFileDialog.Filter = "Ficheros zip (*.zip)|*.zip|Todos los ficheros (*.*)|*.*";
+                bool cancelClose = false;
 
-                if(saveFileDialog.ShowDialog().GetValueOrDefault())
+                if(accepted)
                 {
-                    List<string> storageIds = new();
-                    storageIds.AddRange(dialog.GradeTemplatesStorageIds);
-                    storageIds.AddRange(dialog.SubjectTemplatesStorageIds);
-                    storageIds.AddRange(dialog.CalendarsStorageIds);
-                    storageIds.AddRange(dialog.WeekSchedulesStorageIds);
-                    storageIds.AddRange(dialog.SubjectsStorageIds);
-                    Storage.Archive_Create(storageIds, saveFileDialog.FileName);
+                    SaveFileDialog saveFileDialog = new();
+                    saveFileDialog.Title = "Elige archivo para guardar";
+                    saveFileDialog.Filter = "Ficheros zip (*.zip)|*.zip|Todos los ficheros (*.*)|*.*";
 
-                    if(exportDialog.CheckboxSettings.IsChecked.GetValueOrDefault())
+                    exportDialog.Blocker.Visibility = Visibility.Visible;
+
+                    if(saveFileDialog.ShowDialog().GetValueOrDefault())
                     {
-                        Settings.Archive_Add(saveFileDialog.FileName);
+                        List<string> storageIds = new();
+                        storageIds.AddRange(dialog.GradeTemplatesStorageIds);
+                        storageIds.AddRange(dialog.SubjectTemplatesStorageIds);
+                        storageIds.AddRange(dialog.CalendarsStorageIds);
+                        storageIds.AddRange(dialog.WeekSchedulesStorageIds);
+                        storageIds.AddRange(dialog.SubjectsStorageIds);
+                        Storage.Archive_Create(storageIds, saveFileDialog.FileName);
+
+                        if(exportDialog.CheckboxSettings.IsChecked.GetValueOrDefault())
+                        {
+                            Settings.Archive_Add(saveFileDialog.FileName);
+                        }
+
                     }
-                }				
+                    else
+                    {
+                        cancelClose = true;
+                    }
+
+                    exportDialog.Blocker.Visibility = Visibility.Hidden;
+                }
+
+                if(!cancelClose)
+                {
+                    Blocker.Visibility = Visibility.Hidden;
+                }
+
+                return cancelClose;
             };
 
             ExportImportDialogConfiguration config = new()
@@ -296,12 +335,14 @@ namespace Programacion123
 
         private void ButtonGenerateDocument_Click(object sender, RoutedEventArgs e)
         {
+            Blocker.Visibility = Visibility.Visible;
+
             Subject? subject = subjectsController.GetSelectedEntity();
             if(subject != null)
             {
                 HTMLGeneratorDialog generatorDialog = new();
 
-                generatorDialog.Init(subject);
+                generatorDialog.Init(subject, (b) => { Blocker.Visibility = Visibility.Hidden; });
                 generatorDialog.ShowDialog();
 
             }
@@ -309,7 +350,6 @@ namespace Programacion123
             {
                 ConfirmDialog dialog = new();
                 dialog.Init(ConfirmIconType.warning, "Aviso", "No se puede generar el documento porque no se ha seleccionado una programación", ConfirmChooseType.acceptOnly, (b) => Blocker.Visibility = Visibility.Hidden);
-                Blocker.Visibility = Visibility.Visible;
                 dialog.ShowDialog();
             }
         }
