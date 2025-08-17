@@ -49,6 +49,9 @@ namespace Programacion123
 
     public partial class HTMLGenerator : Generator
     {
+        /// <summary>
+        /// Requires validation result to be success
+        /// </summary>
         public string GenerateHTML(bool isPreview = false)
         {
             SubjectTemplate? subjectTemplate = Subject.Template;

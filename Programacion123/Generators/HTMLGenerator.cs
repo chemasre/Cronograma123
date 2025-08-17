@@ -27,6 +27,9 @@ namespace Programacion123
 
         }
 
+        /// <summary>
+        /// Requires validation result to be success
+        /// </summary>
         public override void Generate(string outputPath)
         {
             FileStreamOptions options = new() { Access = FileAccess.Write, Mode = FileMode.Create };

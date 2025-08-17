@@ -28,11 +28,17 @@
 
     public partial class Subject : Entity
     {
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public int QueryActivitySessionsCount(ActivitySchedule schedule)
         {
             return QueryActivitySessionsCount(schedule.start.day, schedule.end.day);
         }
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public int QueryActivitySessionsCount(DateTime startDay, DateTime endDay)
         {
             int count = 0;
@@ -45,6 +51,9 @@
         }
 
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public List<EvaluableActivityIndex> QueryBlockEvaluableActivityIndexes(int blockIndex)
         {
             List<EvaluableActivityIndex> result = new();
@@ -81,6 +90,9 @@
             return result;
         }
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public List<EvaluableActivityIndex> QueryEvaluableActivityIndexes()
         {
             List<EvaluableActivityIndex> result = new();
@@ -131,6 +143,9 @@
             return result;
         }
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public int QueryEvaluableActivityTypeIndex(int blockIndex, Activity activity)
         {
             return Blocks[blockIndex].Activities
@@ -140,6 +155,9 @@
                     .FindIndex(a => a.StorageId == activity.StorageId);
         } 
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public float QueryBlockDuration(int blockIndex)
         {
             float hours = 0;
@@ -148,6 +166,9 @@
 
         }
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public List<int> QueryBlockReferencedContentIndexes(int blockIndex)
         {
             List<int> referencedList;
@@ -166,6 +187,9 @@
 
         }
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public List<int> QueryBlockReferencedKeyCompetencesIndexes(int blockIndex)
         {
             List<int> referencedList;
@@ -185,6 +209,9 @@
         }
 
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public List<int> QueryBlockReferencedLearningResultIndexes(int blockIndex)
         {
             List<int> referencedList;
@@ -205,6 +232,9 @@
             return referencedList;
         }
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public List<int> QueryActivityReferencedLearningResultIndexes(int blockIndex, int activityIndex)
         {
             List<int> referencedList;
@@ -225,6 +255,9 @@
         }
 
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public List<SubjectLearningResultCriteriaIndex> QueryActivityReferencedLearningResultCriteriaIndexes(int blockIndex, int activityIndex)
         {
             List<SubjectLearningResultCriteriaIndex> referenced = new();
@@ -269,6 +302,9 @@
 
         }
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public List<SubjectLearningResultCriteriaIndex> QueryBlockReferencedLearningResultCriteriaIndexes(int blockIndex)
         {
             List<SubjectLearningResultCriteriaIndex> referenced = new();
@@ -312,6 +348,9 @@
             return referenced;
         }
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public List<int> QueryReferencedKeyCompetencesIndexes()
         {
             HashSet<int> referencesSet = new();
@@ -334,6 +373,9 @@
             return sortedReferencesList;
         }
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public List<SubjectLearningResultIndexesWeight> QueryLearningResultsIndexesWeights()
         {
 
@@ -357,6 +399,9 @@
 
         }
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public List<SubjectLearningResultIndexesWeight> QueryActivityLearningResultsIndexesWeight(int blockIndex, int activityIndex)
         {
             List<SubjectLearningResultIndexesWeight> result = new();
@@ -383,6 +428,9 @@
             return result;
         }
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public List<ContentPointIndex> QueryActivityContentPointsIndexes(int blockIndex, int activityIndex)
         {
             List<ContentPointIndex> result = new();
@@ -408,6 +456,9 @@
             return result;
         }
 
+        /// <summary>
+        /// Subject must be valid
+        /// </summary>
         public int QueryActivityIndex(int blockIndex, Activity activity)
         {
             return Blocks[blockIndex].Activities.ToList().FindIndex(a => a.StorageId == activity.StorageId);
