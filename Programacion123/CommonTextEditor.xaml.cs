@@ -31,6 +31,8 @@ namespace Programacion123
 
             TextTitle.Text = _entity.Title;
 
+            ButtonClose.ToolTip = "Cerrar";
+
             if (titleEditable)
             {
                 LabelTitle.Visibility = Visibility.Visible;

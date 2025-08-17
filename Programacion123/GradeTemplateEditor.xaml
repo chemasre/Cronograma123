@@ -192,7 +192,7 @@
                 </TabItem>
             </TabControl>
             <Image Height="74" Canvas.Left="13" Canvas.Top="538" Width="100" Source="/Images/ValidatorCapy.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-5" Canvas.Top="-5" Height="691" Width="526" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
+            <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="645" Width="529" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" />
         </Canvas>
     </Border>
 </Window>

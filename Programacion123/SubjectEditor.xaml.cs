@@ -238,6 +238,8 @@ namespace Programacion123
 
             UpdateEntityTemplateReferences();
 
+            ButtonClose.ToolTip = "Cerrar";
+
             dataTableResultsWeight.RowChanged += DataTableResultsWeight_RowChanged;
             dataTableActivitiesWeight.RowChanged += DataTableActivitiesWeight_RowChanged;
             dataTableActivitiesSchedule.RowChanged += DataTableActivitiesSchedule_RowChanged;

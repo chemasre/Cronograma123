@@ -59,6 +59,9 @@ namespace Programacion123
 
             TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
 
+            ButtonClose.ToolTip = "Cerrar";
+
+
             Validate();
 
         }

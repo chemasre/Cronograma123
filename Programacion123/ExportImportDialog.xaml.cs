@@ -107,6 +107,8 @@ namespace Programacion123
                 LabelAccept.Content = "Importar";
             }
 
+            ButtonClose.ToolTip = "Cerrar";
+
             closeAction = config.closeAction;
 
 

@@ -64,6 +64,10 @@ namespace Programacion123
 
             CalendarPreview.SelectedDate = null;
 
+            ButtonClose.ToolTip = "Cerrar";
+            ButtonFreeDayAdd.ToolTip = "Añadir";
+            ButtonFreeDayRemove.ToolTip = "Quitar";
+
             TextTitle.TextChanged += TextTitle_TextChanged;
             DateStart.SelectedDateChanged += DateStart_SelectedDateChanged;
             DateEnd.SelectedDateChanged += DateEnd_SelectedDateChanged;

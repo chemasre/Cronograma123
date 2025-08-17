@@ -169,7 +169,7 @@
                     </Canvas>
                 </TabItem>
             </TabControl>
-            <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-5" Canvas.Top="-5" Height="755" Width="1144" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" />
+            <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="758" Width="1147" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" />
 
         </Canvas>
     </Border>

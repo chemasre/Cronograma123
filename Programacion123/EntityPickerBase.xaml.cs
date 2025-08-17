@@ -96,6 +96,8 @@ namespace Programacion123
             LabelAddReference.Visibility = Visibility.Hidden;
             ButtonAddReference.Visibility = Visibility.Hidden;
             
+            ButtonClose.ToolTip = "Cerrar";
+
             isMultiPickerMode = false;
         }        
 
@@ -142,6 +144,8 @@ namespace Programacion123
             ButtonAddReference.Visibility = Visibility.Visible;
             LabelSetReference.Visibility = Visibility.Hidden;
             ButtonSetReference.Visibility = Visibility.Hidden;
+
+            ButtonClose.ToolTip = "Cerrar";
 
             isMultiPickerMode = true;
         }

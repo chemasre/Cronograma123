@@ -249,6 +249,7 @@ namespace Programacion123
             TextGradeClassroomHours.Text = _subjectTemplate.GradeClassroomHours.ToString();
             TextGradeCompanyHours.Text = _subjectTemplate.GradeCompanyHours.ToString();
 
+            ButtonClose.ToolTip = "Cerrar";
 
             TextTitle.TextChanged += TextTitle_TextChanged;
             TextSubjectName.TextChanged += TextSubjectName_TextChanged;

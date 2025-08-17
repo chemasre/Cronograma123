@@ -436,6 +436,8 @@ namespace Programacion123
             DataGridLearningResultsWeight.CanUserResizeColumns = false;
             DataGridLearningResultsWeight.CanUserResizeRows = false;
 
+            ButtonClose.ToolTip = "Cerrar";
+
             TextTitle.TextChanged += TextTitle_TextChanged;
             TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
 

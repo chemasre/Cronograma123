@@ -108,6 +108,8 @@ namespace Programacion123
             TextName.Text = _gradeTemplate.GradeName;
             TextFamilyName.Text = _gradeTemplate.GradeFamilyName;
 
+            ButtonClose.ToolTip = "Cerrar";
+
             TextTitle.TextChanged += TextTitle_TextChanged;
             TextName.TextChanged += TextName_TextChanged;
             TextFamilyName.TextChanged += TextFamilyName_TextChanged;

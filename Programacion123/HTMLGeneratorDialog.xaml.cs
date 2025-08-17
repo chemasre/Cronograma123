@@ -161,6 +161,7 @@ namespace Programacion123
             UpdateTextElementStyleUI();
             UpdateTableElementStyleUI();
 
+            ButtonClose.ToolTip = "Cerrar";
 
             ButtonCoverLogoOpen.Click += ButtonCoverLogoOpen_Click;
             ButtonCoverCoverOpen.Click += ButtonCoverCoverOpen_Click;

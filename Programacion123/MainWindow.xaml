@@ -265,7 +265,7 @@
                     </TransformGroup>
                 </Image.RenderTransform>
             </Image>
-            <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-5" Canvas.Top="-5" Height="913" Width="598" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" />
+            <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="859" Width="604" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
         </Canvas>
     </Border>
 </Window>

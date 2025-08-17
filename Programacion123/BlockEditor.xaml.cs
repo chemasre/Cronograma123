@@ -69,6 +69,8 @@ namespace Programacion123
 
             TextBoxDescription.Text = _entity.Description;
 
+            ButtonClose.ToolTip = "Cerrar";
+
             TextTitle.TextChanged += TextTitle_TextChanged;
             TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;            
 
