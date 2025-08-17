@@ -116,6 +116,13 @@ namespace Programacion123
 
             subjectsController = new (configSubjects);
 
+            ButtonExport.ToolTip = "Exportar";
+            ButtonImport.ToolTip = "Importar";
+            ButtonGenerateDocument.ToolTip = "Generar";
+            ButtonHelp.ToolTip = "Ver ayuda";
+            ButtonHome.ToolTip = "Ver página principal del proyecto";
+            ButtonReset.ToolTip = "Borrar todos los datos";
+
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
