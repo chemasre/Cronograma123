@@ -184,7 +184,7 @@ namespace Programacion123
 
 
             List<string> commonTextsIds = new();
-            foreach (SubjectCommonTextId id in Enum.GetValues<SubjectCommonTextId>()) { commonTextsIds.Add(entity.CommonTexts[id].StorageId); }
+            foreach (CommonTextId id in Enum.GetValues<CommonTextId>()) { commonTextsIds.Add(entity.CommonTexts[id].StorageId); }
 
             ListBoxCommonTexts.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
 
@@ -560,7 +560,7 @@ namespace Programacion123
             entity.WeekSchedule = weekScheduleController.GetEntity();
 
             for (int i = 0; i < commonTextsController.StorageIds.Count; i++)
-            { entity.CommonTexts.Set((SubjectCommonTextId)i, Storage.LoadOrCreateEntity<CommonText>(commonTextsController.StorageIds[i], entity.StorageId)); }
+            { entity.CommonTexts.Set((CommonTextId)i, Storage.LoadOrCreateEntity<CommonText>(commonTextsController.StorageIds[i], entity.StorageId)); }
 
             entity.Metodologies.Set(Storage.LoadOrCreateEntities<CommonText>(metodologiesController.StorageIds, entity.StorageId));
 

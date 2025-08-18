@@ -959,6 +959,7 @@ namespace Programacion123
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
+            closeAction?.Invoke(false);
             Close();
         }
 

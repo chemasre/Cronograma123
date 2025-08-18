@@ -1,19 +1,5 @@
 ﻿namespace Programacion123
 {
-
-    public enum SubjectCommonTextId
-    {
-        subjectPolicyDiversity,
-        subjectPolicyMetodology,
-        subjectPolicyEvaluation,
-        subjectPolicyOrdinaryEvaluation,
-        subjectPolicyExtraordinaryEvaluation,
-        subjectTraversalReadingAndTIC,
-        subjectTraversalCommunicationEntrepreneurshipAndEducation,
-        subjectImportanceJustification
-    }
-
-
     public partial class Subject : Entity
     {
         public SubjectTemplate? Template { get; set; }
@@ -30,26 +16,46 @@
 
         public DictionaryProperty<LearningResult, float> LearningResultsWeights  { get; } = new DictionaryProperty<LearningResult, float>();
 
-        public DictionaryProperty<SubjectCommonTextId, CommonText> CommonTexts { get; } = new DictionaryProperty<SubjectCommonTextId, CommonText>();
+        public DictionaryProperty<CommonTextId, CommonText> CommonTexts { get; } = new DictionaryProperty<CommonTextId, CommonText>();
 
 
         public Subject() : base()
         {
             StorageClassId = "subject";
 
-            foreach (SubjectCommonTextId id in Enum.GetValues<SubjectCommonTextId>())
+            foreach (CommonTextId id in Enum.GetValues<CommonTextId>())
             {
                 CommonTexts.Add(id, new CommonText());
             }
 
-            CommonTexts[SubjectCommonTextId.subjectPolicyDiversity].Title = "Líneas de atención a la diversidad del módulo";
-            CommonTexts[SubjectCommonTextId.subjectPolicyMetodology].Title = "Líneas metodológicas del módulo";
-            CommonTexts[SubjectCommonTextId.subjectPolicyEvaluation].Title = "Líneas del módulo para la evaluación";
-            CommonTexts[SubjectCommonTextId.subjectPolicyOrdinaryEvaluation].Title = "Líneas del módulo para la evaluación ordinaria";
-            CommonTexts[SubjectCommonTextId.subjectPolicyExtraordinaryEvaluation].Title = "Líneas del módulo para la evaluación extraordinaria";
-            CommonTexts[SubjectCommonTextId.subjectTraversalReadingAndTIC].Title = "Elemento transversal: Fomento de la lectura y tecnologías de la información y de comunicación";
-            CommonTexts[SubjectCommonTextId.subjectTraversalCommunicationEntrepreneurshipAndEducation].Title = "Elemento transversal: Comunicación audiovisual, emprendimiento, educación cívica y constitucional";
-            CommonTexts[SubjectCommonTextId.subjectImportanceJustification].Title = "Justificación de la importancia del módulo";
+            CommonTexts[CommonTextId.header1ModuleOrganization].Title =          "[Encabezado1] Organización del módulo";
+            CommonTexts[CommonTextId.header1ImportanceJustification].Title =     "[Enabezado1] Justificación de la importancia del módulo";
+            CommonTexts[CommonTextId.header1CurricularElements].Title =          "[Encabezado1] Elementos Curriculares";
+            CommonTexts[CommonTextId.header2GeneralObjectives].Title =           "[Encabezado2] Objetivos generales relacionados con el módulo";
+            CommonTexts[CommonTextId.header2GeneralCompetences].Title =          "[Encabezado2] Competencias generales, profesionales, personales y sociales";
+            CommonTexts[CommonTextId.header2KeyCompetences].Title =               "[Encabezado2] Capacidades clave";
+            CommonTexts[CommonTextId.header1MetodologyAndDidacticOrientations].Title = "[Encabezado1] Metodología. Orientaciones didácticas";
+            CommonTexts[CommonTextId.header2Metodology].Title =                  "[Encabezado2] Metodología general y específica de la materia";
+            CommonTexts[CommonTextId.header2Diversity].Title =                   "[Encabezado2] Medidas de atención al alumnado con necesidad específica de apoyo educativo o con necesidad de compensación educativa: atención a la diversidad";
+            CommonTexts[CommonTextId.header1EvaluationSystem].Title =            "[Encabezado1] Sistema de evaluación";
+            CommonTexts[CommonTextId.header2Evaluation].Title =                  "[Encabezado2] Líneas evaluativas";
+            CommonTexts[CommonTextId.header2EvaluationTypes].Title =             "[Encabezado2] Tipos de evaluación";
+            CommonTexts[CommonTextId.header3OrdinaryEvaluation].Title =          "[Encabezado3] Evaluación ordinaria";
+            CommonTexts[CommonTextId.header3ExtraordinaryEvaluation].Title =     "[Encabezado3] Evaluación extraordinaria";
+            CommonTexts[CommonTextId.header2EvaluationInstruments].Title =       "[Encabezado2] Instrumentos de evaluación";
+            CommonTexts[CommonTextId.header2EvaluationOfProgramming].Title =     "[Encabezado2] Evaluación del funcionamiento de la programación";
+            CommonTexts[CommonTextId.header1TraversalElements].Title =           "[Encabezado1] Elementos transversales";
+            CommonTexts[CommonTextId.header2TraversalReadingAndTIC].Title =      "[Encabezado2] Fomento de la lectura y tecnologías de la información y de comunicación";
+            CommonTexts[CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation].Title = "[Encabezado2] Comunicación audiovisual, emprendimiento, educación cívica y constitucional";
+            CommonTexts[CommonTextId.header1Resources].Title =                   "[Encabezado1] Recursos didácticos y organizativos";
+            CommonTexts[CommonTextId.header2ResourcesSpaces].Title =              "[Encabezado2] Espacios";
+            CommonTexts[CommonTextId.header2ResourcesMaterialAndTools].Title =   "[Encabezado2] Materiales y herramientas";
+            CommonTexts[CommonTextId.header1SubjectProgramming].Title =          "[Encabezado1] Programación del módulo profesional";
+            CommonTexts[CommonTextId.header2LearningResultsAndContents].Title =  "[Encabezado2] Resultados de aprendizaje, criterios de evaluación y contenidos";
+            CommonTexts[CommonTextId.header3LearningResults].Title =             "[Encabezado3] Resultados de aprendizaje y criterios de evaluación";
+            CommonTexts[CommonTextId.header3Contents].Title =                    "[Encabezado3] Contenidos";
+            CommonTexts[CommonTextId.header2Blocks].Title =                      "[Encabezado2] Bloques de enseñanza-aprendizaje";
+            CommonTexts[CommonTextId.header2Activities].Title =                  "[Encabezado2] Programación de actividades de enseñanza-aprendizaje";
 
         }
 
@@ -160,7 +166,7 @@
 
             if(!foundSchoolDay) { return ValidationResult.Create(ValidationCode.subjectCalendarAndWeekScheduleLeaveNoSchoolDays);  }
 
-            List<KeyValuePair<SubjectCommonTextId, CommonText>> commonTexts = CommonTexts.ToList();
+            List<KeyValuePair<CommonTextId, CommonText>> commonTexts = CommonTexts.ToList();
             for (int i = 0; i < commonTexts.Count; i++)
             {
                 if (commonTexts[i].Value.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectCommonTextInvalid).WithIndex((int)commonTexts[i].Key); }
@@ -216,7 +222,7 @@
             foreach(var r in resultsList) { resultsWithIds.Add(KeyValuePair.Create<string, float>(r.Key.StorageId, r.Value)); }
             data.LearningResultsWeakStorageIdsWeights = resultsWithIds;
 
-            List<KeyValuePair<SubjectCommonTextId, CommonText>> commonTextList = CommonTexts.ToList();
+            List<KeyValuePair<CommonTextId, CommonText>> commonTextList = CommonTexts.ToList();
             commonTextList.ForEach(e => { e.Value.Save(StorageId); data.CommonTextsStorageIds.Add(e.Key, e.Value.StorageId); });
 
             Storage.SaveData<SubjectData>(StorageId, StorageClassId, data, parentStorageId);
@@ -257,7 +263,7 @@
             }
             LearningResultsWeights.Set(resultsList);
 
-            foreach (KeyValuePair<SubjectCommonTextId, string> keyValue in data.CommonTextsStorageIds)
+            foreach (KeyValuePair<CommonTextId, string> keyValue in data.CommonTextsStorageIds)
             { CommonTexts.Set(keyValue.Key, Storage.LoadOrCreateEntity<CommonText>(keyValue.Value, storageId)); }
 
         }

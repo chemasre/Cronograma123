@@ -19,7 +19,7 @@
 
         public List< KeyValuePair<string, float> > LearningResultsWeakStorageIdsWeights { get; set; } = new List<KeyValuePair<string, float>>();
 
-        public Dictionary<SubjectCommonTextId, string> CommonTextsStorageIds { get; set; } = new Dictionary<SubjectCommonTextId, string>();
+        public Dictionary<CommonTextId, string> CommonTextsStorageIds { get; set; } = new Dictionary<CommonTextId, string>();
 
     }
 }

@@ -1,5 +1,48 @@
 ﻿namespace Programacion123
 {
+    public enum CommonTextId
+    {
+        header1ModuleOrganization,
+
+        header1ImportanceJustification,
+
+        header1CurricularElements,
+        header2GeneralObjectives,
+        header2GeneralCompetences,
+        header2KeyCompetences,
+
+        header1MetodologyAndDidacticOrientations,
+        header2Metodology,
+        header2Diversity,
+
+        header1EvaluationSystem,
+        header2Evaluation,
+        header2EvaluationTypes,
+        header3OrdinaryEvaluation,
+        header3ExtraordinaryEvaluation,
+
+        header2EvaluationInstruments,
+        header2EvaluationOfProgramming,
+
+        header1TraversalElements,
+        header2TraversalReadingAndTIC,
+        header2TraversalCommunicationEntrepreneurshipAndEducation,
+
+        header1Resources,
+        header2ResourcesSpaces,
+        header2ResourcesMaterialAndTools,
+
+        header1SubjectProgramming,
+        header2LearningResultsAndContents,
+        header3LearningResults,
+        header3Contents,
+        header2Blocks,
+        header2Activities,
+            
+    }
+
+
+
     public class CommonText: Entity
     {
 

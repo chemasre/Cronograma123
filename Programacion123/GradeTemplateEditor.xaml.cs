@@ -85,7 +85,7 @@ namespace Programacion123
             keyCapacitiesController.Changed += KeyCapacitiesController_Changed;
 
             List<string> commonTextsIds = new();
-            foreach(GradeCommonTextId id in Enum.GetValues<GradeCommonTextId>()) { commonTextsIds.Add(entity.CommonTexts[id].StorageId); }
+            foreach(CommonTextId id in Enum.GetValues<CommonTextId>()) { commonTextsIds.Add(entity.CommonTexts[id].StorageId); }
 
             ListBoxCommonTexts.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
 
@@ -193,7 +193,7 @@ namespace Programacion123
             entity.KeyCapacities.Set(Storage.LoadOrCreateEntities<CommonText>(keyCapacitiesController.StorageIds, entity.StorageId));
 
             for(int i = 0; i < commonTextsController.StorageIds.Count; i++)
-            { entity.CommonTexts.Set((GradeCommonTextId)i, Storage.LoadOrCreateEntity<CommonText>(commonTextsController.StorageIds[i], entity.StorageId)); }
+            { entity.CommonTexts.Set((CommonTextId)i, Storage.LoadOrCreateEntity<CommonText>(commonTextsController.StorageIds[i], entity.StorageId)); }
 
             entity.GradeName = TextName.Text;
             entity.GradeType = (GradeType)(ComboType.SelectedIndex >= 0 ? ComboType.SelectedIndex : 0);

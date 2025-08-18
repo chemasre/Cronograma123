@@ -8,6 +8,6 @@
         public List<string> GeneralObjectivesStorageIds { get; set; } = new List<string>();
         public List<string> GeneralCompetencesStorageIds { get; set; } = new List<string>();
         public List<string> KeyCapacitiesStorageIds { get; set; } = new List<string>();
-        public Dictionary<GradeCommonTextId, string> CommonTextsStorageIds { get; set; } = new Dictionary<GradeCommonTextId, string>();
+        public Dictionary<CommonTextId, string> CommonTextsStorageIds { get; set; } = new Dictionary<CommonTextId, string>();
     }
 }
