@@ -9,12 +9,15 @@
 
         public Calendar()
         {
-            Title = "Calendario sin título";
             DateTime date = DateTime.Now.Date;
             StartDay = date;
             EndDay = date;
 
             StorageClassId = "calendar";
+
+            Title = "Título del calendario";
+            Description = "Descripción del calendario";
+
         }
 
         public IReadOnlyList<DateTime> GetOrderedFreedays()

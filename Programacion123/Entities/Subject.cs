@@ -23,6 +23,9 @@
         {
             StorageClassId = "subject";
 
+            Title = "Título de la programación de módulo";
+            Description = "Descripción de la programación de módulo";
+
             foreach (CommonTextId id in Enum.GetValues<CommonTextId>())
             {
                 CommonTexts.Add(id, new CommonText());
@@ -56,6 +59,36 @@
             CommonTexts[CommonTextId.header3Contents].Title =                    "[Encabezado3] Contenidos";
             CommonTexts[CommonTextId.header2Blocks].Title =                      "[Encabezado2] Bloques de enseñanza-aprendizaje";
             CommonTexts[CommonTextId.header2Activities].Title =                  "[Encabezado2] Programación de actividades de enseñanza-aprendizaje";
+
+            CommonTexts[CommonTextId.header1ModuleOrganization].Description =          "Escribe una introducción a la organización del módulo específica del módulo";
+            CommonTexts[CommonTextId.header1ImportanceJustification].Description =     "Escribe una justificación de la importancia del módulo específica del módulo";
+            CommonTexts[CommonTextId.header1CurricularElements].Description =          "Escribe una introducción a los elementos Curriculares específica del módulo";
+            CommonTexts[CommonTextId.header2GeneralObjectives].Description =           "Escribe una introducción a los objetivos generales relacionados con el módulo específica del módulo";
+            CommonTexts[CommonTextId.header2GeneralCompetences].Description =          "Escribe una introducción a los competencias generales, profesionales, personales y sociales específica del módulo";
+            CommonTexts[CommonTextId.header2KeyCompetences].Description =              "Escribe una introducción a las Capacidades clave específica del módulo";
+            CommonTexts[CommonTextId.header1MetodologyAndDidacticOrientations].Description = "Escribe una introducción a la metodología y las orientaciones didácticas específica del módulo";
+            CommonTexts[CommonTextId.header2Metodology].Description =                  "Escribe una introducción a la metodología general y específica de la materia específica del módulo";
+            CommonTexts[CommonTextId.header2Diversity].Description =                   "Escribe una introducción a las medidas de atención al alumnado con necesidad específica de apoyo educativo o con necesidad de compensación educativa: atención a la diversidad específica del módulo";
+            CommonTexts[CommonTextId.header1EvaluationSystem].Description =            "Escribe una introducción al sistema de evaluación específica del módulo";
+            CommonTexts[CommonTextId.header2Evaluation].Description =                  "Escribe una introducción a las líneas evaluativas específica del módulo";
+            CommonTexts[CommonTextId.header2EvaluationTypes].Description =             "Escribe una introducción a los tipos de evaluación específica del módulo";
+            CommonTexts[CommonTextId.header3OrdinaryEvaluation].Description =          "Escribe una introducción a la evaluación ordinaria específica del módulo";
+            CommonTexts[CommonTextId.header3ExtraordinaryEvaluation].Description =     "Escribe una introducción a la evaluación extraordinaria específica del módulo";
+            CommonTexts[CommonTextId.header2EvaluationInstruments].Description =       "Escribe una introducción a los instrumentos de evaluación específica del módulo";
+            CommonTexts[CommonTextId.header2EvaluationOfProgramming].Description =     "Escribe una introducción a la evaluación del funcionamiento de la programación específica del módulo";
+            CommonTexts[CommonTextId.header1TraversalElements].Description =           "Escribe una introducción a los elementos transversales específica del módulo";
+            CommonTexts[CommonTextId.header2TraversalReadingAndTIC].Description =      "Escribe una introducción al elemento transversal de fomento de la lectura y tecnologías de la información y de comunicación específica del módulo";
+            CommonTexts[CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation].Description = "Escribe una introducción al elemento transversal de comunicación audiovisual, emprendimiento, educación cívica y constitucional específica del módulo";
+            CommonTexts[CommonTextId.header1Resources].Description =                   "Escribe una introducción a los recursos didácticos y organizativos específica del módulo";
+            CommonTexts[CommonTextId.header2ResourcesSpaces].Description =             "Escribe una introducción a los espacios específica del módulo";
+            CommonTexts[CommonTextId.header2ResourcesMaterialAndTools].Description =   "Escribe una introducción a los materiales y herramientas específica del módulo";
+            CommonTexts[CommonTextId.header1SubjectProgramming].Description =          "Escribe una introducción a la programación del módulo profesional específica del módulo";
+            CommonTexts[CommonTextId.header2LearningResultsAndContents].Description =  "Escribe una introducción a los resultados de aprendizaje, criterios de evaluación y contenidos específica del módulo";
+            CommonTexts[CommonTextId.header3LearningResults].Description =             "Escribe una introducción a los resultados de aprendizaje y criterios de evaluación específica del módulo";
+            CommonTexts[CommonTextId.header3Contents].Description =                    "Escribe una introducción a los contenidos específica del módulo";
+            CommonTexts[CommonTextId.header2Blocks].Description =                      "Escribe una introducción a los bloques de enseñanza-aprendizaje específica del módulo";
+            CommonTexts[CommonTextId.header2Activities].Description =                  "Escribe una introducción a la programación de actividades de enseñanza-aprendizaje específica del módulo";
+
 
         }
 

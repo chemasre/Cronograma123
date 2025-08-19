@@ -17,6 +17,7 @@ namespace Programacion123
             UnitsSequence.OnRemoved += (Unit e) => { UnitsById.Remove(e.Id); };
 
             StorageClassId = "subject";
+
         }
 
         public override ValidationResult Validate()

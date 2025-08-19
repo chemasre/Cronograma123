@@ -7,6 +7,9 @@
         public Content() : base()
         {
             StorageClassId = "content";
+
+            Title = "Título del contenido";
+            Description = "Descripción del contenido";
         }
 
         public override ValidationResult Validate()

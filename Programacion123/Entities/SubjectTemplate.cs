@@ -16,6 +16,9 @@
         public SubjectTemplate() : base()
         {
             StorageClassId = "subjecttemplate";
+
+            Title = "Título de la plantilla de módulo";
+            Description = "Descripción de la plantilla de módulo";
         }
 
         public override ValidationResult Validate()

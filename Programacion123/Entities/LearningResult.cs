@@ -7,6 +7,9 @@
         public LearningResult() : base()
         {
             StorageClassId = "learningresult";
+
+            Title = "Título del resultado de aprendizaje";
+            Description = "Descripción del resultado de aprendizaje";
         }
 
         public override ValidationResult Validate()

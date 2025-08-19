@@ -7,7 +7,9 @@
         public WeekSchedule()
         {
             StorageClassId = "weekschedule";
-            Title = "Horario sin título";
+
+            Title = "Título del horario";
+            Description = "Descripción del horario";
         }
 
         public override ValidationResult Validate()

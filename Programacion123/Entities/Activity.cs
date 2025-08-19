@@ -40,10 +40,11 @@
 
         public Activity() : base()
         {
-            Title = "Actividad sin título";
-            Description = "Actividad sin descripción";
-
             StorageClassId = "activity";
+
+            Title = "Título de la actividad";
+            Description = "Descripción de la actividad";
+            
         }
 
         public override ValidationResult Validate()

@@ -49,6 +49,10 @@
         public CommonText() : base()
         {
             StorageClassId = "commontext";
+
+            Title = "Escribe un título";
+            Description = "Escribe un texto";
+
         }
 
         public override ValidationResult Validate()

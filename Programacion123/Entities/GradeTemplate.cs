@@ -20,6 +20,9 @@
         {
             StorageClassId = "gradetemplate";
 
+            Title = "Título de la plantilla de ciclo";
+            Description = "Descripción de la plantilla de ciclo";
+
             foreach(CommonTextId id in Enum.GetValues<CommonTextId>())
             {
                 CommonTexts.Add(id, new CommonText());
@@ -53,6 +56,35 @@
             CommonTexts[CommonTextId.header3Contents].Title =                    "[Encabezado3] Contenidos";
             CommonTexts[CommonTextId.header2Blocks].Title =                      "[Encabezado2] Bloques de enseñanza-aprendizaje";
             CommonTexts[CommonTextId.header2Activities].Title =                  "[Encabezado2] Programación de actividades de enseñanza-aprendizaje";
+
+            CommonTexts[CommonTextId.header1ModuleOrganization].Description =          "Escribe una introducción a la organización del módulo común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1ImportanceJustification].Description =     "Escribe una justificación de la importancia del módulo común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1CurricularElements].Description =          "Escribe una introducción a los elementos Curriculares común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2GeneralObjectives].Description =           "Escribe una introducción a los objetivos generales relacionados con el módulo común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2GeneralCompetences].Description =          "Escribe una introducción a los competencias generales, profesionales, personales y sociales común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2KeyCompetences].Description =               "Escribe una introducción a las Capacidades clave común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1MetodologyAndDidacticOrientations].Description = "Escribe una introducción a la metodología y las orientaciones didácticas común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2Metodology].Description =                  "Escribe una introducción a la metodología general y específica de la materia común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2Diversity].Description =                   "Escribe una introducción a las medidas de atención al alumnado con necesidad específica de apoyo educativo o con necesidad de compensación educativa: atención a la diversidad común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1EvaluationSystem].Description =            "Escribe una introducción al sistema de evaluación común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2Evaluation].Description =                  "Escribe una introducción a las líneas evaluativas común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2EvaluationTypes].Description =             "Escribe una introducción a los tipos de evaluación común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header3OrdinaryEvaluation].Description =          "Escribe una introducción a la evaluación ordinaria común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header3ExtraordinaryEvaluation].Description =     "Escribe una introducción a la evaluación extraordinaria común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2EvaluationInstruments].Description =       "Escribe una introducción a los instrumentos de evaluación común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2EvaluationOfProgramming].Description =     "Escribe una introducción a la evaluación del funcionamiento de la programación común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1TraversalElements].Description =           "Escribe una introducción a los elementos transversales común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2TraversalReadingAndTIC].Description =      "Escribe una introducción al elemento transversal de fomento de la lectura y tecnologías de la información y de comunicación común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation].Description = "Escribe una introducción al elemento transversal de comunicación audiovisual, emprendimiento, educación cívica y constitucional común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1Resources].Description =                   "Escribe una introducción a los recursos didácticos y organizativos común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2ResourcesSpaces].Description =             "Escribe una introducción a los espacios común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2ResourcesMaterialAndTools].Description =   "Escribe una introducción a los materiales y herramientas común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1SubjectProgramming].Description =          "Escribe una introducción a la programación del módulo profesional común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2LearningResultsAndContents].Description =  "Escribe una introducción a los resultados de aprendizaje, criterios de evaluación y contenidos común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header3LearningResults].Description =             "Escribe una introducción a los resultados de aprendizaje y criterios de evaluación común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header3Contents].Description =                    "Escribe una introducción a los contenidos común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2Blocks].Description =                      "Escribe una introducción a los bloques de enseñanza-aprendizaje común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2Activities].Description =                  "Escribe una introducción a la programación de actividades de enseñanza-aprendizaje común a todos los módulos del ciclo";
 
         }
 

@@ -7,6 +7,9 @@
         public Block() : base()
         {
             StorageClassId = "block";
+
+            Title = "Título del bloque";
+            Description = "Descripción del bloque";
         }
 
         public override ValidationResult Validate()
