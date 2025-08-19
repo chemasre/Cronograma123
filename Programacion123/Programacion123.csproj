@@ -101,9 +101,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="ButtonDelete.png" />
-    <Resource Include="ButtonEdit.png" />
-    <Resource Include="ButtonNew.png" />
     <Resource Include="Images\ButtonAccept.png" />
     <Resource Include="Images\ButtonCancel.png" />
     <Resource Include="Images\ButtonClose.png" />
