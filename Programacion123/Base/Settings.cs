@@ -30,13 +30,22 @@ namespace Programacion123
             return (isArchiveOpen ? archiveExtractionPath + "_" + basePath: basePath);
         }
 
-        public static void Reset()
+        static void DeleteAllFiles()
         {
-            if (!Directory.Exists(GetBasePath())) { Directory.CreateDirectory(GetBasePath()); }
-
             string[] files = Directory.GetFiles(GetBasePath(), "*.json");
 
             foreach (string f in files) { File.Delete(f);  }
+
+        }
+
+        public static void Reset()
+        {
+            if (!Directory.Exists(GetBasePath())) { Directory.CreateDirectory(GetBasePath()); }
+            
+            DeleteAllFiles();
+
+            HTMLGenerator generator = new();
+            generator.LoadOrCreateSettings();
         }
 
         public static T LoadOrCreateSettings<T>(string settingsId) where T: new()
@@ -88,7 +97,7 @@ namespace Programacion123
 
         public static void Archive_Close()
         {
-            Reset();
+            DeleteAllFiles();
             Directory.Delete(GetBasePath());
             isArchiveOpen = false;
         }

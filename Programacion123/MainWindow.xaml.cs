@@ -226,7 +226,6 @@ namespace Programacion123
 
                             }
 
-                            return false;
                             Storage.Archive_Close();
                             Settings.Archive_Close();
 
@@ -237,6 +236,7 @@ namespace Programacion123
                                 RestartUI();
                             }
 
+                            return false;
                         }
 
                 };
