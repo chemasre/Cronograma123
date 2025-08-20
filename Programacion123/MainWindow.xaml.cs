@@ -31,6 +31,8 @@ namespace Programacion123
     /// </summary>
     public partial class MainWindow : Window
     {
+        const string version = "0.5.0";
+
         const string homeUrl = "http://sinestesiagamedesign.es/teaching";
         const string helpUrl = "http://youtube.com";
 
@@ -46,6 +48,8 @@ namespace Programacion123
         public MainWindow()
         {
             InitializeComponent();
+
+            LabelTitle.Content = "Programabara " + version;
 
             Settings.Init();
             Storage.Init();

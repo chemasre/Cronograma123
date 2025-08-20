@@ -60,7 +60,7 @@
             </Button>
             <Button x:Name="ButtonPointDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="214" Canvas.Top="232" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Button.Background>
-                    <ImageBrush ImageSource="/ButtonDelete.png"/>
+                    <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                 </Button.Background>
                 <Button.Foreground>
                     <ImageBrush ImageSource="/Images/ButtonDelete.png"/>

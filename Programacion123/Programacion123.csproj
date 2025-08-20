@@ -9,16 +9,14 @@
     <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
     <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
     <EnableNETAnalyzers>False</EnableNETAnalyzers>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="BotonNew.png" />
     <None Remove="ButtonClose.png" />
-    <None Remove="ButtonDelete.png" />
-    <None Remove="ButtonEdit.png" />
     <None Remove="ButtonMoveDown.png" />
     <None Remove="ButtonMoveUp.png" />
-    <None Remove="ButtonNew.png" />
     <None Remove="ButtonWarning.png" />
     <None Remove="IconEdit.png" />
     <None Remove="Images\BackgroundClouds.png" />
@@ -86,6 +84,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\BackgroundClouds.png" />
     <Resource Include="Images\BackgroundSteps.png" />
     <Resource Include="Images\BackgroundTitle.png" />
@@ -101,9 +103,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="ButtonDelete.png" />
-    <Resource Include="ButtonEdit.png" />
-    <Resource Include="ButtonNew.png" />
     <Resource Include="Images\ButtonAccept.png" />
     <Resource Include="Images\ButtonCancel.png" />
     <Resource Include="Images\ButtonClose.png" />

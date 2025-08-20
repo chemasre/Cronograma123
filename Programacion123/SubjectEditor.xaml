@@ -49,7 +49,7 @@
                         </Button>
                         <Button x:Name="ButtonBlockDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="89" Canvas.Top="16" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
                             <Button.Background>
-                                <ImageBrush ImageSource="/ButtonDelete.png"/>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                             </Button.Background>
                             <Button.Foreground>
                                 <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
@@ -107,7 +107,7 @@
                         </Button>
                         <Button x:Name="ButtonCitationDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="89" Canvas.Top="16" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button.Background>
-                                <ImageBrush ImageSource="/ButtonDelete.png"/>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                             </Button.Background>
                             <Button.Foreground>
                                 <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
@@ -152,7 +152,7 @@
                         </Button>
                         <Button x:Name="ButtonEvaluationInstrumentTypeDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="89" Canvas.Top="16" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
-                                <ImageBrush ImageSource="/ButtonDelete.png"/>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                             </Button.Background>
                             <Button.Foreground>
                                 <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
@@ -197,7 +197,7 @@
                         </Button>
                         <Button x:Name="ButtonMetodologyDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="89" Canvas.Top="16" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
-                                <ImageBrush ImageSource="/ButtonDelete.png"/>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                             </Button.Background>
                             <Button.Foreground>
                                 <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
@@ -243,7 +243,7 @@
                         </Button>
                         <Button x:Name="ButtonSpaceResourceDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="206" Canvas.Top="16" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
                             <Button.Background>
-                                <ImageBrush ImageSource="/ButtonDelete.png"/>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                             </Button.Background>
                             <Button.Foreground>
                                 <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
@@ -285,7 +285,7 @@
                         </Button>
                         <Button x:Name="ButtonMaterialResourceDelete" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="206" Canvas.Top="156" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
                             <Button.Background>
-                                <ImageBrush ImageSource="/ButtonDelete.png"/>
+                                <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                             </Button.Background>
                             <Button.Foreground>
                                 <ImageBrush ImageSource="/Images/ButtonDelete.png"/>

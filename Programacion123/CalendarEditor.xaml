@@ -40,7 +40,7 @@
             <DatePicker x:Name="DateFreeDay" Canvas.Left="170" Canvas.Top="406" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" GotKeyboardFocus="DateFreeDay_GotKeyboardFocus"/>
             <Button x:Name="ButtonFreeDayRemove" Content="*" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="327" Canvas.Top="406" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonFreeDayRemove_Click">
                 <Button.Background>
-                    <ImageBrush ImageSource="/ButtonDelete.png"/>
+                    <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                 </Button.Background>
                 <Button.Foreground>
                     <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
