@@ -1,29 +1,27 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 
 namespace Programacion123
 {
-   
     public partial class HTMLGenerator : Generator
     {
-        public Subject Subject;
-
         public const string SettingsId = "HTMLGenerator";
-
-        public DocumentStyle DocumentStyle { get; set; }
-        public Dictionary<DocumentCoverElementId, DocumentCoverElementStyle> CoverElementStyles { get; set; }
-        public Dictionary<DocumentTextElementId, DocumentTextElementStyle> TextElementStyles { get; set; }
-        public Dictionary<DocumentTableElementId, DocumentTableElementStyle> TableElementStyles { get; set; }
 
         public HTMLGenerator()
         {
             HTMLGeneratorSettings defaultSettings = new();
 
-            DocumentStyle = defaultSettings.DocumentStyle;
-            CoverElementStyles = defaultSettings.CoverElementStyles;
-            TextElementStyles = defaultSettings.TextElementStyles;
-            TableElementStyles = defaultSettings.TableElementStyles;
+            Style = new ()
+            {
+                LogoBase64 = new(defaultSettings.DocumentStyle.LogoBase64),
+                CoverBase64 = new(defaultSettings.DocumentStyle.CoverBase64),
+                Size = defaultSettings.DocumentStyle.Size,
+                Orientation = defaultSettings.DocumentStyle.Orientation,
+                Margins = defaultSettings.DocumentStyle.Margins
+
+            };
 
         }
 
@@ -46,10 +44,19 @@ namespace Programacion123
         {
             HTMLGeneratorSettings settings = Settings.LoadOrCreateSettings<HTMLGeneratorSettings>(SettingsId);
 
-            CoverElementStyles = settings.CoverElementStyles;
-            DocumentStyle = settings.DocumentStyle;
-            TextElementStyles = settings.TextElementStyles;
-            TableElementStyles = settings.TableElementStyles;
+            Style = new()
+            {
+                LogoBase64 = new(settings.DocumentStyle.LogoBase64),
+                CoverBase64 = new(settings.DocumentStyle.CoverBase64),
+                Size = settings.DocumentStyle.Size,
+                Orientation = settings.DocumentStyle.Orientation,
+                Margins = settings.DocumentStyle.Margins,
+                CoverElementStyles = new(settings.DocumentStyle.CoverElementStyles),
+                TextElementStyles =  new(settings.DocumentStyle.TextElementStyles),
+                TableElementStyles = new(settings.DocumentStyle.TableElementStyles)
+
+            };
+
     
         }
     
@@ -57,10 +64,22 @@ namespace Programacion123
         {
             HTMLGeneratorSettings settings = new();
 
-            settings.CoverElementStyles = CoverElementStyles;
-            settings.DocumentStyle = DocumentStyle;
-            settings.TextElementStyles = TextElementStyles;
-            settings.TableElementStyles = TableElementStyles;
+            Debug.Assert(Style.HasValue);
+
+            DocumentStyle style = Style.Value;
+
+            settings.DocumentStyle = new()
+            {
+                LogoBase64 = new(style.LogoBase64),
+                CoverBase64 = new(style.CoverBase64),
+                Size = style.Size,
+                Orientation = style.Orientation,
+                Margins = style.Margins,
+                CoverElementStyles = new(style.CoverElementStyles),
+                TextElementStyles = new(style.TextElementStyles),
+                TableElementStyles = new(style.TableElementStyles)
+
+            };
 
             Settings.SaveSettings<HTMLGeneratorSettings>(SettingsId, settings);    
         }

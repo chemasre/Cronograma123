@@ -12,7 +12,7 @@
         {
             string tag;
 
-            List<InnerContent>innerElements;
+            List<InnerContent> innerElements;
             
             List<Tuple<string, string>> parameters;
 

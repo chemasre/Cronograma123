@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Microsoft.Office.Interop.Excel;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 
@@ -179,7 +180,6 @@ namespace Cronogramador
 
             for (int i = 0; i < mesesOrdenados.Count; i ++)
             {
-
                 int mesAnyo = mesesOrdenados[i];
                 int mes = mesAnyo % 100;
                 int anyo = mesAnyo / 100;

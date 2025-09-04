@@ -1,100 +1,9 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 
 namespace Programacion123
 {
-    public struct DocumentCoverElementPosition
-    {
-        public float Top { get; set; }
-        public float Left { get; set; }
-
-    }
-
-    public struct DocumentMargins
-    {
-        public float Top { get; set; }
-        public float Bottom { get; set; }
-        public float Left { get; set; }
-        public float Right {  get; set; }
-    }
-
-    public struct DocumentTableElementPadding
-    {
-        public int Top { get; set; }
-        public int Bottom { get; set; }
-        public int Left { get; set; }
-        public int Right {  get; set; }
-    }
-
-    public struct DocumentTextElementMargins
-    {
-        public int Top { get; set; }
-        public int Bottom { get; set; }
-        public int Left { get; set; }
-        public int Right { get; set; }
-    }
-
-
-    public enum DocumentSize
-    {
-        A4,
-        A5
-    }
-
-    public enum DocumentOrientation
-    {
-        Portrait,
-        Landscape
-    }
-
-    public enum DocumentTextElementFontFamily
-    {
-        SansSerif,
-        Serif        
-    }
-
-    public enum DocumentTextElementAlign
-    {
-        Left,
-        Center,
-        Right,
-        Justify
-    }
-
-    public struct DocumentCoverElementStyle
-    {
-        public DocumentCoverElementPosition Position { get; set; }
-    
-    }
-
-    public struct DocumentTextElementStyle
-    {
-        public DocumentTextElementFontFamily FontFamily { get; set; }
-        public int FontSize { get; set; }
-        public DocumentElementColor FontColor { get; set; }
-        public bool Bold { get; set; }
-        public bool Italic { get; set; }
-        public bool Underscore { get; set; }
-        public DocumentTextElementAlign Align { get; set; }
-        public DocumentTextElementMargins Margins { get; set; }
-    
-    }
-    
-    public struct DocumentTableElementStyle
-    {
-        public DocumentElementColor BackgroundColor { get; set; }
-        public DocumentTableElementPadding Padding { get; set; }
-    }
-    
-    public struct DocumentStyle
-    {
-        public string? LogoBase64 { get; set; }
-        public string? CoverBase64 { get; set; }
-        public DocumentSize Size { get; set; }
-        public DocumentOrientation Orientation { get; set; }
-        public DocumentMargins Margins { get; set; }
-    }
-
     public partial class HTMLGenerator : Generator
     {
         public void GetDimensionsFromSizeAndOrientation(DocumentSize size, DocumentOrientation orientation, out float width, out float height)
@@ -113,6 +22,10 @@ namespace Programacion123
 
         void AppendCSSCoverElement(DocumentCoverElementId id, StringBuilder builder)
         {
+            Debug.Assert(Style.HasValue);
+
+            DocumentStyle styleValue = Style.Value;
+
             if(id == DocumentCoverElementId.Logo) { builder.AppendLine(".coverLogo {"); }
             else if(id == DocumentCoverElementId.SubjectCode) { builder.AppendLine(".coverSubjectCode {"); }
             else if(id == DocumentCoverElementId.SubjectName) { builder.AppendLine(".coverSubjectName {"); }
@@ -121,18 +34,22 @@ namespace Programacion123
             else // id == DocumentCoverElementId.Cover
             { builder.AppendLine(".coverCover {"); }
 
-            if(!CoverElementStyles.ContainsKey(id)) { CoverElementStyles.Add(id, new DocumentCoverElementStyle()); }
-            DocumentCoverElementStyle style = CoverElementStyles[id];
+            if(!styleValue.CoverElementStyles.ContainsKey(id)) { styleValue.CoverElementStyles.Add(id, new DocumentCoverElementStyle()); }
+            DocumentCoverElementStyle coverStyle = styleValue.CoverElementStyles[id];
 
             builder.AppendLine(String.Format("position:absolute;"));
-            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "top:{0}cm;", style.Position.Top));
-            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "left:{0}cm;", style.Position.Left));
+            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "top:{0}cm;", coverStyle.Position.Top));
+            builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "left:{0}cm;", coverStyle.Position.Left));
 
             builder.AppendLine("}");
         }
 
         void AppendCSSTextElement(DocumentTextElementId id, StringBuilder builder)
         {
+            Debug.Assert(Style.HasValue);
+
+            DocumentStyle styleValue = Style.Value;
+
             string selector;
 
             if (id == DocumentTextElementId.Header1) { selector = "h1"; }
@@ -156,30 +73,30 @@ namespace Programacion123
 
             builder.AppendLine(String.Format("{0} {{", selector));
 
-            if (!TextElementStyles.ContainsKey(id)) { TextElementStyles.Add(id, new DocumentTextElementStyle()); }
-            DocumentTextElementStyle style = TextElementStyles[id];
+            if (!styleValue.TextElementStyles.ContainsKey(id)) { styleValue.TextElementStyles.Add(id, new DocumentTextElementStyle()); }
+            DocumentTextElementStyle textStyle = styleValue.TextElementStyles[id];
 
-            builder.AppendLine(String.Format("font-size:{0}pt;", style.FontSize));
-            builder.AppendLine(String.Format("font-family:{0};", style.FontFamily == DocumentTextElementFontFamily.SansSerif ? "sans-serif" : "serif"));
-            builder.AppendLine(String.Format("font-weight:{0};",style.Bold ? "bold" : "normal"));
-            builder.AppendLine(String.Format("font-style:{0};",style.Italic ? "italic" : "normal"));
-            builder.AppendLine(String.Format("text-decoration:{0};",style.Underscore ? "underline" : "none"));
-            builder.AppendLine(String.Format("margin-top:{0}pt;", style.Margins.Top));
-            builder.AppendLine(String.Format("margin-bottom:{0}pt;", style.Margins.Bottom));
-            builder.AppendLine(String.Format("margin-left:{0}pt;", style.Margins.Left));
-            builder.AppendLine(String.Format("margin-right:{0}pt;", style.Margins.Right));
+            builder.AppendLine(String.Format("font-size:{0}pt;", textStyle.FontSize));
+            builder.AppendLine(String.Format("font-family:{0};", textStyle.FontFamily == DocumentTextElementFontFamily.SansSerif ? "sans-serif" : "serif"));
+            builder.AppendLine(String.Format("font-weight:{0};",textStyle.Bold ? "bold" : "normal"));
+            builder.AppendLine(String.Format("font-style:{0};",textStyle.Italic ? "italic" : "normal"));
+            builder.AppendLine(String.Format("text-decoration:{0};",textStyle.Underscore ? "underline" : "none"));
+            builder.AppendLine(String.Format("margin-top:{0}pt;", textStyle.Margins.Top));
+            builder.AppendLine(String.Format("margin-bottom:{0}pt;", textStyle.Margins.Bottom));
+            builder.AppendLine(String.Format("margin-left:{0}pt;", textStyle.Margins.Left));
+            builder.AppendLine(String.Format("margin-right:{0}pt;", textStyle.Margins.Right));
 
             string align;
-            if (style.Align == DocumentTextElementAlign.Left) { align = "left"; }
-            else if (style.Align == DocumentTextElementAlign.Center) { align = "center"; }
-            else if (style.Align == DocumentTextElementAlign.Right) { align = "right"; }
-            else // (style.Align == DocumentTextElementAlign.Justify)
+            if (textStyle.Align == DocumentTextElementAlign.Left) { align = "left"; }
+            else if (textStyle.Align == DocumentTextElementAlign.Center) { align = "center"; }
+            else if (textStyle.Align == DocumentTextElementAlign.Right) { align = "right"; }
+            else // (textStyle.Align == DocumentTextElementAlign.Justify)
             { align = "justify"; }
 
             builder.AppendLine(String.Format("text-align:{0};", align));
 
             int r; int g; int b;
-            GetRGBFromColor(style.FontColor, out r, out g, out b);
+            DocumentStyle.GetRGBFromColor(textStyle.FontColor, out r, out g, out b);
             builder.AppendLine(String.Format("color:rgb({0},{1},{2});", r, g, b));
 
             builder.AppendLine("}");
@@ -193,17 +110,20 @@ namespace Programacion123
 
         void AppendCSSTableElement(DocumentTableElementId id, StringBuilder builder)
         {
+            Debug.Assert(Style.HasValue);
+
+            DocumentStyle StyleValue = Style.Value;
             
             if(id == DocumentTableElementId.TableNormalCell) { builder.AppendLine("td {"); }
             else if(id == DocumentTableElementId.TableHeader1Cell) { builder.AppendLine(".tableHeader1 {"); }
             else // id == DocumentTableElementId.TableHeader2Cell
             { builder.AppendLine(".tableHeader2 {"); }
 
-            if(!TableElementStyles.ContainsKey(id)) { TableElementStyles.Add(id, new DocumentTableElementStyle()); }
-            DocumentTableElementStyle style = TableElementStyles[id];
+            if(!StyleValue.TableElementStyles.ContainsKey(id)) { StyleValue.TableElementStyles.Add(id, new DocumentTableElementStyle()); }
+            DocumentTableElementStyle style = StyleValue.TableElementStyles[id];
 
             int r; int g; int b;
-            GetRGBFromColor(style.BackgroundColor, out r, out g, out b);
+            DocumentStyle.GetRGBFromColor(style.BackgroundColor, out r, out g, out b);
             builder.AppendLine(String.Format("background-color:rgb({0},{1},{2});", r, g, b));
 
             builder.AppendLine(String.Format("padding-top:{0}pt;", style.Padding.Top));
@@ -216,22 +136,26 @@ namespace Programacion123
 
         internal string GenerateCSS(bool isPreview = false)
         {
+            Debug.Assert(Style.HasValue);
+            
+            DocumentStyle styleValue = Style.Value;
+
             float width;
             float height;
-            GetDimensionsFromSizeAndOrientation(DocumentStyle.Size, DocumentStyle.Orientation, out width, out height);
+            GetDimensionsFromSizeAndOrientation(styleValue.Size, styleValue.Orientation, out width, out height);
 
             StringBuilder builder = new();
             builder.AppendLine("body {");
             builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "width:{0:0.00}cm;", width));
             builder.AppendLine(String.Format(CultureInfo.InvariantCulture, "padding:{0:0.00}cm {1:0.00}cm {2:0.00}cm {3:0.00}cm;",
-                                                    DocumentStyle.Margins.Top,
-                                                    DocumentStyle.Margins.Right,
-                                                    DocumentStyle.Margins.Bottom,
-                                                    DocumentStyle.Margins.Left));
+                                                    styleValue.Margins.Top,
+                                                    styleValue.Margins.Right,
+                                                    styleValue.Margins.Bottom,
+                                                    styleValue.Margins.Left));
             builder.AppendLine("}");
 
-            float marginHorizontal = (DocumentStyle.Margins.Left + DocumentStyle.Margins.Right);
-            float marginVertical = (DocumentStyle.Margins.Top + DocumentStyle.Margins.Bottom);
+            float marginHorizontal = (styleValue.Margins.Left + styleValue.Margins.Right);
+            float marginVertical = (styleValue.Margins.Top + styleValue.Margins.Bottom);
 
 
             builder.AppendLine(".cover {");

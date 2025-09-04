@@ -1,153 +1,150 @@
-﻿namespace Programacion123
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Programacion123
 {
-    public enum DocumentElementColor
+    public struct DocumentCoverElementPosition
     {
-        AliceBlue,
-        Amethyst,
-        AntiqueWhite,
-        Aqua,
-        Aquamarine,
-        Azure,
-        Beige,
-        Bisque,
-        Black,
-        BlanchedAlmond,
-        Blue,
-        BlueViolet,
-        Brown,
-        BurlyWood,
-        CadetBlue,
-        Chartreuse,
-        Chocolate,
-        Coral,
-        CornSilk,
-        CornFlowerBlue,
-        Crimson,
-        Cyan,
-        DarkMagenta,
-        DarkBlue,
-        DarkCyan,
-        DarkGoldenRod,
-        DarkGray,
-        DarkGreen,
-        DarkKhaki,
-        DarkOrange,
-        DarkOrchid,
-        DarkRed,
-        DarkSalmon,
-        DarkSeaGreen,
-        DarkSlateBlue,
-        DarkSlateGray,
-        DarkTurquoise,
-        DarkViolet,
-        DarlOliveGreen,
-        DeepPink,
-        DeepSkyBlue,
-        DimGray,
-        DodgerBlue,
-        FireBrick,
-        FloralWhite,
-        ForestGreen,
-        Fuchsia,
-        Gainsboro,
-        GhostWhite,
-        Gold,
-        GoldenRod,
-        Gray,
-        Green,
-        GreenYellow,
-        HoneyDew,
-        HotPink,
-        IndianRed,
-        Indigo,
-        Ivory,
-        Khaki,
-        Lavender,
-        LavenderBlush,
-        LawnGreen,
-        LemonChiffon,
-        LightBlue,
-        LightCoral,
-        LightCyan,
-        LightGoldenYellow,
-        LightGray,
-        LightGreen,
-        LightPink,
-        LightSalmon,
-        LightSeaGreen,
-        LightSkyBlue,
-        LightSteelBlue,
-        LightYellow,
-        Lime,
-        LimeGreen,
-        Linen,
-        LightSlateGray,
-        Magenta,
-        Maroon,
-        MediumAquamarine,
-        MediumBlue,
-        MediumOrchid,
-        MediumPurpe,
-        MediumSeaGreen,
-        MediumSlateBlue,
-        MediumSpringGreen,
-        MediumTurquoise,
-        MediumVioletRed,
-        MidnightBlue,
-        MistyRose,
-        Moccasin,
-        NavajoWhite,
-        Navy,
-        OldLace,
-        Olive,
-        OliveDrab,
-        Orange,
-        OrangeRed,
-        Orchid,
-        PaleGoldenRod,
-        PaleGreen,
-        PaleTurquoise,
-        PalevioletRed,
-        PapayaWhip,
-        PeachPuff,
-        Peru,
-        Pink,
-        Plum,
-        PowderBlue,
-        Purple,
-        Red,
-        RosyBrown,
-        RoyalBlue,
-        SaddleBrown,
-        SaeShell,
-        Salmon,
-        SandyBrown,
-        SeaGreen,
-        Sienna,
-        Silver,
-        SkyBlue,
-        SlateBlue,
-        SlateGray,
-        Snow,
-        SpringGreen	,
-        SteelBlue,
-        Tan,
-        Teal,
-        Thistle,
-        Tomato,
-        Turquoise,
-        Violet,
-        Wheat,
-        White,
-        WhiteSmoke,
-        Yellow,
-        YellowGreen
+        public float Top { get; set; }
+        public float Left { get; set; }
+
     }
 
-    public partial class HTMLGenerator: Generator
+    public struct DocumentMargins
     {
+        public float Top { get; set; }
+        public float Bottom { get; set; }
+        public float Left { get; set; }
+        public float Right {  get; set; }
+    }
 
-        public void GetRGBFromColor(DocumentElementColor color, out int r, out int g, out int b)
+    public struct DocumentTableElementPadding
+    {
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+        public int Left { get; set; }
+        public int Right {  get; set; }
+    }
+
+    public struct DocumentTextElementMargins
+    {
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+        public int Left { get; set; }
+        public int Right { get; set; }
+    }
+
+
+    public enum DocumentSize
+    {
+        A4,
+        A5
+    }
+
+    public enum DocumentOrientation
+    {
+        Portrait,
+        Landscape
+    }
+
+    public enum DocumentTextElementFontFamily
+    {
+        SansSerif,
+        Serif        
+    }
+
+    public enum DocumentTextElementAlign
+    {
+        Left,
+        Center,
+        Right,
+        Justify
+    }
+
+    public struct DocumentCoverElementStyle
+    {
+        public DocumentCoverElementPosition Position { get; set; }
+    
+    }
+
+    public struct DocumentTextElementStyle
+    {
+        public DocumentTextElementFontFamily FontFamily { get; set; }
+        public int FontSize { get; set; }
+        public DocumentElementColor FontColor { get; set; }
+        public bool Bold { get; set; }
+        public bool Italic { get; set; }
+        public bool Underscore { get; set; }
+        public DocumentTextElementAlign Align { get; set; }
+        public DocumentTextElementMargins Margins { get; set; }
+    
+    }
+    
+    public struct DocumentTableElementStyle
+    {
+        public DocumentElementColor BackgroundColor { get; set; }
+        public DocumentTableElementPadding Padding { get; set; }
+    }
+    
+    public struct DocumentStyle
+    {
+        public string? LogoBase64 { get; set; }
+        public string? CoverBase64 { get; set; }
+        public DocumentSize Size { get; set; }
+        public DocumentOrientation Orientation { get; set; }
+        public DocumentMargins Margins { get; set; }
+
+        public Dictionary<DocumentCoverElementId, DocumentCoverElementStyle> CoverElementStyles { get; set; }
+        public Dictionary<DocumentTextElementId, DocumentTextElementStyle> TextElementStyles { get; set; }
+        public Dictionary<DocumentTableElementId, DocumentTableElementStyle> TableElementStyles { get; set; }
+
+        public DocumentStyle()
+        {
+            LogoBase64 = null;
+            CoverBase64 = null;
+            Size = DocumentSize.A4;
+            Orientation = DocumentOrientation.Portrait;
+            Margins = new() { Top = 2.0f, Bottom = 2.5f, Left = 1.5f, Right = 1.0f };
+
+            CoverElementStyles = new();
+
+            CoverElementStyles[DocumentCoverElementId.Logo] = new() { Position = new() { Left = 0, Top = 0 } };
+            CoverElementStyles[DocumentCoverElementId.SubjectCode] = new() { Position = new() { Left = 0, Top = 0 } };
+            CoverElementStyles[DocumentCoverElementId.SubjectName] = new() { Position = new() { Left = 0, Top = 0 } };
+            CoverElementStyles[DocumentCoverElementId.GradeTypeName] = new() { Position = new() { Left = 0, Top = 0 } };
+            CoverElementStyles[DocumentCoverElementId.GradeName] = new() { Position = new() { Left = 0, Top = 0 } };
+
+            TextElementStyles = new();
+            TextElementStyles[DocumentTextElementId.Header1] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 32, Bold = true, Margins = new() { Bottom = 32 } };
+            TextElementStyles[DocumentTextElementId.Header2] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 26, Bold = true, Margins = new() { Bottom = 26 } };
+            TextElementStyles[DocumentTextElementId.Header3] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 22, Bold = true, Margins = new() { Bottom = 22 } };
+            TextElementStyles[DocumentTextElementId.Header4] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 18, Bold = true, Margins = new() { Bottom = 18 } };
+            TextElementStyles[DocumentTextElementId.Header5] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 16, Bold = true, Margins = new() { Bottom = 16 } };
+            TextElementStyles[DocumentTextElementId.Header6] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 14, Bold = true, Margins = new() { Bottom = 14 } };
+            TextElementStyles[DocumentTextElementId.NormalText] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 12, Margins = new() { Bottom = 12 } };
+            TextElementStyles[DocumentTextElementId.Table] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 10 };
+            TextElementStyles[DocumentTextElementId.TableHeader1Text] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.White, FontSize = 10, Bold = true };
+            TextElementStyles[DocumentTextElementId.TableHeader2Text] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.White, FontSize = 10, Bold = true };
+            TextElementStyles[DocumentTextElementId.CoverSubjectCode] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 18, Bold = true, Margins = new() { Bottom = 18 } };
+            TextElementStyles[DocumentTextElementId.CoverSubjectName] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 32, Bold = true, Margins = new() { Bottom = 32 } };
+            TextElementStyles[DocumentTextElementId.CoverGradeTypeName] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 22, Bold = true, Margins = new() { Bottom = 22 } };
+            TextElementStyles[DocumentTextElementId.CoverGradeName] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 26, Bold = true, Margins = new() { Bottom = 26 } };
+            TextElementStyles[DocumentTextElementId.IndexLevel1] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 16, Bold = false, Margins = new() { Bottom = 16 } };
+            TextElementStyles[DocumentTextElementId.IndexLevel2] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 14, Bold = false, Margins = new() { Bottom = 14 } };
+            TextElementStyles[DocumentTextElementId.IndexLevel3] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 12, Bold = false, Margins = new() { Bottom = 12 } };
+
+            TableElementStyles = new();
+
+            TableElementStyles[DocumentTableElementId.TableNormalCell] = new() { BackgroundColor = DocumentElementColor.White, Padding = new() { Top = 0, Bottom = 0, Left = 0, Right = 0 } };
+            TableElementStyles[DocumentTableElementId.TableHeader1Cell] = new() { BackgroundColor = DocumentElementColor.Gray, Padding = new() { Top = 0, Bottom = 0, Left = 0, Right = 0 } };
+            TableElementStyles[DocumentTableElementId.TableHeader2Cell] = new() { BackgroundColor = DocumentElementColor.LightGray, Padding = new() { Top = 0, Bottom = 0, Left = 0, Right = 0 } };
+
+        }
+
+        public static void GetRGBFromColor(DocumentElementColor color, out int r, out int g, out int b)
         {
             if(color ==DocumentElementColor.AliceBlue) { r = 240; g =248; b=255; }
             else if(color ==DocumentElementColor.Amethyst) { r = 153; g =102; b=204; }
@@ -292,4 +289,5 @@
             { r = 154; g =205; b=50; }
         }
     }
+
 }

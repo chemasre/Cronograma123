@@ -20,7 +20,7 @@ namespace Programacion123
 
         WeakReferenceFieldController<Subject, EntityPicker<Subject> > subjectController;
 
-        HTMLGenerator generator;
+        HTMLGenerator previewGenerator;
 
         object? webPreviewLastScrollPosition;
         bool webPreviewReady;
@@ -33,13 +33,17 @@ namespace Programacion123
 
         public void Init(Subject? _subject, Action<bool> _closeAction)
         {
-            generator = new HTMLGenerator();
+            previewGenerator = new HTMLGenerator();
 
             closeAction = _closeAction;
 
-            generator.LoadOrCreateSettings();
+            previewGenerator.LoadOrCreateSettings();
 
-            generator.Subject = _subject;
+            previewGenerator.Subject = _subject;
+
+            Debug.Assert(previewGenerator.Style.HasValue);
+
+            DocumentStyle previewStyle = previewGenerator.Style.Value;
 
             var configSubject = WeakReferenceFieldConfiguration<Subject>.CreateForTextBox(TextSubject)
                                                        .WithStorageId(_subject?.StorageId)
@@ -72,12 +76,12 @@ namespace Programacion123
             ComboDocumentSize.Items.Add("A4");
             ComboDocumentSize.Items.Add("A5");
 
-            ComboDocumentSize.SelectedIndex = (int)generator.DocumentStyle.Size;
+            ComboDocumentSize.SelectedIndex = (int)previewStyle.Size;
 
             ComboDocumentOrientation.Items.Add("Portrait");
             ComboDocumentOrientation.Items.Add("Landscape");
 
-            ComboDocumentOrientation.SelectedIndex = (int)generator.DocumentStyle.Orientation;
+            ComboDocumentOrientation.SelectedIndex = (int)previewStyle.Orientation;
 
             UpdateDocumentDimensionsUI();
 
@@ -94,13 +98,13 @@ namespace Programacion123
                 ComboDocumentMarginRight.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
             }
 
-            ComboDocumentMarginTop.SelectedIndex = (int)(generator.DocumentStyle.Margins.Top / 0.1f);
-            ComboDocumentMarginBottom.SelectedIndex = (int)(generator.DocumentStyle.Margins.Bottom / 0.1f);
-            ComboDocumentMarginLeft.SelectedIndex = (int)(generator.DocumentStyle.Margins.Left / 0.1f);
-            ComboDocumentMarginRight.SelectedIndex = (int)(generator.DocumentStyle.Margins.Right/ 0.1f);
+            ComboDocumentMarginTop.SelectedIndex = (int)(previewStyle.Margins.Top / 0.1f);
+            ComboDocumentMarginBottom.SelectedIndex = (int)(previewStyle.Margins.Bottom / 0.1f);
+            ComboDocumentMarginLeft.SelectedIndex = (int)(previewStyle.Margins.Left / 0.1f);
+            ComboDocumentMarginRight.SelectedIndex = (int)(previewStyle.Margins.Right/ 0.1f);
 
-            SetBase64ImageInUI(ImageCoverLogo, generator.DocumentStyle.LogoBase64);
-            SetBase64ImageInUI(ImageCoverCover, generator.DocumentStyle.CoverBase64);
+            SetBase64ImageInUI(ImageCoverLogo, previewStyle.LogoBase64);
+            SetBase64ImageInUI(ImageCoverCover, previewStyle.CoverBase64);
 
             ComboTextElement.Items.Add("Encabezado de nivel 1");
             ComboTextElement.Items.Add("Encabezado de nivel 2");
@@ -392,10 +396,15 @@ namespace Programacion123
 
         void UpdateCoverElementStyleUI()
         {
-            DocumentCoverElementId id = (DocumentCoverElementId)ComboCoverElement.SelectedIndex;
-            if(!generator.CoverElementStyles.ContainsKey(id)) { generator.CoverElementStyles.Add(id, new DocumentCoverElementStyle()); }
+            Debug.Assert(previewGenerator != null);
+            Debug.Assert(previewGenerator.Style.HasValue);
 
-            DocumentCoverElementStyle style = generator.CoverElementStyles[id];
+            DocumentStyle previewStyle = previewGenerator.Style.Value;
+
+            DocumentCoverElementId id = (DocumentCoverElementId)ComboCoverElement.SelectedIndex;
+            if(!previewStyle.CoverElementStyles.ContainsKey(id)) { previewStyle.CoverElementStyles.Add(id, new DocumentCoverElementStyle()); }
+
+            DocumentCoverElementStyle style = previewStyle.CoverElementStyles[id];
 
             SetCoverElementEventListenersEnabled(false);
 
@@ -408,10 +417,14 @@ namespace Programacion123
 
         void UpdateTextElementStyleUI()
         {
-            DocumentTextElementId id = (DocumentTextElementId)ComboTextElement.SelectedIndex;
-            if(!generator.TextElementStyles.ContainsKey(id)) { generator.TextElementStyles.Add(id, new DocumentTextElementStyle()); }
+            Debug.Assert(previewGenerator.Style.HasValue);
 
-            DocumentTextElementStyle style = generator.TextElementStyles[id];
+            DocumentStyle previewStyle = previewGenerator.Style.Value;
+
+            DocumentTextElementId id = (DocumentTextElementId)ComboTextElement.SelectedIndex;
+            if(!previewStyle.TextElementStyles.ContainsKey(id)) { previewStyle.TextElementStyles.Add(id, new DocumentTextElementStyle()); }
+
+            DocumentTextElementStyle style = previewStyle.TextElementStyles[id];
 
             SetTextElementEventListenersEnabled(false);
 
@@ -436,10 +449,14 @@ namespace Programacion123
 
         private void UpdateTableElementStyleUI()
         {
-            DocumentTableElementId id = (DocumentTableElementId)ComboTableElement.SelectedIndex;
-            if(!generator.TableElementStyles.ContainsKey(id)) { generator.TableElementStyles.Add(id, new DocumentTableElementStyle()); }
+            Debug.Assert(previewGenerator.Style.HasValue);
 
-            DocumentTableElementStyle style = generator.TableElementStyles[id];
+            DocumentStyle previewStyle = previewGenerator.Style.Value;
+
+            DocumentTableElementId id = (DocumentTableElementId)ComboTableElement.SelectedIndex;
+            if(!previewStyle.TableElementStyles.ContainsKey(id)) { previewStyle.TableElementStyles.Add(id, new DocumentTableElementStyle()); }
+
+            DocumentTableElementStyle style = previewStyle.TableElementStyles[id];
 
             SetTableElementEventListenersEnabled(false);
 
@@ -457,7 +474,7 @@ namespace Programacion123
         private void UpdateDocumentTableElementColorUI()
         {
             int r; int g; int b;
-            generator.GetRGBFromColor((DocumentElementColor)ComboTableElementColor.SelectedIndex, out r, out g, out b);
+            DocumentStyle.GetRGBFromColor((DocumentElementColor)ComboTableElementColor.SelectedIndex, out r, out g, out b);
             RectangleTableElementColor.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)r, (byte)g, (byte)b));
         }
 
@@ -700,10 +717,10 @@ namespace Programacion123
             }
 
             string html;
-            if(generator.Validate().code == GeneratorValidationCode.success)
+            if(previewGenerator.Validate().code == GeneratorValidationCode.success)
             {
                 webPreviewValid = true;
-                html = generator.GenerateHTML(true);
+                html = previewGenerator.GenerateHTML(true);
             }
             else
             {
@@ -750,7 +767,7 @@ namespace Programacion123
                 HTMLDocument htmlDocument = (HTMLDocument)WebPreview.Document;
                 IHTMLStyleSheet style = htmlDocument.createStyleSheet("",0);
 
-                style.cssText = generator.GenerateCSS();
+                style.cssText = previewGenerator.GenerateCSS();
 
                 if(webPreviewReady && webPreviewLastScrollPosition != null)
                 {
@@ -789,7 +806,7 @@ namespace Programacion123
 
         void SetBase64ImageInUI(Image image, string? imageBase64)
         {
-            if(imageBase64 != null)
+            if(!String.IsNullOrEmpty(imageBase64))
             {
                 // https://stackoverflow.com/questions/593388/how-do-i-read-a-base64-image-in-wpf
 
@@ -814,7 +831,7 @@ namespace Programacion123
         {
             float width;
             float height;
-            generator.GetDimensionsFromSizeAndOrientation(
+            previewGenerator.GetDimensionsFromSizeAndOrientation(
                    (DocumentSize)ComboDocumentSize.SelectedIndex,
                    (DocumentOrientation)ComboDocumentOrientation.SelectedIndex,
                    out width,
@@ -828,7 +845,7 @@ namespace Programacion123
         void UpdateDocumentTextElementColorUI()
         {
             int r; int g; int b;
-            generator.GetRGBFromColor((DocumentElementColor)ComboTextElementFontColor.SelectedIndex, out r, out g, out b);
+            DocumentStyle.GetRGBFromColor((DocumentElementColor)ComboTextElementFontColor.SelectedIndex, out r, out g, out b);
             RectangleTextElementColor.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)r, (byte)g, (byte)b));
         }
 
@@ -884,7 +901,7 @@ namespace Programacion123
 
         void Validate()
         {
-            GeneratorValidationResult result = generator.Validate();
+            GeneratorValidationResult result = previewGenerator.Validate();
 
             string colorResource = (result.code == GeneratorValidationCode.success ? "ColorValid" : "ColorInvalid");
             BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
@@ -894,9 +911,15 @@ namespace Programacion123
 
         void UpdateGenerator()
         {
-            generator.Subject = subjectController.GetEntity();
 
-            generator.CoverElementStyles[(DocumentCoverElementId)ComboCoverElement.SelectedIndex] = new()
+
+            previewGenerator.Subject = subjectController.GetEntity();
+
+            Debug.Assert(previewGenerator.Style.HasValue);
+
+            DocumentStyle previewStyle = previewGenerator.Style.Value;
+
+            previewStyle.CoverElementStyles[(DocumentCoverElementId)ComboCoverElement.SelectedIndex] = new()
                                       {
                                         Position = new()
                                                   { 
@@ -907,7 +930,7 @@ namespace Programacion123
                                       };
 
 
-            generator.DocumentStyle = new()
+            previewGenerator.Style = new()
                                       {
                                         LogoBase64 = GetBase64ImageFromUI(ImageCoverLogo),
                                         CoverBase64 = GetBase64ImageFromUI(ImageCoverCover),
@@ -922,7 +945,7 @@ namespace Programacion123
                                                   }                                        
                                       };
 
-            generator.TextElementStyles[(DocumentTextElementId)ComboTextElement.SelectedIndex] = new()
+            previewStyle.TextElementStyles[(DocumentTextElementId)ComboTextElement.SelectedIndex] = new()
                                       {
                                         Bold = CheckboxTextElementBold.IsChecked.GetValueOrDefault(),
                                         Italic = CheckboxTextElementItalic.IsChecked.GetValueOrDefault(),
@@ -941,7 +964,7 @@ namespace Programacion123
 
                                       };
 
-            generator.TableElementStyles[(DocumentTableElementId)ComboTableElement.SelectedIndex] = new()
+            previewStyle.TableElementStyles[(DocumentTableElementId)ComboTableElement.SelectedIndex] = new()
                                       {
                                         BackgroundColor = (DocumentElementColor)ComboTableElementColor.SelectedIndex,
                                         Padding = new()
@@ -954,7 +977,7 @@ namespace Programacion123
 
                                       };
 
-            generator.SaveSettings();
+            previewGenerator.SaveSettings();
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
@@ -965,7 +988,7 @@ namespace Programacion123
 
         private void ButtonAccept_Click(object sender, RoutedEventArgs e)
         {
-            if(generator.Validate().code != GeneratorValidationCode.success) 
+            if(previewGenerator.Validate().code != GeneratorValidationCode.success) 
             {
                 ConfirmDialog dialog = new();
                 dialog.Init(ConfirmIconType.warning,
@@ -983,7 +1006,7 @@ namespace Programacion123
             {
                 SaveFileDialog saveFile = new();
                 saveFile.Title = "Guardar programación como";
-                saveFile.Filter = "Ficheros html (*.html)|*.html|Todos los ficheros (*.*)|*.*";
+                saveFile.Filter = "Documento de word (*.docx)|*.docx|Ficheros html (*.html)|*.html";
                 saveFile.FilterIndex = 0;
                 saveFile.OverwritePrompt = true;
                 saveFile.FileName = "Programación didáctica";
@@ -992,6 +1015,20 @@ namespace Programacion123
 
                 if(saveFile.ShowDialog().GetValueOrDefault())
                 {
+                    Generator generator;
+
+                    if(saveFile.FilterIndex == 1)
+                    {
+                        generator = new WordGenerator();
+                    }
+                    else
+                    {
+                        generator = new HTMLGenerator();
+                    }
+
+                    generator.Style = previewGenerator.Style;
+                    generator.Subject = previewGenerator.Subject;
+
                     generator.Generate(saveFile.FileName);
 
                     Process process = new();
