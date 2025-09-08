@@ -980,6 +980,8 @@ namespace Programacion123
 
                                       };
 
+            previewGenerator.Style = previewStyle;
+
             previewGenerator.SaveSettings();
         }
 

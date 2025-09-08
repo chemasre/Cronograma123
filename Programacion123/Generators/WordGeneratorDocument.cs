@@ -30,7 +30,7 @@ namespace Programacion123
 
             #if DEBUG
 
-            _app.Visible = true;
+            _app.Visible = false;
 
             #endif
 
@@ -87,16 +87,19 @@ namespace Programacion123
 
             Paragraph paragraph = document.Content.Paragraphs.Add(ref missingValue);
 
-            WdBuiltinStyle style = WdBuiltinStyle.wdStyleNormal;
+            WdBuiltinStyle style;
 
             if(documentStyleId == DocumentTextElementId.Header1) { style = WdBuiltinStyle.wdStyleHeading1; }
             else if(documentStyleId == DocumentTextElementId.Header2) { style = WdBuiltinStyle.wdStyleHeading2; }
             else if(documentStyleId == DocumentTextElementId.Header3) { style = WdBuiltinStyle.wdStyleHeading3; }
             else if(documentStyleId == DocumentTextElementId.Header4) { style = WdBuiltinStyle.wdStyleHeading4; }
+            else // documentStyleId == DocumentTextElementid.NormalText
+            { style = WdBuiltinStyle.wdStyleNormal; }
 
-            paragraph.Range.set_Style(style);
             paragraph.Range.Text = text;
+            paragraph.Range.set_Style(style);
             paragraph.Range.InsertParagraphAfter();
+
 
             return this;
         }
@@ -134,6 +137,24 @@ namespace Programacion123
 
             style.Font.Name = (docStyle.FontFamily == DocumentTextElementFontFamily.SansSerif ? "Calibri" : "Times New Roman");
             style.Font.Size = docStyle.FontSize;
+            style.Font.Bold = docStyle.Bold ? 1 : 0;
+            style.Font.Italic = docStyle.Italic ? 1 : 0;
+            style.Font.Underline = docStyle.Underscore ? WdUnderline.wdUnderlineSingle : WdUnderline.wdUnderlineNone;
+
+            ParagraphFormat paragraphFormat = style.ParagraphFormat;
+
+            if(docStyle.Align == DocumentTextElementAlign.Left) { paragraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft; }
+            else if(docStyle.Align == DocumentTextElementAlign.Right) { paragraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight; }
+            else if(docStyle.Align == DocumentTextElementAlign.Center) { paragraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter; }
+            else // docStyle.Align == DocumentTextElementAlign.Justify
+            { paragraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphJustify; }
+
+            style.ParagraphFormat = paragraphFormat;
+
+            style.ParagraphFormat.SpaceAfter = docStyle.Margins.Bottom;
+            style.ParagraphFormat.SpaceBefore = docStyle.Margins.Top;
+            style.ParagraphFormat.LeftIndent = docStyle.Margins.Left;
+            style.ParagraphFormat.RightIndent = docStyle.Margins.Right;
 
             int r;
             int g;
