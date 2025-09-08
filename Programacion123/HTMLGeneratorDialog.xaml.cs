@@ -29,6 +29,9 @@ namespace Programacion123
         public HTMLGeneratorDialog()
         {
             InitializeComponent();
+
+            Topmost = false;
+
         }
 
         public void Init(Subject? _subject, Action<bool> _closeAction)

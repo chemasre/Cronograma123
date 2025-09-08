@@ -11,18 +11,8 @@ namespace Programacion123
 
         public HTMLGenerator()
         {
-            HTMLGeneratorSettings defaultSettings = new();
-
-            Style = new ()
-            {
-                LogoBase64 = new(defaultSettings.DocumentStyle.LogoBase64),
-                CoverBase64 = new(defaultSettings.DocumentStyle.CoverBase64),
-                Size = defaultSettings.DocumentStyle.Size,
-                Orientation = defaultSettings.DocumentStyle.Orientation,
-                Margins = defaultSettings.DocumentStyle.Margins
-
-            };
-
+            LineBreak = "<br>";
+            NonBreakingSpace = "&nbsp;";
         }
 
         /// <summary>
@@ -42,7 +32,7 @@ namespace Programacion123
     
         public override void LoadOrCreateSettings()
         {
-            HTMLGeneratorSettings settings = Settings.LoadOrCreateSettings<HTMLGeneratorSettings>(SettingsId);
+            GeneratorSettings settings = Settings.LoadOrCreateSettings<GeneratorSettings>(SettingsId);
 
             Style = new()
             {
@@ -62,7 +52,7 @@ namespace Programacion123
     
         public override void SaveSettings()
         {
-            HTMLGeneratorSettings settings = new();
+            GeneratorSettings settings = new();
 
             Debug.Assert(Style.HasValue);
 
@@ -81,7 +71,7 @@ namespace Programacion123
 
             };
 
-            Settings.SaveSettings<HTMLGeneratorSettings>(SettingsId, settings);    
+            Settings.SaveSettings<GeneratorSettings>(SettingsId, settings);    
         }
     
         public override GeneratorValidationResult Validate()

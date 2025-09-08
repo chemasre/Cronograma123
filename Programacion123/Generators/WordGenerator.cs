@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Programacion123
 {
@@ -14,6 +15,13 @@ namespace Programacion123
     public partial class WordGenerator : Generator
     {
         public const string SettingsId = "DocGenerator";
+
+        public WordGenerator()
+        {
+            LineBreak = "\n";
+            NonBreakingSpace = " ";
+
+        }
 
         public override void Generate(string path)
         {
@@ -31,47 +39,104 @@ namespace Programacion123
 
             Action<string, int, WordDocument> addParagraph = ((s, i, d) => d.WithParagraph(s));
 
+            List<ActivitySchedule> schedule = Subject.ScheduleActivities();
+
             Application app = new();
 
-            WordDocument doc = new(app);
-
-            doc.WithMargins(style.Margins)
+            WordDocument.Create(app)
+               .WithMargins(style.Margins)
                .WithOrientation(style.Orientation)
                .WithTextStyle(DocumentTextElementId.NormalText, style.TextElementStyles[DocumentTextElementId.NormalText])
                .WithTextStyle(DocumentTextElementId.Header1, style.TextElementStyles[DocumentTextElementId.Header1])
                .WithTextStyle(DocumentTextElementId.Header2, style.TextElementStyles[DocumentTextElementId.Header2])
                .WithTextStyle(DocumentTextElementId.Header3, style.TextElementStyles[DocumentTextElementId.Header3])
                .WithTextStyle(DocumentTextElementId.Header4, style.TextElementStyles[DocumentTextElementId.Header4])
-               .WithParagraph("Hola")
-               .WithParagraph("Qué tal")
-               .WithHeader1("Qué tal")
-               .WithParagraph("Qué tal")
-               .WithHeader2("Qué tal")
-               .WithParagraph("Qué tal")
-               .WithHeader3("Qué tal")
-               .WithParagraph("Qué tal")
+               //.WithParagraph("Hola")
+               //.WithParagraph("Qué tal")
+               //.WithHeader1("Qué tal")
+               //.WithParagraph("Qué tal")
+               //.WithHeader2("Qué tal")
+               //.WithParagraph("Qué tal")
+               //.WithHeader3("Qué tal")
+               //.WithParagraph("Qué tal")
+               //.WithTable(2, 3)
+               //.WithCellSpan(1, 1, 2, 1)
+               //.WithCellContent(1, 1, "Test11")
+               //.WithCellContent(1, 2, "Test12")
+               //.WithCellContent(1, 3, "Test13")
+               //.WithCellContent(2, 2, "Test22")
+               //.WithCellContent(2, 3, "Test23")
 
-               
                 //////////////////////////////////////////////////////////////////
                 ///////////// Nivel 1: Organización del módulo ///////////////////
                 //////////////////////////////////////////////////////////////////
 
-                //.WithInner(Tag.Create("h1").WithInner(index[0].Title).WithId("Apartado1"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1ModuleOrganization), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1ModuleOrganization), addCommonTextTags)
-
                .WithHeader1(index[0].Title)
                .Foreach<string>(GetGradeCommonText(CommonTextId.header1ModuleOrganization), addParagraph)
                .Foreach<string>(GetSubjectCommonText(CommonTextId.header1ModuleOrganization), addParagraph)
-               
+
+                .WithTable(5, 3)
+                .WithCellSpan(1, 1, 1, 3).WithCellContent(1, 1, GetGradeTypeName() + " - " + gradeTemplate.GradeName)
+                .WithCellSpan(2, 1, 1, 3).WithCellContent(2, 1, "Módulo profesional:MP" + subjectTemplate.SubjectCode + " - " + subjectTemplate.SubjectName)
+                .WithCellContent(3, 1, "Horas centro educativo: " +  subjectTemplate.GradeClassroomHours)
+                .WithCellContent(3, 2, "Horas empresa: " + subjectTemplate.GradeCompanyHours)
+                .WithCellContent(3, 3, "Horas totales: " + (subjectTemplate.GradeClassroomHours + subjectTemplate.GradeCompanyHours))
+                .WithCellSpan(4, 1, 1, 2).WithCellContent(4, 1, "Modalidad: Presencial")
+                .WithCellContent(4, 2, "Régimen: Anual")
+                .WithCellSpan(5, 1, 1, 3).WithCellContent(5, 1, "Familia profesional: " + gradeTemplate.GradeFamilyName)
+
+                .WithTable(2 + Subject.Blocks.Count, 6)
+                .WithCellSpan(1, 1, 1, 6).WithCellContent(1, 1, subjectTemplate.SubjectCode + ": " + subjectTemplate.SubjectName)
+                .WithCellContent(2, 1, "Bloques de enseñanza").WithCellContent(2, 2, "RAs").WithCellContent(2, 3, "CEs")
+                .WithCellContent(2, 4, "Duración").WithCellContent(2, 5, "Fecha de inicio").WithCellContent(2, 6, "Fecha de fin")
+                .Foreach<Block>(Subject.Blocks.ToList(),
+                    (b, i, d) =>
+                    {
+                        List<int> referencedResults = Subject.QueryBlockReferencedLearningResultIndexes(i);
+                        List<SubjectLearningResultCriteriaIndex> referencedCriterias = Subject.QueryBlockReferencedLearningResultCriteriaIndexes(i);
+
+                        string rasText = "";
+                        bool first = true;
+                        referencedResults.ForEach((i) => { rasText += (first?"":", ") + String.Format("RA{0}", i + 1); first = false; });
+
+                        string criteriasText = "";
+                        first = true;
+                        referencedCriterias.ForEach((c) => { criteriasText += (first ? "" : ", ") + String.Format("{0}.{1}", c.learningResultIndex + 1, c.criteriaIndex + 1); first = false; });
+
+                        float hours = Subject.QueryBlockDuration(i);
+
+                        ActivitySchedule? startActivitySchedule = null;
+                        ActivitySchedule? endActivitySchedule = null;
+
+                        int aIndex = 0;
+                        List<Activity> activitiesList = b.Activities.ToList();
+                        foreach(Activity a in activitiesList)
+                        {
+                            if(schedule != null)
+                            {
+                                if(aIndex == 0) { startActivitySchedule = schedule.Find(s => s.activity.StorageId == a.StorageId); }
+                                if(aIndex == activitiesList.Count - 1) { endActivitySchedule = schedule.Find(s => s.activity.StorageId == a.StorageId); }
+                            }
+
+                            aIndex ++;
+                        }
+
+
+                        d.WithCellContent(3 + i, 1, String.Format("Bloque {0}: {1}", i + 1, b.Title));
+                        d.WithCellContent(3 + i, 2, rasText);
+                        d.WithCellContent(3 + i, 3, criteriasText);
+                        d.WithCellContent(3 + i, 4, String.Format("{0}h", hours));
+                        d.WithCellContent(3 + i, 5, startActivitySchedule.HasValue ? Utils.FormatDate(startActivitySchedule.Value.start.day) : "");
+                        d.WithCellContent(3 + i, 6, endActivitySchedule.HasValue ? Utils.FormatDate(endActivitySchedule.Value.start.day) : "");
+
+                    }
+                 )
+
+
                 /////////////////////////////////////////////////////////////////////////////////////
                 ///////////// Nivel 1: Justificación de la importancia del módulo ///////////////////
                 /////////////////////////////////////////////////////////////////////////////////////
 
-                //.WithInner(Tag.Create("h1").WithInner(index[1].Title).WithId("Apartado2"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1ImportanceJustification), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1ImportanceJustification), addCommonTextTags)
-               
                .WithHeader1(index[1].Title)
                .Foreach<string>(GetGradeCommonText(CommonTextId.header1ImportanceJustification), addParagraph)
                .Foreach<string>(GetSubjectCommonText(CommonTextId.header1ImportanceJustification), addParagraph)
@@ -79,45 +144,6 @@ namespace Programacion123
                 /////////////////////////////////////////////////////////////////
                 ///////////// Nivel 1: Elementos curriculares ///////////////////
                 /////////////////////////////////////////////////////////////////
-
-                //.WithInner(Tag.Create("h1").WithInner(index[2].Title).WithId("Apartado3"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1CurricularElements), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1CurricularElements), addCommonTextTags)
-                //.WithInner(Tag.Create("h2").WithInner(index[2].Subitems[0].Title).WithId("Apartado3-1"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2GeneralObjectives), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2GeneralObjectives), addCommonTextTags)
-                //.WithInner(Tag.Create("div")
-                //    .WithInnerForeach<CommonText>(subjectTemplate.GeneralObjectives.ToList(),
-                //        (o, i, l) =>
-                //        {
-                //            int index = subjectTemplate.GradeTemplate.GeneralObjectives.ToList().FindIndex(_o => _o.StorageId == o.StorageId);
-                //            l.Add(Tag.Create("div").WithInner(String.Format("{0}. {1}", Utils.FormatLetterPrefixLowercase(index), o.Description)));
-                //        }
-                //    )
-                // )
-                //.WithInner(Tag.Create("h2").WithInner(index[2].Subitems[1].Title).WithId("Apartado3-2"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2GeneralCompetences), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2GeneralCompetences), addCommonTextTags)
-                //.WithInner(Tag.Create("div")
-                //    .WithInnerForeach<CommonText>(subjectTemplate.GeneralCompetences.ToList(),
-                //        (c, i, l) =>
-                //        {
-                //            int index = subjectTemplate.GradeTemplate.GeneralCompetences.ToList().FindIndex(_c => _c.StorageId == c.StorageId);
-                //            l.Add(Tag.Create("div").WithInner(String.Format("{0}. {1}", Utils.FormatLetterPrefixLowercase(index), c.Description)));
-                //        }
-                //    )
-                // )
-                //.WithInner(Tag.Create("h2").WithInner(index[2].Subitems[2].Title).WithId("Apartado3-3"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2KeyCompetences), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2KeyCompetences), addCommonTextTags)
-                //.WithInnerForeach<int>(Subject.QueryReferencedKeyCompetencesIndexes(),
-                //    (c, i, l) =>
-                //    {
-                //        l.Add(Tag.Create("h3").WithInner(gradeTemplate.KeyCapacities[c].Title));
-                //        l.Add(Tag.Create("div").WithInner(gradeTemplate.KeyCapacities[c].Description));
-                //    }
-                // )
-                //.WithInner(pageBreak)
 
                .WithHeader1(index[2].Title)
                .Foreach<string>(GetGradeCommonText(CommonTextId.header1CurricularElements), addParagraph)
@@ -138,24 +164,6 @@ namespace Programacion123
                 /////////////////////////////////////////////////////////////////////////////////
                 ///////////// Nivel 1: Metodología y orientaciones didácticas ///////////////////
                 /////////////////////////////////////////////////////////////////////////////////
-
-                //.WithInner(Tag.Create("h1").WithInner(index[3].Title).WithId("Apartado4"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1MetodologyAndDidacticOrientations), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1MetodologyAndDidacticOrientations), addCommonTextTags)
-                //.WithInner(Tag.Create("h2").WithInner("Metodología general y específica de la materia").WithId("Apartado4-1"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2Metodology), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2Metodology), addCommonTextTags)
-                //.WithInnerForeach<CommonText>(Subject.Metodologies.ToList(),
-                //    (c, i, l) =>
-                //    {
-                //        l.Add(Tag.Create("h3").WithInner(c.Title).WithId(String.Format("Apartado4-1-{0}", i + 1)));
-                //        l.Add(Tag.Create("div").WithInner(c.Description));
-                //    }
-                //)
-                //.WithInner(Tag.Create("h2").WithInner("Medidas de atención al alumnado con necesidad específica de apoyo educativo o con necesidad de compensación educativa: atención a la diversidad").WithId("Apartado4-2"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2Diversity), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2Diversity), addCommonTextTags)
-                //.WithInner(pageBreak)
 
                .WithHeader1(index[3].Title)
                .Foreach<string>(GetGradeCommonText(CommonTextId.header1MetodologyAndDidacticOrientations), addParagraph)
@@ -181,24 +189,6 @@ namespace Programacion123
                 ///////////// Nivel 1: Sistema de evaluación ///////////////////
                 ////////////////////////////////////////////////////////////////
 
-                //.WithInner(Tag.Create("h1").WithInner(index[4].Title).WithId("Apartado5"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1EvaluationSystem), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1EvaluationSystem), addCommonTextTags)
-                //.WithInner(Tag.Create("h2").WithInner("Instrumentos de evaluación").WithId("Apartado5-1"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2EvaluationInstruments), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2EvaluationInstruments), addCommonTextTags)
-                //.WithInnerForeach<CommonText>(Subject.EvaluationInstrumentsTypes.ToList(),
-                //    (c, i, l) =>
-                //    {
-                //        l.Add(Tag.Create("h3").WithInner(c.Title).WithId(String.Format("Apartado5-1-{0}", i + 1)));
-                //        l.Add(Tag.Create("div").WithInner(c.Description));
-                //    }
-                //)
-                //.WithInner(Tag.Create("h2").WithInner("Evaluación del funcionamiento de la programación").WithId("Apartado5-2"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2EvaluationOfProgramming), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2EvaluationOfProgramming), addCommonTextTags)
-                //.WithInner(pageBreak)
-
                .WithHeader1(index[4].Title)
                .Foreach<string>(GetGradeCommonText(CommonTextId.header1EvaluationSystem), addParagraph)
                .Foreach<string>(GetSubjectCommonText(CommonTextId.header1EvaluationSystem), addParagraph)
@@ -223,17 +213,6 @@ namespace Programacion123
                 ////////////// Nivel 1: Elementos transversales ///////////////////
                 ///////////////////////////////////////////////////////////////////
 
-                //.WithInner(Tag.Create("h1").WithInner(index[5].Title).WithId("Apartado6"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1TraversalElements), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1TraversalElements), addCommonTextTags)
-                //.WithInner(Tag.Create("h2").WithInner("Fomento de la lectura y tecnologías de la información y de comunicación").WithId("Apartado6-1"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2TraversalReadingAndTIC), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2TraversalReadingAndTIC), addCommonTextTags)
-                //.WithInner(Tag.Create("h2").WithInner("Comunicación audiovisual, emprendimiento, educación cívica y constitucional").WithId("Apartado6-2"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation), addCommonTextTags)
-                //.WithInner(pageBreak)
-
                .WithHeader1(index[5].Title)
                .Foreach<string>(GetGradeCommonText(CommonTextId.header1TraversalElements), addParagraph)
                .Foreach<string>(GetSubjectCommonText(CommonTextId.header1TraversalElements), addParagraph)
@@ -249,31 +228,6 @@ namespace Programacion123
                 //////////////////////////////////////////////////////////////////////////////
                 ////////////// Nivel 1: Recursos didácticos y organizativos //////////////////
                 //////////////////////////////////////////////////////////////////////////////
-
-                //.WithInner(Tag.Create("h1").WithInner(index[6].Title).WithId("Apartado7"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1Resources), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1Resources), addCommonTextTags)                            
-                //.WithInner(Tag.Create("h2").WithInner("Espacios requeridos").WithId("Apartado7-1"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2ResourcesSpaces), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2ResourcesSpaces), addCommonTextTags)                            
-                //.WithInnerForeach<CommonText>(Subject.SpaceResources.ToList(),
-                //    (c, i, l) =>
-                //    {
-                //        l.Add(Tag.Create("h3").WithInner(c.Title).WithId(String.Format("Apartado7-1-{0}", i + 1)));
-                //        l.Add(Tag.Create("div").WithInner(c.Description));
-                //    }
-                //    )
-                //.WithInner(Tag.Create("h2").WithInner("Materiales y herramientas").WithId("Apartado7-2"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2ResourcesMaterialAndTools), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2ResourcesMaterialAndTools), addCommonTextTags) 
-                //.WithInnerForeach<CommonText>(Subject.MaterialResources.ToList(),
-                //    (c, i, l) =>
-                //    {
-                //        l.Add(Tag.Create("h3").WithInner(c.Title).WithId(String.Format("Apartado7-2-{0}", i + 1)));
-                //        l.Add(Tag.Create("div").WithInner(c.Description));
-                //    }
-                //    )
-                //.WithInner(pageBreak)
 
                .WithHeader1(index[6].Title)
                .Foreach<string>(GetGradeCommonText(CommonTextId.header1Resources), addParagraph)
@@ -307,45 +261,17 @@ namespace Programacion123
                 ////////////// Nivel 1: Programación del módulo profesional ///////////////////
                 ///////////////////////////////////////////////////////////////////////////////
                             
-                //.WithInner(Tag.Create("h1").WithInner(index[7].Title).WithId("Apartado8"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1SubjectProgramming), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1SubjectProgramming), addCommonTextTags) 
-
                 .WithHeader1(index[7].Title)
                 .Foreach<string>(GetGradeCommonText(CommonTextId.header1SubjectProgramming), addParagraph)
                 .Foreach<string>(GetSubjectCommonText(CommonTextId.header1SubjectProgramming), addParagraph)
-
-                //.WithInner(Tag.Create("h2").WithInner("Resultados de aprendizaje, criterios de evaluación y contenidos").WithId("Apartado8-1"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2LearningResultsAndContents), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2LearningResultsAndContents), addCommonTextTags) 
 
                 .WithHeader2(index[7].Subitems[0].Title)
                 .Foreach<string>(GetGradeCommonText(CommonTextId.header2LearningResultsAndContents), addParagraph)
                 .Foreach<string>(GetSubjectCommonText(CommonTextId.header2LearningResultsAndContents), addParagraph)
 
-                //.WithInner(Tag.Create("h3").WithInner("Resultados de aprendizaje y criterios de evaluación").WithId("Apartado8-1-1"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header3LearningResults), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header3LearningResults), addCommonTextTags)
-                
                 .WithHeader3(index[7].Subitems[0].Subitems[0].Title)
                 .Foreach<string>(GetGradeCommonText(CommonTextId.header3LearningResults), addParagraph)
                 .Foreach<string>(GetSubjectCommonText(CommonTextId.header3LearningResults), addParagraph)
-
-                //.WithInnerForeach<LearningResult>(subjectTemplate.LearningResults.ToList(),
-                //    (r, i, l) =>
-                //    {
-                //            l.Add(Tag.Create("div").WithInner(String.Format("RA{0}: ", i + 1) + r.Description));
-                //            l.Add(Tag.Create("div").WithInner("Criterios"));
-
-                //            l.Add(Tag.Create("div")
-                //            .WithInnerForeach<CommonText>(subjectTemplate.LearningResults.ToList()[i].Criterias.ToList(),
-                //                (c, j, l) =>
-                //                {
-                //                    l.Add(Tag.Create("div").WithInner(String.Format("{0}.{1}: ", i + 1, j + 1) + c.Description));
-                //                }
-                //            ));
-                //    }
-                //    )
                 
                 .Foreach<LearningResult>(subjectTemplate.LearningResults.ToList(),
                     (r, i, d) =>
@@ -361,29 +287,9 @@ namespace Programacion123
                     }
                 )
 
-                //.WithInner(Tag.Create("h3").WithInner("Contenidos").WithId("Apartado8-1-2"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header3Contents), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header3Contents), addCommonTextTags) 
-
                 .WithHeader3(index[7].Subitems[0].Subitems[1].Title)
                 .Foreach<string>(GetGradeCommonText(CommonTextId.header3Contents), addParagraph)
                 .Foreach<string>(GetSubjectCommonText(CommonTextId.header3Contents), addParagraph)
-
-
-                //.WithInnerForeach<Content>(subjectTemplate.Contents.ToList(),
-                //    (c, i, l) =>
-                //    {
-                //    l.Add(Tag.Create("div").WithInner(String.Format("{0}: ", i + 1) + c.Description));
-                //    l.Add(Tag.Create("div")
-                //            .WithInnerForeach<CommonText>(subjectTemplate.Contents.ToList()[i].Points.ToList(),
-                //                (p, j, l) =>
-                //                {
-                //                    l.Add(Tag.Create("div").WithInner(String.Format("{0}.{1}: ", i + 1, j + 1) + p.Description));
-                //                }
-                //            )
-                //        );
-                //    }
-                //)
 
                 .Foreach<Content>(subjectTemplate.Contents.ToList(),
                     (c, i, d) =>
@@ -398,150 +304,151 @@ namespace Programacion123
                     }
                 )
 
-                //.WithInner(Tag.Create("h2").WithInner("Bloques de enseñanza y aprendizaje").WithId("Apartado8-2"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2Blocks), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2Blocks), addCommonTextTags) 
-
                 .WithHeader2(index[7].Subitems[1].Title)
                 .Foreach<string>(GetGradeCommonText(CommonTextId.header2Blocks), addParagraph)
                 .Foreach<string>(GetSubjectCommonText(CommonTextId.header2Blocks), addParagraph)
 
-                //.WithInner(
-                //    Table.Create()
-                //        .WithRow()
-                //            .WithCell(String.Format("{0}: {1}", subjectTemplate.SubjectCode, subjectTemplate.SubjectName), 1, 5).WithCellClass("tableHeader1")
-                //            .WithCell(String.Format("Horas: {0}", subjectTemplate.GradeClassroomHours + subjectTemplate.GradeCompanyHours)).WithCellClass("tableHeader1")
-                //        .WithRow()
-                //            .WithCell("Bloque de enseñanza-aprendizaje", 2, 2).WithCellClass("tableHeader2")
-                //            .WithCell("RA", 2, 1).WithCellClass("tableHeader2")
-                //            .WithCell("Contenidos", 2, 1).WithCellClass("tableHeader2")
-                //            .WithCell("Evaluación", 1, 2).WithCellClass("tableHeader2")
-                //        .WithRow()
-                //            .WithCell("CE").WithCellClass("tableHeader2")
-                //            .WithCell("Actividades evaluables").WithCellClass("tableHeader2")
+                .WithTable(2 * Subject.Blocks.Count + 3, 6)
+                .WithCellSpan(1, 1, 1, 5).WithCellContent(1, 1, String.Format("{0}: {1}", subjectTemplate.SubjectCode, subjectTemplate.SubjectName))
+                .WithCellContent(1, 2, String.Format("Horas: {0}", subjectTemplate.GradeClassroomHours + subjectTemplate.GradeCompanyHours))
+                .WithCellContent(2, 1, "Bloque de enseñanza-aprendizaje")
+                .WithCellContent(2, 3, "RA")
+                .WithCellContent(2, 4, "Contenidos")
+                .WithCellContent(2, 5, "Evaluación")
+                .WithCellContent(3, 5, "CE")
+                .WithCellContent(3, 6, "Actividades evaluables")
+                .WithCellSpan(2, 1, 2, 2).WithCellSpan(2, 2, 2, 1).WithCellSpan(2, 3, 2, 1).WithCellSpan(2, 4, 1, 2)
+                .Foreach<Block>(Subject.Blocks.ToList(),
+                    (b, i, d) =>
+                    {
+                        d.WithCellContent(4 + i * 2, 1, String.Format("Bloque {0}", i + 1));
+                        d.WithCellContent(4 + i * 2, 2, String.Format(CultureInfo.InvariantCulture, "{0} horas", Subject.QueryBlockDuration(i)));
 
-                //        .WithRowForeach<Block>(Subject.Blocks.ToList(),
-                //            (b, i, t) =>
-                //            {
-                //                t.WithCell(String.Format("<b>Bloque {0}</b>", i + 1));
-                //                t.WithCell(String.Format(CultureInfo.InvariantCulture, "{0} horas", Subject.QueryBlockDuration(i)));
+                        string raText = "";
+                        bool first = true;
+                        Subject.QueryBlockReferencedLearningResultIndexes(i).ForEach(
+                            r =>
+                            {
+                                raText += (first ? "" : ", ") + "RA" + (r + 1); first = false;
+                            });
 
-                //                string raText = "";
-                //                bool first = true;
-                //                Subject.QueryBlockReferencedLearningResultIndexes(i).ForEach(
-                //                    r => { raText += (first?"":", ") + "RA" + (r + 1); first = false;
-                //                });
+                        string contentText = "";
+                        first = true;
+                        Subject.QueryBlockReferencedContentIndexes(i).ForEach(
+                            c =>
+                            {
+                                contentText += (first ? "" : ", ") + (c + 1); first = false;
+                            });
 
-                //                string contentText = "";
-                //                first = true;
-                //                Subject.QueryBlockReferencedContentIndexes(i).ForEach(
-                //                    c =>
-                //                    {
-                //                        contentText += (first ? "" : ", ") + (c + 1); first = false;
-                //                    });
+                        string criteriaText = "";
+                        first = true;
+                        Subject.QueryBlockReferencedLearningResultCriteriaIndexes(i).ForEach(
+                            cIndex =>
+                            {
+                                criteriaText += (first ? "" : ", ") + (cIndex.learningResultIndex + 1) + "." + (cIndex.criteriaIndex + 1);
+                                first = false;
+                            }
+                        );
 
-                //                string criteriaText = "";
-                //                first = true;
-                //                Subject.QueryBlockReferencedLearningResultCriteriaIndexes(i).ForEach(
-                //                    cIndex =>
-                //                    {
-                //                        criteriaText += (first ? "" : ", ") + (cIndex.learningResultIndex + 1) + "." + (cIndex.criteriaIndex + 1);
-                //                        first = false;
-                //                    }
-                //                );
+                        string evaluableActivitiesText = "";
+                        first = true;
+                        Subject.QueryBlockEvaluableActivityIndexes(i).ForEach(
+                            (aIndex) =>
+                            {
+                                evaluableActivitiesText += (first ? "" : "\n") + Utils.FormatEvaluableActivity(i, aIndex.evaluationType, aIndex.activityTypeIndex);
+                                first = false;
+                            }
+                        );
 
-                //                string evaluableActivitiesText = "";
-                //                first = true;
-                //                Subject.QueryBlockEvaluableActivityIndexes(i).ForEach(
-                //                    (aIndex) =>
-                //                    {
-                //                        evaluableActivitiesText += (first ? "" : "<br>") + Utils.FormatEvaluableActivity(i, aIndex.evaluationType, aIndex.activityTypeIndex);
-                //                        first = false;
-                //                    }
-                //                );
+                        d.WithCellContent(4 + i * 2 + 0, 3, raText);
+                        d.WithCellContent(4 + i * 2 + 0, 4, contentText);
+                        d.WithCellContent(4 + i * 2 + 0, 5, criteriaText);
+                        d.WithCellContent(4 + i * 2 + 0, 6, evaluableActivitiesText);
 
-                //                t.WithCell(raText, 2, 1);
-                //                t.WithCell(contentText, 2, 1);
-                //                t.WithCell(criteriaText, 2, 1);
-                //                t.WithCell(evaluableActivitiesText, 2, 1);
-                //                t.WithRow().WithCell(b.Description, 1, 2);
-                //            }
-                //        )
-                //)
+                        d.WithCellContent(4 + i * 2 + 1, 1, b.Description);
 
-                //.WithInner(Tag.Create("h2").WithInner("Programación de actividades de enseñanza-aprendizaje").WithId("Apartado8-3"))
-                //.WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2Activities), addCommonTextTags)
-                //.WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2Activities), addCommonTextTags)
-                
+                        d.WithCellSpan(4 + i * 2 + 0, 3, 2, 1);
+                        d.WithCellSpan(4 + i * 2 + 0, 4, 2, 1);
+                        d.WithCellSpan(4 + i * 2 + 0, 5, 2, 1);
+                        d.WithCellSpan(4 + i * 2 + 0, 6, 2, 1);
+                        d.WithCellSpan(4 + i * 2 + 1, 1, 1, 2);
+
+                    }
+                )
+
                 .WithHeader2(index[7].Subitems[2].Title)
                 .Foreach<string>(GetGradeCommonText(CommonTextId.header2Activities), addParagraph)
                 .Foreach<string>(GetSubjectCommonText(CommonTextId.header2Activities), addParagraph)
 
-                //.WithInnerForeach<Block>(Subject.Blocks.ToList(),
-                //    (b, i, l) =>
-                //    {
-                //        l.Add(Tag.Create("h3").WithInner(String.Format("Bloque {0}", i + 1)).WithId(String.Format("Apartado8-3-{0}", i + 1)));
+                .Foreach<Block>(Subject.Blocks.ToList(),
+                    (b, i, d) =>
+                    {
+                        d.WithHeader3(String.Format("Bloque {0}", i + 1));
 
-                //        List<Activity> activities = b.Activities.ToList();
-                //        foreach(Activity a in activities)
-                //        {
-                //            l.Add(
-                //                Table.Create()
-                //                        .WithRow()
-                //                            .WithCell(a.Title, 1, 4).WithCellClass("tableHeader1")
-                //                        .WithRow()
-                //                            .WithCell(a.Description, 1, 4)
-                //                        .WithRow()
-                //                            .WithCell("Metodología").WithCellClass("tableHeader2")
-                //                            .WithCell("Duración").WithCellClass("tableHeader2")
-                //                            .WithCell("Fecha de inicio").WithCellClass("tableHeader2")
-                //                            .WithCell("Fecha de fin").WithCellClass("tableHeader2")
-                //                        .WithRow()
-                //                            .WithCell(a.Metodology.Title)
-                //                            .WithCell(String.Format(CultureInfo.InvariantCulture, "{0:0}h ({1} sesiones)", a.Duration, GetSessionsCountText(a, schedule)))
-                //                            .WithCell(Utils.FormatStartDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).start, Subject.WeekSchedule))
-                //                            .WithCell(Utils.FormatEndDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).end, Subject.WeekSchedule))
-                //                        .WithRow()
-                //                            .WithCell("Espacios").WithCellClass("tableHeader2")
-                //                            .WithCell("Materiales").WithCellClass("tableHeader2")
-                //                            .WithCell("Contenidos").WithCellClass("tableHeader2")
-                //                            .WithCell("Capacidades clave").WithCellClass("tableHeader2")
-                //                            .WithRow()
-                //                            .WithCell(GetSpacesText(a))
-                //                            .WithCell(GetMaterialsText(a))
-                //                            .WithCell(GetContentsText(i, a))
-                //                            .WithCell(GetKeyCapacitiesText(a))
-                //                            .WithRowIf(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
-                //                            .WithCell("Código de actividad evaluable").WithCellClass("tableHeader2")
-                //                            .WithCell("Instrumento de evaluación").WithCellClass("tableHeader2")
-                //                            .WithCell("Peso en los resultados de aprendizaje").WithCellClass("tableHeader2")
-                //                            .WithCell("Criterios de evaluación").WithCellClass("tableHeader2")
-                //                            .WithRowIf(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
-                //                            .WithCell(a.EvaluationType != ActivityEvaluationType.NotEvaluable ? Utils.FormatEvaluableActivity(i, a.EvaluationType, Subject.QueryEvaluableActivityTypeIndex(i, a)) : "")
-                //                            .WithCell(a.EvaluationType != ActivityEvaluationType.NotEvaluable ? a.EvaluationInstrumentType.Title : "")
-                //                            .WithCell(GetReferencedLearningResultsWeightsText(i, a))
-                //                            .WithCell(GetReferencedCriteriasText(i, a))
-                //            );
-                //        }
-                //    }
-                //)
-                //.WithInner(pageBreak)
+                        d.Foreach<Activity>(b.Activities.ToList(),
+                            (a, j, d) =>
+                            {
+                                Debug.Assert(a.Metodology != null);
+
+                                int rows = 6 + (a.EvaluationType != ActivityEvaluationType.NotEvaluable ? 2 : 0);
+
+                                d.WithTable(rows, 4)
+
+                                .WithCellContent(1, 1, a.Title)
+
+                                .WithCellContent(2, 1, a.Description)
+
+                                .WithCellContent(3, 1, "Metodología")
+                                .WithCellContent(3, 2, "Duración")
+                                .WithCellContent(3, 3, "Fecha de inicio")
+                                .WithCellContent(3, 4, "Fecha de fin")
+
+                                .WithCellContent(4, 1, a.Metodology.Title)
+                                .WithCellContent(4, 2, String.Format(CultureInfo.InvariantCulture, "{0:0}h ({1} sesiones)", a.Duration, GetSessionsCountText(a, schedule)))
+                                .WithCellContent(4, 3, Utils.FormatStartDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).start, Subject.WeekSchedule))
+                                .WithCellContent(4, 4, Utils.FormatEndDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).end, Subject.WeekSchedule))
+
+                                .WithCellContent(5, 1, "Espacios")
+                                .WithCellContent(5, 2, "Materiales")
+                                .WithCellContent(5, 3, "Contenidos")
+                                .WithCellContent(5, 4, "Capacidades clave")
+
+                                .WithCellContent(6, 1, GetSpacesText(a))
+                                .WithCellContent(6, 2, GetMaterialsText(a))
+                                .WithCellContent(6, 3, GetContentsText(i, a))
+                                .WithCellContent(6, 4, GetKeyCapacitiesText(a))
+
+                                .If(a.EvaluationType != ActivityEvaluationType.NotEvaluable,
+                                
+                                    (d) =>
+                                    {
+                                        Debug.Assert(a.EvaluationInstrumentType != null);
+
+                                        d.WithCellContent(7, 1, "Código de actividad evaluable")
+                                        .WithCellContent(7, 2, "Instrumento de evaluación")
+                                        .WithCellContent(7, 3, "Peso en los resultados de aprendizaje")
+                                        .WithCellContent(7, 4, "Criterios de evaluación")
+
+                                        .WithCellContent(8, 1, a.EvaluationType != ActivityEvaluationType.NotEvaluable ? Utils.FormatEvaluableActivity(i, a.EvaluationType, Subject.QueryEvaluableActivityTypeIndex(i, a)) : "")
+                                        .WithCellContent(8, 2, a.EvaluationType != ActivityEvaluationType.NotEvaluable ? a.EvaluationInstrumentType.Title : "")
+                                        .WithCellContent(8, 3, GetReferencedLearningResultsWeightsText(i, a))
+                                        .WithCellContent(8, 4, GetReferencedCriteriasText(i, a));
+
+                                    }
+                                );
+
+                                d.WithCellSpan(1, 1, 1, 4)
+                                .WithCellSpan(2, 1, 1, 4);
+                            }
+                        );
+                    }
+                )
+
 
                 //////////////////////////////////////////////////////////////////////
                 ////////////// Nivel 1: Referencias bibliográficas ///////////////////
                 //////////////////////////////////////////////////////////////////////
                             
-                //.WithInner(Tag.Create("h1").WithInner(index[8].Title).WithId("Apartado9"))
-                //.WithInner(Tag.Create("div")
-                //    .WithInnerForeach<CommonText>(Subject.Citations.ToList(),
-                //        (c, i, l) =>
-                //        {
-                //            l.Add(Tag.Create("div").WithInner(String.Format("{0}- {1}", i + 1, c.Description)));
-                //        }
-                //    )
-                //    )
-                //.WithInner(pageBreak)
-
                 .WithHeader1(index[8].Title)
                 .Foreach<CommonText>(Subject.Citations.ToList(),
                     (c, i, d) =>
@@ -559,6 +466,67 @@ namespace Programacion123
 
                 .WithHeader1(index[9].Title)
                 .WithHeader2(index[9].Subitems[0].Title)
+
+                .WithTable(2 + Subject.QueryEvaluableActivityIndexes().Count, 2 + subjectTemplate.LearningResults.ToList().Count)
+                .WithCellContent(1, 1, NonBreakingSpace).WithCellContent(1, 2, NonBreakingSpace)
+                .Foreach<LearningResult>(subjectTemplate.LearningResults.ToList(),
+                    (r, i, d) => { d.WithCellContent(1, 3 + i, String.Format("RA{0}", i + 1)); }
+                )
+                .WithCellContent(2, 1, "Bloque").WithCellContent(2, 2, "Peso" + NonBreakingSpace + "RA")
+                .Foreach<SubjectLearningResultIndexesWeight>(Subject.QueryLearningResultsIndexesWeights(),
+                    (r, i, d) =>
+                    {
+                        d.WithCellContent(2, 3 + i, String.Format("{0:0}%", r.weight));
+                    }
+                )
+                .Do( 
+                    (d) =>
+                    {
+                        List<EvaluableActivityIndex> activityIndexes = Subject.QueryEvaluableActivityIndexes();
+        
+                        List<int> blockIndexes = new();
+                        Dictionary<int, int> blockActivityCount = new();
+                        Dictionary<int, int> blockActivityStart = new();
+
+                        int lastBlock = -1;
+
+                        for(int i = 0; i < activityIndexes.Count; i++)
+                        {
+                            EvaluableActivityIndex activityIndex = activityIndexes[i];
+
+                            if(lastBlock != activityIndex.blockIndex)
+                            {
+                                d.WithCellContent(3 + i, 1, String.Format("Bloque" + NonBreakingSpace + "{0}", activityIndex.blockIndex + 1));
+
+                                blockIndexes.Add(activityIndex.blockIndex);
+                                blockActivityCount[activityIndex.blockIndex] = 1;
+                                blockActivityStart[activityIndex.blockIndex] = i;
+                            }
+                            else
+                            {
+                                blockActivityCount[activityIndex.blockIndex] ++;
+                            }
+
+                            lastBlock = activityIndex.blockIndex;
+
+                            d.WithCellContent(3 + i, 2, Utils.FormatEvaluableActivity(activityIndex.blockIndex, activityIndex.evaluationType, activityIndex.activityTypeIndex));
+
+                            List<SubjectLearningResultIndexesWeight> resultsWeights = Subject.QueryActivityLearningResultsIndexesWeight(activityIndex.blockIndex, activityIndex.activityIndex);
+                            
+                            for(int j = 0; j < resultsWeights.Count; j ++)
+                            {
+                                d.WithCellContent(3 + i, 3 + j, resultsWeights[j].weight > 0 ? String.Format("{0:0}%", resultsWeights[j].weight) : NonBreakingSpace);
+                            }
+                        }
+
+                        for(int i = 0; i < blockIndexes.Count; i++)
+                        {
+                            int blockIndex = blockIndexes[i];
+                            d.WithCellSpan(3 + i + (i > 0 ? blockActivityCount[blockIndexes[i - 1]] - 1 : 0) , 1, blockActivityCount[blockIndex], 1);
+                        }
+
+                    }
+                )
 
                 //.WithInner(Table.Create()
                 //    .WithRow()

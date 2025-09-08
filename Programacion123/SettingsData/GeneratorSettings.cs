@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Programacion123
 {
-    public struct HTMLGeneratorSettings
+    public struct GeneratorSettings
     {
         public DocumentStyle DocumentStyle { get; set; }
 
-        public HTMLGeneratorSettings()
+        public GeneratorSettings()
         {
             DocumentStyle = new();
         }

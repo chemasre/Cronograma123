@@ -39,6 +39,25 @@ namespace Programacion123
         public Subject? Subject { get; set; }
         public DocumentStyle? Style { get; set; }
 
+        protected string LineBreak { get; set; } = "\n";
+        protected string NonBreakingSpace { get; set; } = " ";
+
+        public Generator()
+        {
+            GeneratorSettings defaultSettings = new();
+
+            Style = new ()
+            {
+                LogoBase64 = new(defaultSettings.DocumentStyle.LogoBase64),
+                CoverBase64 = new(defaultSettings.DocumentStyle.CoverBase64),
+                Size = defaultSettings.DocumentStyle.Size,
+                Orientation = defaultSettings.DocumentStyle.Orientation,
+                Margins = defaultSettings.DocumentStyle.Margins
+
+            };
+
+        }
+
         public abstract void Generate(string path);
         public abstract void SaveSettings();
         public abstract void LoadOrCreateSettings();
@@ -77,7 +96,7 @@ namespace Programacion123
         {
             string spacesText = "";
             bool first = true;
-            foreach(CommonText s in a.SpaceResources.ToList()) { spacesText += (first?"":"<br>") + s.Title; }
+            foreach(CommonText s in a.SpaceResources.ToList()) { spacesText += (first?"":LineBreak) + s.Title; }
             return spacesText;
         }
 
@@ -85,7 +104,7 @@ namespace Programacion123
         {
             string materialsText = "";
             bool first = true;
-            foreach(CommonText s in a.MaterialResources.ToList()) { materialsText += (first?"":"<br>") + s.Title; }
+            foreach(CommonText s in a.MaterialResources.ToList()) { materialsText += (first?"":LineBreak) + s.Title; }
             return materialsText.Length > 0 ? materialsText : "-";
         }
 
@@ -110,7 +129,7 @@ namespace Programacion123
         {
             string capacitiesText = "";
             bool first = true;
-            foreach(CommonText capacity in a.KeyCompetences.ToList()) { capacitiesText += (first?"":"<br>") + capacity.Title; first = false; }
+            foreach(CommonText capacity in a.KeyCompetences.ToList()) { capacitiesText += (first?"":LineBreak) + capacity.Title; first = false; }
 
             return capacitiesText.Length > 0 ? capacitiesText : "-";
         }
@@ -126,7 +145,7 @@ namespace Programacion123
             {
                 if(resultWeight.weight > 0)
                 {
-                    resultsWeightsText += (first?"":", ") + String.Format("RA{0}&nbsp;({1}%)", resultWeight.learningResultIndex + 1, resultWeight.weight);
+                    resultsWeightsText += (first?"":", ") + String.Format("RA{0}" + NonBreakingSpace + "({1}%)", resultWeight.learningResultIndex + 1, resultWeight.weight);
                     first = false;
                 }
             }

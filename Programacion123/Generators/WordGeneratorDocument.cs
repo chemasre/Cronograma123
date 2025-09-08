@@ -15,13 +15,25 @@ namespace Programacion123
         object missingValue;
         bool closed;
 
-        Document document;
         Application application;
+        Document document;
+        Table table;
+        Row row;
+        Cell cell;
 
-        public WordDocument(Application _app)
+        public static WordDocument Create(Application _app) { return new WordDocument(_app); }
+
+        WordDocument(Application _app)
         {
             missingValue = Missing.Value;
             document = _app.Documents.Add(ref missingValue, ref missingValue, ref missingValue, ref missingValue);
+
+            #if DEBUG
+
+            _app.Visible = true;
+
+            #endif
+
             application = _app;
         }
 
@@ -52,6 +64,20 @@ namespace Programacion123
         {
             int i = 0;
             foreach(T e in elements) { action.Invoke(e, i, this); i ++; }
+            return this;
+        }
+
+        public WordDocument If(bool condition, Action<WordDocument> ifAction)
+        {
+            if(condition) { ifAction.Invoke(this); }
+
+            return this;
+        }
+
+        public WordDocument Do(Action<WordDocument> action)
+        {
+            action.Invoke(this);
+
             return this;
         }
 
@@ -132,6 +158,41 @@ namespace Programacion123
             return this;
         }
 
+        public WordDocument WithTable(int rows, int columns)
+        {
+            Console.WriteLine("Table Rows: " + rows + " Columns: " + columns);
+
+            missingValue = Missing.Value;
+            Microsoft.Office.Interop.Word.Range range = document.Content;
+            range.InsertParagraphAfter();
+            range.Collapse(WdCollapseDirection.wdCollapseEnd);
+
+            table = document.Tables.Add(range, rows, columns, WdDefaultTableBehavior.wdWord9TableBehavior, WdAutoFitBehavior.wdAutoFitContent);
+
+            return this;
+        }
+
+        public WordDocument WithCellContent(int row, int column, string text)
+        {
+            Console.WriteLine("Row: " + row + " Column: " + column + " Content: " + text);
+
+            table.Cell(row, column).Range.Text = text;
+
+            return this;
+        }
+
+        public WordDocument WithCellSpan(int row, int column, int rowSpan, int colSpan)
+        {
+            Console.WriteLine("Row: " + row + " Column: " + column + " Rowspan: " + rowSpan + " Colspan: " + colSpan);
+
+            if(rowSpan > 1 || colSpan > 1)
+            {
+                table.Cell(row, column).Merge(table.Cell(row + rowSpan - 1, column + colSpan - 1));
+            }
+
+            return this;
+        }
+
         public WordDocument Close()
         {
             if(closed) { return this; }
@@ -142,4 +203,5 @@ namespace Programacion123
             return this;
         }
     }
+
 }

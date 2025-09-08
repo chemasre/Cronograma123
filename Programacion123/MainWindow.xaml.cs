@@ -128,6 +128,8 @@ namespace Programacion123
             ButtonHome.ToolTip = "Ver página principal del proyecto";
             ButtonReset.ToolTip = "Borrar todos los datos";
 
+            Topmost = false;
+
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
@@ -208,7 +210,7 @@ namespace Programacion123
                     calendarsStorageIds = Storage.GetStorageIds<Calendar>(Storage.LoadAllEntities<Calendar>()),
                     weekSchedulesStorageIds = Storage.GetStorageIds<WeekSchedule>(Storage.LoadAllEntities<WeekSchedule>()),
                     subjectsStorageIds = Storage.GetStorageIds<Subject>(Storage.LoadAllEntities<Subject>()),
-                    includeSettings = Settings.ExistSettings<HTMLGeneratorSettings>(HTMLGenerator.SettingsId),
+                    includeSettings = Settings.ExistSettings<GeneratorSettings>(HTMLGenerator.SettingsId),
                     closeAction =
                         (accepted, exportDialog) =>
                         {
