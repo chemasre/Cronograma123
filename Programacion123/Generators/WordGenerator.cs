@@ -138,6 +138,7 @@ namespace Programacion123
                     }
                  )
 
+                .WithPageBreak()
 
                 /////////////////////////////////////////////////////////////////////////////////////
                 ///////////// Nivel 1: Justificación de la importancia del módulo ///////////////////
@@ -146,6 +147,8 @@ namespace Programacion123
                .WithHeader1(index[1].Title)
                .Foreach<string>(GetGradeCommonText(CommonTextId.header1ImportanceJustification), addParagraph)
                .Foreach<string>(GetSubjectCommonText(CommonTextId.header1ImportanceJustification), addParagraph)
+
+                .WithPageBreak()
 
                 /////////////////////////////////////////////////////////////////
                 ///////////// Nivel 1: Elementos curriculares ///////////////////
@@ -166,6 +169,8 @@ namespace Programacion123
                .WithHeader2(index[2].Subitems[2].Title)
                .Foreach<string>(GetGradeCommonText(CommonTextId.header2KeyCompetences), addParagraph)
                .Foreach<string>(GetSubjectCommonText(CommonTextId.header2KeyCompetences), addParagraph)
+
+                .WithPageBreak()
 
                 /////////////////////////////////////////////////////////////////////////////////
                 ///////////// Nivel 1: Metodología y orientaciones didácticas ///////////////////
@@ -191,6 +196,8 @@ namespace Programacion123
                .Foreach<string>(GetGradeCommonText(CommonTextId.header2Diversity), addParagraph)
                .Foreach<string>(GetSubjectCommonText(CommonTextId.header2Diversity), addParagraph)
 
+                .WithPageBreak()
+
                 ////////////////////////////////////////////////////////////////
                 ///////////// Nivel 1: Sistema de evaluación ///////////////////
                 ////////////////////////////////////////////////////////////////
@@ -215,6 +222,8 @@ namespace Programacion123
                .Foreach<string>(GetGradeCommonText(CommonTextId.header2EvaluationOfProgramming), addParagraph)
                .Foreach<string>(GetSubjectCommonText(CommonTextId.header2EvaluationOfProgramming), addParagraph)
 
+                .WithPageBreak()
+
                 ///////////////////////////////////////////////////////////////////
                 ////////////// Nivel 1: Elementos transversales ///////////////////
                 ///////////////////////////////////////////////////////////////////
@@ -230,6 +239,8 @@ namespace Programacion123
                .WithHeader2(index[5].Subitems[1].Title)
                .Foreach<string>(GetGradeCommonText(CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation), addParagraph)
                .Foreach<string>(GetSubjectCommonText(CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation), addParagraph)
+
+                .WithPageBreak()
 
                 //////////////////////////////////////////////////////////////////////////////
                 ////////////// Nivel 1: Recursos didácticos y organizativos //////////////////
@@ -262,6 +273,8 @@ namespace Programacion123
                         .WithParagraph(c.Description);
                     }
                )
+
+                .WithPageBreak()
 
                 ///////////////////////////////////////////////////////////////////////////////
                 ////////////// Nivel 1: Programación del módulo profesional ///////////////////
@@ -455,6 +468,7 @@ namespace Programacion123
                     }
                 )
 
+                .WithPageBreak()
 
                 //////////////////////////////////////////////////////////////////////
                 ////////////// Nivel 1: Referencias bibliográficas ///////////////////
@@ -467,6 +481,8 @@ namespace Programacion123
                         d.WithParagraph(String.Format("{0}- {1}", i + 1, c.Description));
                     }
                 )
+
+                .WithPageBreak()
 
                 //////////////////////////////////////////////////
                 ////////////// Nivel 1: Anexos ///////////////////
@@ -535,6 +551,8 @@ namespace Programacion123
 
                     }
                 )
+
+               .WithPageBreak()
 
                .WithIndex()
                .Save(path)

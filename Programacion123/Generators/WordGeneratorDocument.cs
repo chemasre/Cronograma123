@@ -270,8 +270,15 @@ namespace Programacion123
 
             document.TablesOfContents.Add(indexRange);
 
+            return this;
+        }
 
+        public WordDocument WithPageBreak()
+        {
+            var range = document.Range();
+            range.Collapse(WdCollapseDirection.wdCollapseEnd);
 
+            range.InsertBreak();
 
             return this;
         }
