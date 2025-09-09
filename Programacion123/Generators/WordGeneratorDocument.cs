@@ -9,6 +9,11 @@ using System.Diagnostics;
 using System.Reflection;
 using Microsoft.VisualBasic;
 using System.Numerics;
+using System.Media;
+using System.IO;
+using System.Windows.Media.Imaging;
+using MSHTML;
+using System.Net.Cache;
 
 
 namespace Programacion123
@@ -37,6 +42,11 @@ namespace Programacion123
         Dictionary<DocumentTextElementId, string> generatorTextStyleIdToWordStyleId;
         Dictionary<DocumentCoverElementId, Vector2> generatorCoverElementIdToPosition;
 
+        HashSet<string> wordStylesCache;
+
+        float referenceDpiX = 96;
+        float referenceDpiY = 96;
+
         public static WordDocument Create(Application _app) { return new WordDocument(_app); }
 
         WordDocument(Application _app)
@@ -45,6 +55,9 @@ namespace Programacion123
             document = _app.Documents.Add(ref missingValue, ref missingValue, ref missingValue, ref missingValue);
             generatorTextStyleIdToWordStyleId = new();
             generatorCoverElementIdToPosition = new();
+            wordStylesCache = new();
+
+            foreach(Style s in document.Styles) { wordStylesCache.Add(s.NameLocal); }
 
             #if DEBUG
 
@@ -53,6 +66,14 @@ namespace Programacion123
             #endif
 
             application = _app;
+        }
+
+        public WordDocument WithReferenceDpi(float dpiX, float dpiY)
+        {
+            referenceDpiX = dpiX;
+            referenceDpiY = dpiY;
+
+            return this;
         }
 
         public WordDocument WithMargins(DocumentMargins margins)
@@ -87,7 +108,10 @@ namespace Programacion123
 
         public WordDocument If(bool condition, Action<WordDocument> ifAction)
         {
-            if(condition) { ifAction.Invoke(this); }
+            if(condition)
+            {
+                ifAction.Invoke(this);
+            }
 
             return this;
         }
@@ -161,17 +185,28 @@ namespace Programacion123
 
             generatorTextStyleIdToWordStyleId.Add(generatorTextStyleId, wordStyleId);
 
-            Styles styles = document.Styles;
-            bool found = false;
-            foreach(Style s in styles)
+            if(wordStylesCache.Contains(wordStyleId))
             {
-                if(s.NameLocal == wordStyleId)
-                { 
-                    found = true;
-                }
+                wordStyle = document.Styles[wordStyleId];
             }
-            if(!found) { wordStyle = styles.Add(wordStyleId); }
-            else { wordStyle = styles[wordStyleId]; }
+            else
+            {
+                wordStyle = document.Styles.Add(wordStyleId);
+                wordStylesCache.Add(wordStyleId);
+            }
+
+
+            //Styles styles = ;
+            //bool found = false;
+            //foreach(Style s in styles)
+            //{
+            //    if(s.NameLocal == wordStyleId)
+            //    { 
+            //        found = true;
+            //    }
+            //}
+            //if(!found) {  }
+            //else { wordStyle = styles[wordStyleId]; }
                 
             wordStyle.Font.Name = (generatorTextStyle.FontFamily == DocumentTextElementFontFamily.SansSerif ? "Calibri" : "Times New Roman");
             wordStyle.Font.Size = generatorTextStyle.FontSize;
@@ -295,8 +330,8 @@ namespace Programacion123
             Vector2 position = generatorCoverElementIdToPosition[coverStyleId];
 
             Microsoft.Office.Interop.Word.Shape shape = document.Shapes.AddShape((int)MsoAutoShapeType.msoShapeRectangle,
-                                        application.CentimetersToPoints(position.X), 
-                                        application.CentimetersToPoints(position.Y),
+                                        application.CentimetersToPoints(position.X) + document.PageSetup.LeftMargin, 
+                                        application.CentimetersToPoints(position.Y) + document.PageSetup.TopMargin,
                                         application.CentimetersToPoints(1),
                                         application.CentimetersToPoints(30)
                                         );
@@ -312,6 +347,51 @@ namespace Programacion123
 
             shape.Fill.Visible = (MsoTriState)TriState.False;  
             shape.Line.Visible = (MsoTriState)TriState.False;
+            return this;
+        }
+
+        public WordDocument WithCoverImageElement(string imageBase64, DocumentCoverElementId coverStyleId)
+        {
+
+            string tempPath = Path.GetTempPath();
+
+            string tempFilePath = tempPath + Guid.NewGuid().ToString();
+
+            byte[] imageBytes = Convert.FromBase64String(imageBase64);
+            File.WriteAllBytes(tempFilePath, imageBytes);
+
+            // This code makes word automatic scaling of images behave like the web preview, as the
+            // first takes into account the image file's dpi and the other doesn't.
+            
+            MemoryStream m = new(imageBytes);
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.StreamSource = m;
+            image.EndInit();
+
+            // Get image dpi
+
+            double dpiHorizontal = image.DpiY;
+            double dpiVertical = image.DpiY;
+
+            Vector2 position = generatorCoverElementIdToPosition[coverStyleId];
+
+            Microsoft.Office.Interop.Word.Shape shape = document.Shapes.AddPicture(tempFilePath,
+                                      false, true,
+                                      application.CentimetersToPoints(position.X),
+                                      application.CentimetersToPoints(position.Y));
+
+            // Scale image
+
+
+            shape.ScaleWidth((float)dpiHorizontal / referenceDpiX, (MsoTriState)MsoTriState.msoTrue);
+            shape.ScaleHeight((float)dpiVertical / referenceDpiY, (MsoTriState)MsoTriState.msoTrue);
+
+            shape.PictureFormat.TransparentBackground = (MsoTriState)MsoTriState.msoTrue;
+
+            File.Delete(tempFilePath);
+
             return this;
         }
 

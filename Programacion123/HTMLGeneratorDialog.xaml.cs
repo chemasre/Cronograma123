@@ -922,6 +922,18 @@ namespace Programacion123
 
             DocumentStyle previewStyle = previewGenerator.Style.Value;
 
+            previewStyle.LogoBase64 = GetBase64ImageFromUI(ImageCoverLogo);
+            previewStyle.CoverBase64 = GetBase64ImageFromUI(ImageCoverCover);
+            previewStyle.Orientation = (DocumentOrientation)ComboDocumentOrientation.SelectedIndex;
+            previewStyle.Size = (DocumentSize)ComboDocumentSize.SelectedIndex;
+            previewStyle.Margins = new()
+                                    {
+                                    Top = ComboDocumentMarginTop.SelectedIndex * 0.1f,
+                                    Bottom = ComboDocumentMarginBottom.SelectedIndex * 0.1f,
+                                    Left = ComboDocumentMarginLeft.SelectedIndex * 0.1f,
+                                    Right = ComboDocumentMarginRight.SelectedIndex * 0.1f,
+                                    };                                        
+
             previewStyle.CoverElementStyles[(DocumentCoverElementId)ComboCoverElement.SelectedIndex] = new()
                                       {
                                         Position = new()
@@ -933,20 +945,6 @@ namespace Programacion123
                                       };
 
 
-            previewGenerator.Style = new()
-                                      {
-                                        LogoBase64 = GetBase64ImageFromUI(ImageCoverLogo),
-                                        CoverBase64 = GetBase64ImageFromUI(ImageCoverCover),
-                                        Orientation = (DocumentOrientation)ComboDocumentOrientation.SelectedIndex,
-                                        Size = (DocumentSize)ComboDocumentSize.SelectedIndex,
-                                        Margins = new()
-                                                  {
-                                                    Top = ComboDocumentMarginTop.SelectedIndex * 0.1f,
-                                                    Bottom = ComboDocumentMarginBottom.SelectedIndex * 0.1f,
-                                                    Left = ComboDocumentMarginLeft.SelectedIndex * 0.1f,
-                                                    Right = ComboDocumentMarginRight.SelectedIndex * 0.1f,
-                                                  }                                        
-                                      };
 
             previewStyle.TextElementStyles[(DocumentTextElementId)ComboTextElement.SelectedIndex] = new()
                                       {

@@ -43,7 +43,13 @@ namespace Programacion123
 
             Application app = new();
 
+            float? dpiX = null;
+            float? dpiY = null;
+
+            GetScreenDpi(out dpiX, out dpiY);
+
             WordDocument.Create(app)
+               .If(dpiX != null && dpiY != null, d => d.WithReferenceDpi(dpiX.Value, dpiY.Value))
                .WithMargins(style.Margins)
                .WithOrientation(style.Orientation)
                .WithTextStyle(DocumentTextElementId.NormalText, style.TextElementStyles[DocumentTextElementId.NormalText])
@@ -72,7 +78,9 @@ namespace Programacion123
                 ///////////// Nivel 1: Portada                 ///////////////////
                 //////////////////////////////////////////////////////////////////
 
-               .WithCoverTextElement(subjectTemplate.SubjectCode, DocumentTextElementId.CoverSubjectCode, DocumentCoverElementId.SubjectCode)
+               .If(!String.IsNullOrEmpty(style.CoverBase64), (d) => d.WithCoverImageElement(style.CoverBase64, DocumentCoverElementId.Cover))
+               .If(!String.IsNullOrEmpty(style.LogoBase64), (d) => d.WithCoverImageElement(style.LogoBase64, DocumentCoverElementId.Logo))
+               .WithCoverTextElement("Módulo profesional " + subjectTemplate.SubjectCode, DocumentTextElementId.CoverSubjectCode, DocumentCoverElementId.SubjectCode)
                .WithCoverTextElement(subjectTemplate.SubjectName, DocumentTextElementId.CoverSubjectName, DocumentCoverElementId.SubjectName)
                .WithCoverTextElement(gradeTemplate.GradeName, DocumentTextElementId.CoverGradeName, DocumentCoverElementId.GradeName)
                .WithCoverTextElement(GetGradeTypeName(), DocumentTextElementId.CoverGradeTypeName, DocumentCoverElementId.GradeTypeName)
