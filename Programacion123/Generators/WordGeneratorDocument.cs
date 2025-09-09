@@ -12,6 +12,10 @@ namespace Programacion123
 {
     public class WordDocument
     {
+        const string TableTextStyleName = "TableText";
+        const string TableHeader1TextStyleName = "TableHeader1Text";
+        const string TableHeader2TextStyleName = "TableHeader2Text";
+
         object missingValue;
         bool closed;
 
@@ -115,7 +119,7 @@ namespace Programacion123
         {
             if(closed) { return this; }
 
-            Style style = document.Styles[WdBuiltinStyle.wdStyleLineNumber];
+            Style? style = null;
 
             if(docStyleId == DocumentTextElementId.Header1) { style = document.Styles[WdBuiltinStyle.wdStyleHeading1]; }
             else if(docStyleId == DocumentTextElementId.Header2) { style = document.Styles[WdBuiltinStyle.wdStyleHeading2]; }
@@ -124,16 +128,35 @@ namespace Programacion123
             else if(docStyleId == DocumentTextElementId.Header5) { style = document.Styles[WdBuiltinStyle.wdStyleHeading5]; }
             else if(docStyleId == DocumentTextElementId.Header6) { style = document.Styles[WdBuiltinStyle.wdStyleHeading6]; }
             else if(docStyleId == DocumentTextElementId.NormalText) { style = document.Styles[WdBuiltinStyle.wdStyleNormal]; }
-            else if(docStyleId == DocumentTextElementId.Table) { style = document.Styles[WdBuiltinStyle.wdStyleNormalTable]; }
-            //if(id == DocumentTextElementId.TableHeader1Text) { style = document.Styles[WdBuiltinStyle.wdStyleTable]; }
-            //if(id == DocumentTextElementId.TableHeader2Text) { style = document.Styles[WdBuiltinStyle.wdStyle]; }
+            else if(docStyleId == DocumentTextElementId.TableText ||
+                    docStyleId == DocumentTextElementId.TableHeader1Text ||
+                    docStyleId == DocumentTextElementId.TableHeader2Text)
+            {
+                string name;
+                if(docStyleId == DocumentTextElementId.TableText) { name = TableTextStyleName; }
+                else if(docStyleId == DocumentTextElementId.TableHeader1Text) { name = TableHeader1TextStyleName; }
+                else // docStyleId == DocumentTextElementId.TableHeader2Text
+                { name = TableHeader2TextStyleName; }
+
+                Styles styles = document.Styles;
+                bool found = false;
+                foreach(Style s in styles)
+                {
+                    if(s.NameLocal == name)
+                    { 
+                        found = true;
+                    }
+                }
+                if(!found) { style = styles.Add(name); }
+                else { style = styles[name]; }
+             }
             //if(id == DocumentTextElementId.CoverSubjectCode) { style = document.Styles[WdBuiltinStyle.wdStyle]; }
             //if(id == DocumentTextElementId.CoverSubjectName) { style = document.Styles[WdBuiltinStyle.wdStyle]; }
             //if(id == DocumentTextElementId.CoverGradeTypeName) { style = document.Styles[WdBuiltinStyle.wdStyle]; }
             //if(id == DocumentTextElementId.CoverGradeName) { style = document.Styles[WdBuiltinStyle.wdStyle]; }
-            else if(docStyleId == DocumentTextElementId.IndexLevel1) { style = document.Styles[WdBuiltinStyle.wdStyleIndex1]; }
-            else if(docStyleId == DocumentTextElementId.IndexLevel2) { style = document.Styles[WdBuiltinStyle.wdStyleIndex2]; }
-            else if(docStyleId == DocumentTextElementId.IndexLevel3) {  style = document.Styles[WdBuiltinStyle.wdStyleIndex3]; }
+            else if(docStyleId == DocumentTextElementId.IndexLevel1) { style = document.Styles[WdBuiltinStyle.wdStyleTOC1]; }
+            else if(docStyleId == DocumentTextElementId.IndexLevel2) { style = document.Styles[WdBuiltinStyle.wdStyleTOC2]; }
+            else if(docStyleId == DocumentTextElementId.IndexLevel3) {  style = document.Styles[WdBuiltinStyle.wdStyleTOC3]; }
 
             style.Font.Name = (docStyle.FontFamily == DocumentTextElementFontFamily.SansSerif ? "Calibri" : "Times New Roman");
             style.Font.Size = docStyle.FontSize;
@@ -189,18 +212,36 @@ namespace Programacion123
             range.Collapse(WdCollapseDirection.wdCollapseEnd);
 
             table = document.Tables.Add(range, rows, columns, WdDefaultTableBehavior.wdWord9TableBehavior, WdAutoFitBehavior.wdAutoFitContent);
+            
+            table.Range.set_Style("TableText");
 
             return this;
         }
 
-        public WordDocument WithCellContent(int row, int column, string text)
+        public WordDocument WithCell(int row, int column, string text, string style = TableTextStyleName)
         {
             Console.WriteLine("Row: " + row + " Column: " + column + " Content: " + text);
 
             table.Cell(row, column).Range.Text = text;
+            table.Cell(row, column).Range.set_Style(style);
 
             return this;
         }
+
+        public WordDocument WithCellHeader1(int row, int column, string text)
+        {
+            WithCell(row, column, text, TableHeader1TextStyleName);
+
+            return this;
+        }
+        
+        public WordDocument WithCellHeader2(int row, int column, string text)
+        {
+            WithCell(row, column, text, TableHeader2TextStyleName);
+
+            return this;
+        }
+        
 
         public WordDocument WithCellSpan(int row, int column, int rowSpan, int colSpan)
         {
@@ -210,6 +251,27 @@ namespace Programacion123
             {
                 table.Cell(row, column).Merge(table.Cell(row + rowSpan - 1, column + colSpan - 1));
             }
+
+            return this;
+        }
+
+        public WordDocument WithIndex()
+        {
+            var titleRange = document.Range();
+            titleRange.Collapse(WdCollapseDirection.wdCollapseStart);
+
+            titleRange.Text = "Índice";
+            titleRange.set_Style(WdBuiltinStyle.wdStyleHeading1);
+            titleRange.InsertParagraphAfter();
+
+
+            var indexRange = document.Range(titleRange.End);
+            indexRange.Collapse(WdCollapseDirection.wdCollapseStart);
+
+            document.TablesOfContents.Add(indexRange);
+
+
+
 
             return this;
         }

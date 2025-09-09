@@ -59,7 +59,7 @@ namespace Programacion123
             else if (id == DocumentTextElementId.Header5) { selector = "h5"; }
             else if (id == DocumentTextElementId.Header6) { selector = "h6"; }
             else if (id == DocumentTextElementId.NormalText) { selector = "div"; }
-            else if (id == DocumentTextElementId.Table) { selector = "table"; }
+            else if (id == DocumentTextElementId.TableText) { selector = "table"; }
             else if (id == DocumentTextElementId.TableHeader1Text) { selector = ".tableHeader1"; }
             else if (id == DocumentTextElementId.TableHeader2Text) { selector = ".tableHeader2"; }
             else if (id == DocumentTextElementId.CoverSubjectCode) { selector = ".coverSubjectCode"; }

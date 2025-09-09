@@ -51,6 +51,12 @@ namespace Programacion123
                .WithTextStyle(DocumentTextElementId.Header2, style.TextElementStyles[DocumentTextElementId.Header2])
                .WithTextStyle(DocumentTextElementId.Header3, style.TextElementStyles[DocumentTextElementId.Header3])
                .WithTextStyle(DocumentTextElementId.Header4, style.TextElementStyles[DocumentTextElementId.Header4])
+               .WithTextStyle(DocumentTextElementId.TableText, style.TextElementStyles[DocumentTextElementId.TableText])
+               .WithTextStyle(DocumentTextElementId.TableHeader1Text, style.TextElementStyles[DocumentTextElementId.TableHeader1Text])
+               .WithTextStyle(DocumentTextElementId.TableHeader2Text, style.TextElementStyles[DocumentTextElementId.TableHeader2Text])
+               .WithTextStyle(DocumentTextElementId.IndexLevel1, style.TextElementStyles[DocumentTextElementId.IndexLevel1])
+               .WithTextStyle(DocumentTextElementId.IndexLevel2, style.TextElementStyles[DocumentTextElementId.IndexLevel2])
+               .WithTextStyle(DocumentTextElementId.IndexLevel3, style.TextElementStyles[DocumentTextElementId.IndexLevel3])
                //.WithParagraph("Hola")
                //.WithParagraph("Qué tal")
                //.WithHeader1("Qué tal")
@@ -76,19 +82,19 @@ namespace Programacion123
                .Foreach<string>(GetSubjectCommonText(CommonTextId.header1ModuleOrganization), addParagraph)
 
                 .WithTable(5, 3)
-                .WithCellSpan(1, 1, 1, 3).WithCellContent(1, 1, GetGradeTypeName() + " - " + gradeTemplate.GradeName)
-                .WithCellSpan(2, 1, 1, 3).WithCellContent(2, 1, "Módulo profesional:MP" + subjectTemplate.SubjectCode + " - " + subjectTemplate.SubjectName)
-                .WithCellContent(3, 1, "Horas centro educativo: " +  subjectTemplate.GradeClassroomHours)
-                .WithCellContent(3, 2, "Horas empresa: " + subjectTemplate.GradeCompanyHours)
-                .WithCellContent(3, 3, "Horas totales: " + (subjectTemplate.GradeClassroomHours + subjectTemplate.GradeCompanyHours))
-                .WithCellSpan(4, 1, 1, 2).WithCellContent(4, 1, "Modalidad: Presencial")
-                .WithCellContent(4, 2, "Régimen: Anual")
-                .WithCellSpan(5, 1, 1, 3).WithCellContent(5, 1, "Familia profesional: " + gradeTemplate.GradeFamilyName)
+                .WithCellSpan(1, 1, 1, 3).WithCellHeader1(1, 1, GetGradeTypeName() + " - " + gradeTemplate.GradeName)
+                .WithCellSpan(2, 1, 1, 3).WithCellHeader2(2, 1, "Módulo profesional:MP" + subjectTemplate.SubjectCode + " - " + subjectTemplate.SubjectName)
+                .WithCell(3, 1, "Horas centro educativo: " +  subjectTemplate.GradeClassroomHours)
+                .WithCell(3, 2, "Horas empresa: " + subjectTemplate.GradeCompanyHours)
+                .WithCell(3, 3, "Horas totales: " + (subjectTemplate.GradeClassroomHours + subjectTemplate.GradeCompanyHours))
+                .WithCellSpan(4, 1, 1, 2).WithCell(4, 1, "Modalidad: Presencial")
+                .WithCell(4, 2, "Régimen: Anual")
+                .WithCellSpan(5, 1, 1, 3).WithCell(5, 1, "Familia profesional: " + gradeTemplate.GradeFamilyName)
 
                 .WithTable(2 + Subject.Blocks.Count, 6)
-                .WithCellSpan(1, 1, 1, 6).WithCellContent(1, 1, subjectTemplate.SubjectCode + ": " + subjectTemplate.SubjectName)
-                .WithCellContent(2, 1, "Bloques de enseñanza").WithCellContent(2, 2, "RAs").WithCellContent(2, 3, "CEs")
-                .WithCellContent(2, 4, "Duración").WithCellContent(2, 5, "Fecha de inicio").WithCellContent(2, 6, "Fecha de fin")
+                .WithCellSpan(1, 1, 1, 6).WithCellHeader1(1, 1, subjectTemplate.SubjectCode + ": " + subjectTemplate.SubjectName)
+                .WithCellHeader2(2, 1, "Bloques de enseñanza").WithCellHeader2(2, 2, "RAs").WithCellHeader2(2, 3, "CEs")
+                .WithCellHeader2(2, 4, "Duración").WithCellHeader2(2, 5, "Fecha de inicio").WithCellHeader2(2, 6, "Fecha de fin")
                 .Foreach<Block>(Subject.Blocks.ToList(),
                     (b, i, d) =>
                     {
@@ -122,12 +128,12 @@ namespace Programacion123
                         }
 
 
-                        d.WithCellContent(3 + i, 1, String.Format("Bloque {0}: {1}", i + 1, b.Title));
-                        d.WithCellContent(3 + i, 2, rasText);
-                        d.WithCellContent(3 + i, 3, criteriasText);
-                        d.WithCellContent(3 + i, 4, String.Format("{0}h", hours));
-                        d.WithCellContent(3 + i, 5, startActivitySchedule.HasValue ? Utils.FormatDate(startActivitySchedule.Value.start.day) : "");
-                        d.WithCellContent(3 + i, 6, endActivitySchedule.HasValue ? Utils.FormatDate(endActivitySchedule.Value.start.day) : "");
+                        d.WithCell(3 + i, 1, String.Format("Bloque {0}: {1}", i + 1, b.Title));
+                        d.WithCell(3 + i, 2, rasText);
+                        d.WithCell(3 + i, 3, criteriasText);
+                        d.WithCell(3 + i, 4, String.Format("{0}h", hours));
+                        d.WithCell(3 + i, 5, startActivitySchedule.HasValue ? Utils.FormatDate(startActivitySchedule.Value.start.day) : "");
+                        d.WithCell(3 + i, 6, endActivitySchedule.HasValue ? Utils.FormatDate(endActivitySchedule.Value.start.day) : "");
 
                     }
                  )
@@ -309,20 +315,22 @@ namespace Programacion123
                 .Foreach<string>(GetSubjectCommonText(CommonTextId.header2Blocks), addParagraph)
 
                 .WithTable(2 * Subject.Blocks.Count + 3, 6)
-                .WithCellSpan(1, 1, 1, 5).WithCellContent(1, 1, String.Format("{0}: {1}", subjectTemplate.SubjectCode, subjectTemplate.SubjectName))
-                .WithCellContent(1, 2, String.Format("Horas: {0}", subjectTemplate.GradeClassroomHours + subjectTemplate.GradeCompanyHours))
-                .WithCellContent(2, 1, "Bloque de enseñanza-aprendizaje")
-                .WithCellContent(2, 3, "RA")
-                .WithCellContent(2, 4, "Contenidos")
-                .WithCellContent(2, 5, "Evaluación")
-                .WithCellContent(3, 5, "CE")
-                .WithCellContent(3, 6, "Actividades evaluables")
+                .WithCellSpan(1, 1, 1, 5).WithCellHeader1(1, 1, String.Format("{0}: {1}", subjectTemplate.SubjectCode, subjectTemplate.SubjectName))
+                .WithCellHeader1(1, 2, String.Format("Horas: {0}", subjectTemplate.GradeClassroomHours + subjectTemplate.GradeCompanyHours))
+                .WithCellHeader2(2, 1, "Bloque de enseñanza-aprendizaje")
+                .WithCellHeader2(2, 2, "")
+                .WithCellHeader2(2, 3, "RA")
+                .WithCellHeader2(2, 4, "Contenidos")
+                .WithCellHeader2(2, 5, "Evaluación")
+                .WithCellHeader2(2, 6, "")
+                .WithCellHeader2(3, 5, "CE")
+                .WithCellHeader2(3, 6, "Actividades evaluables")
                 .WithCellSpan(2, 1, 2, 2).WithCellSpan(2, 2, 2, 1).WithCellSpan(2, 3, 2, 1).WithCellSpan(2, 4, 1, 2)
                 .Foreach<Block>(Subject.Blocks.ToList(),
                     (b, i, d) =>
                     {
-                        d.WithCellContent(4 + i * 2, 1, String.Format("Bloque {0}", i + 1));
-                        d.WithCellContent(4 + i * 2, 2, String.Format(CultureInfo.InvariantCulture, "{0} horas", Subject.QueryBlockDuration(i)));
+                        d.WithCell(4 + i * 2, 1, String.Format("Bloque {0}", i + 1));
+                        d.WithCell(4 + i * 2, 2, String.Format(CultureInfo.InvariantCulture, "{0} horas", Subject.QueryBlockDuration(i)));
 
                         string raText = "";
                         bool first = true;
@@ -360,12 +368,12 @@ namespace Programacion123
                             }
                         );
 
-                        d.WithCellContent(4 + i * 2 + 0, 3, raText);
-                        d.WithCellContent(4 + i * 2 + 0, 4, contentText);
-                        d.WithCellContent(4 + i * 2 + 0, 5, criteriaText);
-                        d.WithCellContent(4 + i * 2 + 0, 6, evaluableActivitiesText);
+                        d.WithCell(4 + i * 2 + 0, 3, raText);
+                        d.WithCell(4 + i * 2 + 0, 4, contentText);
+                        d.WithCell(4 + i * 2 + 0, 5, criteriaText);
+                        d.WithCell(4 + i * 2 + 0, 6, evaluableActivitiesText);
 
-                        d.WithCellContent(4 + i * 2 + 1, 1, b.Description);
+                        d.WithCell(4 + i * 2 + 1, 1, b.Description);
 
                         d.WithCellSpan(4 + i * 2 + 0, 3, 2, 1);
                         d.WithCellSpan(4 + i * 2 + 0, 4, 2, 1);
@@ -394,29 +402,32 @@ namespace Programacion123
 
                                 d.WithTable(rows, 4)
 
-                                .WithCellContent(1, 1, a.Title)
+                                .WithCellHeader1(1, 1, a.Title)
+                                .WithCellHeader1(1, 2, "")
+                                .WithCellHeader1(1, 3, "")
+                                .WithCellHeader1(1, 4, "")
 
-                                .WithCellContent(2, 1, a.Description)
+                                .WithCell(2, 1, a.Description)
 
-                                .WithCellContent(3, 1, "Metodología")
-                                .WithCellContent(3, 2, "Duración")
-                                .WithCellContent(3, 3, "Fecha de inicio")
-                                .WithCellContent(3, 4, "Fecha de fin")
+                                .WithCellHeader2(3, 1, "Metodología")
+                                .WithCellHeader2(3, 2, "Duración")
+                                .WithCellHeader2(3, 3, "Fecha de inicio")
+                                .WithCellHeader2(3, 4, "Fecha de fin")
 
-                                .WithCellContent(4, 1, a.Metodology.Title)
-                                .WithCellContent(4, 2, String.Format(CultureInfo.InvariantCulture, "{0:0}h ({1} sesiones)", a.Duration, GetSessionsCountText(a, schedule)))
-                                .WithCellContent(4, 3, Utils.FormatStartDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).start, Subject.WeekSchedule))
-                                .WithCellContent(4, 4, Utils.FormatEndDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).end, Subject.WeekSchedule))
+                                .WithCell(4, 1, a.Metodology.Title)
+                                .WithCell(4, 2, String.Format(CultureInfo.InvariantCulture, "{0:0}h ({1} sesiones)", a.Duration, GetSessionsCountText(a, schedule)))
+                                .WithCell(4, 3, Utils.FormatStartDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).start, Subject.WeekSchedule))
+                                .WithCell(4, 4, Utils.FormatEndDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).end, Subject.WeekSchedule))
 
-                                .WithCellContent(5, 1, "Espacios")
-                                .WithCellContent(5, 2, "Materiales")
-                                .WithCellContent(5, 3, "Contenidos")
-                                .WithCellContent(5, 4, "Capacidades clave")
+                                .WithCellHeader2(5, 1, "Espacios")
+                                .WithCellHeader2(5, 2, "Materiales")
+                                .WithCellHeader2(5, 3, "Contenidos")
+                                .WithCellHeader2(5, 4, "Capacidades clave")
 
-                                .WithCellContent(6, 1, GetSpacesText(a))
-                                .WithCellContent(6, 2, GetMaterialsText(a))
-                                .WithCellContent(6, 3, GetContentsText(i, a))
-                                .WithCellContent(6, 4, GetKeyCapacitiesText(a))
+                                .WithCell(6, 1, GetSpacesText(a))
+                                .WithCell(6, 2, GetMaterialsText(a))
+                                .WithCell(6, 3, GetContentsText(i, a))
+                                .WithCell(6, 4, GetKeyCapacitiesText(a))
 
                                 .If(a.EvaluationType != ActivityEvaluationType.NotEvaluable,
                                 
@@ -424,15 +435,15 @@ namespace Programacion123
                                     {
                                         Debug.Assert(a.EvaluationInstrumentType != null);
 
-                                        d.WithCellContent(7, 1, "Código de actividad evaluable")
-                                        .WithCellContent(7, 2, "Instrumento de evaluación")
-                                        .WithCellContent(7, 3, "Peso en los resultados de aprendizaje")
-                                        .WithCellContent(7, 4, "Criterios de evaluación")
+                                        d.WithCellHeader2(7, 1, "Código de actividad evaluable")
+                                        .WithCellHeader2(7, 2, "Instrumento de evaluación")
+                                        .WithCellHeader2(7, 3, "Peso en los resultados de aprendizaje")
+                                        .WithCellHeader2(7, 4, "Criterios de evaluación")
 
-                                        .WithCellContent(8, 1, a.EvaluationType != ActivityEvaluationType.NotEvaluable ? Utils.FormatEvaluableActivity(i, a.EvaluationType, Subject.QueryEvaluableActivityTypeIndex(i, a)) : "")
-                                        .WithCellContent(8, 2, a.EvaluationType != ActivityEvaluationType.NotEvaluable ? a.EvaluationInstrumentType.Title : "")
-                                        .WithCellContent(8, 3, GetReferencedLearningResultsWeightsText(i, a))
-                                        .WithCellContent(8, 4, GetReferencedCriteriasText(i, a));
+                                        .WithCell(8, 1, a.EvaluationType != ActivityEvaluationType.NotEvaluable ? Utils.FormatEvaluableActivity(i, a.EvaluationType, Subject.QueryEvaluableActivityTypeIndex(i, a)) : "")
+                                        .WithCell(8, 2, a.EvaluationType != ActivityEvaluationType.NotEvaluable ? a.EvaluationInstrumentType.Title : "")
+                                        .WithCell(8, 3, GetReferencedLearningResultsWeightsText(i, a))
+                                        .WithCell(8, 4, GetReferencedCriteriasText(i, a));
 
                                     }
                                 );
@@ -461,22 +472,19 @@ namespace Programacion123
                 ////////////// Nivel 1: Anexos ///////////////////
                 //////////////////////////////////////////////////
                             
-                //.WithInner(Tag.Create("h1").WithInner(index[9].Title).WithId("Apartado10"))
-                //.WithInner(Tag.Create("h2").WithInner("Cuadro de distribución de pesos").WithId("Apartado10-1"))
-
                 .WithHeader1(index[9].Title)
                 .WithHeader2(index[9].Subitems[0].Title)
 
                 .WithTable(2 + Subject.QueryEvaluableActivityIndexes().Count, 2 + subjectTemplate.LearningResults.ToList().Count)
-                .WithCellContent(1, 1, NonBreakingSpace).WithCellContent(1, 2, NonBreakingSpace)
+                .WithCell(1, 1, NonBreakingSpace).WithCell(1, 2, NonBreakingSpace)
                 .Foreach<LearningResult>(subjectTemplate.LearningResults.ToList(),
-                    (r, i, d) => { d.WithCellContent(1, 3 + i, String.Format("RA{0}", i + 1)); }
+                    (r, i, d) => { d.WithCellHeader1(1, 3 + i, String.Format("RA{0}", i + 1)); }
                 )
-                .WithCellContent(2, 1, "Bloque").WithCellContent(2, 2, "Peso" + NonBreakingSpace + "RA")
+                .WithCellHeader1(2, 1, "Bloque").WithCellHeader1(2, 2, "Peso" + NonBreakingSpace + "RA")
                 .Foreach<SubjectLearningResultIndexesWeight>(Subject.QueryLearningResultsIndexesWeights(),
                     (r, i, d) =>
                     {
-                        d.WithCellContent(2, 3 + i, String.Format("{0:0}%", r.weight));
+                        d.WithCellHeader2(2, 3 + i, String.Format("{0:0}%", r.weight));
                     }
                 )
                 .Do( 
@@ -496,7 +504,7 @@ namespace Programacion123
 
                             if(lastBlock != activityIndex.blockIndex)
                             {
-                                d.WithCellContent(3 + i, 1, String.Format("Bloque" + NonBreakingSpace + "{0}", activityIndex.blockIndex + 1));
+                                d.WithCellHeader1(3 + i, 1, String.Format("Bloque" + NonBreakingSpace + "{0}", activityIndex.blockIndex + 1));
 
                                 blockIndexes.Add(activityIndex.blockIndex);
                                 blockActivityCount[activityIndex.blockIndex] = 1;
@@ -509,13 +517,13 @@ namespace Programacion123
 
                             lastBlock = activityIndex.blockIndex;
 
-                            d.WithCellContent(3 + i, 2, Utils.FormatEvaluableActivity(activityIndex.blockIndex, activityIndex.evaluationType, activityIndex.activityTypeIndex));
+                            d.WithCellHeader2(3 + i, 2, Utils.FormatEvaluableActivity(activityIndex.blockIndex, activityIndex.evaluationType, activityIndex.activityTypeIndex));
 
                             List<SubjectLearningResultIndexesWeight> resultsWeights = Subject.QueryActivityLearningResultsIndexesWeight(activityIndex.blockIndex, activityIndex.activityIndex);
                             
                             for(int j = 0; j < resultsWeights.Count; j ++)
                             {
-                                d.WithCellContent(3 + i, 3 + j, resultsWeights[j].weight > 0 ? String.Format("{0:0}%", resultsWeights[j].weight) : NonBreakingSpace);
+                                d.WithCell(3 + i, 3 + j, resultsWeights[j].weight > 0 ? String.Format("{0:0}%", resultsWeights[j].weight) : NonBreakingSpace);
                             }
                         }
 
@@ -528,54 +536,7 @@ namespace Programacion123
                     }
                 )
 
-                //.WithInner(Table.Create()
-                //    .WithRow()
-                //        .WithCell("&nbsp;", 1, 2)
-                //        .WithCellForeach<LearningResult>(subjectTemplate.LearningResults.ToList(),
-                //            (learningResult, i, table) =>
-                //            {
-                //                table.WithCellInner(String.Format("RA{0}", i + 1)).WithCellClass("tableHeader1");
-                //            }
-                //        )
-                //    .WithRow()
-                //        .WithCell("Bloque").WithCellClass("tableHeader1")
-                //        .WithCell("Peso&nbsp;RA").WithCellClass("tableHeader1")
-                //        .WithCellForeach<SubjectLearningResultIndexesWeight>(Subject.QueryLearningResultsIndexesWeights(),
-                //            (resultWeight, i, table) =>
-                //            {
-                //                table.WithCellInner(String.Format("{0:0}%", resultWeight.weight)).WithCellClass("tableHeader2");
-                //            }
-                //        )
-                //    .WithRowForeach<Block>(Subject.Blocks.ToList(),
-                //        (block, i, table) =>
-                //        {
-                //            List<EvaluableActivityIndex> evaluableActivityIndexes = Subject.QueryBlockEvaluableActivityIndexes(i);
-
-                //            table.WithCell(String.Format("Bloque&nbsp;{0}", i + 1), evaluableActivityIndexes.Count, 1).WithCellClass("tableHeader1");
-
-                //            bool first = true;
-
-                //            foreach(EvaluableActivityIndex activityInfo in evaluableActivityIndexes)
-                //            {
-                //                if(!first) { table.WithRow(); }
-                //                table.WithCell(Utils.FormatEvaluableActivity(i, activityInfo.evaluationType, activityInfo.activityTypeIndex)).WithCellClass("tableHeader2");
-
-                //                table.WithCellForeach<SubjectLearningResultIndexesWeight>(Subject.QueryActivityLearningResultsIndexesWeight(i, activityInfo.activityIndex),
-                //                    (resultWeight, j, table) =>
-                //                    {
-                //                        table.WithCellInner(resultWeight.weight > 0 ? String.Format("{0:0}%", resultWeight.weight) : "&nbsp;");
-                //                    }
-
-                //                );
-
-                //                first = false;
-                //            }
-                //        }
-                //    )
-                                    
-                //)
-
-
+               .WithIndex()
                .Save(path)
                .Close();
             

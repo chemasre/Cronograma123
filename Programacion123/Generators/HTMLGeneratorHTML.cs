@@ -22,7 +22,7 @@ namespace Programacion123
         Header5,
         Header6,
         NormalText,
-        Table,
+        TableText,
         TableHeader1Text,
         TableHeader2Text,
         CoverSubjectCode,
