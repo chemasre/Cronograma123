@@ -57,22 +57,34 @@ namespace Programacion123
                .WithTextStyle(DocumentTextElementId.IndexLevel1, style.TextElementStyles[DocumentTextElementId.IndexLevel1])
                .WithTextStyle(DocumentTextElementId.IndexLevel2, style.TextElementStyles[DocumentTextElementId.IndexLevel2])
                .WithTextStyle(DocumentTextElementId.IndexLevel3, style.TextElementStyles[DocumentTextElementId.IndexLevel3])
-               //.WithParagraph("Hola")
-               //.WithParagraph("Qué tal")
-               //.WithHeader1("Qué tal")
-               //.WithParagraph("Qué tal")
-               //.WithHeader2("Qué tal")
-               //.WithParagraph("Qué tal")
-               //.WithHeader3("Qué tal")
-               //.WithParagraph("Qué tal")
-               //.WithTable(2, 3)
-               //.WithCellSpan(1, 1, 2, 1)
-               //.WithCellContent(1, 1, "Test11")
-               //.WithCellContent(1, 2, "Test12")
-               //.WithCellContent(1, 3, "Test13")
-               //.WithCellContent(2, 2, "Test22")
-               //.WithCellContent(2, 3, "Test23")
+               .WithTextStyle(DocumentTextElementId.CoverSubjectCode, style.TextElementStyles[DocumentTextElementId.CoverSubjectCode])
+               .WithTextStyle(DocumentTextElementId.CoverSubjectName, style.TextElementStyles[DocumentTextElementId.CoverSubjectName])
+               .WithTextStyle(DocumentTextElementId.CoverGradeTypeName, style.TextElementStyles[DocumentTextElementId.CoverGradeTypeName])
+               .WithTextStyle(DocumentTextElementId.CoverGradeName, style.TextElementStyles[DocumentTextElementId.CoverGradeName])
+               .WithCoverElementPosition(DocumentCoverElementId.Logo, style.CoverElementStyles[DocumentCoverElementId.Logo].Position)
+               .WithCoverElementPosition(DocumentCoverElementId.Cover, style.CoverElementStyles[DocumentCoverElementId.Cover].Position)
+               .WithCoverElementPosition(DocumentCoverElementId.GradeName, style.CoverElementStyles[DocumentCoverElementId.GradeName].Position)
+               .WithCoverElementPosition(DocumentCoverElementId.GradeTypeName, style.CoverElementStyles[DocumentCoverElementId.GradeTypeName].Position)
+               .WithCoverElementPosition(DocumentCoverElementId.SubjectCode, style.CoverElementStyles[DocumentCoverElementId.SubjectCode].Position)
+               .WithCoverElementPosition(DocumentCoverElementId.SubjectName, style.CoverElementStyles[DocumentCoverElementId.SubjectName].Position)
 
+                //////////////////////////////////////////////////////////////////
+                ///////////// Nivel 1: Portada                 ///////////////////
+                //////////////////////////////////////////////////////////////////
+
+               .WithCoverTextElement(subjectTemplate.SubjectCode, DocumentTextElementId.CoverSubjectCode, DocumentCoverElementId.SubjectCode)
+               .WithCoverTextElement(subjectTemplate.SubjectName, DocumentTextElementId.CoverSubjectName, DocumentCoverElementId.SubjectName)
+               .WithCoverTextElement(gradeTemplate.GradeName, DocumentTextElementId.CoverGradeName, DocumentCoverElementId.GradeName)
+               .WithCoverTextElement(GetGradeTypeName(), DocumentTextElementId.CoverGradeTypeName, DocumentCoverElementId.GradeTypeName)
+               .WithPageBreak()
+
+                //////////////////////////////////////////////////////////////////
+                ///////////// Nivel 1: Índice                  ///////////////////
+                //////////////////////////////////////////////////////////////////
+
+               .WithIndex()
+               .WithPageBreak()
+               
                 //////////////////////////////////////////////////////////////////
                 ///////////// Nivel 1: Organización del módulo ///////////////////
                 //////////////////////////////////////////////////////////////////
@@ -553,8 +565,8 @@ namespace Programacion123
                 )
 
                .WithPageBreak()
+               .WithPageNumbering()
 
-               .WithIndex()
                .Save(path)
                .Close();
             

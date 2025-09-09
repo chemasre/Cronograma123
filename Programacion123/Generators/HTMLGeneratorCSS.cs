@@ -65,7 +65,7 @@ namespace Programacion123
             else if (id == DocumentTextElementId.CoverSubjectCode) { selector = ".coverSubjectCode"; }
             else if (id == DocumentTextElementId.CoverSubjectName) { selector = ".coverSubjectName"; }
             else if (id == DocumentTextElementId.CoverGradeTypeName) { selector = ".coverGradeTypeName"; }
-            else if (id == DocumentTextElementId.CoverGradeName) { selector = ".coverGradeNam"; }
+            else if (id == DocumentTextElementId.CoverGradeName) { selector = ".coverGradeName"; }
             else if (id == DocumentTextElementId.IndexLevel1) { selector = ".indexLevel1"; }
             else if (id == DocumentTextElementId.IndexLevel2) { selector = ".indexLevel2"; }
             else // id == DocumentTextElementId.IndexLevel3
