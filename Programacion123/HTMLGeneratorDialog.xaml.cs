@@ -116,7 +116,7 @@ namespace Programacion123
             ComboTextElement.Items.Add("Título de nivel 5");
             ComboTextElement.Items.Add("Título de nivel 6");
             ComboTextElement.Items.Add("Texto normal");
-            ComboTextElement.Items.Add("Tablas: General");
+            ComboTextElement.Items.Add("Tablas: Texto normal");
             ComboTextElement.Items.Add("Tablas: Encabezado de nivel 1");
             ComboTextElement.Items.Add("Tablas: Encabezado de nivel 2");
             ComboTextElement.Items.Add("Portada: Código del módulo");
@@ -127,6 +127,9 @@ namespace Programacion123
             ComboTextElement.Items.Add("Índice de nivel 2");
             ComboTextElement.Items.Add("Índice de nivel 3");
             ComboTextElement.Items.Add("Título del índice");
+            ComboTextElement.Items.Add("Tabla de pesos (anexo): Texto normal");
+            ComboTextElement.Items.Add("Tabla de pesos (anexo): Encabezado de nivel 1");
+            ComboTextElement.Items.Add("Tabla de pesos (anexo): Encabezado de nivel 2");
 
             ComboTextElement.SelectedIndex = 0;
 
@@ -153,6 +156,9 @@ namespace Programacion123
             ComboTableElement.Items.Add("Celda normal");
             ComboTableElement.Items.Add("Celda de encabezado de nivel 1");
             ComboTableElement.Items.Add("Celda de encabezado de nivel 2");
+            ComboTableElement.Items.Add("Tabla de pesos (Anexo): Celda normal");
+            ComboTableElement.Items.Add("Tabla de pesos (Anexo): Celda de encabezado de nivel 1");
+            ComboTableElement.Items.Add("Tabla de pesos (Anexo): Celda de encabezado de nivel 2");
 
             ComboTableElement.SelectedIndex = 0;
 

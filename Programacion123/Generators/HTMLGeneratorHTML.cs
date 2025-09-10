@@ -501,20 +501,20 @@ namespace Programacion123
                             .WithInner(Tag.Create("h2").WithInner("Cuadro de distribución de pesos").WithId("Apartado10-1"))
                             .WithInner(Table.Create()
                                 .WithRow()
-                                    .WithCell("&nbsp;", 1, 2)
+                                    .WithCell("&nbsp;", 1, 2).WithCellClass("weightsTable")
                                     .WithCellForeach<LearningResult>(subjectTemplate.LearningResults.ToList(),
                                         (learningResult, i, table) =>
                                         {
-                                            table.WithCellInner(String.Format("RA{0}", i + 1)).WithCellClass("tableHeader1");
+                                            table.WithCellInner(String.Format("RA{0}", i + 1)).WithCellClass("weightsTableHeader1");
                                         }
                                     )
                                 .WithRow()
-                                    .WithCell("Bloque").WithCellClass("tableHeader1")
-                                    .WithCell("Peso&nbsp;RA").WithCellClass("tableHeader1")
+                                    .WithCell("Bloque").WithCellClass("weightsTableHeader1")
+                                    .WithCell("Peso&nbsp;RA").WithCellClass("weightsTableHeader1")
                                     .WithCellForeach<SubjectLearningResultIndexesWeight>(Subject.QueryLearningResultsIndexesWeights(),
                                         (resultWeight, i, table) =>
                                         {
-                                            table.WithCellInner(String.Format("{0:0}%", resultWeight.weight)).WithCellClass("tableHeader2");
+                                            table.WithCellInner(String.Format("{0:0}%", resultWeight.weight)).WithCellClass("weightsTableHeader2");
                                         }
                                     )
                                 .WithRowForeach<Block>(Subject.Blocks.ToList(),
@@ -522,19 +522,19 @@ namespace Programacion123
                                    {
                                        List<EvaluableActivityIndex> evaluableActivityIndexes = Subject.QueryBlockEvaluableActivityIndexes(i);
 
-                                       table.WithCell(String.Format("Bloque&nbsp;{0}", i + 1), evaluableActivityIndexes.Count, 1).WithCellClass("tableHeader1");
+                                       table.WithCell(String.Format("Bloque&nbsp;{0}", i + 1), evaluableActivityIndexes.Count, 1).WithCellClass("weightsTableHeader1");
 
                                        bool first = true;
 
                                        foreach(EvaluableActivityIndex activityInfo in evaluableActivityIndexes)
                                        {
                                            if(!first) { table.WithRow(); }
-                                           table.WithCell(Utils.FormatEvaluableActivity(i, activityInfo.evaluationType, activityInfo.activityTypeIndex)).WithCellClass("tableHeader2");
+                                           table.WithCell(Utils.FormatEvaluableActivity(i, activityInfo.evaluationType, activityInfo.activityTypeIndex)).WithCellClass("weightsTableHeader2");
 
                                            table.WithCellForeach<SubjectLearningResultIndexesWeight>(Subject.QueryActivityLearningResultsIndexesWeight(i, activityInfo.activityIndex),
                                                (resultWeight, j, table) =>
                                                {
-                                                   table.WithCellInner(resultWeight.weight > 0 ? String.Format("{0:0}%", resultWeight.weight) : "&nbsp;");
+                                                   table.WithCellInner(resultWeight.weight > 0 ? String.Format("{0:0}%", resultWeight.weight) : "&nbsp;").WithCellClass("weightsTable");
                                                }
 
                                            );

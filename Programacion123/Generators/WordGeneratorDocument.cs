@@ -20,14 +20,23 @@ namespace Programacion123
 {
     public class WordDocument
     {
-        const string TextStyleTable = "TableText";
-        const string TextStyleTableHeader1 = "TableHeader1Text";
-        const string TextStyleTableHeader2 = "TableHeader2Text";
-        const string TextStyleCoverSubjectCode = "CoverSubjectCode";
-        const string TextStyleCoverSubjectName = "CoverSubjectName";
-        const string TextStyleCoverGradeTypeName = "CoverGradeTypeName";
-        const string TextStyleCoverGradeName = "CoverGradeName";
+        public const string TextStyleTable = "TableText";
+        public const string TextStyleTableHeader1 = "TableHeader1Text";
+        public const string TextStyleTableHeader2 = "TableHeader2Text";
+        public const string TextStyleCoverSubjectCode = "CoverSubjectCode";
+        public const string TextStyleCoverSubjectName = "CoverSubjectName";
+        public const string TextStyleCoverGradeTypeName = "CoverGradeTypeName";
+        public const string TextStyleCoverGradeName = "CoverGradeName";
+        public const string TextStyleWeightsTable = "TableWeightsText";
+        public const string TextStyleWeightsTableHeader1 = "WeightsTableHeader1Text";
+        public const string TextStyleWeightsTableHeader2 = "WeightsTableHeader2Text";
 
+        public const string CellStyleNormal = "NormalCell";
+        public const string CellStyleHeader1 = "Header1Cell";
+        public const string CellStyleHeader2 = "Header2Cell";
+        public const string CellStyleWeightsNormal = "WeightsNormalCell";
+        public const string CellStyleWeightsHeader1 = "WeightsHeader1Cell";
+        public const string CellStyleWeightsHeader2 = "WeightsHeader2Cell";
 
         object missingValue;
         bool closed;
@@ -41,6 +50,8 @@ namespace Programacion123
 
         Dictionary<DocumentTextElementId, string> generatorTextStyleIdToWordStyleId;
         Dictionary<DocumentCoverElementId, Vector2> generatorCoverElementIdToPosition;
+        Dictionary<DocumentTableElementId, DocumentTableElementStyle> generatorTableElementIdToStyle;
+
 
         HashSet<string> wordStylesCache;
 
@@ -55,6 +66,7 @@ namespace Programacion123
             document = _app.Documents.Add(ref missingValue, ref missingValue, ref missingValue, ref missingValue);
             generatorTextStyleIdToWordStyleId = new();
             generatorCoverElementIdToPosition = new();
+            generatorTableElementIdToStyle = new();
             wordStylesCache = new();
 
             foreach(Style s in document.Styles) { wordStylesCache.Add(s.NameLocal); }
@@ -147,9 +159,61 @@ namespace Programacion123
 
         public WordDocument WithCoverElementPosition(DocumentCoverElementId coverElementId, DocumentCoverElementPosition position)
         {
+            if(closed) { return this; }
+
             generatorCoverElementIdToPosition[coverElementId] = new Vector2(position.Left, position.Top);
 
             return this;
+        }
+
+        public WordDocument WithTableElementStyle(DocumentTableElementId generatorTableElementStyleId, DocumentTableElementStyle generatorTableElementStyle)
+        {
+            if(closed) { return this; }
+
+            string wordStyleId;
+
+            if(generatorTableElementStyleId == DocumentTableElementId.TableNormalCell) { wordStyleId = CellStyleNormal; }
+            else if(generatorTableElementStyleId == DocumentTableElementId.TableHeader1Cell) { wordStyleId = CellStyleHeader1; }
+            else if(generatorTableElementStyleId == DocumentTableElementId.TableHeader2Cell) { wordStyleId = CellStyleHeader2; }
+            else if(generatorTableElementStyleId == DocumentTableElementId.TableWeightsNormalCell) { wordStyleId = CellStyleWeightsNormal; }
+            else if(generatorTableElementStyleId == DocumentTableElementId.TableWeightsHeader1Cell) { wordStyleId = CellStyleWeightsHeader1; }
+            else // generatorTableElementStyleId == DocumentTableElementId.TableWeightsHeader2Cell)
+            { wordStyleId = CellStyleWeightsHeader2; }
+
+            Style style = GetOrCreateWordStyle(wordStyleId);
+
+            style.ParagraphFormat.SpaceAfter = generatorTableElementStyle.Padding.Bottom;
+            style.ParagraphFormat.SpaceBefore = generatorTableElementStyle.Padding.Top;
+            style.ParagraphFormat.LeftIndent = generatorTableElementStyle.Padding.Left;
+            style.ParagraphFormat.RightIndent = generatorTableElementStyle.Padding.Right;
+
+            int r;
+            int g;
+            int b;
+
+            DocumentStyle.GetRGBFromColor(generatorTableElementStyle.BackgroundColor, out r, out g, out b);
+
+            style.Shading.BackgroundPatternColor = (WdColor)(r + (1 << 8) * g + (1 << 16) * b);
+
+            return this;
+        }
+
+        Style GetOrCreateWordStyle(string wordStyleId)
+        {
+            Style style;
+
+            if(wordStylesCache.Contains(wordStyleId))
+            {
+                style = document.Styles[wordStyleId];
+            }
+            else
+            {
+                style = document.Styles.Add(wordStyleId);
+                wordStylesCache.Add(wordStyleId);
+            }
+
+            return style;
+
         }
 
         public WordDocument WithTextStyle(DocumentTextElementId generatorTextStyleId, DocumentTextElementStyle generatorTextStyle)
@@ -179,35 +243,17 @@ namespace Programacion123
                 else if(generatorTextStyleId == DocumentTextElementId.CoverSubjectCode) { wordStyleId = TextStyleCoverSubjectCode; }
                 else if(generatorTextStyleId == DocumentTextElementId.CoverSubjectName) { wordStyleId = TextStyleCoverSubjectName; }
                 else if(generatorTextStyleId == DocumentTextElementId.CoverGradeTypeName) { wordStyleId = TextStyleCoverGradeTypeName; }
-                else // docStyleId == DocumentTextElementId.CoverGradeName
-                { wordStyleId = TextStyleCoverGradeName; }
+                else if(generatorTextStyleId == DocumentTextElementId.CoverGradeName) { wordStyleId = TextStyleCoverGradeName; }
+                else if(generatorTextStyleId == DocumentTextElementId.WeightsTableText) { wordStyleId = TextStyleWeightsTable; }
+                else if(generatorTextStyleId == DocumentTextElementId.WeightsTableHeader1Text) { wordStyleId = TextStyleWeightsTableHeader1; }
+                else // generatorTextStyleId == DocumentTextElementId.WeightsTableHeader2Text
+                { wordStyleId = TextStyleWeightsTableHeader2; }
 
              }
 
             generatorTextStyleIdToWordStyleId.Add(generatorTextStyleId, wordStyleId);
 
-            if(wordStylesCache.Contains(wordStyleId))
-            {
-                wordStyle = document.Styles[wordStyleId];
-            }
-            else
-            {
-                wordStyle = document.Styles.Add(wordStyleId);
-                wordStylesCache.Add(wordStyleId);
-            }
-
-
-            //Styles styles = ;
-            //bool found = false;
-            //foreach(Style s in styles)
-            //{
-            //    if(s.NameLocal == wordStyleId)
-            //    { 
-            //        found = true;
-            //    }
-            //}
-            //if(!found) {  }
-            //else { wordStyle = styles[wordStyleId]; }
+            wordStyle = GetOrCreateWordStyle(wordStyleId);
                 
             wordStyle.Font.Name = (generatorTextStyle.FontFamily == DocumentTextElementFontFamily.SansSerif ? "Calibri" : "Times New Roman");
             wordStyle.Font.Size = generatorTextStyle.FontSize;
@@ -268,29 +314,41 @@ namespace Programacion123
             
             table.Range.set_Style("TableText");
 
+            table.PreferredWidthType = WdPreferredWidthType.wdPreferredWidthPercent;
+            table.PreferredWidth = 100;
+
             return this;
         }
 
-        public WordDocument WithCell(int row, int column, string text, string textStyle = TextStyleTable)
+        public WordDocument WithCell(int row, int column, string text, string textStyleId = TextStyleTable, string cellStyleId = CellStyleNormal)
         {
             Console.WriteLine("Row: " + row + " Column: " + column + " Content: " + text);
 
             table.Cell(row, column).Range.Text = text;
-            table.Cell(row, column).Range.set_Style(textStyle);
+            table.Cell(row, column).Range.set_Style(textStyleId);
+
+            Style cellStyle = GetOrCreateWordStyle(cellStyleId);
+
+            table.Cell(row, column).Shading.BackgroundPatternColor = cellStyle.Shading.BackgroundPatternColor;
+            table.Cell(row, column).LeftPadding = cellStyle.ParagraphFormat.LeftIndent;
+            table.Cell(row, column).RightPadding = cellStyle.ParagraphFormat.RightIndent;
+            table.Cell(row, column).TopPadding = cellStyle.ParagraphFormat.SpaceBefore;
+            table.Cell(row, column).BottomPadding = cellStyle.ParagraphFormat.SpaceAfter;
+
 
             return this;
         }
 
         public WordDocument WithCellHeader1(int row, int column, string text)
         {
-            WithCell(row, column, text, TextStyleTableHeader1);
+            WithCell(row, column, text, TextStyleTableHeader1, CellStyleHeader1);
 
             return this;
         }
         
         public WordDocument WithCellHeader2(int row, int column, string text)
         {
-            WithCell(row, column, text, TextStyleTableHeader2);
+            WithCell(row, column, text, TextStyleTableHeader2, CellStyleHeader2);
 
             return this;
         }

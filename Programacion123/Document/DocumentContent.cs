@@ -35,14 +35,20 @@ namespace Programacion123
         IndexLevel1,
         IndexLevel2,
         IndexLevel3,
-        IndexTitle
+        IndexTitle,
+        WeightsTableText,
+        WeightsTableHeader1Text,
+        WeightsTableHeader2Text
     }
 
     public enum DocumentTableElementId
     {
         TableNormalCell,
         TableHeader1Cell,
-        TableHeader2Cell
+        TableHeader2Cell,
+        TableWeightsNormalCell,
+        TableWeightsHeader1Cell,
+        TableWeightsHeader2Cell
     
     }
 

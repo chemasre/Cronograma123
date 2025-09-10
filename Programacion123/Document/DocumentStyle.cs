@@ -136,12 +136,18 @@ namespace Programacion123
             TextElementStyles[DocumentTextElementId.IndexLevel2] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 14, Bold = false, Margins = new() { Bottom = 14 } };
             TextElementStyles[DocumentTextElementId.IndexLevel3] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 12, Bold = false, Margins = new() { Bottom = 12 } };
             TextElementStyles[DocumentTextElementId.IndexTitle] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 32, Bold = true, Margins = new() { Bottom = 32 }  };
+            TextElementStyles[DocumentTextElementId.WeightsTableText] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.Black, FontSize = 10 };
+            TextElementStyles[DocumentTextElementId.WeightsTableHeader1Text] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.White, FontSize = 10, Bold = true };
+            TextElementStyles[DocumentTextElementId.WeightsTableHeader2Text] = new() { FontFamily = DocumentTextElementFontFamily.SansSerif, FontColor = DocumentElementColor.White, FontSize = 10, Bold = true };
 
             TableElementStyles = new();
 
             TableElementStyles[DocumentTableElementId.TableNormalCell] = new() { BackgroundColor = DocumentElementColor.White, Padding = new() { Top = 0, Bottom = 0, Left = 0, Right = 0 } };
             TableElementStyles[DocumentTableElementId.TableHeader1Cell] = new() { BackgroundColor = DocumentElementColor.Gray, Padding = new() { Top = 0, Bottom = 0, Left = 0, Right = 0 } };
             TableElementStyles[DocumentTableElementId.TableHeader2Cell] = new() { BackgroundColor = DocumentElementColor.LightGray, Padding = new() { Top = 0, Bottom = 0, Left = 0, Right = 0 } };
+            TableElementStyles[DocumentTableElementId.TableWeightsNormalCell] = new() { BackgroundColor = DocumentElementColor.White, Padding = new() { Top = 0, Bottom = 0, Left = 0, Right = 0 } };
+            TableElementStyles[DocumentTableElementId.TableWeightsHeader1Cell] = new() { BackgroundColor = DocumentElementColor.Gray, Padding = new() { Top = 0, Bottom = 0, Left = 0, Right = 0 } };
+            TableElementStyles[DocumentTableElementId.TableWeightsHeader2Cell] = new() { BackgroundColor = DocumentElementColor.LightGray, Padding = new() { Top = 0, Bottom = 0, Left = 0, Right = 0 } };
 
         }
 

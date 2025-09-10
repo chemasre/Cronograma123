@@ -69,8 +69,11 @@ namespace Programacion123
             else if (id == DocumentTextElementId.IndexLevel1) { selector = ".indexLevel1"; }
             else if (id == DocumentTextElementId.IndexLevel2) { selector = ".indexLevel2"; }
             else if (id == DocumentTextElementId.IndexLevel3) { selector = ".indexLevel3"; }
-            else // id == DocumentTextElementId.IndexTitle
-            { selector = ".indexTitle"; }
+            else if (id == DocumentTextElementId.IndexTitle){ selector = ".indexTitle"; }
+            else if (id == DocumentTextElementId.WeightsTableText) { selector = ".weightsTable"; }
+            else if (id == DocumentTextElementId.WeightsTableHeader1Text) { selector = ".weightsTableHeader1"; }
+            else // (id == DocumentTextElementId.WeightsTableHeader2Text)
+            { selector = ".weightsTableHeader2"; }
 
             builder.AppendLine(String.Format("{0} {{", selector));
 
@@ -117,8 +120,11 @@ namespace Programacion123
             
             if(id == DocumentTableElementId.TableNormalCell) { builder.AppendLine("td {"); }
             else if(id == DocumentTableElementId.TableHeader1Cell) { builder.AppendLine(".tableHeader1 {"); }
+            else if(id == DocumentTableElementId.TableHeader2Cell) { builder.AppendLine(".tableHeader2 {"); }
+            else if(id == DocumentTableElementId.TableWeightsNormalCell) { builder.AppendLine(".weightsTable {"); }
+            else if(id == DocumentTableElementId.TableWeightsHeader1Cell) { builder.AppendLine(".weightsTableHeader1 {"); }
             else // id == DocumentTableElementId.TableHeader2Cell
-            { builder.AppendLine(".tableHeader2 {"); }
+            { builder.AppendLine(".weightsTableHeader2 {"); }
 
             if(!StyleValue.TableElementStyles.ContainsKey(id)) { StyleValue.TableElementStyles.Add(id, new DocumentTableElementStyle()); }
             DocumentTableElementStyle style = StyleValue.TableElementStyles[id];

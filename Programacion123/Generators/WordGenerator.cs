@@ -68,6 +68,15 @@ namespace Programacion123
                .WithTextStyle(DocumentTextElementId.CoverSubjectName, style.TextElementStyles[DocumentTextElementId.CoverSubjectName])
                .WithTextStyle(DocumentTextElementId.CoverGradeTypeName, style.TextElementStyles[DocumentTextElementId.CoverGradeTypeName])
                .WithTextStyle(DocumentTextElementId.CoverGradeName, style.TextElementStyles[DocumentTextElementId.CoverGradeName])
+               .WithTextStyle(DocumentTextElementId.WeightsTableText, style.TextElementStyles[DocumentTextElementId.WeightsTableText])
+               .WithTextStyle(DocumentTextElementId.WeightsTableHeader1Text, style.TextElementStyles[DocumentTextElementId.WeightsTableHeader1Text])
+               .WithTextStyle(DocumentTextElementId.WeightsTableHeader2Text, style.TextElementStyles[DocumentTextElementId.WeightsTableHeader2Text])
+               .WithTableElementStyle(DocumentTableElementId.TableNormalCell, style.TableElementStyles[DocumentTableElementId.TableNormalCell])
+               .WithTableElementStyle(DocumentTableElementId.TableHeader1Cell, style.TableElementStyles[DocumentTableElementId.TableHeader1Cell])
+               .WithTableElementStyle(DocumentTableElementId.TableHeader2Cell, style.TableElementStyles[DocumentTableElementId.TableHeader2Cell])
+               .WithTableElementStyle(DocumentTableElementId.TableWeightsNormalCell, style.TableElementStyles[DocumentTableElementId.TableWeightsNormalCell])
+               .WithTableElementStyle(DocumentTableElementId.TableWeightsHeader1Cell, style.TableElementStyles[DocumentTableElementId.TableWeightsHeader1Cell])
+               .WithTableElementStyle(DocumentTableElementId.TableWeightsHeader2Cell, style.TableElementStyles[DocumentTableElementId.TableWeightsHeader2Cell])
                .WithCoverElementPosition(DocumentCoverElementId.Logo, style.CoverElementStyles[DocumentCoverElementId.Logo].Position)
                .WithCoverElementPosition(DocumentCoverElementId.Cover, style.CoverElementStyles[DocumentCoverElementId.Cover].Position)
                .WithCoverElementPosition(DocumentCoverElementId.GradeName, style.CoverElementStyles[DocumentCoverElementId.GradeName].Position)
@@ -301,19 +310,19 @@ namespace Programacion123
                 ////////////// Nivel 1: Programación del módulo profesional ///////////////////
                 ///////////////////////////////////////////////////////////////////////////////
                             
-                .WithHeader1(index[7].Title)
-                .Foreach<string>(GetGradeCommonText(CommonTextId.header1SubjectProgramming), addParagraph)
-                .Foreach<string>(GetSubjectCommonText(CommonTextId.header1SubjectProgramming), addParagraph)
+               .WithHeader1(index[7].Title)
+               .Foreach<string>(GetGradeCommonText(CommonTextId.header1SubjectProgramming), addParagraph)
+               .Foreach<string>(GetSubjectCommonText(CommonTextId.header1SubjectProgramming), addParagraph)
 
-                .WithHeader2(index[7].Subitems[0].Title)
-                .Foreach<string>(GetGradeCommonText(CommonTextId.header2LearningResultsAndContents), addParagraph)
-                .Foreach<string>(GetSubjectCommonText(CommonTextId.header2LearningResultsAndContents), addParagraph)
+               .WithHeader2(index[7].Subitems[0].Title)
+               .Foreach<string>(GetGradeCommonText(CommonTextId.header2LearningResultsAndContents), addParagraph)
+               .Foreach<string>(GetSubjectCommonText(CommonTextId.header2LearningResultsAndContents), addParagraph)
 
-                .WithHeader3(index[7].Subitems[0].Subitems[0].Title)
-                .Foreach<string>(GetGradeCommonText(CommonTextId.header3LearningResults), addParagraph)
-                .Foreach<string>(GetSubjectCommonText(CommonTextId.header3LearningResults), addParagraph)
+               .WithHeader3(index[7].Subitems[0].Subitems[0].Title)
+               .Foreach<string>(GetGradeCommonText(CommonTextId.header3LearningResults), addParagraph)
+               .Foreach<string>(GetSubjectCommonText(CommonTextId.header3LearningResults), addParagraph)
                 
-                .Foreach<LearningResult>(subjectTemplate.LearningResults.ToList(),
+               .Foreach<LearningResult>(subjectTemplate.LearningResults.ToList(),
                     (r, i, d) =>
                     {
                             d.WithParagraph(String.Format("RA{0}: ", i + 1) + r.Description)
@@ -327,9 +336,9 @@ namespace Programacion123
                     }
                 )
 
-                .WithHeader3(index[7].Subitems[0].Subitems[1].Title)
-                .Foreach<string>(GetGradeCommonText(CommonTextId.header3Contents), addParagraph)
-                .Foreach<string>(GetSubjectCommonText(CommonTextId.header3Contents), addParagraph)
+               .WithHeader3(index[7].Subitems[0].Subitems[1].Title)
+               .Foreach<string>(GetGradeCommonText(CommonTextId.header3Contents), addParagraph)
+               .Foreach<string>(GetSubjectCommonText(CommonTextId.header3Contents), addParagraph)
 
                 .Foreach<Content>(subjectTemplate.Contents.ToList(),
                     (c, i, d) =>
@@ -515,13 +524,14 @@ namespace Programacion123
                 .WithTable(2 + Subject.QueryEvaluableActivityIndexes().Count, 2 + subjectTemplate.LearningResults.ToList().Count)
                 .WithCell(1, 1, NonBreakingSpace).WithCell(1, 2, NonBreakingSpace)
                 .Foreach<LearningResult>(subjectTemplate.LearningResults.ToList(),
-                    (r, i, d) => { d.WithCellHeader1(1, 3 + i, String.Format("RA{0}", i + 1)); }
+                    (r, i, d) => { d.WithCell(1, 3 + i, String.Format("RA{0}", i + 1), WordDocument.TextStyleWeightsTableHeader2, WordDocument.CellStyleWeightsHeader2); }
                 )
-                .WithCellHeader1(2, 1, "Bloque").WithCellHeader1(2, 2, "Peso" + NonBreakingSpace + "RA")
+                .WithCell(2, 1, "Bloque", WordDocument.TextStyleWeightsTableHeader1, WordDocument.CellStyleWeightsHeader1)
+                .WithCell(2, 2, "Peso" + NonBreakingSpace + "RA", WordDocument.TextStyleWeightsTableHeader1, WordDocument.CellStyleWeightsHeader1)
                 .Foreach<SubjectLearningResultIndexesWeight>(Subject.QueryLearningResultsIndexesWeights(),
                     (r, i, d) =>
                     {
-                        d.WithCellHeader2(2, 3 + i, String.Format("{0:0}%", r.weight));
+                        d.WithCell(2, 3 + i, String.Format("{0:0}%", r.weight), WordDocument.TextStyleWeightsTableHeader2, WordDocument.CellStyleWeightsHeader2);
                     }
                 )
                 .Do( 
@@ -541,7 +551,7 @@ namespace Programacion123
 
                             if(lastBlock != activityIndex.blockIndex)
                             {
-                                d.WithCellHeader1(3 + i, 1, String.Format("Bloque" + NonBreakingSpace + "{0}", activityIndex.blockIndex + 1));
+                                d.WithCell(3 + i, 1, String.Format("Bloque" + NonBreakingSpace + "{0}", activityIndex.blockIndex + 1), WordDocument.TextStyleWeightsTableHeader1, WordDocument.CellStyleWeightsHeader1);
 
                                 blockIndexes.Add(activityIndex.blockIndex);
                                 blockActivityCount[activityIndex.blockIndex] = 1;
@@ -554,13 +564,13 @@ namespace Programacion123
 
                             lastBlock = activityIndex.blockIndex;
 
-                            d.WithCellHeader2(3 + i, 2, Utils.FormatEvaluableActivity(activityIndex.blockIndex, activityIndex.evaluationType, activityIndex.activityTypeIndex));
+                            d.WithCell(3 + i, 2, Utils.FormatEvaluableActivity(activityIndex.blockIndex, activityIndex.evaluationType, activityIndex.activityTypeIndex), WordDocument.TextStyleWeightsTableHeader2, WordDocument.CellStyleWeightsHeader2);
 
                             List<SubjectLearningResultIndexesWeight> resultsWeights = Subject.QueryActivityLearningResultsIndexesWeight(activityIndex.blockIndex, activityIndex.activityIndex);
                             
                             for(int j = 0; j < resultsWeights.Count; j ++)
                             {
-                                d.WithCell(3 + i, 3 + j, resultsWeights[j].weight > 0 ? String.Format("{0:0}%", resultsWeights[j].weight) : NonBreakingSpace);
+                                d.WithCell(3 + i, 3 + j, resultsWeights[j].weight > 0 ? String.Format("{0:0}%", resultsWeights[j].weight) : NonBreakingSpace, WordDocument.TextStyleWeightsTable, WordDocument.CellStyleWeightsNormal);
                             }
                         }
 
