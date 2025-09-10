@@ -109,12 +109,12 @@ namespace Programacion123
             SetBase64ImageInUI(ImageCoverLogo, previewStyle.LogoBase64);
             SetBase64ImageInUI(ImageCoverCover, previewStyle.CoverBase64);
 
-            ComboTextElement.Items.Add("Encabezado de nivel 1");
-            ComboTextElement.Items.Add("Encabezado de nivel 2");
-            ComboTextElement.Items.Add("Encabezado de nivel 3");
-            ComboTextElement.Items.Add("Encabezado de nivel 4");
-            ComboTextElement.Items.Add("Encabezado de nivel 5");
-            ComboTextElement.Items.Add("Encabezado de nivel 6");
+            ComboTextElement.Items.Add("Título de nivel 1");
+            ComboTextElement.Items.Add("Título de nivel 2");
+            ComboTextElement.Items.Add("Título de nivel 3");
+            ComboTextElement.Items.Add("Título de nivel 4");
+            ComboTextElement.Items.Add("Título de nivel 5");
+            ComboTextElement.Items.Add("Título de nivel 6");
             ComboTextElement.Items.Add("Texto normal");
             ComboTextElement.Items.Add("Tablas: General");
             ComboTextElement.Items.Add("Tablas: Encabezado de nivel 1");
@@ -126,6 +126,7 @@ namespace Programacion123
             ComboTextElement.Items.Add("Índice de nivel 1");
             ComboTextElement.Items.Add("Índice de nivel 2");
             ComboTextElement.Items.Add("Índice de nivel 3");
+            ComboTextElement.Items.Add("Título del índice");
 
             ComboTextElement.SelectedIndex = 0;
 

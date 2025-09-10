@@ -3,46 +3,6 @@ using System.Globalization;
 
 namespace Programacion123
 {
-    public enum DocumentCoverElementId
-    {
-        Logo,
-        SubjectCode,
-        SubjectName,
-        GradeTypeName,
-        GradeName,
-        Cover
-    }
-
-    public enum DocumentTextElementId
-    {
-        Header1,
-        Header2,
-        Header3,
-        Header4,
-        Header5,
-        Header6,
-        NormalText,
-        TableText,
-        TableHeader1Text,
-        TableHeader2Text,
-        CoverSubjectCode,
-        CoverSubjectName,
-        CoverGradeTypeName,
-        CoverGradeName,
-        IndexLevel1,
-        IndexLevel2,
-        IndexLevel3,
-    }
-
-    public enum DocumentTableElementId
-    {
-        TableNormalCell,
-        TableHeader1Cell,
-        TableHeader2Cell
-    
-    }
-
-
     public partial class HTMLGenerator : Generator
     {
         /// <summary>
@@ -115,7 +75,7 @@ namespace Programacion123
                             ///////////////////// ÍNDICE DE CONTENIDOS  //////////////////////
                             //////////////////////////////////////////////////////////////////
 
-                            .WithInner(Tag.Create("h1").WithInner("Contenidos").WithId("Indice").WithClass("index"))
+                            .WithInner(Tag.Create("div").WithInner("Contenidos").WithId("Indice").WithClass("indexTitle"))
                             .WithInnerForeach<DocumentIndexItem>(index,
                                 (item, i, l) =>
                                 {

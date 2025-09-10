@@ -170,6 +170,7 @@ namespace Programacion123
             else if(generatorTextStyleId == DocumentTextElementId.IndexLevel1) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleTOC1].NameLocal; }
             else if(generatorTextStyleId == DocumentTextElementId.IndexLevel2) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleTOC2].NameLocal; }
             else if(generatorTextStyleId == DocumentTextElementId.IndexLevel3) {  wordStyleId = document.Styles[WdBuiltinStyle.wdStyleTOC3].NameLocal; }
+            else if(generatorTextStyleId == DocumentTextElementId.IndexTitle) {  wordStyleId = document.Styles[WdBuiltinStyle.wdStyleTocHeading].NameLocal; }
             else
             {
                 if(generatorTextStyleId == DocumentTextElementId.TableText) { wordStyleId = TextStyleTable; }
@@ -313,7 +314,7 @@ namespace Programacion123
             titleRange.Collapse(WdCollapseDirection.wdCollapseEnd);
 
             titleRange.Text = "Índice";
-            titleRange.set_Style(WdBuiltinStyle.wdStyleHeading1);
+            titleRange.set_Style(generatorTextStyleIdToWordStyleId[DocumentTextElementId.IndexTitle]);
             titleRange.InsertParagraphAfter();
 
 

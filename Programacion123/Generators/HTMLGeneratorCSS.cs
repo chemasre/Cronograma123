@@ -68,8 +68,9 @@ namespace Programacion123
             else if (id == DocumentTextElementId.CoverGradeName) { selector = ".coverGradeName"; }
             else if (id == DocumentTextElementId.IndexLevel1) { selector = ".indexLevel1"; }
             else if (id == DocumentTextElementId.IndexLevel2) { selector = ".indexLevel2"; }
-            else // id == DocumentTextElementId.IndexLevel3
-            { selector = ".indexLevel3"; }
+            else if (id == DocumentTextElementId.IndexLevel3) { selector = ".indexLevel3"; }
+            else // id == DocumentTextElementId.IndexTitle
+            { selector = ".indexTitle"; }
 
             builder.AppendLine(String.Format("{0} {{", selector));
 
@@ -101,7 +102,7 @@ namespace Programacion123
 
             builder.AppendLine("}");
 
-            builder.AppendLine(String.Format("{0} a:visited,a:hover,a:link,a:visited {{", selector));
+            builder.AppendLine(String.Format("{0} a:visited,{0} a:hover,{0} a:link,{0} a:visited {{", selector));
             builder.AppendLine(String.Format("color:rgb({0},{1},{2});", r, g, b));
             builder.AppendLine("}");
 

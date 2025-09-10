@@ -63,6 +63,7 @@ namespace Programacion123
                .WithTextStyle(DocumentTextElementId.IndexLevel1, style.TextElementStyles[DocumentTextElementId.IndexLevel1])
                .WithTextStyle(DocumentTextElementId.IndexLevel2, style.TextElementStyles[DocumentTextElementId.IndexLevel2])
                .WithTextStyle(DocumentTextElementId.IndexLevel3, style.TextElementStyles[DocumentTextElementId.IndexLevel3])
+               .WithTextStyle(DocumentTextElementId.IndexTitle, style.TextElementStyles[DocumentTextElementId.IndexTitle])
                .WithTextStyle(DocumentTextElementId.CoverSubjectCode, style.TextElementStyles[DocumentTextElementId.CoverSubjectCode])
                .WithTextStyle(DocumentTextElementId.CoverSubjectName, style.TextElementStyles[DocumentTextElementId.CoverSubjectName])
                .WithTextStyle(DocumentTextElementId.CoverGradeTypeName, style.TextElementStyles[DocumentTextElementId.CoverGradeTypeName])
