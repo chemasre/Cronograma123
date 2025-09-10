@@ -522,7 +522,7 @@ namespace Programacion123
                 .WithHeader2(index[9].Subitems[0].Title)
 
                 .WithTable(2 + Subject.QueryEvaluableActivityIndexes().Count, 2 + subjectTemplate.LearningResults.ToList().Count)
-                .WithCell(1, 1, NonBreakingSpace).WithCell(1, 2, NonBreakingSpace)
+                .WithEmptyCell(1, 1).WithCellBorders(false, true, false, false).WithEmptyCell(1, 2).WithCellBorders(false, true, false, true)
                 .Foreach<LearningResult>(subjectTemplate.LearningResults.ToList(),
                     (r, i, d) => { d.WithCell(1, 3 + i, String.Format("RA{0}", i + 1), WordDocument.TextStyleWeightsTableHeader2, WordDocument.CellStyleWeightsHeader2); }
                 )

@@ -501,7 +501,7 @@ namespace Programacion123
                             .WithInner(Tag.Create("h2").WithInner("Cuadro de distribución de pesos").WithId("Apartado10-1"))
                             .WithInner(Table.Create()
                                 .WithRow()
-                                    .WithCell("&nbsp;", 1, 2).WithCellClass("weightsTable")
+                                    .WithCell("&nbsp;", 1, 2).WithCellClass("emptyCell")
                                     .WithCellForeach<LearningResult>(subjectTemplate.LearningResults.ToList(),
                                         (learningResult, i, table) =>
                                         {

@@ -181,6 +181,7 @@ namespace Programacion123
             builder.AppendLine("table { width:100%; }");
             builder.AppendLine("a { text-decoration: none; }");
 
+            builder.AppendLine(".emptyCell { background: none; }");
 
             if(isPreview)
             {

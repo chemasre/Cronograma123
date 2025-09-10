@@ -335,6 +335,17 @@ namespace Programacion123
             table.Cell(row, column).TopPadding = cellStyle.ParagraphFormat.SpaceBefore;
             table.Cell(row, column).BottomPadding = cellStyle.ParagraphFormat.SpaceAfter;
 
+            cell = table.Cell(row, column);
+
+            return this;
+        }
+
+        public WordDocument WithEmptyCell(int row, int column)
+        {
+            table.Cell(row, column).Shading.BackgroundPatternColor = WdColor.wdColorAutomatic;
+            foreach(Border b in table.Cell(row, column).Borders) {  b.LineStyle = WdLineStyle.wdLineStyleNone; }
+
+            cell = table.Cell(row, column);
 
             return this;
         }
@@ -352,7 +363,16 @@ namespace Programacion123
 
             return this;
         }
-        
+
+        public WordDocument WithCellBorders(bool top, bool bottom, bool left, bool right)
+        {
+            cell.Borders[WdBorderType.wdBorderTop].LineStyle = (top ? WdLineStyle.wdLineStyleSingle : WdLineStyle.wdLineStyleNone);
+            cell.Borders[WdBorderType.wdBorderBottom].LineStyle = (bottom ? WdLineStyle.wdLineStyleSingle : WdLineStyle.wdLineStyleNone);
+            cell.Borders[WdBorderType.wdBorderLeft].LineStyle = (left ? WdLineStyle.wdLineStyleSingle : WdLineStyle.wdLineStyleNone);
+            cell.Borders[WdBorderType.wdBorderRight].LineStyle = (right ? WdLineStyle.wdLineStyleSingle : WdLineStyle.wdLineStyleNone);
+
+            return this;
+        }
 
         public WordDocument WithCellSpan(int row, int column, int rowSpan, int colSpan)
         {
