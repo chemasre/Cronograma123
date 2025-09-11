@@ -61,13 +61,13 @@
                     <ImageBrush ImageSource="/Images/ButtonAccept.png"/>
                 </Button.Background>
             </Button>
-            <Label x:Name="LabelAccept" Content="Exportar" FontSize="22" Width="158" Canvas.Left="426" Canvas.Top="622" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label x:Name="LabelAccept" Content="Exportar" FontSize="22" Width="158" Canvas.Left="426" Canvas.Top="622" Foreground="{DynamicResource FreeLabel}" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonCancel" Content="" Height="48" Width="48" Canvas.Left="574" BorderBrush="{x:Null}" Canvas.Top="618" Style="{DynamicResource PushableButton}" Click="ButtonCancel_Click" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
                 </Button.Background>
             </Button>
-            <Label Content="Cancelar" FontSize="22" Width="158" Canvas.Left="636" Canvas.Top="622" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Cancelar" FontSize="22" Width="158" Canvas.Left="636" Canvas.Top="622" Foreground="{DynamicResource FreeLabel}" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label Content="Calendarios" Canvas.Left="40" Canvas.Top="455" Width="110" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <ListBox x:Name="ListBoxCalendars" Height="84" Width="226" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="156" Canvas.Top="457" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Button x:Name="ButtonCalendarReferenceAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="156" Canvas.Top="427" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">

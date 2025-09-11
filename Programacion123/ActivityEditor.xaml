@@ -23,7 +23,7 @@
                 <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Height="52" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="0,0,5,0"/>
             </Border>
             <TextBox x:Name="TextTitle" Canvas.Left="185" Canvas.Top="93" Width="288" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}" FontFamily="{DynamicResource Font}"/>
-            <Label Content="Título de la actividad" Canvas.Left="25" Canvas.Top="87" HorizontalAlignment="Center" VerticalAlignment="Top" Width="169"/>
+            <Label Content="Título de la actividad" Canvas.Left="25" Canvas.Top="87" HorizontalAlignment="Center" VerticalAlignment="Top" Width="169" Foreground="{DynamicResource FreeLabel}"/>
             <TabControl Height="421" Width="466" HorizontalAlignment="Center" Canvas.Top="166" VerticalAlignment="Top" Canvas.Left="26" BorderBrush="#00ACACAC" Opacity="0.985">
                 <TabControl.Background>
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
@@ -193,7 +193,7 @@
                     </Canvas>
                 </TabItem>
             </TabControl>
-            <Label Content="Bloque vinculado" Canvas.Left="26" Canvas.Top="120" Width="169" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Bloque vinculado" Canvas.Left="26" Canvas.Top="120" Width="169" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabel}"/>
             <TextBox x:Name="TextBlock" Canvas.Left="185" Canvas.Top="124" Width="288" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{DynamicResource Font}" IsReadOnly="True"/>
             <Image Height="74" Canvas.Left="12" Canvas.Top="612" Width="100" Source="/Images/ValidatorCapy.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="718" Width="531" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />

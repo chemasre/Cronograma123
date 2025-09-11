@@ -23,12 +23,12 @@
                 <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Height="52" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="0,0,5,0"/>
             </Border>
             <TextBox x:Name="TextTitle" Canvas.Left="106" Canvas.Top="94" Width="244" HorizontalAlignment="Left" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
-            <Label Content="Título" Canvas.Left="29" Canvas.Top="90" HorizontalAlignment="Left" VerticalAlignment="Top" Width="89"/>
+            <Label Content="Título" Canvas.Left="29" Canvas.Top="90" HorizontalAlignment="Left" VerticalAlignment="Top" Width="89" Foreground="{DynamicResource FreeLabel}"/>
             <DatePicker x:Name="DateStart" Canvas.Left="169" Canvas.Top="340" HorizontalAlignment="Center" VerticalAlignment="Top" Width="181" GotKeyboardFocus="DateStart_GotKeyboardFocus"/>
-            <Label Content="Primer día del curso" Canvas.Left="29" Canvas.Top="340" Width="154" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Primer día del curso" Canvas.Left="29" Canvas.Top="340" Width="154" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabel}"/>
             <DatePicker x:Name="DateEnd" Canvas.Left="169" Canvas.Top="372" HorizontalAlignment="Center" VerticalAlignment="Top" Width="181" GotKeyboardFocus="DateEnd_GotKeyboardFocus"/>
-            <Label Content="Último día del curso" Canvas.Left="29" Canvas.Top="370" Width="126" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label Content="Festivos" Canvas.Left="29" Canvas.Top="404" Width="77" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Último día del curso" Canvas.Left="29" Canvas.Top="370" Width="126" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabel}"/>
+            <Label Content="Festivos" Canvas.Left="29" Canvas.Top="404" Width="77" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabel}"/>
             <Button x:Name="ButtonFreeDayAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="297" Canvas.Top="406" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonFreeDayAdd_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonNew.png"/>

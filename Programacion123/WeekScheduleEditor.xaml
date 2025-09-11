@@ -25,7 +25,7 @@
                 <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Height="52" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Margin="5,0,5,0"/>
             </Border>
             <TextBox x:Name="TextTitle" Canvas.Left="102" Canvas.Top="89" Width="218" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
-            <Label Content="Título" Canvas.Left="27" Canvas.Top="85" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75"/>
+            <Label Content="Título" Canvas.Left="27" Canvas.Top="85" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Foreground="{DynamicResource FreeLabel}"/>
             <Image Height="74" Canvas.Left="14" Canvas.Top="277" Width="100" Source="/Images/ValidatorCapy.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         </Canvas>

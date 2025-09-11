@@ -51,8 +51,9 @@
             <GradientStop Color="#FFC3B7FF" Offset="1"/>
         </LinearGradientBrush>
         <FontFamily x:Key="TitleFont">Verdana Pro Cond</FontFamily>
+        <SolidColorBrush x:Key="FreeLabel" Color="#FF000000"/>
         <FontFamily x:Key="Font">Yu Gothic UI</FontFamily>
-        <FontFamily x:Key="WindowTitleFont">Segoe Script</FontFamily>
+        <FontFamily x:Key="WindowTitleFont">Comic Sans MS</FontFamily>
         <ImageBrush x:Key="TabBackground" ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
     </Application.Resources>
 </Application>

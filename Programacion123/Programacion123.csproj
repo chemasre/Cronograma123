@@ -15,10 +15,14 @@
   <ItemGroup>
     <None Remove="BotonNew.png" />
     <None Remove="ButtonClose.png" />
+    <None Remove="ButtonEdit.png" />
     <None Remove="ButtonMoveDown.png" />
     <None Remove="ButtonMoveUp.png" />
     <None Remove="ButtonWarning.png" />
     <None Remove="IconEdit.png" />
+    <None Remove="Images\Background01.jpg" />
+    <None Remove="Images\Background02.jpg" />
+    <None Remove="Images\Background03.jpg" />
     <None Remove="Images\BackgroundClouds.png" />
     <None Remove="Images\BackgroundSteps.png" />
     <None Remove="Images\BackgroundTitle.png" />
@@ -97,6 +101,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="ButtonEdit.png" />
+    <Resource Include="Images\Background01.jpg" />
+    <Resource Include="Images\Background02.jpg" />
+    <Resource Include="Images\Background03.jpg" />
     <Resource Include="Images\BackgroundClouds.png" />
     <Resource Include="Images\BackgroundSteps.png" />
     <Resource Include="Images\BackgroundTitle.png" />

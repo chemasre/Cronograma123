@@ -33,14 +33,14 @@
                     <ImageBrush ImageSource="/Images/ButtonAccept.png"/>
                 </Button.Background>
             </Button>
-            <Label x:Name="LabelAccept" Content="Generar" FontSize="22" Width="158" Canvas.Left="740" Canvas.Top="678" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label x:Name="LabelAccept" Content="Generar" FontSize="22" Width="158" Canvas.Left="740" Canvas.Top="678" Foreground="{DynamicResource FreeLabel}" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonCancel" Content="" Height="48" Width="48" Canvas.Left="888" BorderBrush="{x:Null}" Canvas.Top="674" Style="{DynamicResource PushableButton}" Click="ButtonCancel_Click" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
                 </Button.Background>
             </Button>
-            <Label Content="Cancelar" FontSize="22" Width="158" Canvas.Left="950" Canvas.Top="678" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label Content="Programación" Canvas.Left="48" Canvas.Top="139" Width="113" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Cancelar" FontSize="22" Width="158" Canvas.Left="950" Canvas.Top="678" Foreground="{DynamicResource FreeLabel}" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Programación" Canvas.Left="48" Canvas.Top="139" Width="113" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabel}"/>
             <TextBox x:Name="TextSubject" Canvas.Left="147" Canvas.Top="144" Width="196" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Button x:Name="ButtonSubjectPick" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="352" Canvas.Top="141" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Button.Background>

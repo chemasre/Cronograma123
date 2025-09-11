@@ -39,13 +39,13 @@
                     <ImageBrush ImageSource="/Images/ButtonReferenceAddBig.png"/>
                 </Button.Background>
             </Button>
-            <Label x:Name="LabelAddReference" Content="Añadir selección" FontSize="22" Width="246" Canvas.Left="80" Canvas.Top="408" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label x:Name="LabelAddReference" Content="Añadir selección" FontSize="22" Width="246" Canvas.Left="80" Canvas.Top="408" Foreground="{DynamicResource FreeLabel}" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonSetReference" Content="" Height="48" Width="48" Canvas.Left="25" BorderBrush="{x:Null}" Canvas.Top="404" Style="{DynamicResource PushableButton}" Click="ButtonAddReference_Click" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButonReferenceSetBig.png"/>
                 </Button.Background>
             </Button>
-            <Label x:Name="LabelSetReference" Content="Escoger selección" FontSize="22" Width="246" Canvas.Left="80" Canvas.Top="408" Foreground="#7F093AD0" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label x:Name="LabelSetReference" Content="Escoger selección" FontSize="22" Width="246" Canvas.Left="80" Canvas.Top="408" Foreground="{DynamicResource FreeLabel}" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         </Canvas>
     </Border>
