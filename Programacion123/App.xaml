@@ -55,5 +55,6 @@
         <FontFamily x:Key="Font">Yu Gothic UI</FontFamily>
         <FontFamily x:Key="WindowTitleFont">Comic Sans MS</FontFamily>
         <ImageBrush x:Key="TabBackground" ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+        <SolidColorBrush x:Key="FreeLabelMainWindow" Color="#B200506B"/>
     </Application.Resources>
 </Application>
