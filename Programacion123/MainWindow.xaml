@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="Programador123" Height="910" Width="1453" Background="{x:Null}" Foreground="{x:Null}" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown_1" Topmost="True" FontFamily="{DynamicResource Font}">
+        Title="Programador123" Height="892" Width="1453" Background="{x:Null}" Foreground="{x:Null}" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown_1" Topmost="True" FontFamily="{DynamicResource Font}">
     <Window.Resources>
         <Color x:Key="ColorInvalid">#FFFDFF21</Color>
         <Color x:Key="ColorValid">#FFBAFFA7</Color>
@@ -299,7 +299,7 @@
                     </TransformGroup>
                 </Image.RenderTransform>
             </Image>
-            <Border x:Name="Blocker" Padding="5" Background="#7F000000" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="859" Width="1453" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" />
+            <Border x:Name="Blocker" Padding="5" Background="#7F000000" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="892" Width="1453" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
             <Label Content="Importar" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="129" Canvas.Left="62" Canvas.Top="814" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         </Canvas>
     </Border>
