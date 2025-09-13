@@ -5,22 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="HTMLGeneratorSettings" Height="758" Width="1147" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="None" Background="{x:Null}" MouseDown="Window_MouseDown">
+        Title="HTMLGeneratorSettings" Height="899.8" Width="1500" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="None" Background="{x:Null}" MouseDown="Window_MouseDown">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>
         </Border.Background>
         <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
 
-            <Border BorderThickness="1" Height="101" Width="1128" CornerRadius="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource TitleBackground}"/>
+            <Border BorderThickness="1" Height="73" Width="1484" CornerRadius="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource TitleBackground}"/>
 
-            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" HorizontalAlignment="Center" Canvas.Left="1072" VerticalAlignment="Top" BorderBrush="{x:Null}" Canvas.Top="12" Style="{DynamicResource PushableButton}" Click="ButtonClose_Click">
+            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" HorizontalAlignment="Left" Canvas.Left="1433" VerticalAlignment="Top" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}" Click="ButtonClose_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
                 </Button.Background>
             </Button>
-            <Border x:Name="BorderToAlignVerticallyTitle" BorderThickness="1" Height="69" Width="1047" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="10" Canvas.Left="20">
-                <TextBlock x:Name="TextTitle" TextWrapping="Wrap" FontFamily="{DynamicResource WindowTitleFont}" FontSize="24" FontWeight="Bold" LineStackingStrategy="BlockLineHeight" LineHeight="24" Width="1028" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Generar programación">
+            <Border x:Name="BorderToAlignVerticallyTitle" BorderThickness="1" Height="69" Width="1047" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="20" Canvas.Top="2">
+                <TextBlock x:Name="TextTitle" TextWrapping="Wrap" FontFamily="{DynamicResource WindowTitleFont}" FontSize="24" FontWeight="Bold" LineStackingStrategy="BlockLineHeight" LineHeight="24" Width="1028" HorizontalAlignment="Center" VerticalAlignment="Top" Text="Generar programación" Margin="0,25,0,0">
                     <TextBlock.Foreground>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="White"/>
@@ -28,21 +28,31 @@
                         </LinearGradientBrush>
                     </TextBlock.Foreground></TextBlock>
             </Border>
-            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonAccept" Content="" Height="48" Width="48" Canvas.Left="684" BorderBrush="{x:Null}" Canvas.Top="674" Style="{DynamicResource PushableButton}" Click="ButtonAccept_Click" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Border BorderThickness="1" Height="64" Width="195" Canvas.Left="1032" Canvas.Top="804" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Border.Background>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                </Border.Background>
+            </Border>
+            <Label x:Name="LabelAccept" Content="Generar" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="129" Canvas.Left="1062" Canvas.Top="816" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Border BorderThickness="1" Height="64" Width="196" Canvas.Left="1241" Canvas.Top="804" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Border.Background>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                </Border.Background>
+            </Border>
+            <Label Content="Cancelar" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="130" Canvas.Left="1271" Canvas.Top="816" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonAccept" Content="" Height="48" Width="48" Canvas.Left="1170" BorderBrush="{x:Null}" Canvas.Top="811" Style="{DynamicResource PushableButton}" Click="ButtonAccept_Click" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonAccept.png"/>
                 </Button.Background>
             </Button>
-            <Label x:Name="LabelAccept" Content="Generar" FontSize="22" Width="158" Canvas.Left="740" Canvas.Top="678" Foreground="{DynamicResource FreeLabel}" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonCancel" Content="" Height="48" Width="48" Canvas.Left="888" BorderBrush="{x:Null}" Canvas.Top="674" Style="{DynamicResource PushableButton}" Click="ButtonCancel_Click" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonCancel" Content="" Height="48" Width="48" Canvas.Left="1379" BorderBrush="{x:Null}" Canvas.Top="811" Style="{DynamicResource PushableButton}" Click="ButtonCancel_Click" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
                 </Button.Background>
             </Button>
-            <Label Content="Cancelar" FontSize="22" Width="158" Canvas.Left="950" Canvas.Top="678" Foreground="{DynamicResource FreeLabel}" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label Content="Programación" Canvas.Left="48" Canvas.Top="139" Width="113" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabel}"/>
-            <TextBox x:Name="TextSubject" Canvas.Left="147" Canvas.Top="144" Width="196" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Button x:Name="ButtonSubjectPick" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="352" Canvas.Top="141" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Label Content="Programación" Canvas.Left="48" Canvas.Top="111" Width="113" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabel}"/>
+            <TextBox x:Name="TextSubject" Canvas.Left="147" Canvas.Top="116" Width="196" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button x:Name="ButtonSubjectPick" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="352" Canvas.Top="113" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonPick.png"/>
                 </Button.Background>
@@ -50,19 +60,19 @@
                     <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                 </Button.Foreground>
             </Button>
-            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="118" Canvas.Top="589" Width="292" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="118" Canvas.Top="713" Width="292" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Height="52" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="0,0,5,0"/>
             </Border>
-            <Image Height="74" Canvas.Left="19" Canvas.Top="583" Width="100" Source="/Images/ValidatorCapy.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Rectangle Height="538" Width="702" Canvas.Left="426" Canvas.Top="114" Fill="#33000000" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <WebBrowser x:Name="WebPreview" Height="499" Canvas.Left="444" Canvas.Top="133" Width="664" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Image Height="74" Canvas.Left="19" Canvas.Top="707" Width="100" Source="/Images/ValidatorCapy.png" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Rectangle Height="680" Width="1027" Canvas.Left="426" Canvas.Top="104" Fill="#33000000" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <WebBrowser x:Name="WebPreview" Height="641" Canvas.Left="444" Canvas.Top="126" Width="989" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <ComboBox x:Name="Heading1Size_Copiar3" Width="58" Canvas.Left="148" Canvas.Top="382" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <ComboBox x:Name="Heading1Size_Copiar4" Width="58" Canvas.Left="285" Canvas.Top="383" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <ComboBox x:Name="Heading1Color_Copiar" Width="72" Canvas.Left="50" Canvas.Top="441" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <ComboBoxItem Content="Ciclo Formativo de Grado Superior"/>
                 <ComboBoxItem Content="Ciclo Formativo de Grado Medio"/>
             </ComboBox>
-            <TabControl Height="389" Width="384" Canvas.Top="186" Canvas.Left="26" BorderBrush="#00ACACAC" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <TabControl Height="538" Width="384" Canvas.Top="156" Canvas.Left="26" BorderBrush="#00ACACAC" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <TabControl.Background>
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </TabControl.Background>
@@ -169,7 +179,8 @@
                     </Canvas>
                 </TabItem>
             </TabControl>
-            <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="758" Width="1147" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" />
+            <Border BorderThickness="1" Height="8" Width="971" Canvas.Left="31" Canvas.Top="828" CornerRadius="30,30,30,30" Background="#99EDEBB1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Border x:Name="Blocker" Padding="5" Background="#7F000000" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="900" Width="1500" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
 
         </Canvas>
     </Border>

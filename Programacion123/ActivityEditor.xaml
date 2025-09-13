@@ -196,7 +196,7 @@
             <Label Content="Bloque vinculado" Canvas.Left="26" Canvas.Top="120" Width="169" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabel}"/>
             <TextBox x:Name="TextBlock" Canvas.Left="185" Canvas.Top="124" Width="288" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{DynamicResource Font}" IsReadOnly="True"/>
             <Image Height="74" Canvas.Left="12" Canvas.Top="612" Width="100" Source="/Images/ValidatorCapy.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="718" Width="531" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
+            <Border x:Name="Blocker" Padding="5" Background="#7F000000" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="718" Width="531" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
         </Canvas>
     </Border>
 </Window>

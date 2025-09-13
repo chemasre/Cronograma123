@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="EntityPickerBase" Height="483" Width="375" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" AllowsTransparency="True" Topmost="True" FontFamily="{DynamicResource Font}">
+        Title="EntityPickerBase" Height="490" Width="375" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" AllowsTransparency="True" Topmost="True" FontFamily="{DynamicResource Font}">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>
@@ -34,18 +34,23 @@
                     </TextBlock.Foreground>
                 </TextBlock>
             </Border>
-            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonAddReference" Content="" Height="48" Width="48" Canvas.Left="25" BorderBrush="{x:Null}" Canvas.Top="404" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ButtonAddReference_Click">
+            <Border BorderThickness="1" Height="64" Width="270" Canvas.Left="44" Canvas.Top="400" CornerRadius="30,30,30,30" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Border.Background>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                </Border.Background>
+            </Border>
+            <Label x:Name="LabelAddReference" Content="Añadir selección" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="188" Canvas.Left="66" Canvas.Top="413" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label x:Name="LabelSetReference" Content="Escoger selección" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="188" Canvas.Left="66" Canvas.Top="413" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonAddReference" Content="" Height="48" Width="48" Canvas.Left="256" BorderBrush="{x:Null}" Canvas.Top="408" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ButtonAddReference_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonReferenceAddBig.png"/>
                 </Button.Background>
             </Button>
-            <Label x:Name="LabelAddReference" Content="Añadir selección" FontSize="22" Width="246" Canvas.Left="80" Canvas.Top="408" Foreground="{DynamicResource FreeLabel}" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonSetReference" Content="" Height="48" Width="48" Canvas.Left="25" BorderBrush="{x:Null}" Canvas.Top="404" Style="{DynamicResource PushableButton}" Click="ButtonAddReference_Click" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonSetReference" Content="" Height="48" Width="48" Canvas.Left="256" BorderBrush="{x:Null}" Canvas.Top="408" Style="{DynamicResource PushableButton}" Click="ButtonAddReference_Click" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButonReferenceSetBig.png"/>
                 </Button.Background>
             </Button>
-            <Label x:Name="LabelSetReference" Content="Escoger selección" FontSize="22" Width="246" Canvas.Left="80" Canvas.Top="408" Foreground="{DynamicResource FreeLabel}" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         </Canvas>
     </Border>

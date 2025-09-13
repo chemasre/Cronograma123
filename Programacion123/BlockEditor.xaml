@@ -83,7 +83,7 @@
                 </Button.Foreground>
             </Button>
             <Image Height="74" Canvas.Left="19" Canvas.Top="448" Width="100" Source="/Images/ValidatorCapy.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Border x:Name="Blocker" Padding="5" Background="#7FFFFFFF" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="562" Width="503" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
+            <Border x:Name="Blocker" Padding="5" Background="#7F000000" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="562" Width="503" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
 
         </Canvas>
     </Border>
