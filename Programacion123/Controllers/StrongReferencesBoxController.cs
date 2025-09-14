@@ -180,8 +180,18 @@ namespace Programacion123
         {
             if(deleteConfirmQuestion != null)
             {
+                if(blocker != null) { blocker.Visibility = Visibility.Visible; }
                 ConfirmDialog confirm = new ConfirmDialog();
-                confirm.Init(ConfirmIconType.warning, "Confirma eliminación", deleteConfirmQuestion, ConfirmChooseType.acceptAndCancel, (b) => { if (b) { ButtonDeleteConfirmed(); } });
+                confirm.Init(ConfirmIconType.warning, "Confirma eliminación", deleteConfirmQuestion, ConfirmChooseType.acceptAndCancel,
+                    (b) =>
+                    {
+                        if (b)
+                        {
+                            ButtonDeleteConfirmed();
+                        }
+
+                        if(blocker != null) { blocker.Visibility = Visibility.Hidden; }
+                    });
                 confirm.ShowDialog();
             }
             else

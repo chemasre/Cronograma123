@@ -34,9 +34,12 @@
     <None Remove="Images\ButtonAccept.png" />
     <None Remove="Images\ButtonBigGenerateDoc.png" />
     <None Remove="Images\ButtonCancel.png" />
+    <None Remove="Images\ButtonDeleteMedium.png" />
+    <None Remove="Images\ButtonEditMedium.png" />
     <None Remove="Images\ButtonFolder.png" />
     <None Remove="Images\ButtonHelp.png" />
     <None Remove="Images\ButtonHome.png" />
+    <None Remove="Images\ButtonNewMedium.png" />
     <None Remove="Images\ButtonPick.png" />
     <None Remove="Images\ButtonReferenceAddBig.png" />
     <None Remove="Images\ButtonReset.png" />
@@ -115,6 +118,8 @@
     <Resource Include="Images\ButonReferenceRemove.png" />
     <Resource Include="Images\ButonReferenceSetBig.png" />
     <Resource Include="Images\ButtonBigGenerateDoc.png" />
+    <Resource Include="Images\ButtonDeleteMedium.png" />
+    <Resource Include="Images\ButtonEditMedium.png" />
     <Resource Include="Images\ButtonFolder.png" />
     <Resource Include="Images\ButtonHelp.png" />
     <Resource Include="Images\ButtonHome.png" />
@@ -129,6 +134,7 @@
     <Resource Include="Images\ButtonDelete.png" />
     <Resource Include="Images\ButtonEdit.png" />
     <Resource Include="Images\ButtonNew.png" />
+    <Resource Include="Images\ButtonNewMedium.png" />
     <Resource Include="Images\ButtonPick.png" />
     <Resource Include="Images\ButtonReferenceAddBig.png" />
     <Resource Include="Images\ButtonReset.png" />

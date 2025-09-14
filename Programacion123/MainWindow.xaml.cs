@@ -49,7 +49,9 @@ namespace Programacion123
         {
             InitializeComponent();
 
-            LabelTitle.Content = "Programabara " + version;
+            string title = "Programabara v" + version;
+            Title = title;
+            LabelTitle.Content = title;
 
             Settings.Init();
             Storage.Init();
