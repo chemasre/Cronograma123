@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="HTMLGeneratorSettings" Height="899.8" Width="1500" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="None" Background="{x:Null}" MouseDown="Window_MouseDown">
+        Title="HTMLGeneratorSettings" Height="899.8" Width="1500" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="None" Background="{x:Null}" MouseDown="Window_MouseDown" ShowInTaskbar="False">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>
@@ -20,13 +20,13 @@
                 </Button.Background>
             </Button>
             <Border x:Name="BorderToAlignVerticallyTitle" BorderThickness="1" Height="69" Width="1047" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="20" Canvas.Top="2">
-                <TextBlock x:Name="TextTitle" TextWrapping="Wrap" FontFamily="{DynamicResource WindowTitleFont}" FontSize="24" FontWeight="Bold" LineStackingStrategy="BlockLineHeight" LineHeight="24" Width="1028" HorizontalAlignment="Center" VerticalAlignment="Top" Text="Generar programación" Margin="0,25,0,0">
+                <TextBlock x:Name="TextTitle" TextWrapping="Wrap" FontFamily="{DynamicResource WindowTitleFont}" FontSize="24" FontWeight="Bold" LineStackingStrategy="BlockLineHeight" LineHeight="24" Width="1028" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0">
                     <TextBlock.Foreground>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="White"/>
                             <GradientStop Color="White" Offset="1"/>
                         </LinearGradientBrush>
-                    </TextBlock.Foreground></TextBlock>
+                    </TextBlock.Foreground><Run Text="Generar programación"/><Run Language="es-es" Text=" didáctica"/></TextBlock>
             </Border>
             <Border BorderThickness="1" Height="64" Width="195" Canvas.Left="1032" Canvas.Top="804" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>

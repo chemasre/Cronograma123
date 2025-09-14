@@ -996,7 +996,7 @@ namespace Programacion123
             Close();
         }
 
-        private void ButtonAccept_Click(object sender, RoutedEventArgs e)
+        private async void ButtonAccept_Click(object sender, RoutedEventArgs e)
         {
             if(previewGenerator.Validate().code != GeneratorValidationCode.success) 
             {
@@ -1039,12 +1039,40 @@ namespace Programacion123
                     generator.Style = previewGenerator.Style;
                     generator.Subject = previewGenerator.Subject;
 
-                    generator.Generate(saveFile.FileName);
+                    LongTaskDialog dialogTask = new();
 
-                    Process process = new();
-                    process.StartInfo = new ProcessStartInfo(saveFile.FileName);
-                    process.StartInfo.UseShellExecute = true;
-                    process.Start();
+                    dialogTask.Init("Generando documento");
+                    Blocker.Visibility = Visibility.Visible;
+                    
+                    dialogTask.Show();
+
+
+                    await Task.Run(
+                        () =>
+                        {
+                            generator.Generate(saveFile.FileName);
+                        });
+
+                    dialogTask.Close();
+                    
+                    ConfirmDialog confirmOpenDialog = new();
+
+                    confirmOpenDialog.Init(ConfirmIconType.question,
+                                            "Abrir documento",
+                                            "La programación didáctica se ha generado correctamente ¿quieres abrir el documento?",
+                                            ConfirmChooseType.yesAndNo,
+                        (b) =>
+                        {
+                            if(b)
+                            {
+                                Process process = new();
+                                process.StartInfo = new ProcessStartInfo(saveFile.FileName);
+                                process.StartInfo.UseShellExecute = true;
+                                process.Start();
+                            }
+                        });
+
+                    confirmOpenDialog.ShowDialog();
 
                     closeAction?.Invoke(true);
                     Close();
@@ -1052,8 +1080,6 @@ namespace Programacion123
             
                 Blocker.Visibility = Visibility.Hidden;
             }
-
-
 
             
         }

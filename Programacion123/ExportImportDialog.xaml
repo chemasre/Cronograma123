@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="ExportImportDialog" Height="712" Width="864" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True" Background="{x:Null}" WindowStyle="None" AllowsTransparency="True" MouseDown="Window_MouseDown">
+        Title="ExportImportDialog" Height="712" Width="864" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True" Background="{x:Null}" WindowStyle="None" AllowsTransparency="True" MouseDown="Window_MouseDown" ShowInTaskbar="False">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="GradeTemplateEditor" Height="645" Width="529" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" AllowsTransparency="True" MouseDown="Window_MouseDown">
+        Title="GradeTemplateEditor" Height="645" Width="529" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" AllowsTransparency="True" MouseDown="Window_MouseDown" ShowInTaskbar="False">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush ImageSource="/Images/BackgroundClouds.png" Stretch="UniformToFill"/>

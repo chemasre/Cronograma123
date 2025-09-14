@@ -1,13 +1,7 @@
-﻿using Microsoft.Office.Interop.Word;
-using System.Reflection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Globalization;
+using System.Reflection;
+using Microsoft.Office.Interop.Word;
 
 namespace Programacion123
 {
@@ -16,11 +10,15 @@ namespace Programacion123
     {
         public const string SettingsId = "DocGenerator";
 
+        float? screenDpiX = null;
+        float? screenDpiY = null;
+
         public WordGenerator()
         {
             LineBreak = "\n";
             NonBreakingSpace = " ";
-
+            
+            GetScreenDpi(out screenDpiX, out screenDpiY);
         }
 
         public override void Generate(string path)
@@ -43,13 +41,8 @@ namespace Programacion123
 
             Application app = new();
 
-            float? dpiX = null;
-            float? dpiY = null;
-
-            GetScreenDpi(out dpiX, out dpiY);
-
-            WordDocument.Create(app)
-               .If(dpiX != null && dpiY != null, d => d.WithReferenceDpi(dpiX.Value, dpiY.Value))
+            WordDocument document = WordDocument.Create(app)
+               .If(screenDpiX != null && screenDpiY != null, d => d.WithReferenceDpi(screenDpiX.Value, screenDpiY.Value))
                .WithMargins(style.Margins)
                .WithOrientation(style.Orientation)
                .WithTextStyle(DocumentTextElementId.NormalText, style.TextElementStyles[DocumentTextElementId.NormalText])
@@ -589,9 +582,14 @@ namespace Programacion123
                .Save(path)
                .Close();
             
+            document = null;
+
             object missingValue = Missing.Value;
     
             app.Quit(ref missingValue, ref missingValue, ref missingValue);
+
+            app = null;
+
         }
 
         public override void LoadOrCreateSettings()

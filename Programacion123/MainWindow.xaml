@@ -280,8 +280,8 @@
                 </Border.Background>
             </Border>
             <Label Content="6" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="657" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label Content="Genera la programación" FontSize="36" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="436" Canvas.Left="108" Canvas.Top="661" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Button x:Name="ButtonGenerateDocument" Content="" Width="72" Height="72" BorderBrush="{x:Null}" Canvas.Left="556" Canvas.Top="654" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonGenerateDocument_Click">
+            <Label Content="Genera la programación didáctica" FontSize="28" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="436" Canvas.Left="109" Canvas.Top="660" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Button x:Name="ButtonGenerateDocument" Content="" Width="72" Height="72" BorderBrush="{x:Null}" Canvas.Left="566" Canvas.Top="652" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonGenerateDocument_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonBigGenerateDoc.png"/>
                 </Button.Background>

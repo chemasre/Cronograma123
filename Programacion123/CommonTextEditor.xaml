@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="CommonTextEditor" Height="552" Width="504" WindowStyle="None" ResizeMode="NoResize" Background="{x:Null}" Foreground="{x:Null}" AllowsTransparency="True" MouseDown="Window_MouseDown" WindowStartupLocation="CenterScreen" Topmost="True" FontFamily="{DynamicResource Font}">
+        Title="CommonTextEditor" Height="552" Width="504" WindowStyle="None" ResizeMode="NoResize" Background="{x:Null}" Foreground="{x:Null}" AllowsTransparency="True" MouseDown="Window_MouseDown" WindowStartupLocation="CenterScreen" Topmost="True" FontFamily="{DynamicResource Font}" ShowInTaskbar="False">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>

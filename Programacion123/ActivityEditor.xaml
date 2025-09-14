@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="ActivityEditor" Height="718" Width="531" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="{x:Null}" WindowStyle="None" AllowsTransparency="True" MouseDown="Window_MouseDown" Topmost="True" FontFamily="{DynamicResource Font}">
+        Title="ActivityEditor" Height="718" Width="531" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="{x:Null}" WindowStyle="None" AllowsTransparency="True" MouseDown="Window_MouseDown" Topmost="True" FontFamily="{DynamicResource Font}" ShowInTaskbar="False">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush ImageSource="/Images/BackgroundClouds.png" Stretch="UniformToFill"/>

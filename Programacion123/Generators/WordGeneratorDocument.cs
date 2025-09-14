@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Office.Interop.Word;
-using Microsoft.Office.Core;
-using System.Diagnostics;
-using System.Reflection;
-using Microsoft.VisualBasic;
+﻿using System.IO;
 using System.Numerics;
-using System.Media;
-using System.IO;
+using System.Reflection;
 using System.Windows.Media.Imaging;
-using MSHTML;
-using System.Net.Cache;
+using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Word;
+using Microsoft.VisualBasic;
+using FillFormat = Microsoft.Office.Interop.Word.FillFormat;
+using LineFormat = Microsoft.Office.Interop.Word.LineFormat;
+using PictureFormat = Microsoft.Office.Interop.Word.PictureFormat;
+using Range = Microsoft.Office.Interop.Word.Range;
+using Shape = Microsoft.Office.Interop.Word.Shape;
+using Shapes = Microsoft.Office.Interop.Word.Shapes;
+using TextFrame = Microsoft.Office.Interop.Word.TextFrame;
+
 
 
 namespace Programacion123
@@ -63,21 +62,28 @@ namespace Programacion123
         WordDocument(Application _app)
         {
             missingValue = Missing.Value;
-            document = _app.Documents.Add(ref missingValue, ref missingValue, ref missingValue, ref missingValue);
+
+            Documents documents = _app.Documents;
+
+            document = documents.Add(ref missingValue, ref missingValue, ref missingValue, ref missingValue);
+
+            Styles styles = document.Styles;
+
             generatorTextStyleIdToWordStyleId = new();
             generatorCoverElementIdToPosition = new();
             generatorTableElementIdToStyle = new();
             wordStylesCache = new();
 
-            foreach(Style s in document.Styles) { wordStylesCache.Add(s.NameLocal); }
-
-            #if DEBUG
+            for(int i = 1 ; i <= styles.Count; i++)
+            {
+                Style s = styles[i];
+                wordStylesCache.Add(s.NameLocal);
+            }
 
             _app.Visible = false;
 
-            #endif
-
             application = _app;
+
         }
 
         public WordDocument WithReferenceDpi(float dpiX, float dpiY)
@@ -92,10 +98,12 @@ namespace Programacion123
         {
             if(closed) { return this; }
 
-            document.PageSetup.TopMargin    = application.CentimetersToPoints(margins.Top);
-            document.PageSetup.BottomMargin = application.CentimetersToPoints(margins.Bottom);
-            document.PageSetup.LeftMargin   = application.CentimetersToPoints(margins.Left);
-            document.PageSetup.RightMargin  = application.CentimetersToPoints(margins.Right);
+            PageSetup setup = document.PageSetup;
+
+            setup.TopMargin    = application.CentimetersToPoints(margins.Top);
+            setup.BottomMargin = application.CentimetersToPoints(margins.Bottom);
+            setup.LeftMargin   = application.CentimetersToPoints(margins.Left);
+            setup.RightMargin  = application.CentimetersToPoints(margins.Right);
 
             return this;
         }
@@ -104,7 +112,9 @@ namespace Programacion123
         {            
             if(closed) { return this; }
 
-            document.PageSetup.Orientation = (orientation == DocumentOrientation.Portrait ?
+            PageSetup setup = document.PageSetup;
+
+            setup.Orientation = (orientation == DocumentOrientation.Portrait ?
                                                 WdOrientation.wdOrientPortrait :
                                                 WdOrientation.wdOrientLandscape);
 
@@ -139,14 +149,19 @@ namespace Programacion123
         {
             if(closed) { return this; }
 
-            Paragraph paragraph = document.Content.Paragraphs.Add(ref missingValue);
+            Range content = document.Content;
+            Paragraphs paragraphs = content.Paragraphs;
+
+            Paragraph paragraph = paragraphs.Add(ref missingValue);
 
 
             string wordStyleId = generatorTextStyleIdToWordStyleId[documentStyleId];
 
-            paragraph.Range.Text = text;
-            paragraph.Range.set_Style(wordStyleId);
-            paragraph.Range.InsertParagraphAfter();
+            Range paragraphRange = paragraph.Range;
+
+            paragraphRange.Text = text;
+            paragraphRange.set_Style(wordStyleId);
+            paragraphRange.InsertParagraphAfter();
 
 
             return this;
@@ -182,10 +197,12 @@ namespace Programacion123
 
             Style style = GetOrCreateWordStyle(wordStyleId);
 
-            style.ParagraphFormat.SpaceAfter = generatorTableElementStyle.Padding.Bottom;
-            style.ParagraphFormat.SpaceBefore = generatorTableElementStyle.Padding.Top;
-            style.ParagraphFormat.LeftIndent = generatorTableElementStyle.Padding.Left;
-            style.ParagraphFormat.RightIndent = generatorTableElementStyle.Padding.Right;
+            ParagraphFormat format = style.ParagraphFormat;
+
+            format.SpaceAfter = generatorTableElementStyle.Padding.Bottom;
+            format.SpaceBefore = generatorTableElementStyle.Padding.Top;
+            format.LeftIndent = generatorTableElementStyle.Padding.Left;
+            format.RightIndent = generatorTableElementStyle.Padding.Right;
 
             int r;
             int g;
@@ -193,7 +210,9 @@ namespace Programacion123
 
             DocumentStyle.GetRGBFromColor(generatorTableElementStyle.BackgroundColor, out r, out g, out b);
 
-            style.Shading.BackgroundPatternColor = (WdColor)(r + (1 << 8) * g + (1 << 16) * b);
+            Shading shading = style.Shading;
+
+            shading.BackgroundPatternColor = (WdColor)(r + (1 << 8) * g + (1 << 16) * b);
 
             return this;
         }
@@ -201,14 +220,15 @@ namespace Programacion123
         Style GetOrCreateWordStyle(string wordStyleId)
         {
             Style style;
+            Styles styles = document.Styles;
 
             if(wordStylesCache.Contains(wordStyleId))
             {
-                style = document.Styles[wordStyleId];
+                style = styles[wordStyleId];
             }
             else
             {
-                style = document.Styles.Add(wordStyleId);
+                style = styles.Add(wordStyleId);
                 wordStylesCache.Add(wordStyleId);
             }
 
@@ -254,12 +274,14 @@ namespace Programacion123
             generatorTextStyleIdToWordStyleId.Add(generatorTextStyleId, wordStyleId);
 
             wordStyle = GetOrCreateWordStyle(wordStyleId);
+
+            Font font = wordStyle.Font;
                 
-            wordStyle.Font.Name = (generatorTextStyle.FontFamily == DocumentTextElementFontFamily.SansSerif ? "Calibri" : "Times New Roman");
-            wordStyle.Font.Size = generatorTextStyle.FontSize;
-            wordStyle.Font.Bold = generatorTextStyle.Bold ? 1 : 0;
-            wordStyle.Font.Italic = generatorTextStyle.Italic ? 1 : 0;
-            wordStyle.Font.Underline = generatorTextStyle.Underscore ? WdUnderline.wdUnderlineSingle : WdUnderline.wdUnderlineNone;
+            font.Name = (generatorTextStyle.FontFamily == DocumentTextElementFontFamily.SansSerif ? "Calibri" : "Times New Roman");
+            font.Size = generatorTextStyle.FontSize;
+            font.Bold = generatorTextStyle.Bold ? 1 : 0;
+            font.Italic = generatorTextStyle.Italic ? 1 : 0;
+            font.Underline = generatorTextStyle.Underscore ? WdUnderline.wdUnderlineSingle : WdUnderline.wdUnderlineNone;
 
             ParagraphFormat paragraphFormat = wordStyle.ParagraphFormat;
 
@@ -271,10 +293,10 @@ namespace Programacion123
 
             wordStyle.ParagraphFormat = paragraphFormat;
 
-            wordStyle.ParagraphFormat.SpaceAfter = generatorTextStyle.Margins.Bottom;
-            wordStyle.ParagraphFormat.SpaceBefore = generatorTextStyle.Margins.Top;
-            wordStyle.ParagraphFormat.LeftIndent = generatorTextStyle.Margins.Left;
-            wordStyle.ParagraphFormat.RightIndent = generatorTextStyle.Margins.Right;
+            paragraphFormat.SpaceAfter = generatorTextStyle.Margins.Bottom;
+            paragraphFormat.SpaceBefore = generatorTextStyle.Margins.Top;
+            paragraphFormat.LeftIndent = generatorTextStyle.Margins.Left;
+            paragraphFormat.RightIndent = generatorTextStyle.Margins.Right;
 
             int r;
             int g;
@@ -282,7 +304,7 @@ namespace Programacion123
 
             DocumentStyle.GetRGBFromColor(generatorTextStyle.FontColor, out r, out g, out b);
 
-            wordStyle.Font.Color = (WdColor)(r + (1 << 8) * g + (1 << 16) * b);
+            font.Color = (WdColor)(r + (1 << 8) * g + (1 << 16) * b);
 
             return this;
         }
@@ -303,16 +325,20 @@ namespace Programacion123
 
         public WordDocument WithTable(int rows, int columns)
         {
-            Console.WriteLine("Table Rows: " + rows + " Columns: " + columns);
+            //Console.WriteLine("Table Rows: " + rows + " Columns: " + columns);
 
             missingValue = Missing.Value;
             Microsoft.Office.Interop.Word.Range range = document.Content;
             range.InsertParagraphAfter();
             range.Collapse(WdCollapseDirection.wdCollapseEnd);
 
-            table = document.Tables.Add(range, rows, columns, WdDefaultTableBehavior.wdWord9TableBehavior, WdAutoFitBehavior.wdAutoFitContent);
+            Tables tables = document.Tables;
+
+            table = tables.Add(range, rows, columns, WdDefaultTableBehavior.wdWord9TableBehavior, WdAutoFitBehavior.wdAutoFitContent);
             
-            table.Range.set_Style("TableText");
+            Range tableRange = table.Range;
+
+            tableRange.set_Style("TableText");
 
             table.PreferredWidthType = WdPreferredWidthType.wdPreferredWidthPercent;
             table.PreferredWidth = 100;
@@ -322,18 +348,23 @@ namespace Programacion123
 
         public WordDocument WithCell(int row, int column, string text, string textStyleId = TextStyleTable, string cellStyleId = CellStyleNormal)
         {
-            Console.WriteLine("Row: " + row + " Column: " + column + " Content: " + text);
+            //Console.WriteLine("Row: " + row + " Column: " + column + " Content: " + text);
 
-            table.Cell(row, column).Range.Text = text;
-            table.Cell(row, column).Range.set_Style(textStyleId);
+            cell = table.Cell(row, column);
+            Range cellRange = cell.Range;
+
+            cellRange.Text = text;
+            cellRange.set_Style(textStyleId);
 
             Style cellStyle = GetOrCreateWordStyle(cellStyleId);
 
-            table.Cell(row, column).Shading.BackgroundPatternColor = cellStyle.Shading.BackgroundPatternColor;
-            table.Cell(row, column).LeftPadding = cellStyle.ParagraphFormat.LeftIndent;
-            table.Cell(row, column).RightPadding = cellStyle.ParagraphFormat.RightIndent;
-            table.Cell(row, column).TopPadding = cellStyle.ParagraphFormat.SpaceBefore;
-            table.Cell(row, column).BottomPadding = cellStyle.ParagraphFormat.SpaceAfter;
+            Shading shading = cell.Shading;
+
+            shading.BackgroundPatternColor = cellStyle.Shading.BackgroundPatternColor;
+            cell.LeftPadding = cellStyle.ParagraphFormat.LeftIndent;
+            cell.RightPadding = cellStyle.ParagraphFormat.RightIndent;
+            cell.TopPadding = cellStyle.ParagraphFormat.SpaceBefore;
+            cell.BottomPadding = cellStyle.ParagraphFormat.SpaceAfter;
 
             cell = table.Cell(row, column);
 
@@ -342,8 +373,22 @@ namespace Programacion123
 
         public WordDocument WithEmptyCell(int row, int column)
         {
-            table.Cell(row, column).Shading.BackgroundPatternColor = WdColor.wdColorAutomatic;
-            foreach(Border b in table.Cell(row, column).Borders) {  b.LineStyle = WdLineStyle.wdLineStyleNone; }
+            cell = table.Cell(row, column);
+            Shading cellShading = cell.Shading;
+
+            cellShading.BackgroundPatternColor = WdColor.wdColorAutomatic;
+
+            Borders borders = cell.Borders;
+
+            Border b1 = borders[WdBorderType.wdBorderTop];
+            Border b2 = borders[WdBorderType.wdBorderBottom];
+            Border b3 = borders[WdBorderType.wdBorderLeft];
+            Border b4 = borders[WdBorderType.wdBorderRight];
+
+            b1.LineStyle = WdLineStyle.wdLineStyleNone;
+            b2.LineStyle = WdLineStyle.wdLineStyleNone;
+            b3.LineStyle = WdLineStyle.wdLineStyleNone;
+            b4.LineStyle = WdLineStyle.wdLineStyleNone;
 
             cell = table.Cell(row, column);
 
@@ -366,21 +411,27 @@ namespace Programacion123
 
         public WordDocument WithCellBorders(bool top, bool bottom, bool left, bool right)
         {
-            cell.Borders[WdBorderType.wdBorderTop].LineStyle = (top ? WdLineStyle.wdLineStyleSingle : WdLineStyle.wdLineStyleNone);
-            cell.Borders[WdBorderType.wdBorderBottom].LineStyle = (bottom ? WdLineStyle.wdLineStyleSingle : WdLineStyle.wdLineStyleNone);
-            cell.Borders[WdBorderType.wdBorderLeft].LineStyle = (left ? WdLineStyle.wdLineStyleSingle : WdLineStyle.wdLineStyleNone);
-            cell.Borders[WdBorderType.wdBorderRight].LineStyle = (right ? WdLineStyle.wdLineStyleSingle : WdLineStyle.wdLineStyleNone);
+            Borders borders = cell.Borders;
+
+            borders[WdBorderType.wdBorderTop].LineStyle = (top ? WdLineStyle.wdLineStyleSingle : WdLineStyle.wdLineStyleNone);
+            borders[WdBorderType.wdBorderBottom].LineStyle = (bottom ? WdLineStyle.wdLineStyleSingle : WdLineStyle.wdLineStyleNone);
+            borders[WdBorderType.wdBorderLeft].LineStyle = (left ? WdLineStyle.wdLineStyleSingle : WdLineStyle.wdLineStyleNone);
+            borders[WdBorderType.wdBorderRight].LineStyle = (right ? WdLineStyle.wdLineStyleSingle : WdLineStyle.wdLineStyleNone);
 
             return this;
         }
 
         public WordDocument WithCellSpan(int row, int column, int rowSpan, int colSpan)
         {
-            Console.WriteLine("Row: " + row + " Column: " + column + " Rowspan: " + rowSpan + " Colspan: " + colSpan);
+            //Console.WriteLine("Row: " + row + " Column: " + column + " Rowspan: " + rowSpan + " Colspan: " + colSpan);
+
+            Cell cell1 = table.Cell(row, column);
 
             if(rowSpan > 1 || colSpan > 1)
             {
-                table.Cell(row, column).Merge(table.Cell(row + rowSpan - 1, column + colSpan - 1));
+                Cell cell2 = table.Cell(row + rowSpan - 1, column + colSpan - 1);
+
+                cell1.Merge(cell2);
             }
 
             return this;
@@ -399,7 +450,9 @@ namespace Programacion123
             var indexRange = document.Range(titleRange.End);
             indexRange.Collapse(WdCollapseDirection.wdCollapseStart);
 
-            index = document.TablesOfContents.Add(indexRange);
+            TablesOfContents tablesOfContents = document.TablesOfContents;
+
+            index = tablesOfContents.Add(indexRange);
 
             return this;
         }
@@ -408,24 +461,39 @@ namespace Programacion123
         {
             Vector2 position = generatorCoverElementIdToPosition[coverStyleId];
 
-            Microsoft.Office.Interop.Word.Shape shape = document.Shapes.AddShape((int)MsoAutoShapeType.msoShapeRectangle,
-                                        application.CentimetersToPoints(position.X) + document.PageSetup.LeftMargin, 
-                                        application.CentimetersToPoints(position.Y) + document.PageSetup.TopMargin,
-                                        application.CentimetersToPoints(1),
-                                        application.CentimetersToPoints(30)
-                                        );
+            PageSetup pageSetup = document.PageSetup;
+            Shapes shapes = document.Shapes;
 
-            shape.TextFrame.AutoSize = 1;
-            shape.TextFrame.WordWrap = 0;
-            shape.TextFrame.TextRange.Text = text;
-            shape.TextFrame.TextRange.set_Style(generatorTextStyleIdToWordStyleId[textStyleId]);
-            shape.TextFrame.TextRange.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
-            shape.TextFrame.VerticalAnchor = MsoVerticalAnchor.msoAnchorTop;
-            shape.TextFrame.TextRange.ParagraphFormat.SpaceBefore = 0;
-            shape.TextFrame.TextRange.ParagraphFormat.SpaceAfter = 0;
+            Shape shape = shapes.AddShape((int)MsoAutoShapeType.msoShapeRectangle,
+                            application.CentimetersToPoints(position.X) + pageSetup.LeftMargin, 
+                            application.CentimetersToPoints(position.Y) + pageSetup.TopMargin,
+                            application.CentimetersToPoints(1),
+                            application.CentimetersToPoints(30)
+                            );
 
-            shape.Fill.Visible = (MsoTriState)TriState.False;  
-            shape.Line.Visible = (MsoTriState)TriState.False;
+            TextFrame textFrame = shape.TextFrame;
+
+            textFrame.AutoSize = 1;
+            textFrame.WordWrap = 0;
+
+            Range textRange = textFrame.TextRange;
+
+            textRange.Text = text;
+            textRange.set_Style(generatorTextStyleIdToWordStyleId[textStyleId]);
+
+            ParagraphFormat paragraphFormat = textRange.ParagraphFormat;
+
+            textRange.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
+            textFrame.VerticalAnchor = MsoVerticalAnchor.msoAnchorTop;
+            paragraphFormat.SpaceBefore = 0;
+            paragraphFormat.SpaceAfter = 0;
+
+            FillFormat fill = shape.Fill;
+            LineFormat line = shape.Line;
+
+            fill.Visible = (MsoTriState)TriState.False;  
+            line.Visible = (MsoTriState)TriState.False;
+
             return this;
         }
 
@@ -456,10 +524,12 @@ namespace Programacion123
 
             Vector2 position = generatorCoverElementIdToPosition[coverStyleId];
 
-            Microsoft.Office.Interop.Word.Shape shape = document.Shapes.AddPicture(tempFilePath,
-                                      false, true,
-                                      application.CentimetersToPoints(position.X),
-                                      application.CentimetersToPoints(position.Y));
+            Shapes shapes = document.Shapes;
+
+            Shape shape = shapes.AddPicture(tempFilePath,
+                        false, true,
+                        application.CentimetersToPoints(position.X),
+                        application.CentimetersToPoints(position.Y));
 
             // Scale image
 
@@ -467,7 +537,9 @@ namespace Programacion123
             shape.ScaleWidth((float)dpiHorizontal / referenceDpiX, (MsoTriState)MsoTriState.msoTrue);
             shape.ScaleHeight((float)dpiVertical / referenceDpiY, (MsoTriState)MsoTriState.msoTrue);
 
-            shape.PictureFormat.TransparentBackground = (MsoTriState)MsoTriState.msoTrue;
+            PictureFormat pictureFormat = shape.PictureFormat;
+
+            pictureFormat.TransparentBackground = (MsoTriState)MsoTriState.msoTrue;
 
             File.Delete(tempFilePath);
 
@@ -486,11 +558,18 @@ namespace Programacion123
 
         public WordDocument WithPageNumbering()
         {
-            foreach(Section s in document.Sections)
-            {
-                HeaderFooter footer = s.Footers[WdHeaderFooterIndex.wdHeaderFooterPrimary];
+            Sections sections = document.Sections;
 
-                footer.PageNumbers.Add(WdParagraphAlignment.wdAlignParagraphRight, false);
+            for(int i = 1; i <= sections.Count; i++)
+            {
+                Section s = sections[i];
+                HeadersFooters headersFooters = s.Footers;
+
+                HeaderFooter footer = headersFooters[WdHeaderFooterIndex.wdHeaderFooterPrimary];
+
+                PageNumbers pageNumbers = footer.PageNumbers;
+
+                pageNumbers.Add(WdParagraphAlignment.wdAlignParagraphRight, false);
             }
 
             return this;

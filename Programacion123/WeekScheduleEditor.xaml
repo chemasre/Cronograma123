@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:Programacion123"
     mc:Ignorable="d"
-    Title="WeekScheduleEditor" Height="377" Width="366" Topmost="True" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize" MouseDown="Window_MouseDown" AllowsTransparency="True" Background="{x:Null}" FontFamily="{DynamicResource Font}">
+    Title="WeekScheduleEditor" Height="377" Width="366" Topmost="True" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize" MouseDown="Window_MouseDown" AllowsTransparency="True" Background="{x:Null}" FontFamily="{DynamicResource Font}" ShowInTaskbar="False">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush ImageSource="/Images/BackgroundClouds.png" Stretch="UniformToFill"/>

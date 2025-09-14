@@ -149,13 +149,36 @@ namespace Programacion123
 
         private void ButtonHome_Click(object sender, RoutedEventArgs e)
         {
-            OpenUrl(homeUrl);
+            Blocker.Visibility = Visibility.Visible;
+
+            ConfirmDialog question = new();
+
+            question.Init(ConfirmIconType.info,
+                "Abrir navegador", 
+                "Esto abrirá tu navegador por defecto y te dirigirá a la página principal del proyecto",
+                ConfirmChooseType.acceptAndCancel,
+                (b) => { if(b) { OpenUrl(homeUrl); } });            
+
+            question.ShowDialog();
+
+            Blocker.Visibility = Visibility.Hidden;
         }
 
         private void ButtonHelp_Click(object sender, RoutedEventArgs e)
         {
-            OpenUrl(helpUrl);
-        }
+            Blocker.Visibility = Visibility.Visible;
+
+            ConfirmDialog question = new();
+
+            question.Init(ConfirmIconType.info,
+                "Abrir navegador", 
+                "Esto abrirá tu navegador por defecto y te dirigirá al tutorial de la aplicación",
+                ConfirmChooseType.acceptAndCancel,
+                (b) => { if(b) { OpenUrl(helpUrl); } });    
+            
+            question.ShowDialog();
+
+            Blocker.Visibility = Visibility.Hidden;        }
 
         void OpenUrl(string url)
         {

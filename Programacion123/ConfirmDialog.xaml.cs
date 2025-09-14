@@ -1,16 +1,19 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace Programacion123
 {
     public enum ConfirmIconType
     {
         info,
-        warning
+        warning,
+        question
     }
 
     public enum ConfirmChooseType
     {
         acceptAndCancel,
+        yesAndNo,
         acceptOnly
     }
 
@@ -39,11 +42,17 @@ namespace Programacion123
 
             IconWarning.Visibility = (_iconType == ConfirmIconType.warning ? Visibility.Visible : Visibility.Hidden);
             IconInfo.Visibility = (_iconType == ConfirmIconType.info ? Visibility.Visible : Visibility.Hidden);
+            IconQuestion.Visibility = (_iconType == ConfirmIconType.question ? Visibility.Visible : Visibility.Hidden);
+
+            ButtonAccept.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel || _chooseType == ConfirmChooseType.yesAndNo? Visibility.Visible : Visibility.Hidden);
+            ButtonCancel.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel || _chooseType == ConfirmChooseType.yesAndNo ? Visibility.Visible : Visibility.Hidden);
+            BorderOption1.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel || _chooseType == ConfirmChooseType.yesAndNo ? Visibility.Visible : Visibility.Hidden);
 
             LabelAccept.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel ? Visibility.Visible : Visibility.Hidden);
             LabelCancel.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel ? Visibility.Visible : Visibility.Hidden);
-            ButtonAccept.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel ? Visibility.Visible : Visibility.Hidden);
-            ButtonCancel.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel ? Visibility.Visible : Visibility.Hidden);
+
+            LabelYes.Visibility = (_chooseType == ConfirmChooseType.yesAndNo ? Visibility.Visible : Visibility.Hidden);
+            LabelNo.Visibility = (_chooseType == ConfirmChooseType.yesAndNo ? Visibility.Visible : Visibility.Hidden);
 
             LabelAcceptSingle.Visibility = (_chooseType == ConfirmChooseType.acceptOnly ? Visibility.Visible : Visibility.Hidden);
             ButtonAcceptSingle.Visibility = (_chooseType == ConfirmChooseType.acceptOnly ? Visibility.Visible : Visibility.Hidden);
@@ -65,6 +74,14 @@ namespace Programacion123
         {
             result = false;
             Close();
+        }
+
+        void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DragMove();
+            }
         }
     }
 }

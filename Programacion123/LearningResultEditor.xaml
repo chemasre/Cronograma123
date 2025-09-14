@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="LearningResultEditor" Height="540" Width="506" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" HorizontalAlignment="Left" VerticalAlignment="Top" AllowsTransparency="True" Background="{x:Null}" Foreground="{x:Null}" MouseDown="Window_MouseDown" Topmost="True" FontFamily="{DynamicResource Font}">
+        Title="LearningResultEditor" Height="540" Width="506" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" HorizontalAlignment="Left" VerticalAlignment="Top" AllowsTransparency="True" Background="{x:Null}" Foreground="{x:Null}" MouseDown="Window_MouseDown" Topmost="True" FontFamily="{DynamicResource Font}" ShowInTaskbar="False">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush ImageSource="/Images/BackgroundClouds.png"/>
