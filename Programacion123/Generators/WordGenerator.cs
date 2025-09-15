@@ -569,8 +569,11 @@ namespace Programacion123
 
                         for(int i = 0; i < blockIndexes.Count; i++)
                         {
+                            int rowOffset = 0;
+                            for(int j = 0; j < i; j++) { rowOffset += blockActivityCount[blockIndexes[j]]; }
+
                             int blockIndex = blockIndexes[i];
-                            d.WithCellSpan(3 + i + (i > 0 ? blockActivityCount[blockIndexes[i - 1]] - 1 : 0) , 1, blockActivityCount[blockIndex], 1);
+                            d.WithCellSpan(3 + rowOffset , 1, blockActivityCount[blockIndex], 1);
                         }
 
                     }
