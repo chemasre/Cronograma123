@@ -310,15 +310,24 @@ namespace Programacion123
         }
 
 
-        public WordDocument Save(string path)
+        public WordDocument Save(string path, out bool success)
         {
-            if(closed) { return this; }
+            if(closed) { success = false; return this; }
 
             if(index != null) { index.Update(); }
 
             object pathObject = path;
 
-            document.SaveAs2(ref pathObject);
+            try
+            {
+                document.SaveAs2(ref pathObject);
+                success = true;
+            }
+            catch(Exception e)
+            {
+                success = false;
+            }
+
 
             return this;
         }

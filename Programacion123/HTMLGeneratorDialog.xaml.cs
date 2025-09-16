@@ -1047,33 +1047,47 @@ namespace Programacion123
                     dialogTask.Show();
 
 
-                    await Task.Run(
+                    GeneratorResult result = await Task.Run<GeneratorResult>(
                         () =>
                         {
-                            generator.Generate(saveFile.FileName);
+                            GeneratorResult result;
+                            
+                            result = generator.Generate(saveFile.FileName);
+
+                            return result;
                         });
 
                     dialogTask.Close();
-                    
-                    ConfirmDialog confirmOpenDialog = new();
 
-                    confirmOpenDialog.Init(ConfirmIconType.question,
-                                            "Abrir documento",
-                                            "La programación didáctica se ha generado correctamente ¿quieres abrir el documento?",
-                                            ConfirmChooseType.yesAndNo,
-                        (b) =>
-                        {
-                            if(b)
+                    if(result.code != GeneratorResultCode.success)
+                    {
+                        ConfirmDialog errorDialog = new();
+
+                        errorDialog.Init(ConfirmIconType.warning, "Error", result.ToString(), ConfirmChooseType.acceptOnly, (b) => { });
+                        errorDialog.ShowDialog();
+                    }
+                    else
+                    {
+                        ConfirmDialog confirmOpenDialog = new();
+
+                        confirmOpenDialog.Init(ConfirmIconType.question,
+                                                "Abrir documento",
+                                                "La programación didáctica se ha generado correctamente ¿quieres abrir el documento?",
+                                                ConfirmChooseType.yesAndNo,
+                            (b) =>
                             {
-                                Process process = new();
-                                process.StartInfo = new ProcessStartInfo(saveFile.FileName);
-                                process.StartInfo.UseShellExecute = true;
-                                process.Start();
-                            }
-                        });
+                                if(b)
+                                {
+                                    Process process = new();
+                                    process.StartInfo = new ProcessStartInfo(saveFile.FileName);
+                                    process.StartInfo.UseShellExecute = true;
+                                    process.Start();
+                                }
+                            });
 
-                    confirmOpenDialog.ShowDialog();
-
+                        confirmOpenDialog.ShowDialog();
+                    }
+                    
                     closeAction?.Invoke(true);
                     Close();
                 }

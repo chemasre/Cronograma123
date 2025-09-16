@@ -2,6 +2,30 @@
 
 namespace Programacion123
 {
+    public enum GeneratorResultCode
+    {
+        success,
+        fileWriteError,
+        wordNotFound
+    }
+
+    public struct GeneratorResult
+    {
+        public GeneratorResultCode code;
+
+        public static GeneratorResult Create(GeneratorResultCode _code) { return new GeneratorResult() { code = _code }; }
+
+        public override string ToString()
+        {
+            if(code == GeneratorResultCode.success) { return "La programación se ha generado correctamente"; }
+            else if(code == GeneratorResultCode.fileWriteError) { return "No se ha podido crear el fichero. " +
+                                                                         "Asegúrate de que tienes permiso para escribir en la carpeta " +
+                                                                         "y que el fichero no está abierto en otro programa."; }
+            else // code == GeneratorResultCode.wordNotFound
+            { return "Para poder generar un fichero en este formato es necesario que tengas instalada una versión compatible de Microsoft Word"; }
+        }
+    }
+
     public struct GeneratorValidationResult
     {
         public GeneratorValidationCode code;
@@ -58,7 +82,7 @@ namespace Programacion123
 
         }
 
-        public abstract void Generate(string path);
+        public abstract GeneratorResult Generate(string path);
         public abstract void SaveSettings();
         public abstract void LoadOrCreateSettings();
         public abstract GeneratorValidationResult Validate();

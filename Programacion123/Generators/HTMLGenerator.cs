@@ -17,16 +17,23 @@ namespace Programacion123
         /// <summary>
         /// Requires validation result to be success
         /// </summary>
-        public override void Generate(string outputPath)
+        public override GeneratorResult Generate(string outputPath)
         {
+            GeneratorResult result = GeneratorResult.Create(GeneratorResultCode.success);
+
             FileStreamOptions options = new() { Access = FileAccess.Write, Mode = FileMode.Create };
             StreamWriter writer = new(outputPath, Encoding.UTF8, options);
+
+            if(writer == null) { result = GeneratorResult.Create(GeneratorResultCode.fileWriteError); }
+            else
+            {    
+                string html = GenerateHTML();
     
-            string html = GenerateHTML();
-    
-            writer.Write(html);
-            writer.Close();
-    
+                writer.Write(html);
+                writer.Close();
+            }
+
+            return result;
         }
     
         public override void LoadOrCreateSettings()
