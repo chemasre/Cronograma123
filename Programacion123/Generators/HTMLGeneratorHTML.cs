@@ -10,12 +10,11 @@ namespace Programacion123
         /// </summary>
         public string GenerateHTML(bool isPreview = false)
         {
-            Debug.Assert(Style.HasValue);
+            Debug.Assert(Style != null);
             Debug.Assert(Subject != null);
             Debug.Assert(Subject.Template != null);
             Debug.Assert(Subject.Template.GradeTemplate != null);
 
-            DocumentStyle style = Style.Value;
             SubjectTemplate subjectTemplate = Subject.Template;
 
 
@@ -56,14 +55,14 @@ namespace Programacion123
                         Tag.Create("head")
                             .WithInner(Tag.Create("meta").WithParam("charset", "UTF-8"))
                             .WithInner(Tag.Create("title").WithInner("Programación didáctica del módulo " + subjectTemplate.SubjectName))
-                            .WithInner(Tag.Create("style").WithInner(GenerateCSS(isPreview)))
+                            .WithInner(Tag.Create("Style").WithInner(GenerateCSS(isPreview)))
                             .WithInner(Tag.Create("script").WithInner(javascript))
                     )
                     .WithInner(
                         Tag.Create("body")
                             .WithInner(Tag.Create("div").WithClass("cover")
-                               .WithInner(Tag.Create("img").WithClass("coverLogo").WithParam("src", "data:image/png;base64," + style.LogoBase64))
-                               .WithInner(Tag.Create("img").WithClass("coverCover").WithParam("src", "data:image/png;base64," + style.CoverBase64))
+                               .WithInner(Tag.Create("img").WithClass("coverLogo").WithParam("src", "data:image/png;base64," + Style.LogoBase64))
+                               .WithInner(Tag.Create("img").WithClass("coverCover").WithParam("src", "data:image/png;base64," + Style.CoverBase64))
                                .WithInner(Tag.Create("div").WithClass("coverSubjectCode").WithInner("Módulo profesional " + subjectTemplate.SubjectCode))
                                .WithInner(Tag.Create("div").WithClass("coverSubjectName").WithInner(subjectTemplate.SubjectName))
                                .WithInner(Tag.Create("div").WithClass("coverGradeTypeName").WithInner(gradeTypeName))

@@ -45,6 +45,8 @@ namespace Programacion123
         StrongReferencesBoxController<GradeTemplate, GradeTemplateEditor> gradeTemplatesController;
         StrongReferencesBoxController<Subject, SubjectEditor> subjectsController;
 
+        DocumentStyle style;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -53,8 +55,13 @@ namespace Programacion123
             Title = title;
             LabelTitle.Content = title;
 
-            Settings.Init();
             Storage.Init();
+
+            List<DocumentStyle> styles = Storage.LoadAllEntities<DocumentStyle>();
+            Debug.Assert(styles.Count <= 1, "More than one style found");
+
+            if(styles.Count == 0) { style = new(); style.Save(); }
+            else { style = styles[0]; }
 
             InitUI();
         }
@@ -200,7 +207,6 @@ namespace Programacion123
                     if(e)
                     {
                         Storage.Reset();
-                        Settings.Reset();
                         RestartUI();
                     }
 
@@ -225,7 +231,9 @@ namespace Programacion123
             {
 
                 Storage.Archive_Open(openFileDialog.FileName);
-                Settings.Archive_Open(openFileDialog.FileName);
+
+                List<DocumentStyle> styles = Storage.LoadAllEntities<DocumentStyle>(); 
+                bool hasStyle = (styles.Count > 0);
 
                 ExportImportDialogConfiguration config = new()
                 {
@@ -235,10 +243,14 @@ namespace Programacion123
                     calendarsStorageIds = Storage.GetStorageIds<Calendar>(Storage.LoadAllEntities<Calendar>()),
                     weekSchedulesStorageIds = Storage.GetStorageIds<WeekSchedule>(Storage.LoadAllEntities<WeekSchedule>()),
                     subjectsStorageIds = Storage.GetStorageIds<Subject>(Storage.LoadAllEntities<Subject>()),
-                    includeSettings = Settings.ExistSettings<GeneratorSettings>(HTMLGenerator.SettingsId),
+                    documentStyleStorageId = (styles.Count > 0 ? styles[0].StorageId : null),
+                    includeDocumentStyle = hasStyle,
                     closeAction =
                         (accepted, exportDialog) =>
                         {
+                            bool replaceStyle = false;
+                            string replaceStyleId = "";
+
                             if(accepted)
                             {
                                 List<string> storageIds = new();
@@ -248,22 +260,35 @@ namespace Programacion123
                                 storageIds.AddRange(exportDialog.WeekSchedulesStorageIds);
                                 storageIds.AddRange(exportDialog.SubjectsStorageIds);
 
+                                if(exportDialog.CheckBoxIncludeDocumentStyle.IsChecked.GetValueOrDefault())
+                                {
+                                    replaceStyle = true;
+                                    replaceStyleId = exportDialog.DocumentStyleStorageId;
+                                    storageIds.Add(exportDialog.DocumentStyleStorageId);
+                                }
+
                                 Storage.Archive_CopyStorageIdsToBase(storageIds);
 
-                                if(exportDialog.CheckboxSettings.IsChecked.GetValueOrDefault())
-                                {
-                                    Settings.Archive_CopyToBase();
-                                }
 
                             }
 
                             Storage.Archive_Close();
-                            Settings.Archive_Close();
 
                             Blocker.Visibility = Visibility.Hidden;
 
                             if(accepted)
                             {
+                                if(replaceStyle)
+                                {
+                                    if(replaceStyleId != style.StorageId)
+                                    {
+                                        style.Delete();
+                                    }
+
+                                    style.LoadOrCreate(replaceStyleId);
+                                    
+                                }
+
                                 RestartUI();
                             }
 
@@ -312,12 +337,14 @@ namespace Programacion123
                         storageIds.AddRange(dialog.CalendarsStorageIds);
                         storageIds.AddRange(dialog.WeekSchedulesStorageIds);
                         storageIds.AddRange(dialog.SubjectsStorageIds);
+
+                        if(exportDialog.CheckBoxIncludeDocumentStyle.IsChecked.GetValueOrDefault())
+                        {
+                            storageIds.Add(dialog.DocumentStyleStorageId);
+                        }
+
                         Storage.Archive_Create(storageIds, saveFileDialog.FileName);
 
-                        if(exportDialog.CheckboxSettings.IsChecked.GetValueOrDefault())
-                        {
-                            Settings.Archive_Add(saveFileDialog.FileName);
-                        }
 
                     }
                     else
@@ -344,7 +371,8 @@ namespace Programacion123
                 calendarsStorageIds = Storage.GetStorageIds<Calendar>(Storage.LoadAllEntities<Calendar>()),
                 weekSchedulesStorageIds = Storage.GetStorageIds<WeekSchedule>(Storage.LoadAllEntities<WeekSchedule>()),
                 subjectsStorageIds = Storage.GetStorageIds<Subject>(Storage.LoadAllEntities<Subject>()),
-                includeSettings = true,
+                includeDocumentStyle = true,
+                documentStyleStorageId = style.StorageId,
                 closeAction = closeAction
             };
 
@@ -373,7 +401,7 @@ namespace Programacion123
             {
                 HTMLGeneratorDialog generatorDialog = new();
 
-                generatorDialog.Init(subject, (b) => { Blocker.Visibility = Visibility.Hidden; });
+                generatorDialog.Init(subject, style, (b) => { Blocker.Visibility = Visibility.Hidden; });
                 generatorDialog.ShowDialog();
 
             }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Text.Json;
 
 namespace Programacion123
@@ -220,6 +221,33 @@ namespace Programacion123
             entity.LoadOrCreate(storageId, parentStorageId);
             return entity;
         }
+
+        //public static T? LoadSingleEntity<T>() where T : Entity, new()
+        //{
+        //    T? result = null;
+
+        //    T entity = new T();
+
+        //    string[] files = Directory.GetFiles(GetBasePath(), "*." + entity.StorageClassId);
+
+        //    if(files.Length >= 1)
+        //    {
+        //        entity.LoadOrCreate(Path.GetFileNameWithoutExtension(files[0]));
+        //    }
+
+        //    return result;
+        //}
+
+        //public static T LoadOrCreateSingleEntity<T>() where T : Entity, new()
+        //{
+        //    T? loaded = LoadSingleEntity<T>();
+
+        //    if(loaded == null)
+        //    {
+        //        T entity = new T();
+        //        entity.LoadOrCreate(
+        //    }
+        //}
 
         public static List<T> LoadAllEntities<T>(string? parentStorageId = null) where T : Entity, new()
         {

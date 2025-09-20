@@ -34,19 +34,16 @@ namespace Programacion123
 
         }
 
-        public void Init(Subject? _subject, Action<bool> _closeAction)
+        public void Init(Subject? _subject, DocumentStyle? _style, Action<bool> _closeAction)
         {
             previewGenerator = new HTMLGenerator();
 
             closeAction = _closeAction;
 
-            previewGenerator.LoadOrCreateSettings();
-
             previewGenerator.Subject = _subject;
+            previewGenerator.Style = _style;
 
-            Debug.Assert(previewGenerator.Style.HasValue);
-
-            DocumentStyle previewStyle = previewGenerator.Style.Value;
+            DocumentStyle previewStyle = _style;
 
             var configSubject = WeakReferenceFieldConfiguration<Subject>.CreateForTextBox(TextSubject)
                                                        .WithStorageId(_subject?.StorageId)
@@ -407,9 +404,9 @@ namespace Programacion123
         void UpdateCoverElementStyleUI()
         {
             Debug.Assert(previewGenerator != null);
-            Debug.Assert(previewGenerator.Style.HasValue);
+            Debug.Assert(previewGenerator.Style != null);
 
-            DocumentStyle previewStyle = previewGenerator.Style.Value;
+            DocumentStyle previewStyle = previewGenerator.Style;
 
             DocumentCoverElementId id = (DocumentCoverElementId)ComboCoverElement.SelectedIndex;
             if(!previewStyle.CoverElementStyles.ContainsKey(id)) { previewStyle.CoverElementStyles.Add(id, new DocumentCoverElementStyle()); }
@@ -427,9 +424,9 @@ namespace Programacion123
 
         void UpdateTextElementStyleUI()
         {
-            Debug.Assert(previewGenerator.Style.HasValue);
+            Debug.Assert(previewGenerator.Style != null);
 
-            DocumentStyle previewStyle = previewGenerator.Style.Value;
+            DocumentStyle previewStyle = previewGenerator.Style;
 
             DocumentTextElementId id = (DocumentTextElementId)ComboTextElement.SelectedIndex;
             if(!previewStyle.TextElementStyles.ContainsKey(id)) { previewStyle.TextElementStyles.Add(id, new DocumentTextElementStyle()); }
@@ -459,9 +456,9 @@ namespace Programacion123
 
         private void UpdateTableElementStyleUI()
         {
-            Debug.Assert(previewGenerator.Style.HasValue);
+            Debug.Assert(previewGenerator.Style != null);
 
-            DocumentStyle previewStyle = previewGenerator.Style.Value;
+            DocumentStyle previewStyle = previewGenerator.Style;
 
             DocumentTableElementId id = (DocumentTableElementId)ComboTableElement.SelectedIndex;
             if(!previewStyle.TableElementStyles.ContainsKey(id)) { previewStyle.TableElementStyles.Add(id, new DocumentTableElementStyle()); }
@@ -925,9 +922,9 @@ namespace Programacion123
 
             previewGenerator.Subject = subjectController.GetEntity();
 
-            Debug.Assert(previewGenerator.Style.HasValue);
+            Debug.Assert(previewGenerator.Style != null);
 
-            DocumentStyle previewStyle = previewGenerator.Style.Value;
+            DocumentStyle previewStyle = previewGenerator.Style;
 
             previewStyle.LogoBase64 = GetBase64ImageFromUI(ImageCoverLogo);
             previewStyle.CoverBase64 = GetBase64ImageFromUI(ImageCoverCover);
@@ -987,7 +984,9 @@ namespace Programacion123
 
             previewGenerator.Style = previewStyle;
 
-            previewGenerator.SaveSettings();
+
+            previewGenerator.Style.Save();
+            //previewGenerator.SaveSettings();
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)

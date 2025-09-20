@@ -162,4 +162,8 @@
     <Resource Include="Images\ValidatorCapyBig.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Document\" />
+  </ItemGroup>
+
 </Project>

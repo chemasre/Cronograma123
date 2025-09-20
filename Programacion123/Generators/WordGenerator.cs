@@ -25,12 +25,11 @@ namespace Programacion123
         {
             GeneratorResult result = GeneratorResult.Create(GeneratorResultCode.success);
 
-            Debug.Assert(Style.HasValue);
+            Debug.Assert(Style != null);
             Debug.Assert(Subject != null);
             Debug.Assert(Subject.Template != null);
             Debug.Assert(Subject.Template.GradeTemplate != null);
 
-            DocumentStyle style = Style.Value;
             SubjectTemplate subjectTemplate = Subject.Template;
 
             GradeTemplate gradeTemplate = Subject.Template.GradeTemplate;
@@ -50,46 +49,46 @@ namespace Programacion123
 
                 WordDocument document = WordDocument.Create(app)
                    .If(screenDpiX != null && screenDpiY != null, d => d.WithReferenceDpi(screenDpiX.Value, screenDpiY.Value))
-                   .WithMargins(style.Margins)
-                   .WithOrientation(style.Orientation)
-                   .WithTextStyle(DocumentTextElementId.NormalText, style.TextElementStyles[DocumentTextElementId.NormalText])
-                   .WithTextStyle(DocumentTextElementId.Header1, style.TextElementStyles[DocumentTextElementId.Header1])
-                   .WithTextStyle(DocumentTextElementId.Header2, style.TextElementStyles[DocumentTextElementId.Header2])
-                   .WithTextStyle(DocumentTextElementId.Header3, style.TextElementStyles[DocumentTextElementId.Header3])
-                   .WithTextStyle(DocumentTextElementId.Header4, style.TextElementStyles[DocumentTextElementId.Header4])
-                   .WithTextStyle(DocumentTextElementId.TableText, style.TextElementStyles[DocumentTextElementId.TableText])
-                   .WithTextStyle(DocumentTextElementId.TableHeader1Text, style.TextElementStyles[DocumentTextElementId.TableHeader1Text])
-                   .WithTextStyle(DocumentTextElementId.TableHeader2Text, style.TextElementStyles[DocumentTextElementId.TableHeader2Text])
-                   .WithTextStyle(DocumentTextElementId.IndexLevel1, style.TextElementStyles[DocumentTextElementId.IndexLevel1])
-                   .WithTextStyle(DocumentTextElementId.IndexLevel2, style.TextElementStyles[DocumentTextElementId.IndexLevel2])
-                   .WithTextStyle(DocumentTextElementId.IndexLevel3, style.TextElementStyles[DocumentTextElementId.IndexLevel3])
-                   .WithTextStyle(DocumentTextElementId.IndexTitle, style.TextElementStyles[DocumentTextElementId.IndexTitle])
-                   .WithTextStyle(DocumentTextElementId.CoverSubjectCode, style.TextElementStyles[DocumentTextElementId.CoverSubjectCode])
-                   .WithTextStyle(DocumentTextElementId.CoverSubjectName, style.TextElementStyles[DocumentTextElementId.CoverSubjectName])
-                   .WithTextStyle(DocumentTextElementId.CoverGradeTypeName, style.TextElementStyles[DocumentTextElementId.CoverGradeTypeName])
-                   .WithTextStyle(DocumentTextElementId.CoverGradeName, style.TextElementStyles[DocumentTextElementId.CoverGradeName])
-                   .WithTextStyle(DocumentTextElementId.WeightsTableText, style.TextElementStyles[DocumentTextElementId.WeightsTableText])
-                   .WithTextStyle(DocumentTextElementId.WeightsTableHeader1Text, style.TextElementStyles[DocumentTextElementId.WeightsTableHeader1Text])
-                   .WithTextStyle(DocumentTextElementId.WeightsTableHeader2Text, style.TextElementStyles[DocumentTextElementId.WeightsTableHeader2Text])
-                   .WithTableElementStyle(DocumentTableElementId.TableNormalCell, style.TableElementStyles[DocumentTableElementId.TableNormalCell])
-                   .WithTableElementStyle(DocumentTableElementId.TableHeader1Cell, style.TableElementStyles[DocumentTableElementId.TableHeader1Cell])
-                   .WithTableElementStyle(DocumentTableElementId.TableHeader2Cell, style.TableElementStyles[DocumentTableElementId.TableHeader2Cell])
-                   .WithTableElementStyle(DocumentTableElementId.TableWeightsNormalCell, style.TableElementStyles[DocumentTableElementId.TableWeightsNormalCell])
-                   .WithTableElementStyle(DocumentTableElementId.TableWeightsHeader1Cell, style.TableElementStyles[DocumentTableElementId.TableWeightsHeader1Cell])
-                   .WithTableElementStyle(DocumentTableElementId.TableWeightsHeader2Cell, style.TableElementStyles[DocumentTableElementId.TableWeightsHeader2Cell])
-                   .WithCoverElementPosition(DocumentCoverElementId.Logo, style.CoverElementStyles[DocumentCoverElementId.Logo].Position)
-                   .WithCoverElementPosition(DocumentCoverElementId.Cover, style.CoverElementStyles[DocumentCoverElementId.Cover].Position)
-                   .WithCoverElementPosition(DocumentCoverElementId.GradeName, style.CoverElementStyles[DocumentCoverElementId.GradeName].Position)
-                   .WithCoverElementPosition(DocumentCoverElementId.GradeTypeName, style.CoverElementStyles[DocumentCoverElementId.GradeTypeName].Position)
-                   .WithCoverElementPosition(DocumentCoverElementId.SubjectCode, style.CoverElementStyles[DocumentCoverElementId.SubjectCode].Position)
-                   .WithCoverElementPosition(DocumentCoverElementId.SubjectName, style.CoverElementStyles[DocumentCoverElementId.SubjectName].Position)
+                   .WithMargins(Style.Margins)
+                   .WithOrientation(Style.Orientation)
+                   .WithTextStyle(DocumentTextElementId.NormalText, Style.TextElementStyles[DocumentTextElementId.NormalText])
+                   .WithTextStyle(DocumentTextElementId.Header1, Style.TextElementStyles[DocumentTextElementId.Header1])
+                   .WithTextStyle(DocumentTextElementId.Header2, Style.TextElementStyles[DocumentTextElementId.Header2])
+                   .WithTextStyle(DocumentTextElementId.Header3, Style.TextElementStyles[DocumentTextElementId.Header3])
+                   .WithTextStyle(DocumentTextElementId.Header4, Style.TextElementStyles[DocumentTextElementId.Header4])
+                   .WithTextStyle(DocumentTextElementId.TableText, Style.TextElementStyles[DocumentTextElementId.TableText])
+                   .WithTextStyle(DocumentTextElementId.TableHeader1Text, Style.TextElementStyles[DocumentTextElementId.TableHeader1Text])
+                   .WithTextStyle(DocumentTextElementId.TableHeader2Text, Style.TextElementStyles[DocumentTextElementId.TableHeader2Text])
+                   .WithTextStyle(DocumentTextElementId.IndexLevel1, Style.TextElementStyles[DocumentTextElementId.IndexLevel1])
+                   .WithTextStyle(DocumentTextElementId.IndexLevel2, Style.TextElementStyles[DocumentTextElementId.IndexLevel2])
+                   .WithTextStyle(DocumentTextElementId.IndexLevel3, Style.TextElementStyles[DocumentTextElementId.IndexLevel3])
+                   .WithTextStyle(DocumentTextElementId.IndexTitle, Style.TextElementStyles[DocumentTextElementId.IndexTitle])
+                   .WithTextStyle(DocumentTextElementId.CoverSubjectCode, Style.TextElementStyles[DocumentTextElementId.CoverSubjectCode])
+                   .WithTextStyle(DocumentTextElementId.CoverSubjectName, Style.TextElementStyles[DocumentTextElementId.CoverSubjectName])
+                   .WithTextStyle(DocumentTextElementId.CoverGradeTypeName, Style.TextElementStyles[DocumentTextElementId.CoverGradeTypeName])
+                   .WithTextStyle(DocumentTextElementId.CoverGradeName, Style.TextElementStyles[DocumentTextElementId.CoverGradeName])
+                   .WithTextStyle(DocumentTextElementId.WeightsTableText, Style.TextElementStyles[DocumentTextElementId.WeightsTableText])
+                   .WithTextStyle(DocumentTextElementId.WeightsTableHeader1Text, Style.TextElementStyles[DocumentTextElementId.WeightsTableHeader1Text])
+                   .WithTextStyle(DocumentTextElementId.WeightsTableHeader2Text, Style.TextElementStyles[DocumentTextElementId.WeightsTableHeader2Text])
+                   .WithTableElementStyle(DocumentTableElementId.TableNormalCell, Style.TableElementStyles[DocumentTableElementId.TableNormalCell])
+                   .WithTableElementStyle(DocumentTableElementId.TableHeader1Cell, Style.TableElementStyles[DocumentTableElementId.TableHeader1Cell])
+                   .WithTableElementStyle(DocumentTableElementId.TableHeader2Cell, Style.TableElementStyles[DocumentTableElementId.TableHeader2Cell])
+                   .WithTableElementStyle(DocumentTableElementId.TableWeightsNormalCell, Style.TableElementStyles[DocumentTableElementId.TableWeightsNormalCell])
+                   .WithTableElementStyle(DocumentTableElementId.TableWeightsHeader1Cell, Style.TableElementStyles[DocumentTableElementId.TableWeightsHeader1Cell])
+                   .WithTableElementStyle(DocumentTableElementId.TableWeightsHeader2Cell, Style.TableElementStyles[DocumentTableElementId.TableWeightsHeader2Cell])
+                   .WithCoverElementPosition(DocumentCoverElementId.Logo, Style.CoverElementStyles[DocumentCoverElementId.Logo].Position)
+                   .WithCoverElementPosition(DocumentCoverElementId.Cover, Style.CoverElementStyles[DocumentCoverElementId.Cover].Position)
+                   .WithCoverElementPosition(DocumentCoverElementId.GradeName, Style.CoverElementStyles[DocumentCoverElementId.GradeName].Position)
+                   .WithCoverElementPosition(DocumentCoverElementId.GradeTypeName, Style.CoverElementStyles[DocumentCoverElementId.GradeTypeName].Position)
+                   .WithCoverElementPosition(DocumentCoverElementId.SubjectCode, Style.CoverElementStyles[DocumentCoverElementId.SubjectCode].Position)
+                   .WithCoverElementPosition(DocumentCoverElementId.SubjectName, Style.CoverElementStyles[DocumentCoverElementId.SubjectName].Position)
 
                     //////////////////////////////////////////////////////////////////
                     ///////////// Nivel 1: Portada                 ///////////////////
                     //////////////////////////////////////////////////////////////////
 
-                   .If(!String.IsNullOrEmpty(style.CoverBase64), (d) => d.WithCoverImageElement(style.CoverBase64, DocumentCoverElementId.Cover))
-                   .If(!String.IsNullOrEmpty(style.LogoBase64), (d) => d.WithCoverImageElement(style.LogoBase64, DocumentCoverElementId.Logo))
+                   .If(!String.IsNullOrEmpty(Style.CoverBase64), (d) => d.WithCoverImageElement(Style.CoverBase64, DocumentCoverElementId.Cover))
+                   .If(!String.IsNullOrEmpty(Style.LogoBase64), (d) => d.WithCoverImageElement(Style.LogoBase64, DocumentCoverElementId.Logo))
                    .WithCoverTextElement("Módulo profesional " + subjectTemplate.SubjectCode, DocumentTextElementId.CoverSubjectCode, DocumentCoverElementId.SubjectCode)
                    .WithCoverTextElement(subjectTemplate.SubjectName, DocumentTextElementId.CoverSubjectName, DocumentCoverElementId.SubjectName)
                    .WithCoverTextElement(gradeTemplate.GradeName, DocumentTextElementId.CoverGradeName, DocumentCoverElementId.GradeName)
@@ -604,16 +603,6 @@ namespace Programacion123
             }
 
             return result;
-
-        }
-
-        public override void LoadOrCreateSettings()
-        {
-
-        }
-
-        public override void SaveSettings()
-        {
 
         }
 

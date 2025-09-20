@@ -83,8 +83,6 @@ namespace Programacion123
         }
 
         public abstract GeneratorResult Generate(string path);
-        public abstract void SaveSettings();
-        public abstract void LoadOrCreateSettings();
         public abstract GeneratorValidationResult Validate();
 
         public List<string> GetGradeCommonText(CommonTextId id)

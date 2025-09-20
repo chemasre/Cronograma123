@@ -17,11 +17,14 @@ namespace Programacion123
         WeakReferencesBoxController<WeekSchedule, EntityPicker<WeekSchedule>> weekSchedulesController;
         WeakReferencesBoxController<Subject, EntityPicker<Subject>> subjectsController;
 
+        string documentStyleStorageId;
+
         public List<string> GradeTemplatesStorageIds { get { return gradeTemplatesController.StorageIds; } }
         public List<string> SubjectTemplatesStorageIds { get { return subjectTemplatesController.StorageIds; } }
         public List<string> WeekSchedulesStorageIds { get { return weekSchedulesController.StorageIds; } }
         public List<string> CalendarsStorageIds { get { return calendarsController.StorageIds; } }
         public List<string> SubjectsStorageIds { get { return subjectsController.StorageIds; } }
+        public string? DocumentStyleStorageId  { get { return documentStyleStorageId; } }
 
         string previousStorageBasePath;
 
@@ -38,7 +41,8 @@ namespace Programacion123
             public List<string> calendarsStorageIds;
             public List<string> weekSchedulesStorageIds;
             public List<string> subjectsStorageIds;
-            public bool includeSettings;
+            public bool includeDocumentStyle;
+            public string? documentStyleStorageId;
             public Func<bool, ExportImportDialog, bool>? closeAction;
             
         }
@@ -90,10 +94,10 @@ namespace Programacion123
 
             subjectsController = new(configSubjects);
 
+            documentStyleStorageId = config.documentStyleStorageId;
+            CheckBoxIncludeDocumentStyle.IsChecked = config.includeDocumentStyle;
 
-            CheckboxSettings.IsChecked = config.includeSettings;
-
-            if (!config.isExport && !config.includeSettings) { CheckboxSettings.IsEnabled = false; }
+            if (!config.isExport && !config.includeDocumentStyle) { CheckBoxIncludeDocumentStyle.IsEnabled = false; }
 
 
             if (config.isExport)

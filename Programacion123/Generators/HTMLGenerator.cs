@@ -36,49 +36,6 @@ namespace Programacion123
             return result;
         }
     
-        public override void LoadOrCreateSettings()
-        {
-            GeneratorSettings settings = Settings.LoadOrCreateSettings<GeneratorSettings>(SettingsId);
-
-            Style = new()
-            {
-                LogoBase64 = new(settings.DocumentStyle.LogoBase64),
-                CoverBase64 = new(settings.DocumentStyle.CoverBase64),
-                Size = settings.DocumentStyle.Size,
-                Orientation = settings.DocumentStyle.Orientation,
-                Margins = settings.DocumentStyle.Margins,
-                CoverElementStyles = new(settings.DocumentStyle.CoverElementStyles),
-                TextElementStyles =  new(settings.DocumentStyle.TextElementStyles),
-                TableElementStyles = new(settings.DocumentStyle.TableElementStyles)
-
-            };
-
-    
-        }
-    
-        public override void SaveSettings()
-        {
-            GeneratorSettings settings = new();
-
-            Debug.Assert(Style.HasValue);
-
-            DocumentStyle style = Style.Value;
-
-            settings.DocumentStyle = new()
-            {
-                LogoBase64 = new(style.LogoBase64),
-                CoverBase64 = new(style.CoverBase64),
-                Size = style.Size,
-                Orientation = style.Orientation,
-                Margins = style.Margins,
-                CoverElementStyles = new(style.CoverElementStyles),
-                TextElementStyles = new(style.TextElementStyles),
-                TableElementStyles = new(style.TableElementStyles)
-
-            };
-
-            Settings.SaveSettings<GeneratorSettings>(SettingsId, settings);    
-        }
     
         public override GeneratorValidationResult Validate()
         {
