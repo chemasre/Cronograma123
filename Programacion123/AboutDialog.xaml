@@ -1,0 +1,67 @@
+﻿<Window x:Class="Programacion123.AboutDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Programacion123"
+        mc:Ignorable="d"
+        Title="About" Height="532" Width="862" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" Foreground="{x:Null}" Background="{x:Null}" WindowStyle="None" AllowsTransparency="True" MouseDown="Window_MouseDown">
+    <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
+        <Border.Background>
+            <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>
+        </Border.Background>
+        <Canvas Margin="0,0,0,2">
+            <Border BorderThickness="1" Height="69" Width="846" CornerRadius="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource TitleBackground}"/>
+            <Border x:Name="BorderDescriptionBase" BorderThickness="1" Height="338" Width="824" Canvas.Left="10" Canvas.Top="84" CornerRadius="10,10,10,10" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Border.Background>
+                    <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundSteps.png"/>
+                </Border.Background>
+            </Border>
+            <Border x:Name="BorderToAlignVerticallyTitle" BorderThickness="1" Height="49" Width="415" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="10" Canvas.Left="20">
+                <TextBlock x:Name="TextTitle" TextWrapping="Wrap" FontFamily="{DynamicResource WindowTitleFont}" FontSize="24" FontWeight="Bold" LineStackingStrategy="BlockLineHeight" LineHeight="24" Width="414" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="White"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TextBlock.Foreground><Run Language="es-es" Text="Acerca de Programabara"/></TextBlock>
+            </Border>
+            <Border x:Name="BorderContent" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="308" Canvas.Top="101" HorizontalAlignment="Center" VerticalAlignment="Top" Width="506" Height="301">
+                <TextBlock x:Name="TextContent" TextWrapping="Wrap" Height="280" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="5,0,5,0" FontSize="16"><Run Text="Bienvenido/a a "/><Run FontWeight="Bold" Text="Programabara"/><Run Text=", "/><Run Text="un generador de programaciones didácticas en formato "/><Run FontWeight="Bold" Text="Word"/><Run FontWeight="Bold" Language="es-es" Text="(*)"/><Run Text=" o "/><Run FontWeight="Bold" Text="HTML"/><Run Language="es-es" Text=" "/><Run Text="para Ciclos Formativos de Grado "/><Run Text="Medio y "/><Run Text="Superior"/><Run Text=" a"/><Run Text="daptado a la legislación vigente en España"/><Run Text="."/><LineBreak/><LineBreak/><Run Text="La aplicación e"/><Run Text="s completamente gratuit"/><Run Text="a"/><Run Text=" para uso personal y profesional. "/><Run Text="Si "/><Run Language="es-es" Text="quieres agradecerme el esfuerzo"/><Run Text=", "/><Run Language="es-es" Text="puedes escribir "/><Run Text="un correo a "/><Run FontWeight="Bold" Text="chema.sre@gmail.com"/><Run Text=" "/><Run Language="es-es" Text="contándome"/><Run Text=" qué "/><Run Text="enseñas"/><Run Text=", qué cosas podrían mejorarse o lo que te apetezca compartir."/><Run Text=" Mi nombre es José Manuel (Chema) Solís."/><LineBreak/><Run/><LineBreak/><Run FontWeight="Bold" Language="es-es" Text="(*)"/><Run Language="es-es" Text=" "/><Run FontStyle="Italic" Language="es-es" Text="N"/><Run FontStyle="Italic" Text="ecesita"/><Run FontStyle="Italic" Language="es-es" Text="rás tener "/><Run FontStyle="Italic" Text="instalada una versión reciente de "/><Run FontStyle="Italic" Language="es-es" Text="Microsoft Word en el equipo"/><Run Text="."/><LineBreak/></TextBlock>
+            </Border>
+            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" Click="ButtonClose_Click" Canvas.Left="794" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/ButtonClose.png"/>
+                </Button.Background>
+            </Button>
+            <Border BorderThickness="1" Height="294" Width="256" Canvas.Left="30" Canvas.Top="108" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Border.Background>
+                    <ImageBrush ImageSource="/Images/BackgroundAbout.png" Stretch="UniformToFill"/>
+                </Border.Background>
+            </Border>
+            <Image Height="204" Canvas.Left="30" Canvas.Top="162" Width="253" Source="/Images/ValidatorCapyBig.png" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+            <Border BorderThickness="1" Height="63" Width="195" Canvas.Left="627" Canvas.Top="440" CornerRadius="30,30,30,30" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Border.Background>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                </Border.Background>
+            </Border>
+            <Label Content="Aceptar" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="106" Canvas.Left="657" Canvas.Top="451" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonAccept" Content="" Height="48" Width="48" Canvas.Left="763" BorderBrush="{x:Null}" Canvas.Top="446" Style="{DynamicResource PushableButton}" Click="ButtonAccept_Click" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/ButtonAccept.png"/>
+                </Button.Background>
+            </Button>
+            <Border BorderThickness="1" Height="8" Width="572" Canvas.Left="30" Canvas.Top="469" CornerRadius="30,30,30,30" Background="#99EDEBB1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        </Canvas>
+    </Border>
+</Window>

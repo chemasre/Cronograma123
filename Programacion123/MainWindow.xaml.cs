@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.IO;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
@@ -31,7 +33,12 @@ namespace Programacion123
     /// </summary>
     public partial class MainWindow : Window
     {
+        const string appName = "Programabara";
+        const string contactName = "Chema";
+        const string contactEmail = "chema.sre@gmail.com";
         const string version = "0.5.0";
+        const string configFileName = "Config.json";
+        const float  restartWaitTime = 2.0f;
 
         const string homeUrl = "http://sinestesiagamedesign.es/teaching";
         const string helpUrl = "http://youtube.com";
@@ -47,13 +54,18 @@ namespace Programacion123
 
         DocumentStyle style;
 
+        Configuration configuration;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            string title = "Programabara v" + version;
+            string title = appName + " v" + version;
             Title = title;
             LabelTitle.Content = title;
+
+
+            InitConfiguration();
 
             Storage.Init();
 
@@ -64,6 +76,131 @@ namespace Programacion123
             else { style = styles[0]; }
 
             InitUI();
+
+            LaunchFirstRunDialogs();
+
+        }
+
+        void LaunchFirstRunDialogs()
+        {
+            Dispatcher.BeginInvoke(
+                async () =>
+                {
+                    if(configuration.FirstRun)
+                    {
+                        AboutDialog about = new();
+
+                        Blocker.Visibility = Visibility.Visible;
+                        about.ShowDialog();
+                        Blocker.Visibility = Visibility.Hidden;
+                
+                        bool wordFound = false;
+
+                        LongTaskDialog longTask = new();
+
+                        longTask.Init("Buscando Word en el equipo");
+
+                        Blocker.Visibility = Visibility.Visible;
+                        longTask.Show();
+
+                        await Task.Run(() => 
+                        {
+                            Microsoft.Office.Interop.Word.Application app = new();
+                            if(app == null) { wordFound = false; }
+                            else { app.Quit(); wordFound = true; }
+
+                        });
+
+                        longTask.Close();
+                        Blocker.Visibility = Visibility.Hidden;
+
+                        if(!wordFound)
+                        {
+                            ConfirmDialog wordCheckFailed = new ConfirmDialog();
+
+                            wordCheckFailed.Init(ConfirmIconType.warning, "Word no encontrado",
+                                        "¡Vaya! No se ha podido encontrar una versión compatible de Microsoft Word en el equipo, " +
+                                        "pero no te preocupes. Podrás generar las programaciones en formato HTML.",
+                                        ConfirmChooseType.acceptOnly, (b) => { });
+
+                            Blocker.Visibility = Visibility.Visible;
+                            wordCheckFailed.ShowDialog();
+                            Blocker.Visibility = Visibility.Hidden;
+
+                        }
+                        else
+                        {
+                            ConfirmDialog wordCheckSuccess = new ConfirmDialog();
+
+                            wordCheckSuccess.Init(ConfirmIconType.info, "Word encontrado",
+                                        "¡Felicidades! Se ha encontrado una versión compatible de Microsoft Word en el equipo, " +
+                                        "por lo que podrás generar las programaciones en formato Word además de HTML.",
+                                        ConfirmChooseType.acceptOnly, (b) => { });
+
+                            Blocker.Visibility = Visibility.Visible;
+                            wordCheckSuccess.ShowDialog();
+                            Blocker.Visibility = Visibility.Hidden;
+                        }
+
+                        ConfirmDialog tutorialQuestion = new ConfirmDialog();
+
+                        tutorialQuestion.Init(ConfirmIconType.question, "Ver tutorial",
+                                "Parece que es la primera vez que arrancas la aplicación ¿quieres ver el tutorial?\n" + 
+                                "(se abrirá en tu navegador por defecto).",
+                                ConfirmChooseType.yesAndNo,
+                                (b) =>
+                                {
+                                    if(b) { OpenUrl(helpUrl); }
+                                    else
+                                    {
+                                        ConfirmDialog checkLater = new();
+
+                                        checkLater.Init(ConfirmIconType.info, "Ver más tarde", "Si quieres ver el tutorial más adelante, " +
+                                            "pulsa el botón Ayuda en la ventana principal de la aplicación.",
+                                            ConfirmChooseType.acceptOnly, (b)=> { });
+
+                                        checkLater.ShowDialog();
+                                    }
+                                });
+
+
+                        Blocker.Visibility = Visibility.Visible;
+                        tutorialQuestion.ShowDialog();
+                        Blocker.Visibility = Visibility.Hidden;
+
+                    }
+                }
+            );
+
+        }
+
+        void InitConfiguration()
+        {
+            configuration = new Configuration(); 
+
+            if(File.Exists(configFileName))
+            {
+                string text = File.ReadAllText(configFileName);
+                Configuration? loaded = JsonSerializer.Deserialize<Configuration>(text);
+                if(loaded != null) { configuration = loaded; }
+            }
+
+        }
+
+        void ResetConfiguration()
+        {
+            configuration = new Configuration(); 
+
+            if(File.Exists(configFileName))
+            {
+                File.Delete(configFileName);
+            }
+        }
+
+        void SaveConfiguration()
+        {
+            string text = JsonSerializer.Serialize<Configuration>(configuration);
+            File.WriteAllText(configFileName, text);
         }
 
         void InitUI()
@@ -143,6 +280,10 @@ namespace Programacion123
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
+            configuration.FirstRun = false;
+
+            SaveConfiguration();
+
             Close();
         }
 
@@ -200,17 +341,39 @@ namespace Programacion123
             Blocker.Visibility = Visibility.Visible;
 
             ConfirmDialog confirm = new();
-            confirm.Init(ConfirmIconType.warning, "Confirmación", "Esto eliminará TODOS los datos y ajustes guardados, devolviendo la aplicación a su estado inicial ¿estás seguro/a?",
+            confirm.Init(ConfirmIconType.warning, "Confirmación",
+                        "Esto eliminará TODOS los datos y ajustes guardados y reiniciará " +
+                        "la aplicación ¿estás seguro/a?",
                          ConfirmChooseType.acceptAndCancel,
-                (e) =>
+                async (e) =>
                 {
                     if(e)
                     {
+                        ResetConfiguration();
                         Storage.Reset();
+
+                        LongTaskDialog longTask = new();
+                        
+                        Hide();
+
+                        longTask.Init("Reiniciando la aplicación");
+
+                        longTask.Show();
+                        await Task.Run(() => { Thread.Sleep((int)(restartWaitTime * 1000)); });
+                        longTask.Close();
+
                         RestartUI();
+
+                        Show();
+    
+                        Blocker.Visibility = Visibility.Hidden;
+                        LaunchFirstRunDialogs();
+                    }
+                    else
+                    {
+                        Blocker.Visibility = Visibility.Hidden;
                     }
 
-                    Blocker.Visibility = Visibility.Hidden;
 
                 });
 
