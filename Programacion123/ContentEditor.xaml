@@ -77,11 +77,11 @@
                     <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                 </Button.Foreground>
             </Button>
-            <Border x:Name="Blocker" Padding="5" Background="#7F000000" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-7" Height="525" Width="506" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
             <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="166" Canvas.Top="583" Width="520" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Height="80" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="5,0,5,0"/>
             </Border>
             <Image Height="100" Canvas.Left="19" Canvas.Top="583" Width="150" Source="/Images/ValidatorCapyBig.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Border x:Name="Blocker" Padding="5" Background="#7F000000" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-7" Height="723" Width="727" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
 
         </Canvas>
     </Border>
