@@ -5,44 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="SubjectTemplateEditor" Height="652" Width="532" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}" MouseDown="Window_MouseDown" Topmost="True" FontFamily="{DynamicResource Font}" ShowInTaskbar="False">
+        Title="SubjectTemplateEditor" Height="833" Width="736" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}" MouseDown="Window_MouseDown" Topmost="True" FontFamily="{DynamicResource Font}" ShowInTaskbar="False" FontSize="{DynamicResource NormalTextSize}">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush ImageSource="/Images/BackgroundClouds.png" Stretch="UniformToFill"/>
         </Border.Background>
         <Canvas>
-            <Border BorderThickness="1" Height="73" Width="514" CornerRadius="30,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Background="{DynamicResource TitleBackground}"/>
+            <Border BorderThickness="1" Height="73" Width="720" CornerRadius="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource TitleBackground}"/>
 
-            <Label x:Name="TextEditorTitle" Content="Plantilla del módulo" FontSize="24" FontFamily="{DynamicResource WindowTitleFont}" FontWeight="Bold" Width="448" HorizontalAlignment="Center" Canvas.Left="13" Canvas.Top="10" VerticalAlignment="Top" Foreground="White" Background="{x:Null}"/>
-            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" Click="ButtonClose_Click" HorizontalAlignment="Left" Canvas.Left="461" VerticalAlignment="Center" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}">
+            <Label x:Name="TextEditorTitle" Content="Plantilla del módulo" FontSize="{DynamicResource WindowTitleSize}" FontFamily="{DynamicResource WindowTitleFont}" FontWeight="Bold" Width="448" HorizontalAlignment="Center" Canvas.Left="13" Canvas.Top="10" VerticalAlignment="Top" Foreground="White" Background="{x:Null}"/>
+            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" Click="ButtonClose_Click" HorizontalAlignment="Left" Canvas.Left="670" VerticalAlignment="Center" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
                 </Button.Background>
             </Button>
-            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="110" Canvas.Top="550" HorizontalAlignment="Left" VerticalAlignment="Center" Width="381">
-                <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Height="52" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="0,0,5,0"/>
+            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="155" Canvas.Top="703" HorizontalAlignment="Center" VerticalAlignment="Top" Width="535" Height="89">
+                <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Canvas.Left="29" Canvas.Top="303" Foreground="Black" Margin="5,5,5,6"/>
             </Border>
-            <TextBox x:Name="TextTitle" Canvas.Left="159" Canvas.Top="93" Width="322" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
-            <Label Content="Título de la plantilla" Canvas.Left="25" Canvas.Top="87" HorizontalAlignment="Center" VerticalAlignment="Top" Width="169" Foreground="{DynamicResource FreeLabel}"/>
-            <TabControl Height="351" Width="466" HorizontalAlignment="Center" Canvas.Top="179" VerticalAlignment="Top" Canvas.Left="26" BorderBrush="#00ACACAC">
+            <TextBox x:Name="TextTitle" Canvas.Left="237" Canvas.Top="101" Width="423" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
+            <Label Content="Título de la plantilla" Canvas.Left="25" Canvas.Top="95" HorizontalAlignment="Center" VerticalAlignment="Top" Width="169" Foreground="{DynamicResource FreeLabel}"/>
+            <TabControl Height="470" Width="666" HorizontalAlignment="Center" Canvas.Top="195" VerticalAlignment="Top" Canvas.Left="26" BorderBrush="#00ACACAC">
                 <TabControl.Background>
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </TabControl.Background>
                 <TabItem Header="Datos esenciales">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Label Content="Nombre oficial" Height="28" Canvas.Left="25" Canvas.Top="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <Label Content="Código" Height="28" Canvas.Left="25" Canvas.Top="57" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Label Content="Horas en clase" Height="28" Canvas.Left="25" Canvas.Top="92" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Label Content="Horas en empresa" Height="28" Canvas.Left="25" Canvas.Top="125" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <TextBox x:Name="TextSubjectName" Text="TextBox" Width="283" Canvas.Left="159" Canvas.Top="29" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBox x:Name="TextSubjectCode" Text="TextBox" Width="111" Canvas.Left="159" Canvas.Top="62" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBox x:Name="TextGradeClassroomHours" Text="TextBox" Width="73" Canvas.Left="159" Canvas.Top="97" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <TextBox x:Name="TextGradeCompanyHours" Text="TextBox" Width="73" Canvas.Left="159" Canvas.Top="130" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Nombre oficial" Height="28" Canvas.Left="33" Canvas.Top="24" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <Label Content="Código" Height="28" Canvas.Left="33" Canvas.Top="65" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Horas en clase" Height="28" Canvas.Left="33" Canvas.Top="108" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Label Content="Horas en empresa" Height="28" Canvas.Left="33" Canvas.Top="149" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <TextBox x:Name="TextSubjectName" Text="TextBox" Width="443" Canvas.Left="191" Canvas.Top="29" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBox x:Name="TextSubjectCode" Text="TextBox" Width="113" Canvas.Left="191" Canvas.Top="70" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBox x:Name="TextGradeClassroomHours" Text="TextBox" Width="113" Canvas.Left="191" Canvas.Top="113" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBox x:Name="TextGradeCompanyHours" Text="TextBox" Width="113" Canvas.Left="191" Canvas.Top="154" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     </Canvas>
                 </TabItem>
                 <TabItem Header="Objetivos generales">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <ListBox x:Name="ListBoxGeneralObjectives" Height="188" Width="388" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="54" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
+                        <ListBox x:Name="ListBoxGeneralObjectives" Height="302" Width="579" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="60" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
                         <Button x:Name="ButtonGeneralObjectiveReferenceAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="39" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButonReferenceAdd.png"/>
@@ -63,7 +63,7 @@
                 </TabItem>
                 <TabItem Header="Competencias profesionales, personales y sociales">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <ListBox x:Name="ListBoxGeneralCompetences" Height="188" Width="388" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="54" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <ListBox x:Name="ListBoxGeneralCompetences" Height="302" Width="579" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="60" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Button x:Name="ButtonGeneralCompetenceReferenceAdd" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="39" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButonReferenceAdd.png"/>
@@ -84,7 +84,7 @@
                 </TabItem>
                 <TabItem Header="Resultados de aprendizaje">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <ListBox x:Name="ListBoxLearningResults" Height="188" Width="388" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="54" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <ListBox x:Name="ListBoxLearningResults" Height="302" Width="579" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="60" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Button x:Name="ButtonLearningResultsNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="39" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButtonNew.png"/>
@@ -129,7 +129,7 @@
                 </TabItem>
                 <TabItem Header="Contenidos">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <ListBox x:Name="ListBoxContents" Height="188" Width="388" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="54" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <ListBox x:Name="ListBoxContents" Height="302" Width="579" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="39" Canvas.Top="60" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Button x:Name="ButtonContentsNew" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="39" Canvas.Top="25" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Images/ButtonNew.png"/>
@@ -173,9 +173,9 @@
                     </Canvas>
                 </TabItem>
             </TabControl>
-            <Label Content="Plantilla de ciclo vinculada" Canvas.Left="26" Canvas.Top="120" Width="169" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource FreeLabel}"/>
-            <TextBox x:Name="TextGradeTemplate" Canvas.Left="185" Canvas.Top="124" Width="255" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Button x:Name="ButtonGradeTemplatePick" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="449" Canvas.Top="121" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Content="Plantilla de ciclo vinculada" Canvas.Left="26" Canvas.Top="136" Width="205" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabel}"/>
+            <TextBox x:Name="TextGradeTemplate" Canvas.Left="237" Canvas.Top="140" Width="390" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button x:Name="ButtonGradeTemplatePick" Content="" Width="24" Height="24" BorderBrush="{x:Null}" Canvas.Left="636" Canvas.Top="139" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonPick.png"/>
                 </Button.Background>
@@ -183,7 +183,7 @@
                     <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                 </Button.Foreground>
             </Button>
-            <Image Height="74" Canvas.Left="13" Canvas.Top="544" Width="100" Source="/Images/ValidatorCapy.png" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Image Height="100" Canvas.Left="17" Canvas.Top="703" Width="150" Source="/Images/ValidatorCapyBig.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Border x:Name="Blocker" Padding="5" Background="#7F000000" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="652" Width="532" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
         </Canvas>
     </Border>
