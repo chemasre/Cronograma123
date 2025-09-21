@@ -5,39 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="CommonTextEditor" Height="552" Width="504" WindowStyle="None" ResizeMode="NoResize" Background="{x:Null}" Foreground="{x:Null}" AllowsTransparency="True" MouseDown="Window_MouseDown" WindowStartupLocation="CenterScreen" Topmost="True" FontFamily="{DynamicResource Font}" ShowInTaskbar="False">
+        Title="CommonTextEditor" Height="628" Width="556" WindowStyle="None" ResizeMode="NoResize" Background="{x:Null}" Foreground="{x:Null}" AllowsTransparency="True" MouseDown="Window_MouseDown" WindowStartupLocation="CenterScreen" Topmost="True" FontFamily="{DynamicResource Font}" ShowInTaskbar="False" FontSize="{DynamicResource NormalTextSize}">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>
         </Border.Background>
         <Canvas>
-            <Border BorderThickness="1" Height="86" Width="488" CornerRadius="30,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Background="{DynamicResource TitleBackground}"/>
+            <Border BorderThickness="1" Height="86" Width="540" CornerRadius="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource TitleBackground}"/>
 
-            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" Click="ButtonClose_Click" HorizontalAlignment="Left" Canvas.Left="438" VerticalAlignment="Center" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}">
+            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" Click="ButtonClose_Click" HorizontalAlignment="Left" Canvas.Left="490" VerticalAlignment="Center" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonClose.png"/>
                 </Button.Background>
             </Button>
-            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="118" Canvas.Top="454" HorizontalAlignment="Left" VerticalAlignment="Center" Width="344">
-                <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Height="52" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="0,0,5,0"/>
+            <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="139" Canvas.Top="488" HorizontalAlignment="Center" VerticalAlignment="Top" Width="371" Height="100">
+                <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Height="76" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="5,0,5,0"/>
             </Border>
-            <TextBox x:Name="TextTitle" Canvas.Left="126" Canvas.Top="97" Width="317" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
-            <Border x:Name="BorderDescriptionBase" BorderThickness="1" Height="306" Width="431" Canvas.Left="29" Canvas.Top="133" CornerRadius="10,10,10,10" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <TextBox x:Name="TextTitle" Canvas.Left="118" Canvas.Top="97" Width="375" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
+            <Border x:Name="BorderDescriptionBase" BorderThickness="1" Height="297" Width="481" Canvas.Left="29" Canvas.Top="142" CornerRadius="10,10,10,10" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
                     <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundSteps.png"/>
                 </Border.Background>
             </Border>
-            <Border x:Name="NoTitleBorderDescriptionBase" BorderThickness="1" Height="324" Width="431" Canvas.Left="29" Canvas.Top="115" CornerRadius="10,10,10,10" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Border x:Name="NoTitleBorderDescriptionBase" BorderThickness="1" Height="337" Width="481" Canvas.Left="29" Canvas.Top="102" CornerRadius="10,10,10,10" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
             <Label x:Name="LabelTitle" Content="Título" Canvas.Left="29" Canvas.Top="93" HorizontalAlignment="Center" VerticalAlignment="Center" Width="89" Foreground="{DynamicResource FreeLabel}"/>
-            <Label x:Name="LabelDescription" Content="Descripción" Canvas.Left="40" Canvas.Top="150" Width="123" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabel}"/>
-            <TextBox x:Name="TextBoxDescription" Canvas.Left="126" TextWrapping="Wrap" Text="TextBox" Canvas.Top="150" Width="318" Height="272" AcceptsReturn="True" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
-            <TextBox x:Name="NoTitleTextBoxDescription" Canvas.Left="44" TextWrapping="Wrap" Text="TextBox" Canvas.Top="132" Width="400" Height="290" AcceptsReturn="True" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Border x:Name="BorderToAlignVerticallyEditorTitle" BorderThickness="1" Height="69" Width="415" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="10" Canvas.Left="20">
-                <TextBlock x:Name="TextEditorTitle" TextWrapping="Wrap" Text="Entidad" FontFamily="{DynamicResource WindowTitleFont}" FontSize="24" FontWeight="Bold" LineStackingStrategy="BlockLineHeight" LineHeight="24" Width="414" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label x:Name="LabelDescription" Content="Descripción" Canvas.Left="40" Canvas.Top="157" Width="123" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabel}"/>
+            <TextBox x:Name="TextBoxDescription" Canvas.Left="151" TextWrapping="Wrap" Text="TextBox" Canvas.Top="159" Width="342" Height="263" AcceptsReturn="True" HorizontalAlignment="Center" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}"/>
+            <TextBox x:Name="NoTitleTextBoxDescription" Canvas.Left="45" TextWrapping="Wrap" Text="TextBox" Canvas.Top="120" Width="448" Height="302" AcceptsReturn="True" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Border x:Name="BorderToAlignVerticallyEditorTitle" BorderThickness="1" Height="69" Width="465" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="10" Canvas.Left="20">
+                <TextBlock x:Name="TextEditorTitle" TextWrapping="Wrap" Text="Entidad" FontFamily="{DynamicResource WindowTitleFont}" FontSize="{DynamicResource WindowTitleSize}" FontWeight="Bold" LineStackingStrategy="BlockLineHeight" LineHeight="24" Width="466" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock.Foreground>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="White"/>
@@ -46,7 +46,7 @@
                     </TextBlock.Foreground>
                 </TextBlock>
             </Border>
-            <Image Height="74" Canvas.Left="19" Canvas.Top="448" Width="100" Source="/Images/ValidatorCapy.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Image Height="100" Canvas.Left="12" Canvas.Top="488" Width="150" Source="/Images/ValidatorCapyBig.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         </Canvas>
     </Border>
