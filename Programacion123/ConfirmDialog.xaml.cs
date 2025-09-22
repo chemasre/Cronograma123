@@ -57,6 +57,9 @@ namespace Programacion123
             LabelAcceptSingle.Visibility = (_chooseType == ConfirmChooseType.acceptOnly ? Visibility.Visible : Visibility.Hidden);
             ButtonAcceptSingle.Visibility = (_chooseType == ConfirmChooseType.acceptOnly ? Visibility.Visible : Visibility.Hidden);
 
+            Separator1Option.Visibility = (_chooseType == ConfirmChooseType.acceptOnly ? Visibility.Visible : Visibility.Hidden);
+            Separator2Options.Visibility = (_chooseType != ConfirmChooseType.acceptOnly ? Visibility.Visible : Visibility.Hidden);
+
         }
 
         private void ConfirmDialog_Closed(object? sender, EventArgs e)
