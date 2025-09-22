@@ -200,10 +200,10 @@
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
-            <Label Content="Web" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="128" Canvas.Left="1051" Canvas.Top="814" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Button x:Name="ButtonHome" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="1158" Canvas.Top="810" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonHome_Click">
+            <Label Content="Acerca de" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="128" Canvas.Left="1051" Canvas.Top="814" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button x:Name="ButtonAbout" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="1158" Canvas.Top="810" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonAbout_Click">
                 <Button.Background>
-                    <ImageBrush ImageSource="/Images/ButtonHome.png"/>
+                    <ImageBrush ImageSource="/Images/ButtonAbout.png"/>
                 </Button.Background>
                 <Button.Foreground>
                     <ImageBrush ImageSource="/Images/ButtonNew.png"/>

@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
+using Microsoft.Windows.Themes;
 using static Programacion123.ExportImportDialog;
 
 namespace Programacion123
@@ -28,24 +29,24 @@ namespace Programacion123
         bool GetWasCancelled();
     }
 
+    public class Constants
+    {
+        public const string appName = "Programabara";
+        public const string contactName = "Chema";
+        public const string contactEmail = "chema.sre@gmail.com";
+        public const string version = "0.8.0";
+        public const string configFileName = "Config.json";
+        public const float  restartWaitTime = 2.0f;
+
+        public const string helpUrl = "http://youtube.com";
+
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        const string appName = "Programabara";
-        const string contactName = "Chema";
-        const string contactEmail = "chema.sre@gmail.com";
-        const string version = "0.5.0";
-        const string configFileName = "Config.json";
-        const float  restartWaitTime = 2.0f;
-
-        const string homeUrl = "http://sinestesiagamedesign.es/teaching";
-        const string helpUrl = "http://youtube.com";
-
-        //WeekScheduleEditor weekScheduleEditor;
-        //List<string> weekSchedulesStorageIds;
-
         StrongReferencesBoxController<WeekSchedule, WeekScheduleEditor> weekSchedulesController;
         StrongReferencesBoxController<Calendar, CalendarEditor> calendarsController;
         StrongReferencesBoxController<SubjectTemplate, SubjectTemplateEditor> subjectTemplatesController;
@@ -60,7 +61,7 @@ namespace Programacion123
         {
             InitializeComponent();
 
-            string title = appName + " v" + version;
+            string title = Constants.appName;
             Title = title;
             LabelTitle.Content = title;
 
@@ -150,7 +151,7 @@ namespace Programacion123
                                 ConfirmChooseType.yesAndNo,
                                 (b) =>
                                 {
-                                    if(b) { OpenUrl(helpUrl); }
+                                    if(b) { OpenUrl(Constants.helpUrl); }
                                     else
                                     {
                                         ConfirmDialog checkLater = new();
@@ -178,9 +179,9 @@ namespace Programacion123
         {
             configuration = new Configuration(); 
 
-            if(File.Exists(configFileName))
+            if(File.Exists(Constants.configFileName))
             {
-                string text = File.ReadAllText(configFileName);
+                string text = File.ReadAllText(Constants.configFileName);
                 Configuration? loaded = JsonSerializer.Deserialize<Configuration>(text);
                 if(loaded != null) { configuration = loaded; }
             }
@@ -191,16 +192,16 @@ namespace Programacion123
         {
             configuration = new Configuration(); 
 
-            if(File.Exists(configFileName))
+            if(File.Exists(Constants.configFileName))
             {
-                File.Delete(configFileName);
+                File.Delete(Constants.configFileName);
             }
         }
 
         void SaveConfiguration()
         {
             string text = JsonSerializer.Serialize<Configuration>(configuration);
-            File.WriteAllText(configFileName, text);
+            File.WriteAllText(Constants.configFileName, text);
         }
 
         void InitUI()
@@ -271,7 +272,7 @@ namespace Programacion123
             ButtonImport.ToolTip = "Importar";
             ButtonGenerateDocument.ToolTip = "Generar";
             ButtonHelp.ToolTip = "Ver ayuda";
-            ButtonHome.ToolTip = "Ver página principal del proyecto";
+            ButtonAbout.ToolTip = "Ver información acerca de la aplicación";
             ButtonReset.ToolTip = "Borrar todos los datos";
 
             Topmost = false;
@@ -295,23 +296,6 @@ namespace Programacion123
             }
         }
 
-        private void ButtonHome_Click(object sender, RoutedEventArgs e)
-        {
-            Blocker.Visibility = Visibility.Visible;
-
-            ConfirmDialog question = new();
-
-            question.Init(ConfirmIconType.info,
-                "Abrir navegador", 
-                "Esto abrirá tu navegador por defecto y te dirigirá a la página principal del proyecto",
-                ConfirmChooseType.acceptAndCancel,
-                (b) => { if(b) { OpenUrl(homeUrl); } });            
-
-            question.ShowDialog();
-
-            Blocker.Visibility = Visibility.Hidden;
-        }
-
         private void ButtonHelp_Click(object sender, RoutedEventArgs e)
         {
             Blocker.Visibility = Visibility.Visible;
@@ -322,7 +306,7 @@ namespace Programacion123
                 "Abrir navegador", 
                 "Esto abrirá tu navegador por defecto y te dirigirá al tutorial de la aplicación",
                 ConfirmChooseType.acceptAndCancel,
-                (b) => { if(b) { OpenUrl(helpUrl); } });    
+                (b) => { if(b) { OpenUrl(Constants.helpUrl); } });    
             
             question.ShowDialog();
 
@@ -359,7 +343,7 @@ namespace Programacion123
                         longTask.Init("Reiniciando la aplicación");
 
                         longTask.Show();
-                        await Task.Run(() => { Thread.Sleep((int)(restartWaitTime * 1000)); });
+                        await Task.Run(() => { Thread.Sleep((int)(Constants.restartWaitTime * 1000)); });
                         longTask.Close();
 
                         RestartUI();
@@ -576,5 +560,15 @@ namespace Programacion123
             }
         }
 
+        private void ButtonAbout_Click(object sender, RoutedEventArgs e)
+        {
+            Blocker.Visibility = Visibility.Visible;
+
+            AboutDialog dialog = new();
+            
+            dialog.ShowDialog();
+
+            Blocker.Visibility = Visibility.Hidden;
+        }
     }
 }

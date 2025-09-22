@@ -23,6 +23,7 @@ namespace Programacion123
         {
             InitializeComponent();
 
+            TextTitle.Text = "Acerca de " + Constants.appName;
             Topmost = true;
         }
 
