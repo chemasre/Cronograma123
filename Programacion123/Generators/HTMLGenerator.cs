@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 
 namespace Programacion123
@@ -24,28 +23,28 @@ namespace Programacion123
             FileStreamOptions options = new() { Access = FileAccess.Write, Mode = FileMode.Create };
             StreamWriter writer = new(outputPath, Encoding.UTF8, options);
 
-            if(writer == null) { result = GeneratorResult.Create(GeneratorResultCode.fileWriteError); }
+            if (writer == null) { result = GeneratorResult.Create(GeneratorResultCode.fileWriteError); }
             else
-            {    
+            {
                 string html = GenerateHTML();
-    
+
                 writer.Write(html);
                 writer.Close();
             }
 
             return result;
         }
-    
-    
+
+
         public override GeneratorValidationResult Validate()
         {
-            if(Subject == null) { return GeneratorValidationResult.Create(GeneratorValidationCode.subjectIsNull); }
-            else if(Subject.Validate().code != ValidationCode.success) { return GeneratorValidationResult.Create(GeneratorValidationCode.subjectNotValid); }
-    
+            if (Subject == null) { return GeneratorValidationResult.Create(GeneratorValidationCode.subjectIsNull); }
+            else if (Subject.Validate().code != ValidationCode.success) { return GeneratorValidationResult.Create(GeneratorValidationCode.subjectNotValid); }
+
             return GeneratorValidationResult.Create(GeneratorValidationCode.success);
-    
+
         }
-    
+
 
     }
 }

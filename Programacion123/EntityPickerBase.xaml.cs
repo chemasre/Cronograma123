@@ -32,7 +32,7 @@ namespace Programacion123
         }
     }
 
-    public class EntityPicker<TEntity> : EntityPickerBase, IEntityPicker<TEntity> where TEntity:Entity
+    public class EntityPicker<TEntity> : EntityPickerBase, IEntityPicker<TEntity> where TEntity : Entity
     {
         List<TEntity>? entities;
         bool isMultiPickerMode;
@@ -59,16 +59,16 @@ namespace Programacion123
             public override string ToString()
             {
                 string formatted;
-                if(picker.formatter == null) { formatted = Utils.FormatEntity<TEntity>(entity, index, picker.formatContent, picker.formatIndex); }
+                if (picker.formatter == null) { formatted = Utils.FormatEntity<TEntity>(entity, index, picker.formatContent, picker.formatIndex); }
                 else { formatted = picker.formatter.Invoke(entity, index); }
 
                 return formatted;
             }
-        }        
+        }
 
         public TEntity? GetPickedEntity()
         {
-            if(ListBoxEntities.SelectedIndex < 0) { return null; }
+            if (ListBoxEntities.SelectedIndex < 0) { return null; }
             else { return entities[ListBoxEntities.SelectedIndex]; }
         }
 
@@ -82,10 +82,10 @@ namespace Programacion123
                 (e) =>
                 {
                     string formatted;
-                    if(formatter == null) { formatted = Utils.FormatEntity<TEntity>(e, index, formatContent, formatIndex); }
+                    if (formatter == null) { formatted = Utils.FormatEntity<TEntity>(e, index, formatContent, formatIndex); }
                     else { formatted = formatter.Invoke(e, index); }
                     ListBoxEntities.Items.Add(formatted);
-                    index ++;
+                    index++;
                 });
 
             ListBoxEntities.SelectionMode = SelectionMode.Single;
@@ -95,11 +95,11 @@ namespace Programacion123
             ButtonSetReference.Visibility = Visibility.Visible;
             LabelAddReference.Visibility = Visibility.Hidden;
             ButtonAddReference.Visibility = Visibility.Hidden;
-            
+
             ButtonClose.ToolTip = "Cerrar";
 
             isMultiPickerMode = false;
-        }        
+        }
 
         public void SetPickerTitle(string title)
         {
@@ -110,7 +110,7 @@ namespace Programacion123
         {
             List<TEntity> result = new();
 
-            foreach(MultiSelectItem e in ListBoxEntities.SelectedItems) { result.Add(e.entity); }
+            foreach (MultiSelectItem e in ListBoxEntities.SelectedItems) { result.Add(e.entity); }
 
             return result;
         }
@@ -123,19 +123,19 @@ namespace Programacion123
             ListBoxEntities.Items.Clear();
             int index = 0;
 
-            foreach(TEntity e in entities)
+            foreach (TEntity e in entities)
             {
                 MultiSelectItem item = new(e, this);
                 item.index = index;
                 ListBoxEntities.Items.Add(item);
                 multiSelectItemList.Add(item);
-                index ++;
+                index++;
             }
 
             ListBoxEntities.SelectionMode = SelectionMode.Extended;
             ListBoxEntities.SelectedItems.Clear();
 
-            foreach(TEntity e1 in selectedEntities)
+            foreach (TEntity e1 in selectedEntities)
             {
                 ListBoxEntities.SelectedItems.Add(multiSelectItemList.Find(e2 => e2.entity.StorageId == e1.StorageId));
             }

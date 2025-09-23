@@ -19,7 +19,7 @@ namespace CronogramaMe
 
             Owner = Application.Current.MainWindow;
 
-            DiaInicio.SelectedDate= calendario.ObtenDiaInicio();
+            DiaInicio.SelectedDate = calendario.ObtenDiaInicio();
             DiaFin.SelectedDate = calendario.ObtenDiaFin();
             FestivoAnyadir.SelectedDate = calendario.ObtenDiaInicio();
             FestivoQuitar.SelectedDate = calendario.ObtenDiaInicio();
@@ -36,11 +36,11 @@ namespace CronogramaMe
 
         private void ActualizaDias()
         {
-           IReadOnlyList<DateTime>  festivos = calendario.ObtenFestivos();
+            IReadOnlyList<DateTime> festivos = calendario.ObtenFestivos();
 
             ListaFestivos.Items.Clear();
 
-            for(int i = 0; i < festivos.Count; i ++)
+            for (int i = 0; i < festivos.Count; i++)
             {
                 ListaFestivos.Items.Add(festivos[i].ToShortDateString());
             }
@@ -59,7 +59,7 @@ namespace CronogramaMe
             calendario.AnyadeFestivo(dia);
 
             Cronogramador.Calendario.Completitud completitud = calendario.CompruebaCompleta();
-            if(completitud == Cronogramador.Calendario.Completitud.festivoFueraCalendario)
+            if (completitud == Cronogramador.Calendario.Completitud.festivoFueraCalendario)
             {
                 Message m = new Message(Message.Type.alert, "No puedes añadir ese día porque no está entre las fechas de inicio y fin del curso");
                 m.ShowDialog();
@@ -76,7 +76,7 @@ namespace CronogramaMe
 
         private void DiaInicioChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(ignore) { return; }
+            if (ignore) { return; }
 
             DateTime dia = DiaInicio.SelectedDate.GetValueOrDefault();
             DateTime anterior = calendario.ObtenDiaInicio();
@@ -93,7 +93,7 @@ namespace CronogramaMe
                 ignore = false;
                 return;
             }
-            else if(completitud == Cronogramador.Calendario.Completitud.fechaInicioPosteriorAFin)
+            else if (completitud == Cronogramador.Calendario.Completitud.fechaInicioPosteriorAFin)
             {
                 Message m = new Message(Message.Type.alert, "No puedes poner ese día como inicio porque es posterior a la fecha de fin");
                 m.ShowDialog();
@@ -154,7 +154,7 @@ namespace CronogramaMe
 
         private void ListaFestivos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(ListaFestivos.SelectedValue != null)
+            if (ListaFestivos.SelectedValue != null)
             {
                 FestivoQuitar.SelectedDate = DateTime.Parse(ListaFestivos.SelectedValue.ToString());
             }

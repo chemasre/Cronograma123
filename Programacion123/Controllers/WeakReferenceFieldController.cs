@@ -70,7 +70,7 @@ namespace Programacion123
             formatContent = configuration.formatContent;
             formatIndex = configuration.formatIndex;
             formatter = configuration.formatter;
-            
+
             buttonPick = configuration.buttonPick;
 
             pickerTitle = configuration.pickerTitle;
@@ -80,7 +80,7 @@ namespace Programacion123
 
             blocker = configuration.blocker;
 
-            if(buttonPick != null) { buttonPick.Click += ButtonPick_Click; buttonPick.ToolTip = "Elegir"; }
+            if (buttonPick != null) { buttonPick.Click += ButtonPick_Click; buttonPick.ToolTip = "Elegir"; }
 
             UpdateField();
 
@@ -88,13 +88,13 @@ namespace Programacion123
 
         public TEntity? GetEntity()
         {
-            if(storageId == null) { return null; }
+            if (storageId == null) { return null; }
             else { return Storage.LoadOrCreateEntity<TEntity>(storageId, parentStorageId); }
         }
 
         void UpdateField()
         {
-            if(storageId == null)
+            if (storageId == null)
             {
                 textBox.Text = "(nada seleccionado)";
             }
@@ -102,7 +102,7 @@ namespace Programacion123
             {
                 TEntity entity = Storage.LoadOrCreateEntity<TEntity>(storageId, parentStorageId);
 
-                if(formatter != null) { textBox.Text = formatter.Invoke(entity, 0); }
+                if (formatter != null) { textBox.Text = formatter.Invoke(entity, 0); }
                 string s = (formatContent == EntityFormatContent.Description ? entity.Description : entity.Title).Trim();
                 textBox.Text = s.Substring(0, Math.Min(100, s.Length)) + "...";
             }
@@ -113,20 +113,20 @@ namespace Programacion123
             var entity = Storage.LoadOrCreateEntity<TEntity>(storageId, parentStorageId);
 
             picker = new TPicker();
-            if(pickerTitle != null) { picker.SetPickerTitle(pickerTitle); }
+            if (pickerTitle != null) { picker.SetPickerTitle(pickerTitle); }
             picker.SetFormat(formatContent, formatIndex);
             picker.SetFormatter(formatter);
-            if(blocker != null) { blocker.Visibility = Visibility.Visible; }
+            if (blocker != null) { blocker.Visibility = Visibility.Visible; }
 
             List<string> storageIdList;
             List<TEntity> entityList;
-            if(pickListQuery != null)
+            if (pickListQuery != null)
             {
                 // We use find "Find" because we don't assume all storage id's share the same parent
                 storageIdList = pickListQuery.Invoke();
                 entityList = Storage.FindEntities<TEntity>(storageIdList);
             }
-            else if(pickList != null)
+            else if (pickList != null)
             {
                 // We use find "Find" because we don't assume all storage id's share the same parent
                 storageIdList = pickList;
@@ -142,14 +142,14 @@ namespace Programacion123
             picker.SetSinglePickerEntities(entity, entityList);
             picker.Closed += OnDialogClosed;
 
-            picker.ShowDialog();     
+            picker.ShowDialog();
         }
 
         void OnDialogClosed(object? sender, EventArgs e)
         {
-            if(blocker != null) { blocker.Visibility = Visibility.Hidden; }
+            if (blocker != null) { blocker.Visibility = Visibility.Hidden; }
 
-            if(!picker.GetWasCancelled())
+            if (!picker.GetWasCancelled())
             {
                 storageId = picker.GetPickedEntity()?.StorageId;
                 Changed?.Invoke(this);
@@ -163,7 +163,7 @@ namespace Programacion123
 
         public void Finish()
         {
-            if(buttonPick != null) { buttonPick.Click -= ButtonPick_Click; }
+            if (buttonPick != null) { buttonPick.Click -= ButtonPick_Click; }
         }
     }
 

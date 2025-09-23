@@ -102,7 +102,7 @@ namespace Programacion123
                     {
                         pending -= weekSchedule.HoursPerWeekDay[day.DayOfWeek] - hour;
                     }
-                    
+
                     if (pending > 0) { day = day.AddDays(1); hour = 0; }
                     else if (pending <= 0)
                     {
@@ -165,7 +165,7 @@ namespace Programacion123
             else if (WeekSchedule == null) { return false; }
             else if (WeekSchedule.Validate().code != ValidationCode.success) { return false; }
             else if (Blocks.Count <= 0) { return false; }
-            else if (!Blocks.ToList().TrueForAll(b => b.Activities.Count > 0 && b.Activities.ToList().TrueForAll(a => a.Duration > 0) )) { return false; }
+            else if (!Blocks.ToList().TrueForAll(b => b.Activities.Count > 0 && b.Activities.ToList().TrueForAll(a => a.Duration > 0))) { return false; }
 
             return true;
         }

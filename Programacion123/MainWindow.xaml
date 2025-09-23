@@ -234,7 +234,7 @@
                     <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                 </Button.Foreground>
             </Button>
-            <Button x:Name="ButtonGradeTemplateEdit" Content="" Width="32" Height="32" BorderBrush="{x:Null}" Canvas.Left="567" Canvas.Top="190" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Button x:Name="ButtonGradeTemplateEdit" Content="" Width="32" Height="32" BorderBrush="{x:Null}" Canvas.Left="567" Canvas.Top="190" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonEditMedium.png"/>
                 </Button.Background>

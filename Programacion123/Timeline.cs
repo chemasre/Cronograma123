@@ -1,7 +1,7 @@
-﻿using System.IO;
+﻿using Microsoft.Office.Interop.Excel;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Json;
-using Microsoft.Office.Interop.Excel;
 
 namespace Programacion123
 {
@@ -159,7 +159,7 @@ namespace Programacion123
             int cursorFila = config.monthsStartRow;
             int cursorColumna = config.monthsStartColumn;
 
-            excel =  new Application();
+            excel = new Application();
 
             excel.DisplayAlerts = false;
 
@@ -178,7 +178,7 @@ namespace Programacion123
 
             // Rellenamos los meses
 
-            for (int i = 0; i < mesesOrdenados.Count; i ++)
+            for (int i = 0; i < mesesOrdenados.Count; i++)
             {
 
                 int mesAnyo = mesesOrdenados[i];
@@ -201,7 +201,7 @@ namespace Programacion123
 
                 cursorFila++;
 
-                for(int j = 1; j <= 7; j ++)
+                for (int j = 1; j <= 7; j++)
                 {
                     hoja.Cells[cursorFila, cursorColumna] = Utils.WeekdayToText(Utils.IndexToWeekday(j), true);
                     hoja.Cells[cursorFila, cursorColumna].Interior.Color = config.weekDayColor;
@@ -212,11 +212,11 @@ namespace Programacion123
                     cursorColumna++;
                 }
 
-                cursorFila ++;
+                cursorFila++;
 
                 int anteriorUF = 0;
 
-                for(DateTime dia = primerDia; dia <= ultimoDia; dia = dia.AddDays(1))
+                for (DateTime dia = primerDia; dia <= ultimoDia; dia = dia.AddDays(1))
                 {
                     cursorColumna = config.monthsStartColumn + Utils.WeekdayToIndex(dia.DayOfWeek) - 1;
 
@@ -236,19 +236,19 @@ namespace Programacion123
                     List<XlRgbColor> coloresGradiente = null;
                     bool ponerGradiente = false;
 
-                    if(contenido.ContainsKey(dia))
+                    if (contenido.ContainsKey(dia))
                     {
                         DaySchedule contenidoDia = contenido[dia];
 
                         if (contenidoDia.type == DayType.festivity)
-                        {   
+                        {
                             color = config.freeDaysColor;
                             colorTexto = config.freeDaysTextColor;
                             ponerColor = true;
                             ponerColorTexto = true;
                         }
-                        else if(contenidoDia.type == DayType.weekend)
-                        {   
+                        else if (contenidoDia.type == DayType.weekend)
+                        {
                             color = config.weekendColor;
                             colorTexto = config.weekendTextColor;
                             ponerColor = true;
@@ -264,15 +264,15 @@ namespace Programacion123
 
                             bool tieneUFs = false;
 
-                            if(horasUF.Count == 0)
+                            if (horasUF.Count == 0)
                             {
-                                if(config.continousStyle && anteriorUF > 0)
+                                if (config.continousStyle && anteriorUF > 0)
                                 {
                                     color = config.unitsColor[anteriorUF - 1];
                                     colorTexto = config.unitsTextColor;
                                     ponerColor = true;
                                     ponerColorTexto = true;
-                                 }
+                                }
                             }
                             else if (horasUF.Count == 1)
                             {
@@ -296,30 +296,30 @@ namespace Programacion123
                                 ponerColorTexto = true;
                             }
 
-                            if (horasUF.Count > 0) { anteriorUF =  horasUF[horasUF.Count - 1].unit; }
+                            if (horasUF.Count > 0) { anteriorUF = horasUF[horasUF.Count - 1].unit; }
 
                         }
 
                     }
 
-                    if(ponerColor)
+                    if (ponerColor)
                     {
                         hoja.Cells[cursorFila, cursorColumna].Interior.Color = color;
                     }
-                    else if(ponerGradiente)
+                    else if (ponerGradiente)
                     {
                         hoja.Cells[cursorFila, cursorColumna].Interior.Pattern = XlPattern.xlPatternLinearGradient;
                         hoja.Cells[cursorFila, cursorColumna].Interior.Gradient.Degree = 0;
                         hoja.Cells[cursorFila, cursorColumna].Interior.Gradient.ColorStops.Clear();
 
-                        for (int j = 0; j < coloresGradiente.Count; j ++)
+                        for (int j = 0; j < coloresGradiente.Count; j++)
                         {
                             hoja.Cells[cursorFila, cursorColumna].Interior.Gradient.ColorStops.Add(j * (1.0f / (coloresGradiente.Count - 1))).Color = coloresGradiente[j];
                         }
 
                     }
 
-                    if(ponerColorTexto)
+                    if (ponerColorTexto)
                     {
                         hoja.Cells[cursorFila, cursorColumna].Font.Color = colorTexto;
                     }
@@ -339,7 +339,7 @@ namespace Programacion123
 
             hoja.Columns[cursorColumna + 1].ColumnWidth = config.unitysTitleColumnWidth;
 
-            for(int i = 0; i < subject.UnitsSequence.Count; i ++)
+            for (int i = 0; i < subject.UnitsSequence.Count; i++)
             {
                 int uf = subject.UnitsSequence[i].Id;
                 hoja.Cells[cursorFila, cursorColumna] = uf;
@@ -352,7 +352,7 @@ namespace Programacion123
                 hoja.Cells[cursorFila, cursorColumna + 2] = subject.UnitsById[uf].Hours + "h";
                 hoja.Cells[cursorFila, cursorColumna + 2].Borders.LineStyle = XlLineStyle.xlContinuous;
 
-                cursorFila ++;
+                cursorFila++;
 
             }
 
@@ -370,7 +370,7 @@ namespace Programacion123
 
             if (calendar.FreeDays.Count > 0)
             {
-                cursorFila ++;
+                cursorFila++;
 
                 hoja.Cells[cursorFila, cursorColumna] = "";
                 hoja.Cells[cursorFila, cursorColumna].Interior.Color = config.freeDaysColor;

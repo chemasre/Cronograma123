@@ -10,12 +10,12 @@ namespace Programacion123
         {
             float w;
             float h;
-            if(size == DocumentSize.A4) { w = 21; h = 29.7f; }
+            if (size == DocumentSize.A4) { w = 21; h = 29.7f; }
             else  // size == DocumentSize.A5)
             { w = 29.7f / 2.0f; h = 21; }
-    
-            if(orientation == DocumentOrientation.Landscape) { float t = w; w = h; h = t; }
-    
+
+            if (orientation == DocumentOrientation.Landscape) { float t = w; w = h; h = t; }
+
             width = w;
             height = h;
         }
@@ -24,15 +24,15 @@ namespace Programacion123
         {
             Debug.Assert(Style != null);
 
-            if(id == DocumentCoverElementId.Logo) { builder.AppendLine(".coverLogo {"); }
-            else if(id == DocumentCoverElementId.SubjectCode) { builder.AppendLine(".coverSubjectCode {"); }
-            else if(id == DocumentCoverElementId.SubjectName) { builder.AppendLine(".coverSubjectName {"); }
-            else if(id == DocumentCoverElementId.GradeTypeName) { builder.AppendLine(".coverGradeTypeName {"); }
-            else if(id == DocumentCoverElementId.GradeName) { builder.AppendLine(".coverGradeName{"); }
+            if (id == DocumentCoverElementId.Logo) { builder.AppendLine(".coverLogo {"); }
+            else if (id == DocumentCoverElementId.SubjectCode) { builder.AppendLine(".coverSubjectCode {"); }
+            else if (id == DocumentCoverElementId.SubjectName) { builder.AppendLine(".coverSubjectName {"); }
+            else if (id == DocumentCoverElementId.GradeTypeName) { builder.AppendLine(".coverGradeTypeName {"); }
+            else if (id == DocumentCoverElementId.GradeName) { builder.AppendLine(".coverGradeName{"); }
             else // id == DocumentCoverElementId.Cover
             { builder.AppendLine(".coverCover {"); }
 
-            if(!Style.CoverElementStyles.ContainsKey(id)) { Style.CoverElementStyles.Add(id, new DocumentCoverElementStyle()); }
+            if (!Style.CoverElementStyles.ContainsKey(id)) { Style.CoverElementStyles.Add(id, new DocumentCoverElementStyle()); }
             DocumentCoverElementStyle coverStyle = Style.CoverElementStyles[id];
 
             builder.AppendLine(String.Format("position:absolute;"));
@@ -65,7 +65,7 @@ namespace Programacion123
             else if (id == DocumentTextElementId.IndexLevel1) { selector = ".indexLevel1"; }
             else if (id == DocumentTextElementId.IndexLevel2) { selector = ".indexLevel2"; }
             else if (id == DocumentTextElementId.IndexLevel3) { selector = ".indexLevel3"; }
-            else if (id == DocumentTextElementId.IndexTitle){ selector = ".indexTitle"; }
+            else if (id == DocumentTextElementId.IndexTitle) { selector = ".indexTitle"; }
             else if (id == DocumentTextElementId.WeightsTableText) { selector = ".weightsTable"; }
             else if (id == DocumentTextElementId.WeightsTableHeader1Text) { selector = ".weightsTableHeader1"; }
             else // (id == DocumentTextElementId.WeightsTableHeader2Text)
@@ -78,9 +78,9 @@ namespace Programacion123
 
             builder.AppendLine(String.Format("font-size:{0}pt;", textStyle.FontSize));
             builder.AppendLine(String.Format("font-family:{0};", textStyle.FontFamily == DocumentTextElementFontFamily.SansSerif ? "sans-serif" : "serif"));
-            builder.AppendLine(String.Format("font-weight:{0};",textStyle.Bold ? "bold" : "normal"));
-            builder.AppendLine(String.Format("font-style:{0};",textStyle.Italic ? "italic" : "normal"));
-            builder.AppendLine(String.Format("text-decoration:{0};",textStyle.Underscore ? "underline" : "none"));
+            builder.AppendLine(String.Format("font-weight:{0};", textStyle.Bold ? "bold" : "normal"));
+            builder.AppendLine(String.Format("font-style:{0};", textStyle.Italic ? "italic" : "normal"));
+            builder.AppendLine(String.Format("text-decoration:{0};", textStyle.Underscore ? "underline" : "none"));
             builder.AppendLine(String.Format("margin-top:{0}pt;", textStyle.Margins.Top));
             builder.AppendLine(String.Format("margin-bottom:{0}pt;", textStyle.Margins.Bottom));
             builder.AppendLine(String.Format("margin-left:{0}pt;", textStyle.Margins.Left));
@@ -111,16 +111,16 @@ namespace Programacion123
         void AppendCSSTableElement(DocumentTableElementId id, StringBuilder builder)
         {
             Debug.Assert(Style != null);
-            
-            if(id == DocumentTableElementId.TableNormalCell) { builder.AppendLine("td {"); }
-            else if(id == DocumentTableElementId.TableHeader1Cell) { builder.AppendLine(".tableHeader1 {"); }
-            else if(id == DocumentTableElementId.TableHeader2Cell) { builder.AppendLine(".tableHeader2 {"); }
-            else if(id == DocumentTableElementId.TableWeightsNormalCell) { builder.AppendLine(".weightsTable {"); }
-            else if(id == DocumentTableElementId.TableWeightsHeader1Cell) { builder.AppendLine(".weightsTableHeader1 {"); }
+
+            if (id == DocumentTableElementId.TableNormalCell) { builder.AppendLine("td {"); }
+            else if (id == DocumentTableElementId.TableHeader1Cell) { builder.AppendLine(".tableHeader1 {"); }
+            else if (id == DocumentTableElementId.TableHeader2Cell) { builder.AppendLine(".tableHeader2 {"); }
+            else if (id == DocumentTableElementId.TableWeightsNormalCell) { builder.AppendLine(".weightsTable {"); }
+            else if (id == DocumentTableElementId.TableWeightsHeader1Cell) { builder.AppendLine(".weightsTableHeader1 {"); }
             else // id == DocumentTableElementId.TableHeader2Cell
             { builder.AppendLine(".weightsTableHeader2 {"); }
 
-            if(!Style.TableElementStyles.ContainsKey(id)) { Style.TableElementStyles.Add(id, new DocumentTableElementStyle()); }
+            if (!Style.TableElementStyles.ContainsKey(id)) { Style.TableElementStyles.Add(id, new DocumentTableElementStyle()); }
             DocumentTableElementStyle style = Style.TableElementStyles[id];
 
             int r; int g; int b;
@@ -138,7 +138,7 @@ namespace Programacion123
         internal string GenerateCSS(bool isPreview = false)
         {
             Debug.Assert(Style != null);
-            
+
             float width;
             float height;
             GetDimensionsFromSizeAndOrientation(Style.Size, Style.Orientation, out width, out height);
@@ -175,7 +175,7 @@ namespace Programacion123
 
             builder.AppendLine(".emptyCell { background: none; }");
 
-            if(isPreview)
+            if (isPreview)
             {
                 builder.Append(".cover {border-style:dashed; border-width:2pt; border-color:black; }");
                 builder.Append(".pageBreak {border-bottom-style:dashed; border-bottom-width:2pt; border-color:black; display:block; text-align:center; }");

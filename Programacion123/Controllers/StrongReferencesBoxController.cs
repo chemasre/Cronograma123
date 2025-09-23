@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Programacion123
@@ -21,7 +22,7 @@ namespace Programacion123
         public string? parentStorageId;
         public List<string> storageIds;
         public Action<TEntity>? entityInitializer;
-        public ComboBox? comboBox;            
+        public ComboBox? comboBox;
         public ListBox? listBox;
         public EntityFormatContent formatContent;
         public EntityFormatIndex formatIndex;
@@ -54,13 +55,13 @@ namespace Programacion123
 
     }
 
-    public class StrongReferencesBoxController<TEntity, TEditor> where TEntity: Entity, new()
-                                                        where TEditor: Window, IEntityEditor<TEntity>, new()
+    public class StrongReferencesBoxController<TEntity, TEditor> where TEntity : Entity, new()
+                                                        where TEditor : Window, IEntityEditor<TEntity>, new()
     {
         public delegate void OnChanged(StrongReferencesBoxController<TEntity, TEditor> controller);
 
         public event OnChanged Changed;
-        
+
         public List<string> StorageIds { get { return storageIds; } }
 
         List<string> storageIds;
@@ -101,20 +102,34 @@ namespace Programacion123
             buttonDown = configuration.buttonDown;
             storageIds = new List<string>(configuration.storageIds);
             titleEditable = configuration.titleEditable;
-            editorTitle= configuration.editorTitle;
+            editorTitle = configuration.editorTitle;
             blocker = configuration.blocker;
 
-            if(buttonNew != null) { buttonNew.Click += ButtonNew_Click; buttonNew.ToolTip = "Crear"; }
-            if(buttonEdit != null) { buttonEdit.Click += ButtonEdit_Click; buttonEdit.ToolTip = "Modificar"; }
-            if(buttonDelete != null) { buttonDelete.Click += ButtonDelete_Click; buttonDelete.ToolTip = "Eliminar"; }
-            if(buttonUp != null)
+            if (comboBox != null) { comboBox.SelectionChanged += ComboBox_SelectionChanged; }
+            if (listBox != null) { listBox.SelectionChanged += ListBox_SelectionChanged; }
+
+            if (buttonNew != null) { buttonNew.Click += ButtonNew_Click; buttonNew.ToolTip = "Crear"; }
+            if (buttonEdit != null) { buttonEdit.Click += ButtonEdit_Click; buttonEdit.ToolTip = "Modificar"; }
+            if (buttonDelete != null) { buttonDelete.Click += ButtonDelete_Click; buttonDelete.ToolTip = "Eliminar"; }
+            if (buttonUp != null)
             {
                 buttonUp.Click += ButtonUp_Click; buttonUp.ToolTip = "Mover arriba en la lista";
                 buttonDown.Click += ButtonDown_Click; buttonDown.ToolTip = "Mover abajo en la lista";
             }
 
             UpdateListOrCombo();
+            UpdateButtonAvailability();
 
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateButtonAvailability();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateButtonAvailability();
         }
 
         public TEntity? GetSelectedEntity()
@@ -124,18 +139,35 @@ namespace Programacion123
             if (comboBox != null) { selectedIndex = comboBox.SelectedIndex; }
             else { selectedIndex = listBox.SelectedIndex; }
 
-            if(selectedIndex < 0) { return null; }
+            if (selectedIndex < 0) { return null; }
             else { return Storage.LoadOrCreateEntity<TEntity>(storageIds[selectedIndex], parentStorageId); }
+        }
+
+        void UpdateButtonAvailability()
+        {
+            bool hasSelection = false;
+            bool canReorder = false;
+
+            if (comboBox != null) { if (comboBox.SelectedIndex >= 0) { hasSelection = true; } }
+            if (listBox != null) { if (listBox.SelectedIndex >= 0) { hasSelection = true; if (listBox.Items.Count >= 2) { canReorder = true; } } }
+
+            if (buttonEdit != null) { Utils.SetButtonAvailable(buttonEdit, hasSelection); }
+            if (buttonDelete != null) { Utils.SetButtonAvailable(buttonDelete, hasSelection); }
+
+            if (buttonUp != null) { Utils.SetButtonAvailable(buttonUp, hasSelection && canReorder); }
+            if (buttonDown != null) { Utils.SetButtonAvailable(buttonDown, hasSelection && canReorder); }
         }
 
         void ButtonDown_Click(object sender, RoutedEventArgs e)
         {
             int selectedIndex;
 
+            Debug.Assert(comboBox != null || listBox != null);
+
             if (comboBox != null) { selectedIndex = comboBox.SelectedIndex; }
             else { selectedIndex = listBox.SelectedIndex; }
 
-            if(selectedIndex < storageIds.Count - 1)
+            if (selectedIndex < storageIds.Count - 1)
             {
                 string previousSelectedStorageId = storageIds[selectedIndex];
 
@@ -178,9 +210,9 @@ namespace Programacion123
 
         void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            if(deleteConfirmQuestion != null)
+            if (deleteConfirmQuestion != null)
             {
-                if(blocker != null) { blocker.Visibility = Visibility.Visible; }
+                if (blocker != null) { blocker.Visibility = Visibility.Visible; }
                 ConfirmDialog confirm = new ConfirmDialog();
                 confirm.Init(ConfirmIconType.warning, "Confirma eliminación", deleteConfirmQuestion, ConfirmChooseType.acceptAndCancel,
                     (b) =>
@@ -190,7 +222,7 @@ namespace Programacion123
                             ButtonDeleteConfirmed();
                         }
 
-                        if(blocker != null) { blocker.Visibility = Visibility.Hidden; }
+                        if (blocker != null) { blocker.Visibility = Visibility.Hidden; }
                     });
                 confirm.ShowDialog();
             }
@@ -235,10 +267,10 @@ namespace Programacion123
         {
             bool openEditor = false;
             int index = -1;
-            
-            if(comboBox != null)
+
+            if (comboBox != null)
             {
-                if(comboBox.SelectedIndex >= 0)
+                if (comboBox.SelectedIndex >= 0)
                 {
                     openEditor = true;
                     index = comboBox.SelectedIndex;
@@ -246,21 +278,21 @@ namespace Programacion123
             }
             else
             {
-                if(listBox.SelectedIndex >= 0)
+                if (listBox.SelectedIndex >= 0)
                 {
                     openEditor = true;
                     index = listBox.SelectedIndex;
                 }
             }
 
-            if(openEditor)
+            if (openEditor)
             {
                 var entity = Storage.LoadOrCreateEntity<TEntity>(storageIds[index], parentStorageId);
 
                 editor = new TEditor();
-                if(titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
-                if(editorTitle != null) { editor.SetEditorTitle(editorTitle); }
-                if(blocker != null) { blocker.Visibility = Visibility.Visible; }
+                if (titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
+                if (editorTitle != null) { editor.SetEditorTitle(editorTitle); }
+                if (blocker != null) { blocker.Visibility = Visibility.Visible; }
                 editor.InitEditor(entity, parentStorageId);
                 editor.Closed += OnDialogClosed;
                 editor.ShowDialog();
@@ -271,11 +303,11 @@ namespace Programacion123
         void ButtonNew_Click(object sender, RoutedEventArgs e)
         {
             TEntity entity = new();
-            if(entityInitializer != null) { entityInitializer.Invoke(entity); }
+            if (entityInitializer != null) { entityInitializer.Invoke(entity); }
             editor = new TEditor();
-            if(titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
-            if(editorTitle != null) { editor.SetEditorTitle(editorTitle); }
-            if(blocker != null) { blocker.Visibility = Visibility.Visible; }
+            if (titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
+            if (editorTitle != null) { editor.SetEditorTitle(editorTitle); }
+            if (blocker != null) { blocker.Visibility = Visibility.Visible; }
             editor.InitEditor(entity, parentStorageId);
             storageIds.Add(entity.StorageId);
             Changed?.Invoke(this);
@@ -291,21 +323,22 @@ namespace Programacion123
 
             storageIds.Clear();
 
-            if(comboBox != null)
+            if (comboBox != null)
             {
                 comboBox.Items.Clear();
 
                 int index = 0;
                 entities.ForEach(
                     (e) =>
-                    {   string formatted;                        
-                        if(formatter != null) { formatted = formatter.Invoke(e, index); }
+                    {
+                        string formatted;
+                        if (formatter != null) { formatted = formatter.Invoke(e, index); }
                         else { formatted = Utils.FormatEntity<TEntity>(e, index, formatContent, formatIndex); }
                         comboBox.Items.Add(formatted);
                         storageIds.Add(e.StorageId);
-                        index ++;
+                        index++;
                     });
-                if(comboBox.Items.Count > 0) { comboBox.SelectedIndex = 0;  }
+                if (comboBox.Items.Count > 0) { comboBox.SelectedIndex = 0; }
             }
             else
             {
@@ -314,14 +347,15 @@ namespace Programacion123
                 int index = 0;
                 entities.ForEach(
                     (e) =>
-                    {   string formatted;
-                        if(formatter != null) { formatted = formatter.Invoke(e, index); }
+                    {
+                        string formatted;
+                        if (formatter != null) { formatted = formatter.Invoke(e, index); }
                         else { formatted = Utils.FormatEntity<TEntity>(e, index, formatContent, formatIndex); }
                         listBox.Items.Add(formatted);
                         storageIds.Add(e.StorageId);
-                        index ++;
+                        index++;
                     });
-                if(listBox.Items.Count > 0) { listBox.SelectedIndex = 0;  }
+                if (listBox.Items.Count > 0) { listBox.SelectedIndex = 0; }
             }
 
 
@@ -330,7 +364,7 @@ namespace Programacion123
         void OnDialogClosed(object? sender, EventArgs e)
         {
             UpdateListOrCombo();
-            if(blocker != null) { blocker.Visibility = Visibility.Hidden; }
+            if (blocker != null) { blocker.Visibility = Visibility.Hidden; }
 
             string storageId = editor.GetEntity().StorageId;
             SelectStorageId(storageId);
@@ -343,21 +377,23 @@ namespace Programacion123
         {
             int index = storageIds.FindIndex(e => e == storageId);
 
-            if(comboBox != null) { comboBox.SelectedIndex = index; }
+            if (comboBox != null) { comboBox.SelectedIndex = index; }
             else { listBox.SelectedIndex = index; }
 
         }
 
         public void Finish()
         {
-            if(buttonNew != null) { buttonNew.Click -= ButtonNew_Click; }
-            if(buttonEdit != null) { buttonEdit.Click -= ButtonEdit_Click; }
-            if(buttonDelete != null) { buttonDelete.Click -= ButtonDelete_Click; }
-            if(buttonUp != null)
+            if (buttonNew != null) { buttonNew.Click -= ButtonNew_Click; }
+            if (buttonEdit != null) { buttonEdit.Click -= ButtonEdit_Click; }
+            if (buttonDelete != null) { buttonDelete.Click -= ButtonDelete_Click; }
+            if (buttonUp != null)
             {
                 buttonUp.Click -= ButtonUp_Click;
                 buttonDown.Click -= ButtonDown_Click;
             }
+            if (comboBox != null) { comboBox.SelectionChanged -= ComboBox_SelectionChanged; }
+            if (listBox != null) { listBox.SelectionChanged -= ListBox_SelectionChanged; }
         }
     }
 

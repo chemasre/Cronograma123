@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using Cronogramador;
+using System.Windows;
 using System.Windows.Controls;
-using Cronogramador;
 using Message = CronogramaMe.Interfaz.MessageBox;
 
 namespace CronogramaMe
@@ -34,7 +34,7 @@ namespace CronogramaMe
         {
             int unidad = UnidadQuitar.SelectedIndex + 1;
 
-            if(asignatura.TieneUF(unidad))
+            if (asignatura.TieneUF(unidad))
             {
                 asignatura.EliminaUF(unidad);
 
@@ -77,17 +77,17 @@ namespace CronogramaMe
         {
             int unidad = UnidadAnyadir.SelectedIndex + 1;
 
-            if(!asignatura.TieneUF(unidad))
+            if (!asignatura.TieneUF(unidad))
             {
                 string titulo = TituloUnidadAnyadir.Text;
                 int horas;
-                if(Int32.TryParse(HorasUnidadAnyadir.Text, out horas))
+                if (Int32.TryParse(HorasUnidadAnyadir.Text, out horas))
                 {
                     asignatura.AnyadeUF(unidad, titulo, horas);
 
-                    if(UnidadAnyadir.SelectedIndex + 1 < UnidadAnyadir.Items.Count)
+                    if (UnidadAnyadir.SelectedIndex + 1 < UnidadAnyadir.Items.Count)
                     {
-                        UnidadAnyadir.SelectedIndex ++;
+                        UnidadAnyadir.SelectedIndex++;
                     }
 
                     TituloUnidadAnyadir.Text = "Título unidad";
@@ -118,7 +118,7 @@ namespace CronogramaMe
 
         private void ListaUnidades_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(ListaUnidades.SelectedItem != null)
+            if (ListaUnidades.SelectedItem != null)
             {
                 string text = ListaUnidades.SelectedItem.ToString();
                 string[] parts = text.Split(":");

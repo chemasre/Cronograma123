@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using Cronogramador;
+using System.Windows;
 using System.Windows.Controls;
-using Cronogramador;
 
 namespace CronogramaMe
 {
@@ -52,10 +52,10 @@ namespace CronogramaMe
             ListaDias.Items.Clear();
 
             List<string> dias;
-            for(int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 DayOfWeek diaSemana = (DayOfWeek)(i + 1);
-                if(asignatura.TieneDiaSemana(diaSemana))
+                if (asignatura.TieneDiaSemana(diaSemana))
                 {
                     int horas = asignatura.ObtenHorasDiaSemana(diaSemana);
                     ListaDias.Items.Add(DiaANombre(diaSemana) + " " + horas + (horas > 1 ? " horas" : " hora"));
@@ -67,16 +67,16 @@ namespace CronogramaMe
 
 
         private void AnyadirDia_Click(object sender, RoutedEventArgs e)
-        {            
+        {
             asignatura.AnyadeDiaSemana((DayOfWeek)(DiaAnyadir.SelectedIndex + 1), HorasAnyadir.SelectedIndex + 1);
             ActualizaDias();
-            if (DiaAnyadir.SelectedIndex < DiaAnyadir.Items.Count) { DiaAnyadir.SelectedIndex ++; }
+            if (DiaAnyadir.SelectedIndex < DiaAnyadir.Items.Count) { DiaAnyadir.SelectedIndex++; }
         }
 
         private void QuitarDia_Click(object sender, RoutedEventArgs e)
         {
             DayOfWeek dia = (DayOfWeek)(DiaQuitar.SelectedIndex + 1);
-            if(asignatura.TieneDiaSemana(dia))
+            if (asignatura.TieneDiaSemana(dia))
             {
                 asignatura.EliminaDiaSemana(dia);
                 ActualizaDias();

@@ -1,19 +1,9 @@
-﻿namespace Programacion123
+﻿using System.Diagnostics;
+
+namespace Programacion123
 {
-    class Utils
+    partial class Utils
     {
-        public static void ShowError(string error)
-        {
-            Console.WriteLine(error);
-            Thread.Sleep(2000);
-        }
-
-        public static void ShowMessage(string mensaje)
-        {
-            Console.WriteLine(mensaje);
-            Thread.Sleep(2000);
-        }
-
         public static string WeekdayToText(DayOfWeek diaActual, bool breve = false)
         {
             if (diaActual == DayOfWeek.Monday) { return breve ? "Lu." : "Lunes"; }
@@ -82,23 +72,23 @@
             { return String.Format("{0:0}/{1:0}", d.Day, d.Month); }
         }
 
-        public static string FormatEntity<T>(T entity, EntityFormatContent formatContent) where T:Entity
+        public static string FormatEntity<T>(T entity, EntityFormatContent formatContent) where T : Entity
         {
             string content;
-            if(formatContent == EntityFormatContent.Title) { content = entity.Title; }
+            if (formatContent == EntityFormatContent.Title) { content = entity.Title; }
             else // formatContent == EntityFormatContent.description
             { content = entity.Description; }
-            if(content.Length > 100) { content = content.Substring(0, Math.Min(100, content.Length)) + "..."; }
+            if (content.Length > 100) { content = content.Substring(0, Math.Min(100, content.Length)) + "..."; }
 
             return content;
         }
 
-        public static string FormatEntity<T>(T entity, int index, EntityFormatContent formatContent, EntityFormatIndex formatIndex) where T:Entity
+        public static string FormatEntity<T>(T entity, int index, EntityFormatContent formatContent, EntityFormatIndex formatIndex) where T : Entity
         {
             string content = FormatEntity<T>(entity, formatContent);
             string prefix;
-            if(formatIndex == EntityFormatIndex.None) { prefix = ""; }
-            else if(formatIndex == EntityFormatIndex.Number) { prefix = (index + 1).ToString() + ": "; }
+            if (formatIndex == EntityFormatIndex.None) { prefix = ""; }
+            else if (formatIndex == EntityFormatIndex.Number) { prefix = (index + 1).ToString() + ": "; }
             else // formatIndex == EntityFormatIndex.character
             { prefix = FormatLetterPrefixLowercase(index) + ": "; }
 
@@ -109,7 +99,7 @@
 
         public static string FormatLetterPrefixLowercase(int index)
         {
-            return (index / letters.Length > 0 ? FormatLetterPrefixLowercase(index / letters.Length) : "") +  letters[index % letters.Length];
+            return (index / letters.Length > 0 ? FormatLetterPrefixLowercase(index / letters.Length) : "") + letters[index % letters.Length];
         }
 
         public static bool IsSchoolDay(DateTime day, Calendar calendar, WeekSchedule weekSchedule)
@@ -139,7 +129,7 @@
 
         public static string FormatStartDayHour(DateTime day, float hour, WeekSchedule weekSchedule)
         {
-            return Utils.WeekdayToText(day.DayOfWeek) + " " + 
+            return Utils.WeekdayToText(day.DayOfWeek) + " " +
                     Utils.FormatDate(day, Utils.FormatDateOptions.numericMonthDay) +
                     (hour != 0 ? " +" + hour + "h" : "");
         }

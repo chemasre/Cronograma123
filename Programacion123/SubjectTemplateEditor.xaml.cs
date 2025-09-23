@@ -13,7 +13,7 @@ namespace Programacion123
         string? parentStorageId;
 
         WeakReferenceFieldController<GradeTemplate, EntityPicker<GradeTemplate>> gradeTemplateController;
-        WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > generalObjectivesController;
+        WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> generalObjectivesController;
         WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> generalCompetencesController;
 
         StrongReferencesBoxController<LearningResult, LearningResultEditor> learningResultsController;
@@ -267,7 +267,7 @@ namespace Programacion123
             Validate();
         }
 
-        private void KeyCapacitiesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > controller)
+        private void KeyCapacitiesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
             Validate();
@@ -331,13 +331,13 @@ namespace Programacion123
             Validate();
         }
 
-        private void GeneralCompetencesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>>  controller)
+        private void GeneralCompetencesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
             Validate();
         }
 
-        private void GeneralObjectivesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > controller)
+        private void GeneralObjectivesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
             Validate();
@@ -361,7 +361,7 @@ namespace Programacion123
 
             int number;
             entity.GradeClassroomHours = Int32.TryParse(TextGradeClassroomHours.Text, out number) ? number : 0;
-            entity.GradeCompanyHours= Int32.TryParse(TextGradeCompanyHours.Text, out number) ? number : 0;
+            entity.GradeCompanyHours = Int32.TryParse(TextGradeCompanyHours.Text, out number) ? number : 0;
 
             entity.Save(parentStorageId);
         }

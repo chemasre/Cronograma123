@@ -33,13 +33,13 @@ namespace Programacion123
         public WeakReferencesBoxConfiguration<TEntity> WithPickList(List<string> _pickList) { pickList = _pickList; return this; }
     }
 
-    public class WeakReferencesBoxController<TEntity, TPicker> where TEntity: Entity, new()
+    public class WeakReferencesBoxController<TEntity, TPicker> where TEntity : Entity, new()
                                                         where TPicker : Window, IEntityPicker<TEntity>, new()
     {
         public delegate void OnChanged(WeakReferencesBoxController<TEntity, TPicker> controller);
 
         public event OnChanged Changed;
-        
+
         public List<string> StorageIds { get { return storageIds; } }
 
         List<string> storageIds;
@@ -75,18 +75,40 @@ namespace Programacion123
             pickList = configuration.pickList;
             blocker = configuration.blocker;
 
+            listBox.SelectionChanged += ListBox_SelectionChanged;
+
             if (buttonUp != null)
             {
                 buttonUp.Click += ButtonUp_Click; buttonUp.ToolTip = "Mover arriba en la lista";
                 buttonDown.Click += ButtonDown_Click; buttonDown.ToolTip = "Mover abajo en la lista";
             }
-            if(buttonPickAdd != null)
+            if (buttonPickAdd != null)
             {
                 buttonPickAdd.Click += ButtonPickAdd_Click; ; buttonPickAdd.ToolTip = "Añadir referencia";
                 buttonPickRemove.Click += ButtonPickRemove_Click; ; buttonPickRemove.ToolTip = "Quitar referencia";
             }
 
+            UpdateButtonAvailability();
             UpdateList();
+
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateButtonAvailability();
+        }
+
+        private void UpdateButtonAvailability()
+        {
+            bool hasSelection = false;
+            bool canReorder = false;
+
+            if (listBox.SelectedIndex >= 0) { hasSelection = true; if (listBox.Items.Count >= 2) { canReorder = true; } }
+
+            if (buttonPickRemove != null) { Utils.SetButtonAvailable(buttonPickRemove, hasSelection); }
+
+            if (buttonUp != null) { Utils.SetButtonAvailable(buttonUp, hasSelection && canReorder); }
+            if (buttonDown != null) { Utils.SetButtonAvailable(buttonDown, hasSelection && canReorder); }
 
         }
 
@@ -94,11 +116,12 @@ namespace Programacion123
         {
             int selectedIndex = listBox.SelectedIndex;
 
-            if(selectedIndex >= 0)
+            if (selectedIndex >= 0)
             {
                 storageIds.RemoveAt(selectedIndex);
                 Changed?.Invoke(this);
                 UpdateList();
+                UpdateButtonAvailability();
             }
 
         }
@@ -106,14 +129,14 @@ namespace Programacion123
         private void ButtonPickAdd_Click(object sender, RoutedEventArgs e)
         {
             picker = new TPicker();
-            if(pickerTitle != null) { picker.SetPickerTitle(pickerTitle); }
-            if(formatter != null) { picker.SetFormatter(formatter); }
+            if (pickerTitle != null) { picker.SetPickerTitle(pickerTitle); }
+            if (formatter != null) { picker.SetFormatter(formatter); }
             picker.SetFormat(formatContent, formatIndex);
-            if(blocker != null) { blocker.Visibility = Visibility.Visible; }
+            if (blocker != null) { blocker.Visibility = Visibility.Visible; }
 
             List<TEntity> pickableEntities = GetPickableEntities();
-            foreach(string s in storageIds) { pickableEntities.RemoveAll(e => e.StorageId == s); }
-             
+            foreach (string s in storageIds) { pickableEntities.RemoveAll(e => e.StorageId == s); }
+
             picker.SetMultiPickerEntities(new List<TEntity>(), pickableEntities);
             picker.Closed += OnDialogClosed;
 
@@ -129,7 +152,7 @@ namespace Programacion123
         {
             int selectedIndex = listBox.SelectedIndex;
 
-            if(selectedIndex < storageIds.Count - 1)
+            if (selectedIndex < storageIds.Count - 1)
             {
                 string previousSelectedStorageId = storageIds[selectedIndex];
 
@@ -156,12 +179,12 @@ namespace Programacion123
             // When picking without a query or list, all entities must share the same parent
             // When picking with a query or a list, we are assuming the storage id list can contain elements from different parents
 
-            if(pickListQuery == null)
+            if (pickListQuery == null)
             {
                 pickableStorageIds = Storage.GetStorageIds<TEntity>(Storage.LoadAllEntities<TEntity>(parentStorageId));
                 pickableEntities = Storage.LoadOrCreateEntities<TEntity>(pickableStorageIds, parentStorageId);
             }
-            else if(pickList != null)
+            else if (pickList != null)
             {
                 pickableStorageIds = pickList;
                 pickableEntities = Storage.FindEntities<TEntity>(pickableStorageIds);
@@ -200,7 +223,7 @@ namespace Programacion123
         {
             List<TEntity> entities;
 
-            if(pickListQuery != null)
+            if (pickListQuery != null)
             {
                 entities = Storage.FindEntities<TEntity>(storageIds);
             }
@@ -216,24 +239,25 @@ namespace Programacion123
             int index = 0;
             entities.ForEach(
                 (e) =>
-                {   string formattedEntity;
-                    if(formatter != null) { formattedEntity = formatter.Invoke(e, index); }
+                {
+                    string formattedEntity;
+                    if (formatter != null) { formattedEntity = formatter.Invoke(e, index); }
                     else { formattedEntity = Utils.FormatEntity(e, index, formatContent, formatIndex); }
                     listBox.Items.Add(formattedEntity);
                     storageIds.Add(e.StorageId);
-                    index ++;
+                    index++;
                 });
 
-            if(listBox.Items.Count > 0) { listBox.SelectedIndex = 0;  }
+            if (listBox.Items.Count > 0) { listBox.SelectedIndex = 0; }
 
         }
 
         void OnDialogClosed(object? sender, EventArgs e)
         {
-            if(!picker.GetWasCancelled())
+            if (!picker.GetWasCancelled())
             {
                 List<TEntity> selected = picker.GetPickedEntities();
-                foreach(TEntity entity in selected) { storageIds.Add(entity.StorageId); }
+                foreach (TEntity entity in selected) { storageIds.Add(entity.StorageId); }
 
                 List<TEntity> pickableEntities = GetPickableEntities();
                 storageIds.Sort(
@@ -249,7 +273,7 @@ namespace Programacion123
                 UpdateList();
             }
 
-            if(blocker != null) { blocker.Visibility = Visibility.Hidden; }
+            if (blocker != null) { blocker.Visibility = Visibility.Hidden; }
 
             picker.Closed -= OnDialogClosed;
 
@@ -258,7 +282,7 @@ namespace Programacion123
         void SelectStorageId(string storageId)
         {
             int index = storageIds.FindIndex(e => e == storageId);
-            
+
             listBox.SelectedIndex = index;
 
         }
@@ -271,11 +295,13 @@ namespace Programacion123
                 buttonDown.Click -= ButtonDown_Click;
             }
 
-            if(buttonPickAdd != null)
+            if (buttonPickAdd != null)
             {
                 buttonPickAdd.Click -= ButtonPickAdd_Click;
                 buttonPickRemove.Click -= ButtonPickRemove_Click;
             }
+
+            listBox.SelectionChanged -= ListBox_SelectionChanged;
         }
 
     }

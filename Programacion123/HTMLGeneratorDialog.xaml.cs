@@ -1,12 +1,12 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.Win32;
+using MSHTML;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Microsoft.Win32;
-using MSHTML;
 
 
 namespace Programacion123
@@ -18,7 +18,7 @@ namespace Programacion123
     {
         Action<bool>? closeAction;
 
-        WeakReferenceFieldController<Subject, EntityPicker<Subject> > subjectController;
+        WeakReferenceFieldController<Subject, EntityPicker<Subject>> subjectController;
 
         HTMLGenerator previewGenerator;
 
@@ -66,7 +66,7 @@ namespace Programacion123
 
             ComboCoverElement.SelectedIndex = 0;
 
-            for(int i = 0; i < 300; i ++)
+            for (int i = 0; i < 300; i++)
             {
                 ComboCoverElementPositionTop.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
                 ComboCoverElementPositionLeft.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
@@ -90,7 +90,7 @@ namespace Programacion123
             TextDocumentHeight.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
             TextDocumentHeight.IsReadOnly = true;
 
-            for(int i = 0; i < 100; i ++)
+            for (int i = 0; i < 100; i++)
             {
                 ComboDocumentMarginTop.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
                 ComboDocumentMarginBottom.Items.Add(String.Format("{0:0.00 cm }", 0.1f * i));
@@ -101,7 +101,7 @@ namespace Programacion123
             ComboDocumentMarginTop.SelectedIndex = (int)(previewStyle.Margins.Top / 0.1f);
             ComboDocumentMarginBottom.SelectedIndex = (int)(previewStyle.Margins.Bottom / 0.1f);
             ComboDocumentMarginLeft.SelectedIndex = (int)(previewStyle.Margins.Left / 0.1f);
-            ComboDocumentMarginRight.SelectedIndex = (int)(previewStyle.Margins.Right/ 0.1f);
+            ComboDocumentMarginRight.SelectedIndex = (int)(previewStyle.Margins.Right / 0.1f);
 
             SetBase64ImageInUI(ImageCoverLogo, previewStyle.LogoBase64);
             SetBase64ImageInUI(ImageCoverCover, previewStyle.CoverBase64);
@@ -138,11 +138,11 @@ namespace Programacion123
             ComboTextElementAlign.Items.Add("Derecha");
             ComboTextElementAlign.Items.Add("Justificar");
 
-            for (int i = 0; i < 100; i ++) { ComboTextElementFontSize.Items.Add(String.Format("{0}pt", i + 1)); }
+            for (int i = 0; i < 100; i++) { ComboTextElementFontSize.Items.Add(String.Format("{0}pt", i + 1)); }
 
             AddColorNamesToCombo(ComboTextElementFontColor);
 
-            for(int i = 0; i < 100; i ++)
+            for (int i = 0; i < 100; i++)
             {
                 ComboTextElementMarginTop.Items.Add(String.Format("{0}pt", i + 1));
                 ComboTextElementMarginBottom.Items.Add(String.Format("{0}pt", i + 1));
@@ -161,7 +161,7 @@ namespace Programacion123
 
             AddColorNamesToCombo(ComboTableElementColor);
 
-            for(int i = 0; i < 100; i ++)
+            for (int i = 0; i < 100; i++)
             {
                 ComboTableElementPaddingTop.Items.Add(String.Format("{0}pt", i + 1));
                 ComboTableElementPaddingBottom.Items.Add(String.Format("{0}pt", i + 1));
@@ -187,7 +187,7 @@ namespace Programacion123
             ComboDocumentMarginLeft.SelectionChanged += ComboDocumentMarginLeft_SelectionChanged;
             ComboDocumentMarginRight.SelectionChanged += ComboDocumentMarginRight_SelectionChanged;
 
-            
+
             Validate();
 
             webPreviewLastScrollPosition = null;
@@ -200,7 +200,7 @@ namespace Programacion123
 
         private void SetCoverElementEventListenersEnabled(bool enabled)
         {
-            if(enabled)
+            if (enabled)
             {
                 ComboCoverElement.SelectionChanged += ComboCoverElement_SelectionChanged;
                 ComboCoverElementPositionTop.SelectionChanged += ComboCoverElementPositionTop_SelectionChanged;
@@ -212,12 +212,12 @@ namespace Programacion123
                 ComboCoverElementPositionTop.SelectionChanged -= ComboCoverElementPositionTop_SelectionChanged;
                 ComboCoverElementPositionLeft.SelectionChanged -= ComboCoverElementPositionLeft_SelectionChanged;
             }
-            
+
         }
 
         private void SetTextElementEventListenersEnabled(bool enabled)
         {
-            if(enabled)
+            if (enabled)
             {
                 ComboTextElement.SelectionChanged += ComboTextElement_SelectionChanged;
                 ComboTextElementFontFamily.SelectionChanged += ComboTextElementFontFamily_SelectionChanged;
@@ -253,7 +253,7 @@ namespace Programacion123
                 ComboTextElementMarginLeft.SelectionChanged -= ComboTextElementMarginLeft_SelectionChanged;
                 ComboTextElementMarginRight.SelectionChanged -= ComboTextElementMarginRight_SelectionChanged;
             }
-            
+
         }
 
 
@@ -409,7 +409,7 @@ namespace Programacion123
             DocumentStyle previewStyle = previewGenerator.Style;
 
             DocumentCoverElementId id = (DocumentCoverElementId)ComboCoverElement.SelectedIndex;
-            if(!previewStyle.CoverElementStyles.ContainsKey(id)) { previewStyle.CoverElementStyles.Add(id, new DocumentCoverElementStyle()); }
+            if (!previewStyle.CoverElementStyles.ContainsKey(id)) { previewStyle.CoverElementStyles.Add(id, new DocumentCoverElementStyle()); }
 
             DocumentCoverElementStyle style = previewStyle.CoverElementStyles[id];
 
@@ -429,7 +429,7 @@ namespace Programacion123
             DocumentStyle previewStyle = previewGenerator.Style;
 
             DocumentTextElementId id = (DocumentTextElementId)ComboTextElement.SelectedIndex;
-            if(!previewStyle.TextElementStyles.ContainsKey(id)) { previewStyle.TextElementStyles.Add(id, new DocumentTextElementStyle()); }
+            if (!previewStyle.TextElementStyles.ContainsKey(id)) { previewStyle.TextElementStyles.Add(id, new DocumentTextElementStyle()); }
 
             DocumentTextElementStyle style = previewStyle.TextElementStyles[id];
 
@@ -461,7 +461,7 @@ namespace Programacion123
             DocumentStyle previewStyle = previewGenerator.Style;
 
             DocumentTableElementId id = (DocumentTableElementId)ComboTableElement.SelectedIndex;
-            if(!previewStyle.TableElementStyles.ContainsKey(id)) { previewStyle.TableElementStyles.Add(id, new DocumentTableElementStyle()); }
+            if (!previewStyle.TableElementStyles.ContainsKey(id)) { previewStyle.TableElementStyles.Add(id, new DocumentTableElementStyle()); }
 
             DocumentTableElementStyle style = previewStyle.TableElementStyles[id];
 
@@ -487,7 +487,7 @@ namespace Programacion123
 
         private void SetTableElementEventListenersEnabled(bool enabled)
         {
-            if(enabled)
+            if (enabled)
             {
                 ComboTableElement.SelectionChanged += ComboTableElement_SelectionChanged; ;
                 ComboTableElementColor.SelectionChanged += ComboTableElementColor_SelectionChanged;
@@ -718,13 +718,13 @@ namespace Programacion123
 
         void UpdatePreviewUI()
         {
-            if(webPreviewReady)
+            if (webPreviewReady)
             {
                 webPreviewLastScrollPosition = WebPreview.InvokeScript("getVerticalScrollPosition");
             }
 
             string html;
-            if(previewGenerator.Validate().code == GeneratorValidationCode.success)
+            if (previewGenerator.Validate().code == GeneratorValidationCode.success)
             {
                 webPreviewValid = true;
                 html = previewGenerator.GenerateHTML(true);
@@ -732,19 +732,19 @@ namespace Programacion123
             else
             {
                 html = "<!DOCTYPE html>\n" +
-                       "<html lang='es'>\n" + 
-                       "<head>\n" + 
-                       "<meta charset='UTF-8'>\n" + 
+                       "<html lang='es'>\n" +
+                       "<head>\n" +
+                       "<meta charset='UTF-8'>\n" +
                        "<title>Programación no válida</title>\n" +
                        "<style>" +
                        "#cannotPreview" +
                        "{ font-family: sans-serif;\n" +
                        "  font-size:16pt;\n" +
                        "  color:orange;\n" +
-                       "  margin-left:auto;\n" + 
-                       "  margin-right:auto;\n" + 
+                       "  margin-left:auto;\n" +
+                       "  margin-right:auto;\n" +
                        "  width:10cm;\n" +
-                       "  height:auto;\n" + 
+                       "  height:auto;\n" +
                        "  text-align:center;\n" +
                        "  margin-top:5cm;\n" +
                        "  border-style:dashed;\n" +
@@ -761,22 +761,22 @@ namespace Programacion123
 
                 webPreviewValid = false;
             }
-            
+
             WebPreview.NavigateToString(html);
         }
 
         void WebPreview_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            if(webPreviewValid)
+            if (webPreviewValid)
             {
                 // https://stackoverflow.com/questions/5496549/how-to-inject-css-in-webbrowser-control
 
                 HTMLDocument htmlDocument = (HTMLDocument)WebPreview.Document;
-                IHTMLStyleSheet style = htmlDocument.createStyleSheet("",0);
+                IHTMLStyleSheet style = htmlDocument.createStyleSheet("", 0);
 
                 style.cssText = previewGenerator.GenerateCSS();
 
-                if(webPreviewReady && webPreviewLastScrollPosition != null)
+                if (webPreviewReady && webPreviewLastScrollPosition != null)
                 {
                     WebPreview.InvokeScript("setVerticalScrollPosition", webPreviewLastScrollPosition.ToString());
                 }
@@ -793,11 +793,11 @@ namespace Programacion123
 
         string? GetBase64ImageFromUI(Image image)
         {
-            if(image.Source != null)
+            if (image.Source != null)
             {
                 //https://stackoverflow.com/questions/553611/wpf-image-to-byte
 
-                MemoryStream memoryStream = new();              
+                MemoryStream memoryStream = new();
                 PngBitmapEncoder encoder = new();
                 BitmapFrame frame = BitmapFrame.Create((BitmapImage)image.Source);
                 encoder.Frames.Add(frame);
@@ -813,7 +813,7 @@ namespace Programacion123
 
         void SetBase64ImageInUI(Image image, string? imageBase64)
         {
-            if(!String.IsNullOrEmpty(imageBase64))
+            if (!String.IsNullOrEmpty(imageBase64))
             {
                 // https://stackoverflow.com/questions/593388/how-do-i-read-a-base64-image-in-wpf
 
@@ -880,16 +880,16 @@ namespace Programacion123
 
             bool opened = false;
 
-            if(openFile.ShowDialog().GetValueOrDefault()) { opened = true; }
+            if (openFile.ShowDialog().GetValueOrDefault()) { opened = true; }
 
             Blocker.Visibility = Visibility.Hidden;
 
-            if(opened)
+            if (opened)
             {
                 byte[] bytes = File.ReadAllBytes(openFile.FileName);
                 string base64 = Convert.ToBase64String(bytes);
                 SetBase64ImageInUI(target, base64);
-                
+
                 UpdateGenerator();
                 Validate();
 
@@ -931,56 +931,56 @@ namespace Programacion123
             previewStyle.Orientation = (DocumentOrientation)ComboDocumentOrientation.SelectedIndex;
             previewStyle.Size = (DocumentSize)ComboDocumentSize.SelectedIndex;
             previewStyle.Margins = new()
-                                    {
-                                    Top = ComboDocumentMarginTop.SelectedIndex * 0.1f,
-                                    Bottom = ComboDocumentMarginBottom.SelectedIndex * 0.1f,
-                                    Left = ComboDocumentMarginLeft.SelectedIndex * 0.1f,
-                                    Right = ComboDocumentMarginRight.SelectedIndex * 0.1f,
-                                    };                                        
+            {
+                Top = ComboDocumentMarginTop.SelectedIndex * 0.1f,
+                Bottom = ComboDocumentMarginBottom.SelectedIndex * 0.1f,
+                Left = ComboDocumentMarginLeft.SelectedIndex * 0.1f,
+                Right = ComboDocumentMarginRight.SelectedIndex * 0.1f,
+            };
 
             previewStyle.CoverElementStyles[(DocumentCoverElementId)ComboCoverElement.SelectedIndex] = new()
-                                      {
-                                        Position = new()
-                                                  { 
-                                                    Top = ComboCoverElementPositionTop.SelectedIndex * 0.1f,
-                                                    Left = ComboCoverElementPositionLeft.SelectedIndex * 0.1f,
-                                                  }
+            {
+                Position = new()
+                {
+                    Top = ComboCoverElementPositionTop.SelectedIndex * 0.1f,
+                    Left = ComboCoverElementPositionLeft.SelectedIndex * 0.1f,
+                }
 
-                                      };
+            };
 
 
 
             previewStyle.TextElementStyles[(DocumentTextElementId)ComboTextElement.SelectedIndex] = new()
-                                      {
-                                        Bold = CheckboxTextElementBold.IsChecked.GetValueOrDefault(),
-                                        Italic = CheckboxTextElementItalic.IsChecked.GetValueOrDefault(),
-                                        Underscore = CheckboxTextElementUnderscore.IsChecked.GetValueOrDefault(),
-                                        FontColor = (DocumentElementColor)ComboTextElementFontColor.SelectedIndex,
-                                        FontSize = ComboTextElementFontSize.SelectedIndex + 1,
-                                        FontFamily = (DocumentTextElementFontFamily)ComboTextElementFontFamily.SelectedIndex,
-                                        Align = (DocumentTextElementAlign)ComboTextElementAlign.SelectedIndex,
-                                        Margins = new()
-                                                  { 
-                                                    Top = ComboTextElementMarginTop.SelectedIndex,
-                                                    Bottom = ComboTextElementMarginBottom.SelectedIndex,
-                                                    Left = ComboTextElementMarginLeft.SelectedIndex,
-                                                    Right = ComboTextElementMarginRight.SelectedIndex
-                                                  }
+            {
+                Bold = CheckboxTextElementBold.IsChecked.GetValueOrDefault(),
+                Italic = CheckboxTextElementItalic.IsChecked.GetValueOrDefault(),
+                Underscore = CheckboxTextElementUnderscore.IsChecked.GetValueOrDefault(),
+                FontColor = (DocumentElementColor)ComboTextElementFontColor.SelectedIndex,
+                FontSize = ComboTextElementFontSize.SelectedIndex + 1,
+                FontFamily = (DocumentTextElementFontFamily)ComboTextElementFontFamily.SelectedIndex,
+                Align = (DocumentTextElementAlign)ComboTextElementAlign.SelectedIndex,
+                Margins = new()
+                {
+                    Top = ComboTextElementMarginTop.SelectedIndex,
+                    Bottom = ComboTextElementMarginBottom.SelectedIndex,
+                    Left = ComboTextElementMarginLeft.SelectedIndex,
+                    Right = ComboTextElementMarginRight.SelectedIndex
+                }
 
-                                      };
+            };
 
             previewStyle.TableElementStyles[(DocumentTableElementId)ComboTableElement.SelectedIndex] = new()
-                                      {
-                                        BackgroundColor = (DocumentElementColor)ComboTableElementColor.SelectedIndex,
-                                        Padding = new()
-                                                  { 
-                                                    Top = ComboTableElementPaddingTop.SelectedIndex,
-                                                    Bottom = ComboTableElementPaddingBottom.SelectedIndex,
-                                                    Left = ComboTableElementPaddingLeft.SelectedIndex,
-                                                    Right = ComboTableElementPaddingRight.SelectedIndex
-                                                  }
+            {
+                BackgroundColor = (DocumentElementColor)ComboTableElementColor.SelectedIndex,
+                Padding = new()
+                {
+                    Top = ComboTableElementPaddingTop.SelectedIndex,
+                    Bottom = ComboTableElementPaddingBottom.SelectedIndex,
+                    Left = ComboTableElementPaddingLeft.SelectedIndex,
+                    Right = ComboTableElementPaddingRight.SelectedIndex
+                }
 
-                                      };
+            };
 
             previewGenerator.Style = previewStyle;
 
@@ -997,19 +997,19 @@ namespace Programacion123
 
         private async void ButtonAccept_Click(object sender, RoutedEventArgs e)
         {
-            if(previewGenerator.Validate().code != GeneratorValidationCode.success) 
+            if (previewGenerator.Validate().code != GeneratorValidationCode.success)
             {
                 ConfirmDialog dialog = new();
                 dialog.Init(ConfirmIconType.warning,
                             "Advertencia",
                             "No se puede generar el documento porque la programación del módulo presenta algún problema",
-                            ConfirmChooseType.acceptOnly, 
+                            ConfirmChooseType.acceptOnly,
                             (r) => { Blocker.Visibility = Visibility.Hidden; });
 
                 Blocker.Visibility = Visibility.Visible;
 
                 dialog.ShowDialog();
-                
+
             }
             else
             {
@@ -1022,11 +1022,11 @@ namespace Programacion123
 
                 Blocker.Visibility = Visibility.Visible;
 
-                if(saveFile.ShowDialog().GetValueOrDefault())
+                if (saveFile.ShowDialog().GetValueOrDefault())
                 {
                     Generator generator;
 
-                    if(saveFile.FilterIndex == 1)
+                    if (saveFile.FilterIndex == 1)
                     {
                         generator = new WordGenerator();
                     }
@@ -1042,7 +1042,7 @@ namespace Programacion123
 
                     dialogTask.Init("Generando documento");
                     Blocker.Visibility = Visibility.Visible;
-                    
+
                     dialogTask.Show();
 
 
@@ -1050,7 +1050,7 @@ namespace Programacion123
                         () =>
                         {
                             GeneratorResult result;
-                            
+
                             result = generator.Generate(saveFile.FileName);
 
                             return result;
@@ -1058,7 +1058,7 @@ namespace Programacion123
 
                     dialogTask.Close();
 
-                    if(result.code != GeneratorResultCode.success)
+                    if (result.code != GeneratorResultCode.success)
                     {
                         ConfirmDialog errorDialog = new();
 
@@ -1075,7 +1075,7 @@ namespace Programacion123
                                                 ConfirmChooseType.yesAndNo,
                             (b) =>
                             {
-                                if(b)
+                                if (b)
                                 {
                                     Process process = new();
                                     process.StartInfo = new ProcessStartInfo(saveFile.FileName);
@@ -1086,15 +1086,15 @@ namespace Programacion123
 
                         confirmOpenDialog.ShowDialog();
                     }
-                    
+
                     closeAction?.Invoke(true);
                     Close();
                 }
-            
+
                 Blocker.Visibility = Visibility.Hidden;
             }
 
-            
+
         }
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)

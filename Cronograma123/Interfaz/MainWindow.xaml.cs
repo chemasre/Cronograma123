@@ -1,12 +1,12 @@
-﻿using System.Diagnostics;
+﻿using Cronogramador;
+using Microsoft.Win32;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Cronogramador;
-using Microsoft.Win32;
 using Message = CronogramaMe.Interfaz.MessageBox;
 
 namespace CronogramaMe
@@ -43,12 +43,13 @@ namespace CronogramaMe
 
             dataPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + projectName;
 
-            if(!Directory.Exists(dataPath)) { Directory.CreateDirectory(dataPath); }
+            if (!Directory.Exists(dataPath)) { Directory.CreateDirectory(dataPath); }
 
             calendario = new Cronogramador.Calendario();
             if (File.Exists(dataPath + "\\" + "calendario.json")) { calendario.Carga(dataPath + "\\" + "calendario.json"); }
             else
-            {   DateTime now = DateTime.Now;
+            {
+                DateTime now = DateTime.Now;
                 int d = 1;
                 int m = 9;
                 int a = now.Year;
@@ -64,7 +65,7 @@ namespace CronogramaMe
             }
 
             asignatura = new Cronogramador.Asignatura();
-            if(File.Exists(dataPath + "\\" + "asignatura.json")) { asignatura.Carga(dataPath + "\\" + "asignatura.json"); }
+            if (File.Exists(dataPath + "\\" + "asignatura.json")) { asignatura.Carga(dataPath + "\\" + "asignatura.json"); }
             else { asignatura.PonNombre("Nombre de mi asignatura"); }
 
             InitializeComponent();
@@ -138,7 +139,7 @@ namespace CronogramaMe
 
             Message m = null;
 
-            if(!cronograma.CompruebaExcelDisponible())
+            if (!cronograma.CompruebaExcelDisponible())
             {
                 m = new Message(Message.Type.alert, "No tienes una versión compatible de Excel instalada en el sistema");
                 m.ShowDialog();
@@ -147,7 +148,7 @@ namespace CronogramaMe
             }
 
             Asignatura.Completitud completaAsignatura = asignatura.CompruebaCompleta();
-            if(completaAsignatura == Asignatura.Completitud.faltanDiasSemana)
+            if (completaAsignatura == Asignatura.Completitud.faltanDiasSemana)
             {
                 m = new Message(Message.Type.alert, "Falta completar el horario porque no has introducido ningún día de la semana");
                 m.ShowDialog();
@@ -155,7 +156,7 @@ namespace CronogramaMe
                 HideOverlay();
                 return;
             }
-            else if(completaAsignatura == Asignatura.Completitud.faltanUnidades)
+            else if (completaAsignatura == Asignatura.Completitud.faltanUnidades)
             {
                 m = new Message(Message.Type.alert, "Falta completar la asignatura porque no has introducido ninguna unidad");
                 m.ShowDialog();
@@ -174,7 +175,7 @@ namespace CronogramaMe
             cronograma.ObtenConfiguracion().estiloContinuo = m.result;
 
 
-            SaveFileDialog saveFile = new SaveFileDialog();           
+            SaveFileDialog saveFile = new SaveFileDialog();
             saveFile.AddExtension = true;
             saveFile.CheckPathExists = true;
             saveFile.OverwritePrompt = true;
@@ -188,12 +189,12 @@ namespace CronogramaMe
 
                 Cronograma.Resultado resultado = cronograma.CompruebaResultado();
 
-                if(resultado == Cronograma.Resultado.hayDiasMasAllaDelFinal)
+                if (resultado == Cronograma.Resultado.hayDiasMasAllaDelFinal)
                 {
                     m = new Message(Message.Type.alert, "Se han generado días de clase más allá del final del curso. Ajusta las fechas de inicio y fin o amplía el horario");
                     m.ShowDialog();
                 }
-                else if(resultado == Cronograma.Resultado.errorAlGuardarFichero)
+                else if (resultado == Cronograma.Resultado.errorAlGuardarFichero)
                 {
                     m = new Message(Message.Type.error, "Se ha producido un error al guardar el fichero. Si lo tienes abierto en Excel, ciérralo y vuelve a generar el cronograma");
                     m.ShowDialog();
@@ -269,7 +270,7 @@ namespace CronogramaMe
             m.ShowDialog();
             limpiarTodo = m.result;
 
-            if(!limpiarTodo)
+            if (!limpiarTodo)
             {
                 m = new Message(Message.Type.question, "¿Quieres reiniciar el calendario?");
                 m.ShowDialog();
@@ -284,7 +285,7 @@ namespace CronogramaMe
                 limpiarContenidos = m.result;
             }
 
-            if(limpiarTodo)
+            if (limpiarTodo)
             {
                 File.Delete(dataPath + "\\" + "configInterfaz.json");
                 File.Delete(dataPath + "\\" + "config.json");
@@ -293,7 +294,7 @@ namespace CronogramaMe
                 cronograma.ReiniciaConfiguracion();
             }
 
-            if(limpiarCalendario || limpiarTodo)
+            if (limpiarCalendario || limpiarTodo)
             {
                 DateTime now = DateTime.Now;
                 int d = 1;
@@ -315,7 +316,7 @@ namespace CronogramaMe
             if (limpiarHorario || limpiarTodo)
             {
                 asignatura.ReiniciaHorario();
-                
+
             }
 
             if (limpiarContenidos || limpiarTodo)
@@ -324,7 +325,7 @@ namespace CronogramaMe
                 asignatura.ReiniciaUFs();
             }
 
-            if(limpiarTodo || limpiarHorario || limpiarContenidos)
+            if (limpiarTodo || limpiarHorario || limpiarContenidos)
             {
                 asignatura.Guarda(dataPath + "\\" + "asignatura.json");
             }
@@ -333,10 +334,10 @@ namespace CronogramaMe
 
         private void VentanaPrincipal_Loaded(object sender, RoutedEventArgs e)
         {
-            if(!ventanaAbiertaPorPrimeraVez) { return; }
+            if (!ventanaAbiertaPorPrimeraVez) { return; }
             else { ventanaAbiertaPorPrimeraVez = false; }
 
-            
+
 
             Message m2 = null;
 

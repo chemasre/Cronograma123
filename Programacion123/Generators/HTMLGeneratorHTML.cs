@@ -32,12 +32,12 @@ namespace Programacion123
             string gradeTypeName = GetGradeTypeName();
 
             List<ActivitySchedule>? schedule = null;
-            
-            if((Subject?.CanScheduleActivities()).GetValueOrDefault()) { schedule = Subject.ScheduleActivities(); }
+
+            if ((Subject?.CanScheduleActivities()).GetValueOrDefault()) { schedule = Subject.ScheduleActivities(); }
 
             // https://awkwardcoder.blogspot.com/2011/08/manipulating-web-browser-scroll.html
 
-            string javascript = 
+            string javascript =
             @"function getVerticalScrollPosition() {
             return document.documentElement.scrollTop.toString();
             }
@@ -82,12 +82,12 @@ namespace Programacion123
                                                             .WithInner(item.Title)).WithClass("indexLevel1"));
 
                                     int subitemIndex = 0;
-                                    foreach(DocumentIndexItem subitem in item.Subitems)
+                                    foreach (DocumentIndexItem subitem in item.Subitems)
                                     {
                                         l.Add(Tag.Create("div").WithInner(Tag.Create("a").WithParam("href", String.Format("#Apartado{0}-{1}", i + 1, subitemIndex + 1))
                                                                 .WithInner(subitem.Title)).WithClass("indexLevel2"));
                                         int subSubitemIndex = 0;
-                                        foreach(DocumentIndexItem subsubitem in subitem.Subitems)
+                                        foreach (DocumentIndexItem subsubitem in subitem.Subitems)
                                         {
                                             l.Add(Tag.Create("div").WithInner(Tag.Create("a").WithParam("href", String.Format("#Apartado{0}-{1}-{2}", i + 1, subitemIndex + 1, subSubitemIndex + 1))
                                                                     .WithInner(subsubitem.Title)).WithClass("indexLevel3"));
@@ -135,7 +135,7 @@ namespace Programacion123
 
                                                             string rasText = "";
                                                             bool first = true;
-                                                            referencedResults.ForEach((i) => { rasText += (first?"":", ") + String.Format("RA{0}", i + 1); first = false; });
+                                                            referencedResults.ForEach((i) => { rasText += (first ? "" : ", ") + String.Format("RA{0}", i + 1); first = false; });
 
                                                             string criteriasText = "";
                                                             first = true;
@@ -148,15 +148,15 @@ namespace Programacion123
 
                                                             int aIndex = 0;
                                                             List<Activity> activitiesList = b.Activities.ToList();
-                                                            foreach(Activity a in activitiesList)
+                                                            foreach (Activity a in activitiesList)
                                                             {
-                                                                if(schedule != null)
+                                                                if (schedule != null)
                                                                 {
-                                                                    if(aIndex == 0) { startActivitySchedule = schedule.Find(s => s.activity.StorageId == a.StorageId); }
-                                                                    if(aIndex == activitiesList.Count - 1) { endActivitySchedule = schedule.Find(s => s.activity.StorageId == a.StorageId); }
+                                                                    if (aIndex == 0) { startActivitySchedule = schedule.Find(s => s.activity.StorageId == a.StorageId); }
+                                                                    if (aIndex == activitiesList.Count - 1) { endActivitySchedule = schedule.Find(s => s.activity.StorageId == a.StorageId); }
                                                                 }
 
-                                                                aIndex ++;
+                                                                aIndex++;
                                                             }
 
 
@@ -290,10 +290,10 @@ namespace Programacion123
 
                             .WithInner(Tag.Create("h1").WithInner(index[6].Title).WithId("Apartado7"))
                             .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1Resources), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1Resources), addCommonTextTags)                            
+                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1Resources), addCommonTextTags)
                             .WithInner(Tag.Create("h2").WithInner("Espacios requeridos").WithId("Apartado7-1"))
                             .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2ResourcesSpaces), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2ResourcesSpaces), addCommonTextTags)                            
+                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2ResourcesSpaces), addCommonTextTags)
                             .WithInnerForeach<CommonText>(Subject.SpaceResources.ToList(),
                                 (c, i, l) =>
                                 {
@@ -304,7 +304,7 @@ namespace Programacion123
 
                             .WithInner(Tag.Create("h2").WithInner("Materiales y herramientas").WithId("Apartado7-2"))
                             .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2ResourcesMaterialAndTools), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2ResourcesMaterialAndTools), addCommonTextTags) 
+                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2ResourcesMaterialAndTools), addCommonTextTags)
                             .WithInnerForeach<CommonText>(Subject.MaterialResources.ToList(),
                                 (c, i, l) =>
                                 {
@@ -317,51 +317,51 @@ namespace Programacion123
                             ///////////////////////////////////////////////////////////////////////////////
                             ////////////// Nivel 1: Programación del módulo profesional ///////////////////
                             ///////////////////////////////////////////////////////////////////////////////
-                            
+
                             .WithInner(Tag.Create("h1").WithInner(index[7].Title).WithId("Apartado8"))
                             .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1SubjectProgramming), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1SubjectProgramming), addCommonTextTags) 
+                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1SubjectProgramming), addCommonTextTags)
                             .WithInner(Tag.Create("h2").WithInner("Resultados de aprendizaje, criterios de evaluación y contenidos").WithId("Apartado8-1"))
                             .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2LearningResultsAndContents), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2LearningResultsAndContents), addCommonTextTags) 
+                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2LearningResultsAndContents), addCommonTextTags)
                             .WithInner(Tag.Create("h3").WithInner("Resultados de aprendizaje y criterios de evaluación").WithId("Apartado8-1-1"))
                             .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header3LearningResults), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header3LearningResults), addCommonTextTags) 
+                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header3LearningResults), addCommonTextTags)
                             .WithInnerForeach<LearningResult>(subjectTemplate.LearningResults.ToList(),
                                 (r, i, l) =>
                                 {
-                                        l.Add(Tag.Create("div").WithInner(String.Format("RA{0}: ", i + 1) + r.Description));
-                                        l.Add(Tag.Create("div").WithInner("Criterios"));
+                                    l.Add(Tag.Create("div").WithInner(String.Format("RA{0}: ", i + 1) + r.Description));
+                                    l.Add(Tag.Create("div").WithInner("Criterios"));
 
-                                        l.Add(Tag.Create("div")
-                                        .WithInnerForeach<CommonText>(subjectTemplate.LearningResults.ToList()[i].Criterias.ToList(),
-                                            (c, j, l) =>
-                                            {
-                                                l.Add(Tag.Create("div").WithInner(String.Format("{0}.{1}: ", i + 1, j + 1) + c.Description));
-                                            }
-                                        ));
+                                    l.Add(Tag.Create("div")
+                                    .WithInnerForeach<CommonText>(subjectTemplate.LearningResults.ToList()[i].Criterias.ToList(),
+                                        (c, j, l) =>
+                                        {
+                                            l.Add(Tag.Create("div").WithInner(String.Format("{0}.{1}: ", i + 1, j + 1) + c.Description));
+                                        }
+                                    ));
                                 }
                              )
                             .WithInner(Tag.Create("h3").WithInner("Contenidos").WithId("Apartado8-1-2"))
                             .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header3Contents), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header3Contents), addCommonTextTags) 
+                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header3Contents), addCommonTextTags)
                             .WithInnerForeach<Content>(subjectTemplate.Contents.ToList(),
                                 (c, i, l) =>
                                 {
-                                l.Add(Tag.Create("div").WithInner(String.Format("{0}: ", i + 1) + c.Description));
-                                l.Add(Tag.Create("div")
-                                        .WithInnerForeach<CommonText>(subjectTemplate.Contents.ToList()[i].Points.ToList(),
-                                            (p, j, l) =>
-                                            {
-                                                l.Add(Tag.Create("div").WithInner(String.Format("{0}.{1}: ", i + 1, j + 1) + p.Description));
-                                            }
-                                        )
-                                    );
+                                    l.Add(Tag.Create("div").WithInner(String.Format("{0}: ", i + 1) + c.Description));
+                                    l.Add(Tag.Create("div")
+                                            .WithInnerForeach<CommonText>(subjectTemplate.Contents.ToList()[i].Points.ToList(),
+                                                (p, j, l) =>
+                                                {
+                                                    l.Add(Tag.Create("div").WithInner(String.Format("{0}.{1}: ", i + 1, j + 1) + p.Description));
+                                                }
+                                            )
+                                        );
                                 }
                             )
                             .WithInner(Tag.Create("h2").WithInner("Bloques de enseñanza y aprendizaje").WithId("Apartado8-2"))
                             .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2Blocks), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2Blocks), addCommonTextTags) 
+                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2Blocks), addCommonTextTags)
                             .WithInner(
                                 Table.Create()
                                     .WithRow()
@@ -385,8 +385,10 @@ namespace Programacion123
                                             string raText = "";
                                             bool first = true;
                                             Subject.QueryBlockReferencedLearningResultIndexes(i).ForEach(
-                                                r => { raText += (first?"":", ") + "RA" + (r + 1); first = false;
-                                            });
+                                                r =>
+                                                {
+                                                    raText += (first ? "" : ", ") + "RA" + (r + 1); first = false;
+                                                });
 
                                             string contentText = "";
                                             first = true;
@@ -426,14 +428,14 @@ namespace Programacion123
                             )
                             .WithInner(Tag.Create("h2").WithInner("Programación de actividades de enseñanza-aprendizaje").WithId("Apartado8-3"))
                             .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2Activities), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2Activities), addCommonTextTags) 
+                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2Activities), addCommonTextTags)
                             .WithInnerForeach<Block>(Subject.Blocks.ToList(),
                                 (b, i, l) =>
                                 {
                                     l.Add(Tag.Create("h3").WithInner(String.Format("Bloque {0}", i + 1)).WithId(String.Format("Apartado8-3-{0}", i + 1)));
 
                                     List<Activity> activities = b.Activities.ToList();
-                                    foreach(Activity a in activities)
+                                    foreach (Activity a in activities)
                                     {
                                         l.Add(
                                             Table.Create()
@@ -480,7 +482,7 @@ namespace Programacion123
                             //////////////////////////////////////////////////////////////////////
                             ////////////// Nivel 1: Referencias bibliográficas ///////////////////
                             //////////////////////////////////////////////////////////////////////
-                            
+
                             .WithInner(Tag.Create("h1").WithInner(index[8].Title).WithId("Apartado9"))
                             .WithInner(Tag.Create("div")
                                 .WithInnerForeach<CommonText>(Subject.Citations.ToList(),
@@ -495,7 +497,7 @@ namespace Programacion123
                             //////////////////////////////////////////////////
                             ////////////// Nivel 1: Anexos ///////////////////
                             //////////////////////////////////////////////////
-                            
+
                             .WithInner(Tag.Create("h1").WithInner(index[9].Title).WithId("Apartado10"))
                             .WithInner(Tag.Create("h2").WithInner("Cuadro de distribución de pesos").WithId("Apartado10-1"))
                             .WithInner(Table.Create()
@@ -525,9 +527,9 @@ namespace Programacion123
 
                                        bool first = true;
 
-                                       foreach(EvaluableActivityIndex activityInfo in evaluableActivityIndexes)
+                                       foreach (EvaluableActivityIndex activityInfo in evaluableActivityIndexes)
                                        {
-                                           if(!first) { table.WithRow(); }
+                                           if (!first) { table.WithRow(); }
                                            table.WithCell(Utils.FormatEvaluableActivity(i, activityInfo.evaluationType, activityInfo.activityTypeIndex)).WithCellClass("weightsTableHeader2");
 
                                            table.WithCellForeach<SubjectLearningResultIndexesWeight>(Subject.QueryActivityLearningResultsIndexesWeight(i, activityInfo.activityIndex),
@@ -542,7 +544,7 @@ namespace Programacion123
                                        }
                                    }
                                 )
-                                    
+
                             )
                 )
                 .ToString();

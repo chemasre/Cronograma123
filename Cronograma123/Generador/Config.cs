@@ -16,7 +16,7 @@ namespace Cronogramador
 
         public int tamanyoTituloMes { get; set; } = 16;
         public XlRgbColor colorTituloMes { get; set; } = XlRgbColor.rgbSteelBlue;
-        public XlRgbColor colorTextoTituloMes { get; set; }  = XlRgbColor.rgbWhite;
+        public XlRgbColor colorTextoTituloMes { get; set; } = XlRgbColor.rgbWhite;
 
         public XlRgbColor colorDiaSemana { get; set; } = XlRgbColor.rgbLightSteelBlue;
 

@@ -11,7 +11,7 @@ namespace Programacion123
     /// </summary>
     public partial class WeekScheduleEditor : Window, IEntityEditor<WeekSchedule>
     {
-        public WeekSchedule WeekSchedule { get { return entity; }  }
+        public WeekSchedule WeekSchedule { get { return entity; } }
 
         DataTable dataTable;
         WeekSchedule entity;
@@ -54,9 +54,9 @@ namespace Programacion123
 
         private void WeekDataGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
-            if(WeekDataGrid.SelectedCells.Count == 1)
+            if (WeekDataGrid.SelectedCells.Count == 1)
             {
-                if(WeekDataGrid.SelectedCells[0].Column.IsReadOnly)
+                if (WeekDataGrid.SelectedCells[0].Column.IsReadOnly)
                 {
                     WeekDataGrid.SelectedCells.Clear();
                 }
@@ -134,11 +134,11 @@ namespace Programacion123
 
             TextTitle.Text = entity.Title;
 
-            if(_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Monday)) { dataTable.Rows[0]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Monday]; }
-            if(_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Tuesday)) { dataTable.Rows[1]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Tuesday]; }
-            if(_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Wednesday)) { dataTable.Rows[2]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Wednesday]; }
-            if(_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Thursday)) { dataTable.Rows[3]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Thursday]; }
-            if(_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Friday)) { dataTable.Rows[4]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Friday]; }
+            if (_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Monday)) { dataTable.Rows[0]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Monday]; }
+            if (_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Tuesday)) { dataTable.Rows[1]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Tuesday]; }
+            if (_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Wednesday)) { dataTable.Rows[2]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Wednesday]; }
+            if (_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Thursday)) { dataTable.Rows[3]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Thursday]; }
+            if (_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Friday)) { dataTable.Rows[4]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Friday]; }
 
             dataTable.RowChanged += DataTable_RowChanged;
             TextTitle.TextChanged += TextTitle_TextChanged;

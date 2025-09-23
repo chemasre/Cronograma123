@@ -1,10 +1,10 @@
-﻿using System.IO;
+﻿using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Word;
+using Microsoft.VisualBasic;
+using System.IO;
 using System.Numerics;
 using System.Reflection;
 using System.Windows.Media.Imaging;
-using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Word;
-using Microsoft.VisualBasic;
 using FillFormat = Microsoft.Office.Interop.Word.FillFormat;
 using LineFormat = Microsoft.Office.Interop.Word.LineFormat;
 using PictureFormat = Microsoft.Office.Interop.Word.PictureFormat;
@@ -74,7 +74,7 @@ namespace Programacion123
             generatorTableElementIdToStyle = new();
             wordStylesCache = new();
 
-            for(int i = 1 ; i <= styles.Count; i++)
+            for (int i = 1; i <= styles.Count; i++)
             {
                 Style s = styles[i];
                 wordStylesCache.Add(s.NameLocal);
@@ -96,21 +96,21 @@ namespace Programacion123
 
         public WordDocument WithMargins(DocumentMargins margins)
         {
-            if(closed) { return this; }
+            if (closed) { return this; }
 
             PageSetup setup = document.PageSetup;
 
-            setup.TopMargin    = application.CentimetersToPoints(margins.Top);
+            setup.TopMargin = application.CentimetersToPoints(margins.Top);
             setup.BottomMargin = application.CentimetersToPoints(margins.Bottom);
-            setup.LeftMargin   = application.CentimetersToPoints(margins.Left);
-            setup.RightMargin  = application.CentimetersToPoints(margins.Right);
+            setup.LeftMargin = application.CentimetersToPoints(margins.Left);
+            setup.RightMargin = application.CentimetersToPoints(margins.Right);
 
             return this;
         }
 
         public WordDocument WithOrientation(DocumentOrientation orientation)
-        {            
-            if(closed) { return this; }
+        {
+            if (closed) { return this; }
 
             PageSetup setup = document.PageSetup;
 
@@ -118,19 +118,19 @@ namespace Programacion123
                                                 WdOrientation.wdOrientPortrait :
                                                 WdOrientation.wdOrientLandscape);
 
-            return this;            
+            return this;
         }
 
         public WordDocument Foreach<T>(List<T> elements, Action<T, int, WordDocument> action)
         {
             int i = 0;
-            foreach(T e in elements) { action.Invoke(e, i, this); i ++; }
+            foreach (T e in elements) { action.Invoke(e, i, this); i++; }
             return this;
         }
 
         public WordDocument If(bool condition, Action<WordDocument> ifAction)
         {
-            if(condition)
+            if (condition)
             {
                 ifAction.Invoke(this);
             }
@@ -147,7 +147,7 @@ namespace Programacion123
 
         public WordDocument WithParagraph(string text, DocumentTextElementId documentStyleId = DocumentTextElementId.NormalText)
         {
-            if(closed) { return this; }
+            if (closed) { return this; }
 
             Range content = document.Content;
             Paragraphs paragraphs = content.Paragraphs;
@@ -174,7 +174,7 @@ namespace Programacion123
 
         public WordDocument WithCoverElementPosition(DocumentCoverElementId coverElementId, DocumentCoverElementPosition position)
         {
-            if(closed) { return this; }
+            if (closed) { return this; }
 
             generatorCoverElementIdToPosition[coverElementId] = new Vector2(position.Left, position.Top);
 
@@ -183,15 +183,15 @@ namespace Programacion123
 
         public WordDocument WithTableElementStyle(DocumentTableElementId generatorTableElementStyleId, DocumentTableElementStyle generatorTableElementStyle)
         {
-            if(closed) { return this; }
+            if (closed) { return this; }
 
             string wordStyleId;
 
-            if(generatorTableElementStyleId == DocumentTableElementId.TableNormalCell) { wordStyleId = CellStyleNormal; }
-            else if(generatorTableElementStyleId == DocumentTableElementId.TableHeader1Cell) { wordStyleId = CellStyleHeader1; }
-            else if(generatorTableElementStyleId == DocumentTableElementId.TableHeader2Cell) { wordStyleId = CellStyleHeader2; }
-            else if(generatorTableElementStyleId == DocumentTableElementId.TableWeightsNormalCell) { wordStyleId = CellStyleWeightsNormal; }
-            else if(generatorTableElementStyleId == DocumentTableElementId.TableWeightsHeader1Cell) { wordStyleId = CellStyleWeightsHeader1; }
+            if (generatorTableElementStyleId == DocumentTableElementId.TableNormalCell) { wordStyleId = CellStyleNormal; }
+            else if (generatorTableElementStyleId == DocumentTableElementId.TableHeader1Cell) { wordStyleId = CellStyleHeader1; }
+            else if (generatorTableElementStyleId == DocumentTableElementId.TableHeader2Cell) { wordStyleId = CellStyleHeader2; }
+            else if (generatorTableElementStyleId == DocumentTableElementId.TableWeightsNormalCell) { wordStyleId = CellStyleWeightsNormal; }
+            else if (generatorTableElementStyleId == DocumentTableElementId.TableWeightsHeader1Cell) { wordStyleId = CellStyleWeightsHeader1; }
             else // generatorTableElementStyleId == DocumentTableElementId.TableWeightsHeader2Cell)
             { wordStyleId = CellStyleWeightsHeader2; }
 
@@ -222,7 +222,7 @@ namespace Programacion123
             Style style;
             Styles styles = document.Styles;
 
-            if(wordStylesCache.Contains(wordStyleId))
+            if (wordStylesCache.Contains(wordStyleId))
             {
                 style = styles[wordStyleId];
             }
@@ -238,45 +238,45 @@ namespace Programacion123
 
         public WordDocument WithTextStyle(DocumentTextElementId generatorTextStyleId, DocumentTextElementStyle generatorTextStyle)
         {
-            if(closed) { return this; }
+            if (closed) { return this; }
 
             string wordStyleId;
 
             Style? wordStyle = null;
 
-            if(generatorTextStyleId == DocumentTextElementId.Header1) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleHeading1].NameLocal; }
-            else if(generatorTextStyleId == DocumentTextElementId.Header2) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleHeading2].NameLocal; }
-            else if(generatorTextStyleId == DocumentTextElementId.Header3) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleHeading3].NameLocal; }
-            else if(generatorTextStyleId == DocumentTextElementId.Header4) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleHeading4].NameLocal; }
-            else if(generatorTextStyleId == DocumentTextElementId.Header5) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleHeading5].NameLocal; }
-            else if(generatorTextStyleId == DocumentTextElementId.Header6) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleHeading6].NameLocal; }
-            else if(generatorTextStyleId == DocumentTextElementId.NormalText) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleNormal].NameLocal; }
-            else if(generatorTextStyleId == DocumentTextElementId.IndexLevel1) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleTOC1].NameLocal; }
-            else if(generatorTextStyleId == DocumentTextElementId.IndexLevel2) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleTOC2].NameLocal; }
-            else if(generatorTextStyleId == DocumentTextElementId.IndexLevel3) {  wordStyleId = document.Styles[WdBuiltinStyle.wdStyleTOC3].NameLocal; }
-            else if(generatorTextStyleId == DocumentTextElementId.IndexTitle) {  wordStyleId = document.Styles[WdBuiltinStyle.wdStyleTocHeading].NameLocal; }
+            if (generatorTextStyleId == DocumentTextElementId.Header1) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleHeading1].NameLocal; }
+            else if (generatorTextStyleId == DocumentTextElementId.Header2) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleHeading2].NameLocal; }
+            else if (generatorTextStyleId == DocumentTextElementId.Header3) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleHeading3].NameLocal; }
+            else if (generatorTextStyleId == DocumentTextElementId.Header4) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleHeading4].NameLocal; }
+            else if (generatorTextStyleId == DocumentTextElementId.Header5) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleHeading5].NameLocal; }
+            else if (generatorTextStyleId == DocumentTextElementId.Header6) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleHeading6].NameLocal; }
+            else if (generatorTextStyleId == DocumentTextElementId.NormalText) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleNormal].NameLocal; }
+            else if (generatorTextStyleId == DocumentTextElementId.IndexLevel1) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleTOC1].NameLocal; }
+            else if (generatorTextStyleId == DocumentTextElementId.IndexLevel2) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleTOC2].NameLocal; }
+            else if (generatorTextStyleId == DocumentTextElementId.IndexLevel3) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleTOC3].NameLocal; }
+            else if (generatorTextStyleId == DocumentTextElementId.IndexTitle) { wordStyleId = document.Styles[WdBuiltinStyle.wdStyleTocHeading].NameLocal; }
             else
             {
-                if(generatorTextStyleId == DocumentTextElementId.TableText) { wordStyleId = TextStyleTable; }
-                else if(generatorTextStyleId == DocumentTextElementId.TableHeader1Text) { wordStyleId = TextStyleTableHeader1; }
-                else if(generatorTextStyleId == DocumentTextElementId.TableHeader2Text) { wordStyleId = TextStyleTableHeader2; }
-                else if(generatorTextStyleId == DocumentTextElementId.CoverSubjectCode) { wordStyleId = TextStyleCoverSubjectCode; }
-                else if(generatorTextStyleId == DocumentTextElementId.CoverSubjectName) { wordStyleId = TextStyleCoverSubjectName; }
-                else if(generatorTextStyleId == DocumentTextElementId.CoverGradeTypeName) { wordStyleId = TextStyleCoverGradeTypeName; }
-                else if(generatorTextStyleId == DocumentTextElementId.CoverGradeName) { wordStyleId = TextStyleCoverGradeName; }
-                else if(generatorTextStyleId == DocumentTextElementId.WeightsTableText) { wordStyleId = TextStyleWeightsTable; }
-                else if(generatorTextStyleId == DocumentTextElementId.WeightsTableHeader1Text) { wordStyleId = TextStyleWeightsTableHeader1; }
+                if (generatorTextStyleId == DocumentTextElementId.TableText) { wordStyleId = TextStyleTable; }
+                else if (generatorTextStyleId == DocumentTextElementId.TableHeader1Text) { wordStyleId = TextStyleTableHeader1; }
+                else if (generatorTextStyleId == DocumentTextElementId.TableHeader2Text) { wordStyleId = TextStyleTableHeader2; }
+                else if (generatorTextStyleId == DocumentTextElementId.CoverSubjectCode) { wordStyleId = TextStyleCoverSubjectCode; }
+                else if (generatorTextStyleId == DocumentTextElementId.CoverSubjectName) { wordStyleId = TextStyleCoverSubjectName; }
+                else if (generatorTextStyleId == DocumentTextElementId.CoverGradeTypeName) { wordStyleId = TextStyleCoverGradeTypeName; }
+                else if (generatorTextStyleId == DocumentTextElementId.CoverGradeName) { wordStyleId = TextStyleCoverGradeName; }
+                else if (generatorTextStyleId == DocumentTextElementId.WeightsTableText) { wordStyleId = TextStyleWeightsTable; }
+                else if (generatorTextStyleId == DocumentTextElementId.WeightsTableHeader1Text) { wordStyleId = TextStyleWeightsTableHeader1; }
                 else // generatorTextStyleId == DocumentTextElementId.WeightsTableHeader2Text
                 { wordStyleId = TextStyleWeightsTableHeader2; }
 
-             }
+            }
 
             generatorTextStyleIdToWordStyleId.Add(generatorTextStyleId, wordStyleId);
 
             wordStyle = GetOrCreateWordStyle(wordStyleId);
 
             Font font = wordStyle.Font;
-                
+
             font.Name = (generatorTextStyle.FontFamily == DocumentTextElementFontFamily.SansSerif ? "Calibri" : "Times New Roman");
             font.Size = generatorTextStyle.FontSize;
             font.Bold = generatorTextStyle.Bold ? 1 : 0;
@@ -285,9 +285,9 @@ namespace Programacion123
 
             ParagraphFormat paragraphFormat = wordStyle.ParagraphFormat;
 
-            if(generatorTextStyle.Align == DocumentTextElementAlign.Left) { paragraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft; }
-            else if(generatorTextStyle.Align == DocumentTextElementAlign.Right) { paragraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight; }
-            else if(generatorTextStyle.Align == DocumentTextElementAlign.Center) { paragraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter; }
+            if (generatorTextStyle.Align == DocumentTextElementAlign.Left) { paragraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft; }
+            else if (generatorTextStyle.Align == DocumentTextElementAlign.Right) { paragraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight; }
+            else if (generatorTextStyle.Align == DocumentTextElementAlign.Center) { paragraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter; }
             else // docStyle.Align == DocumentTextElementAlign.Justify
             { paragraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphJustify; }
 
@@ -312,9 +312,9 @@ namespace Programacion123
 
         public WordDocument Save(string path, out bool success)
         {
-            if(closed) { success = false; return this; }
+            if (closed) { success = false; return this; }
 
-            if(index != null) { index.Update(); }
+            if (index != null) { index.Update(); }
 
             object pathObject = path;
 
@@ -323,7 +323,7 @@ namespace Programacion123
                 document.SaveAs2(ref pathObject);
                 success = true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 success = false;
             }
@@ -344,7 +344,7 @@ namespace Programacion123
             Tables tables = document.Tables;
 
             table = tables.Add(range, rows, columns, WdDefaultTableBehavior.wdWord9TableBehavior, WdAutoFitBehavior.wdAutoFitContent);
-            
+
             Range tableRange = table.Range;
 
             tableRange.set_Style("TableText");
@@ -410,7 +410,7 @@ namespace Programacion123
 
             return this;
         }
-        
+
         public WordDocument WithCellHeader2(int row, int column, string text)
         {
             WithCell(row, column, text, TextStyleTableHeader2, CellStyleHeader2);
@@ -436,7 +436,7 @@ namespace Programacion123
 
             Cell cell1 = table.Cell(row, column);
 
-            if(rowSpan > 1 || colSpan > 1)
+            if (rowSpan > 1 || colSpan > 1)
             {
                 Cell cell2 = table.Cell(row + rowSpan - 1, column + colSpan - 1);
 
@@ -474,7 +474,7 @@ namespace Programacion123
             Shapes shapes = document.Shapes;
 
             Shape shape = shapes.AddShape((int)MsoAutoShapeType.msoShapeRectangle,
-                            application.CentimetersToPoints(position.X) + pageSetup.LeftMargin, 
+                            application.CentimetersToPoints(position.X) + pageSetup.LeftMargin,
                             application.CentimetersToPoints(position.Y) + pageSetup.TopMargin,
                             application.CentimetersToPoints(1),
                             application.CentimetersToPoints(30)
@@ -500,7 +500,7 @@ namespace Programacion123
             FillFormat fill = shape.Fill;
             LineFormat line = shape.Line;
 
-            fill.Visible = (MsoTriState)TriState.False;  
+            fill.Visible = (MsoTriState)TriState.False;
             line.Visible = (MsoTriState)TriState.False;
 
             return this;
@@ -518,7 +518,7 @@ namespace Programacion123
 
             // This code makes word automatic scaling of images behave like the web preview, as the
             // first takes into account the image file's dpi and the other doesn't.
-            
+
             MemoryStream m = new(imageBytes);
             BitmapImage image = new BitmapImage();
             image.BeginInit();
@@ -569,7 +569,7 @@ namespace Programacion123
         {
             Sections sections = document.Sections;
 
-            for(int i = 1; i <= sections.Count; i++)
+            for (int i = 1; i <= sections.Count; i++)
             {
                 Section s = sections[i];
                 HeadersFooters headersFooters = s.Footers;
@@ -586,7 +586,7 @@ namespace Programacion123
 
         public WordDocument Close()
         {
-            if(closed) { return this; }
+            if (closed) { return this; }
 
             document.Close(ref missingValue, ref missingValue, ref missingValue);
             closed = true;

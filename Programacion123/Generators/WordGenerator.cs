@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.Office.Interop.Word;
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
-using Microsoft.Office.Interop.Word;
 
 namespace Programacion123
 {
@@ -17,7 +17,7 @@ namespace Programacion123
         {
             LineBreak = "\n";
             NonBreakingSpace = " ";
-            
+
             GetScreenDpi(out screenDpiX, out screenDpiY);
         }
 
@@ -42,7 +42,7 @@ namespace Programacion123
 
             Application app = new();
 
-            if(app == null) { result = GeneratorResult.Create(GeneratorResultCode.wordNotFound); }
+            if (app == null) { result = GeneratorResult.Create(GeneratorResultCode.wordNotFound); }
             else
             {
                 bool documentSaveSuccess;
@@ -83,9 +83,9 @@ namespace Programacion123
                    .WithCoverElementPosition(DocumentCoverElementId.SubjectCode, Style.CoverElementStyles[DocumentCoverElementId.SubjectCode].Position)
                    .WithCoverElementPosition(DocumentCoverElementId.SubjectName, Style.CoverElementStyles[DocumentCoverElementId.SubjectName].Position)
 
-                    //////////////////////////////////////////////////////////////////
-                    ///////////// Nivel 1: Portada                 ///////////////////
-                    //////////////////////////////////////////////////////////////////
+                   //////////////////////////////////////////////////////////////////
+                   ///////////// Nivel 1: Portada                 ///////////////////
+                   //////////////////////////////////////////////////////////////////
 
                    .If(!String.IsNullOrEmpty(Style.CoverBase64), (d) => d.WithCoverImageElement(Style.CoverBase64, DocumentCoverElementId.Cover))
                    .If(!String.IsNullOrEmpty(Style.LogoBase64), (d) => d.WithCoverImageElement(Style.LogoBase64, DocumentCoverElementId.Logo))
@@ -95,16 +95,16 @@ namespace Programacion123
                    .WithCoverTextElement(GetGradeTypeName(), DocumentTextElementId.CoverGradeTypeName, DocumentCoverElementId.GradeTypeName)
                    .WithPageBreak()
 
-                    //////////////////////////////////////////////////////////////////
-                    ///////////// Nivel 1: Índice                  ///////////////////
-                    //////////////////////////////////////////////////////////////////
+                   //////////////////////////////////////////////////////////////////
+                   ///////////// Nivel 1: Índice                  ///////////////////
+                   //////////////////////////////////////////////////////////////////
 
                    .WithIndex()
                    .WithPageBreak()
-               
-                    //////////////////////////////////////////////////////////////////
-                    ///////////// Nivel 1: Organización del módulo ///////////////////
-                    //////////////////////////////////////////////////////////////////
+
+                   //////////////////////////////////////////////////////////////////
+                   ///////////// Nivel 1: Organización del módulo ///////////////////
+                   //////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[0].Title)
                    .Foreach<string>(GetGradeCommonText(CommonTextId.header1ModuleOrganization), addParagraph)
@@ -113,7 +113,7 @@ namespace Programacion123
                     .WithTable(5, 3)
                     .WithCellSpan(1, 1, 1, 3).WithCellHeader1(1, 1, GetGradeTypeName() + " - " + gradeTemplate.GradeName)
                     .WithCellSpan(2, 1, 1, 3).WithCellHeader2(2, 1, "Módulo profesional:MP" + subjectTemplate.SubjectCode + " - " + subjectTemplate.SubjectName)
-                    .WithCell(3, 1, "Horas centro educativo: " +  subjectTemplate.GradeClassroomHours)
+                    .WithCell(3, 1, "Horas centro educativo: " + subjectTemplate.GradeClassroomHours)
                     .WithCell(3, 2, "Horas empresa: " + subjectTemplate.GradeCompanyHours)
                     .WithCell(3, 3, "Horas totales: " + (subjectTemplate.GradeClassroomHours + subjectTemplate.GradeCompanyHours))
                     .WithCellSpan(4, 1, 1, 2).WithCell(4, 1, "Modalidad: Presencial")
@@ -132,7 +132,7 @@ namespace Programacion123
 
                             string rasText = "";
                             bool first = true;
-                            referencedResults.ForEach((i) => { rasText += (first?"":", ") + String.Format("RA{0}", i + 1); first = false; });
+                            referencedResults.ForEach((i) => { rasText += (first ? "" : ", ") + String.Format("RA{0}", i + 1); first = false; });
 
                             string criteriasText = "";
                             first = true;
@@ -145,15 +145,15 @@ namespace Programacion123
 
                             int aIndex = 0;
                             List<Activity> activitiesList = b.Activities.ToList();
-                            foreach(Activity a in activitiesList)
+                            foreach (Activity a in activitiesList)
                             {
-                                if(schedule != null)
+                                if (schedule != null)
                                 {
-                                    if(aIndex == 0) { startActivitySchedule = schedule.Find(s => s.activity.StorageId == a.StorageId); }
-                                    if(aIndex == activitiesList.Count - 1) { endActivitySchedule = schedule.Find(s => s.activity.StorageId == a.StorageId); }
+                                    if (aIndex == 0) { startActivitySchedule = schedule.Find(s => s.activity.StorageId == a.StorageId); }
+                                    if (aIndex == activitiesList.Count - 1) { endActivitySchedule = schedule.Find(s => s.activity.StorageId == a.StorageId); }
                                 }
 
-                                aIndex ++;
+                                aIndex++;
                             }
 
 
@@ -169,9 +169,9 @@ namespace Programacion123
 
                     .WithPageBreak()
 
-                    /////////////////////////////////////////////////////////////////////////////////////
-                    ///////////// Nivel 1: Justificación de la importancia del módulo ///////////////////
-                    /////////////////////////////////////////////////////////////////////////////////////
+                   /////////////////////////////////////////////////////////////////////////////////////
+                   ///////////// Nivel 1: Justificación de la importancia del módulo ///////////////////
+                   /////////////////////////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[1].Title)
                    .Foreach<string>(GetGradeCommonText(CommonTextId.header1ImportanceJustification), addParagraph)
@@ -179,9 +179,9 @@ namespace Programacion123
 
                     .WithPageBreak()
 
-                    /////////////////////////////////////////////////////////////////
-                    ///////////// Nivel 1: Elementos curriculares ///////////////////
-                    /////////////////////////////////////////////////////////////////
+                   /////////////////////////////////////////////////////////////////
+                   ///////////// Nivel 1: Elementos curriculares ///////////////////
+                   /////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[2].Title)
                    .Foreach<string>(GetGradeCommonText(CommonTextId.header1CurricularElements), addParagraph)
@@ -201,9 +201,9 @@ namespace Programacion123
 
                     .WithPageBreak()
 
-                    /////////////////////////////////////////////////////////////////////////////////
-                    ///////////// Nivel 1: Metodología y orientaciones didácticas ///////////////////
-                    /////////////////////////////////////////////////////////////////////////////////
+                   /////////////////////////////////////////////////////////////////////////////////
+                   ///////////// Nivel 1: Metodología y orientaciones didácticas ///////////////////
+                   /////////////////////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[3].Title)
                    .Foreach<string>(GetGradeCommonText(CommonTextId.header1MetodologyAndDidacticOrientations), addParagraph)
@@ -214,7 +214,7 @@ namespace Programacion123
                         {
                             d.WithHeader3(c.Title)
                             .WithParagraph(c.Description);
-                        }               
+                        }
                    )
 
                    .WithHeader2(index[3].Subitems[0].Title)
@@ -227,9 +227,9 @@ namespace Programacion123
 
                     .WithPageBreak()
 
-                    ////////////////////////////////////////////////////////////////
-                    ///////////// Nivel 1: Sistema de evaluación ///////////////////
-                    ////////////////////////////////////////////////////////////////
+                   ////////////////////////////////////////////////////////////////
+                   ///////////// Nivel 1: Sistema de evaluación ///////////////////
+                   ////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[4].Title)
                    .Foreach<string>(GetGradeCommonText(CommonTextId.header1EvaluationSystem), addParagraph)
@@ -253,9 +253,9 @@ namespace Programacion123
 
                     .WithPageBreak()
 
-                    ///////////////////////////////////////////////////////////////////
-                    ////////////// Nivel 1: Elementos transversales ///////////////////
-                    ///////////////////////////////////////////////////////////////////
+                   ///////////////////////////////////////////////////////////////////
+                   ////////////// Nivel 1: Elementos transversales ///////////////////
+                   ///////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[5].Title)
                    .Foreach<string>(GetGradeCommonText(CommonTextId.header1TraversalElements), addParagraph)
@@ -271,9 +271,9 @@ namespace Programacion123
 
                     .WithPageBreak()
 
-                    //////////////////////////////////////////////////////////////////////////////
-                    ////////////// Nivel 1: Recursos didácticos y organizativos //////////////////
-                    //////////////////////////////////////////////////////////////////////////////
+                   //////////////////////////////////////////////////////////////////////////////
+                   ////////////// Nivel 1: Recursos didácticos y organizativos //////////////////
+                   //////////////////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[6].Title)
                    .Foreach<string>(GetGradeCommonText(CommonTextId.header1Resources), addParagraph)
@@ -305,10 +305,10 @@ namespace Programacion123
 
                     .WithPageBreak()
 
-                    ///////////////////////////////////////////////////////////////////////////////
-                    ////////////// Nivel 1: Programación del módulo profesional ///////////////////
-                    ///////////////////////////////////////////////////////////////////////////////
-                            
+                   ///////////////////////////////////////////////////////////////////////////////
+                   ////////////// Nivel 1: Programación del módulo profesional ///////////////////
+                   ///////////////////////////////////////////////////////////////////////////////
+
                    .WithHeader1(index[7].Title)
                    .Foreach<string>(GetGradeCommonText(CommonTextId.header1SubjectProgramming), addParagraph)
                    .Foreach<string>(GetSubjectCommonText(CommonTextId.header1SubjectProgramming), addParagraph)
@@ -320,18 +320,18 @@ namespace Programacion123
                    .WithHeader3(index[7].Subitems[0].Subitems[0].Title)
                    .Foreach<string>(GetGradeCommonText(CommonTextId.header3LearningResults), addParagraph)
                    .Foreach<string>(GetSubjectCommonText(CommonTextId.header3LearningResults), addParagraph)
-                
+
                    .Foreach<LearningResult>(subjectTemplate.LearningResults.ToList(),
                         (r, i, d) =>
                         {
-                                d.WithParagraph(String.Format("RA{0}: ", i + 1) + r.Description)
-                                .WithParagraph("Criterios")
-                                .Foreach<CommonText>(subjectTemplate.LearningResults.ToList()[i].Criterias.ToList(),
-                                    (c, j, d) =>
-                                    {
-                                        d.WithParagraph(String.Format("{0}.{1}: ", i + 1, j + 1) + c.Description);
-                                    }
-                                );
+                            d.WithParagraph(String.Format("RA{0}: ", i + 1) + r.Description)
+                            .WithParagraph("Criterios")
+                            .Foreach<CommonText>(subjectTemplate.LearningResults.ToList()[i].Criterias.ToList(),
+                                (c, j, d) =>
+                                {
+                                    d.WithParagraph(String.Format("{0}.{1}: ", i + 1, j + 1) + c.Description);
+                                }
+                            );
                         }
                     )
 
@@ -472,7 +472,7 @@ namespace Programacion123
                                     .WithCell(6, 4, GetKeyCapacitiesText(a))
 
                                     .If(a.EvaluationType != ActivityEvaluationType.NotEvaluable,
-                                
+
                                         (d) =>
                                         {
                                             Debug.Assert(a.EvaluationInstrumentType != null);
@@ -502,7 +502,7 @@ namespace Programacion123
                     //////////////////////////////////////////////////////////////////////
                     ////////////// Nivel 1: Referencias bibliográficas ///////////////////
                     //////////////////////////////////////////////////////////////////////
-                            
+
                     .WithHeader1(index[8].Title)
                     .Foreach<CommonText>(Subject.Citations.ToList(),
                         (c, i, d) =>
@@ -516,7 +516,7 @@ namespace Programacion123
                     //////////////////////////////////////////////////
                     ////////////// Nivel 1: Anexos ///////////////////
                     //////////////////////////////////////////////////
-                            
+
                     .WithHeader1(index[9].Title)
                     .WithHeader2(index[9].Subitems[0].Title)
 
@@ -533,22 +533,22 @@ namespace Programacion123
                             d.WithCell(2, 3 + i, String.Format("{0:0}%", r.weight), WordDocument.TextStyleWeightsTableHeader2, WordDocument.CellStyleWeightsHeader2);
                         }
                     )
-                    .Do( 
+                    .Do(
                         (d) =>
                         {
                             List<EvaluableActivityIndex> activityIndexes = Subject.QueryEvaluableActivityIndexes();
-        
+
                             List<int> blockIndexes = new();
                             Dictionary<int, int> blockActivityCount = new();
                             Dictionary<int, int> blockActivityStart = new();
 
                             int lastBlock = -1;
 
-                            for(int i = 0; i < activityIndexes.Count; i++)
+                            for (int i = 0; i < activityIndexes.Count; i++)
                             {
                                 EvaluableActivityIndex activityIndex = activityIndexes[i];
 
-                                if(lastBlock != activityIndex.blockIndex)
+                                if (lastBlock != activityIndex.blockIndex)
                                 {
                                     d.WithCell(3 + i, 1, String.Format("Bloque" + NonBreakingSpace + "{0}", activityIndex.blockIndex + 1), WordDocument.TextStyleWeightsTableHeader1, WordDocument.CellStyleWeightsHeader1);
 
@@ -558,7 +558,7 @@ namespace Programacion123
                                 }
                                 else
                                 {
-                                    blockActivityCount[activityIndex.blockIndex] ++;
+                                    blockActivityCount[activityIndex.blockIndex]++;
                                 }
 
                                 lastBlock = activityIndex.blockIndex;
@@ -566,20 +566,20 @@ namespace Programacion123
                                 d.WithCell(3 + i, 2, Utils.FormatEvaluableActivity(activityIndex.blockIndex, activityIndex.evaluationType, activityIndex.activityTypeIndex), WordDocument.TextStyleWeightsTableHeader2, WordDocument.CellStyleWeightsHeader2);
 
                                 List<SubjectLearningResultIndexesWeight> resultsWeights = Subject.QueryActivityLearningResultsIndexesWeight(activityIndex.blockIndex, activityIndex.activityIndex);
-                            
-                                for(int j = 0; j < resultsWeights.Count; j ++)
+
+                                for (int j = 0; j < resultsWeights.Count; j++)
                                 {
                                     d.WithCell(3 + i, 3 + j, resultsWeights[j].weight > 0 ? String.Format("{0:0}%", resultsWeights[j].weight) : NonBreakingSpace, WordDocument.TextStyleWeightsTable, WordDocument.CellStyleWeightsNormal);
                                 }
                             }
 
-                            for(int i = 0; i < blockIndexes.Count; i++)
+                            for (int i = 0; i < blockIndexes.Count; i++)
                             {
                                 int rowOffset = 0;
-                                for(int j = 0; j < i; j++) { rowOffset += blockActivityCount[blockIndexes[j]]; }
+                                for (int j = 0; j < i; j++) { rowOffset += blockActivityCount[blockIndexes[j]]; }
 
                                 int blockIndex = blockIndexes[i];
-                                d.WithCellSpan(3 + rowOffset , 1, blockActivityCount[blockIndex], 1);
+                                d.WithCellSpan(3 + rowOffset, 1, blockActivityCount[blockIndex], 1);
                             }
 
                         }
@@ -590,16 +590,16 @@ namespace Programacion123
 
                    .Save(path, out documentSaveSuccess)
                    .Close();
-            
+
                 document = null;
 
                 object missingValue = Missing.Value;
-    
+
                 app.Quit(ref missingValue, ref missingValue, ref missingValue);
 
                 app = null;
 
-                if(!documentSaveSuccess) { result = GeneratorResult.Create(GeneratorResultCode.fileWriteError); }
+                if (!documentSaveSuccess) { result = GeneratorResult.Create(GeneratorResultCode.fileWriteError); }
             }
 
             return result;

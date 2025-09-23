@@ -42,9 +42,9 @@
         public int QueryActivitySessionsCount(DateTime startDay, DateTime endDay)
         {
             int count = 0;
-            for(DateTime d = startDay; d <= endDay; d = d.AddDays(1))
+            for (DateTime d = startDay; d <= endDay; d = d.AddDays(1))
             {
-                if(Utils.IsSchoolDay(d, Calendar, WeekSchedule)) { count++; }
+                if (Utils.IsSchoolDay(d, Calendar, WeekSchedule)) { count++; }
             }
 
             return count;
@@ -59,17 +59,17 @@
             List<EvaluableActivityIndex> result = new();
 
             Dictionary<ActivityEvaluationType, int> typeIndexes = new();
-            foreach(ActivityEvaluationType type in Enum.GetValues<ActivityEvaluationType>())
+            foreach (ActivityEvaluationType type in Enum.GetValues<ActivityEvaluationType>())
             {
                 typeIndexes.Add(type, 0);
             }
-            
+
             int activityIndex = 0;
             int typeIndex = 0;
             Blocks[blockIndex].Activities.ToList().ForEach(
                 a =>
                 {
-                    if(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
+                    if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
                     {
                         result.Add(
                             new EvaluableActivityIndex()
@@ -79,14 +79,14 @@
                                 evaluationType = a.EvaluationType,
                                 activityTypeIndex = typeIndexes[a.EvaluationType]
                             });
-                        
-                        typeIndexes[a.EvaluationType] ++;
-                        typeIndex ++;
+
+                        typeIndexes[a.EvaluationType]++;
+                        typeIndex++;
                     }
 
-                    activityIndex ++;
+                    activityIndex++;
                 });
-            
+
             return result;
         }
 
@@ -100,7 +100,7 @@
             int blockIndex = 0;
 
             Dictionary<ActivityEvaluationType, int> typeIndexes = new();
-            foreach(ActivityEvaluationType type in Enum.GetValues<ActivityEvaluationType>())
+            foreach (ActivityEvaluationType type in Enum.GetValues<ActivityEvaluationType>())
             {
                 typeIndexes.Add(type, 0);
             }
@@ -109,34 +109,34 @@
             Blocks.ToList().ForEach(
                 (b) =>
                 {
-                        foreach(ActivityEvaluationType type in Enum.GetValues<ActivityEvaluationType>())
+                    foreach (ActivityEvaluationType type in Enum.GetValues<ActivityEvaluationType>())
+                    {
+                        typeIndexes[type] = 0;
+                    }
+
+                    int activityIndex = 0;
+
+                    b.Activities.ToList().ForEach(
+                    (a) =>
+                    {
+                        if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
                         {
-                            typeIndexes[type] = 0;
+                            result.Add(
+                                new()
+                                {
+                                    blockIndex = blockIndex,
+                                    activityIndex = activityIndex,
+                                    evaluationType = a.EvaluationType,
+                                    activityTypeIndex = typeIndexes[a.EvaluationType]
+                                });
+                            typeIndexes[a.EvaluationType]++;
                         }
 
-                        int activityIndex = 0;
-            
-                        b.Activities.ToList().ForEach(
-                        (a) =>
-                        {
-                            if(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
-                            {
-                                result.Add(
-                                    new()
-                                    {
-                                        blockIndex = blockIndex,
-                                        activityIndex = activityIndex,
-                                        evaluationType = a.EvaluationType,
-                                        activityTypeIndex = typeIndexes[a.EvaluationType]
-                                    });
-                                typeIndexes[a.EvaluationType] ++;
-                            }
+                        activityIndex++;
+                    }
+                );
 
-                            activityIndex ++;
-                        }
-                    );
-
-                    blockIndex ++;
+                    blockIndex++;
                 }
             );
 
@@ -153,7 +153,7 @@
                     .Where(a => a.EvaluationType == activity.EvaluationType)
                     .ToList()
                     .FindIndex(a => a.StorageId == activity.StorageId);
-        } 
+        }
 
         /// <summary>
         /// Subject must be valid
@@ -356,11 +356,11 @@
             HashSet<int> referencesSet = new();
             List<int> sortedReferencesList = new();
 
-            foreach(Block b in Blocks.ToList())
+            foreach (Block b in Blocks.ToList())
             {
-                foreach(Activity a in b.Activities.ToList())
+                foreach (Activity a in b.Activities.ToList())
                 {
-                    foreach(CommonText c in a.KeyCompetences.ToList())
+                    foreach (CommonText c in a.KeyCompetences.ToList())
                     {
                         referencesSet.Add(FindKeyCompetenceIndex(c));
                     }
@@ -381,15 +381,15 @@
 
             List<SubjectLearningResultIndexesWeight> result = new();
 
-            List< KeyValuePair<LearningResult, float> > learningResultsWeights = LearningResultsWeights.ToList();
+            List<KeyValuePair<LearningResult, float>> learningResultsWeights = LearningResultsWeights.ToList();
             List<LearningResult> learningResultsList = Template.LearningResults.ToList();
 
-            for(int i = 0; i < learningResultsList.Count; i++)
+            for (int i = 0; i < learningResultsList.Count; i++)
             {
                 int foundIndex;
-                float weight;                    
+                float weight;
                 foundIndex = learningResultsWeights.FindIndex(r => r.Key.StorageId == learningResultsList[i].StorageId);
-                if(foundIndex >= 0) { weight = learningResultsWeights[foundIndex].Value; }
+                if (foundIndex >= 0) { weight = learningResultsWeights[foundIndex].Value; }
                 else { weight = 0; }
 
                 result.Add(new SubjectLearningResultIndexesWeight() { learningResultIndex = i, weight = weight });
@@ -409,11 +409,11 @@
             List<LearningResult> learningResultList = Template.LearningResults.ToList();
             List<KeyValuePair<LearningResult, float>> learningResultsWeightsList = Blocks[blockIndex].Activities[activityIndex].LearningResultsWeights.ToList();
 
-            for(int i = 0; i < learningResultList.Count; i++)
+            for (int i = 0; i < learningResultList.Count; i++)
             {
                 float weight;
                 int foundIndex = learningResultsWeightsList.FindIndex(r => r.Key.StorageId == learningResultList[i].StorageId);
-                if(foundIndex >= 0)
+                if (foundIndex >= 0)
                 {
                     weight = learningResultsWeightsList[foundIndex].Value;
                 }
@@ -422,7 +422,7 @@
                     weight = 0;
                 }
 
-                result.Add(new() {learningResultIndex = i, weight = weight });
+                result.Add(new() { learningResultIndex = i, weight = weight });
             }
 
             return result;
@@ -437,19 +437,19 @@
             List<CommonText> activityContentPoints = Blocks[blockIndex].Activities[activityIndex].ContentPoints.ToList();
 
             int contentIndex = 0;
-            foreach(Content c in Template.Contents.ToList())
+            foreach (Content c in Template.Contents.ToList())
             {
                 int pointIndex = 0;
-                foreach(CommonText p in c.Points.ToList())
+                foreach (CommonText p in c.Points.ToList())
                 {
-                    if(activityContentPoints.FindIndex(activityPoint => activityPoint.StorageId == p.StorageId) >= 0)
+                    if (activityContentPoints.FindIndex(activityPoint => activityPoint.StorageId == p.StorageId) >= 0)
                     {
-                        result.Add(new ContentPointIndex() {contentIndex = contentIndex, pointIndex = pointIndex });
+                        result.Add(new ContentPointIndex() { contentIndex = contentIndex, pointIndex = pointIndex });
                     }
-                    pointIndex ++;
+                    pointIndex++;
                 }
 
-                contentIndex ++;
+                contentIndex++;
 
             }
 

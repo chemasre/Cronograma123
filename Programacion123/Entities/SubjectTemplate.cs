@@ -25,27 +25,27 @@
         {
             ValidationResult result = base.Validate();
 
-            if(result.code != ValidationCode.success) { return result; }
+            if (result.code != ValidationCode.success) { return result; }
 
             if (GradeTemplate == null) { return ValidationResult.Create(ValidationCode.templateSubjectNotLinkedToGradeTemplate); }
 
             if (SubjectName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNameEmpty); }
-            if(SubjectCode.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectCodeEmpty); }
-            if(GradeClassroomHours <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectClassroomHoursZero); }
+            if (SubjectCode.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectCodeEmpty); }
+            if (GradeClassroomHours <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectClassroomHoursZero); }
 
             List<CommonText> objectivesList = GeneralObjectives.ToList();
-            if (objectivesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoGeneralObjectivesReferenced);  }
-            
+            if (objectivesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoGeneralObjectivesReferenced); }
+
             List<CommonText> competencesList = GeneralCompetences.ToList();
             if (competencesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoGeneralCompetencesReferenced); }
 
             List<LearningResult> resultsList = LearningResults.ToList();
             if (resultsList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoLearningResults); }
-            for (int i = 0; i < resultsList.Count; i++) { if(resultsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateSubjectLearningResultsInvalid).WithIndex(i); } }
+            for (int i = 0; i < resultsList.Count; i++) { if (resultsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateSubjectLearningResultsInvalid).WithIndex(i); } }
 
             List<Content> contentsList = Contents.ToList();
             if (contentsList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoContents); }
-            for (int i = 0; i < contentsList.Count; i++) { if(contentsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateSubjectContentsInvalid).WithIndex(i); } }
+            for (int i = 0; i < contentsList.Count; i++) { if (contentsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateSubjectContentsInvalid).WithIndex(i); } }
 
 
             return ValidationResult.Create(ValidationCode.success);
@@ -72,18 +72,18 @@
             data.GradeClassroomHours = GradeClassroomHours;
             data.GradeCompanyHours = GradeCompanyHours;
 
-            List<CommonText> list = GeneralObjectives.ToList();           
+            List<CommonText> list = GeneralObjectives.ToList();
             data.GeneralObjectivesWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
 
             list = GeneralCompetences.ToList();
             data.GeneralCompetencesWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
 
             List<LearningResult> listLearningResults = LearningResults.ToList();
-            listLearningResults.ForEach(e => e.Save(StorageId));            
+            listLearningResults.ForEach(e => e.Save(StorageId));
             data.LearningResultsStorageIds = Storage.GetStorageIds<LearningResult>(listLearningResults);
 
             List<Content> listContents = Contents.ToList();
-            listContents.ForEach(e => e.Save(StorageId));            
+            listContents.ForEach(e => e.Save(StorageId));
             data.ContentsStorageIds = Storage.GetStorageIds<Content>(listContents);
 
             Storage.SaveData<SubjectTemplateData>(StorageId, StorageClassId, data, parentStorageId);
@@ -94,10 +94,10 @@
         {
             base.LoadOrCreate(storageId, parentStorageId);
 
-            if(!Storage.ExistsData<SubjectTemplateData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
+            if (!Storage.ExistsData<SubjectTemplateData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
 
             SubjectTemplateData data = Storage.LoadData<SubjectTemplateData>(storageId, StorageClassId, parentStorageId);
-            
+
             Title = data.Title;
             Description = data.Description;
 

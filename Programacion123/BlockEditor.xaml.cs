@@ -31,15 +31,15 @@ namespace Programacion123
                 (Activity a) =>
                 {
                     Subject subject = Storage.FindEntity<Subject>(Storage.FindParentStorageId(entity.StorageId, entity.StorageClassId), null);
-                    if(subject.Template != null)
+                    if (subject.Template != null)
                     {
                         List<LearningResult> results = subject.Template.LearningResults.ToList();
-                        foreach(LearningResult r in results) { a.LearningResultsWeights.Add(r, 0); }
+                        foreach (LearningResult r in results) { a.LearningResultsWeights.Add(r, 0); }
                     }
 
-                    if(subject.Calendar != null)
+                    if (subject.Calendar != null)
                     {
-                        a.StartDate = subject.Calendar.StartDay;    
+                        a.StartDate = subject.Calendar.StartDay;
                     }
                     else
                     {
@@ -72,7 +72,7 @@ namespace Programacion123
             ButtonClose.ToolTip = "Cerrar";
 
             TextTitle.TextChanged += TextTitle_TextChanged;
-            TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;            
+            TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
 
             Validate();
 

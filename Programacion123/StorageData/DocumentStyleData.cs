@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Programacion123
+﻿namespace Programacion123
 {
     class DocumentStyleData : StorageData
     {
@@ -14,9 +8,9 @@ namespace Programacion123
         public DocumentOrientation Orientation { get; set; }
         public DocumentMargins Margins { get; set; }
 
-        public List< KeyValuePair < DocumentCoverElementId, DocumentCoverElementStyle> > CoverElementStyles { get; set; } = new ();
-        public List< KeyValuePair < DocumentTextElementId, DocumentTextElementStyle> > TextElementStyles { get; set; } = new();
-        public List< KeyValuePair < DocumentTableElementId, DocumentTableElementStyle> > TableElementStyles { get; set; } = new();
+        public List<KeyValuePair<DocumentCoverElementId, DocumentCoverElementStyle>> CoverElementStyles { get; set; } = new();
+        public List<KeyValuePair<DocumentTextElementId, DocumentTextElementStyle>> TextElementStyles { get; set; } = new();
+        public List<KeyValuePair<DocumentTableElementId, DocumentTableElementStyle>> TableElementStyles { get; set; } = new();
 
 
 

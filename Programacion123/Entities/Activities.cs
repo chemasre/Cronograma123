@@ -6,7 +6,7 @@ namespace Programacion123
     internal class Activities : Entity
     {
         internal ListProperty<Unit> UnitsSequence { get; } = new ListProperty<Unit>();
-        internal DictionaryProperty<int, Unit> UnitsById  { get; } = new DictionaryProperty<int, Unit>();
+        internal DictionaryProperty<int, Unit> UnitsById { get; } = new DictionaryProperty<int, Unit>();
 
         internal WeekSchedule WeekSchedule { get; set; }
 

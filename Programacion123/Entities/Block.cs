@@ -1,6 +1,6 @@
 ﻿namespace Programacion123
 {
-    public class Block: Entity
+    public class Block : Entity
     {
         public ListProperty<Activity> Activities { get; } = new ListProperty<Activity>();
 
@@ -16,10 +16,10 @@
         {
             ValidationResult result = base.Validate();
 
-            if(result.code != ValidationCode.success) { return result; }
+            if (result.code != ValidationCode.success) { return result; }
 
             if (Activities.Count <= 0) { return ValidationResult.Create(ValidationCode.blockNoActivities); }
-            for(int i = 0; i < Activities.Count; i++) { if(Activities[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.blockActivityInvalid).WithIndex(i); }  }
+            for (int i = 0; i < Activities.Count; i++) { if (Activities[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.blockActivityInvalid).WithIndex(i); } }
 
             return ValidationResult.Create(ValidationCode.success);
         }
@@ -39,7 +39,7 @@
             data.Description = Description;
 
             List<Activity> list = Activities.ToList();
-            list.ForEach(e => e.Save(StorageId));            
+            list.ForEach(e => e.Save(StorageId));
             data.ActivitiesStorageIds = Storage.GetStorageIds<Activity>(list);
 
             Storage.SaveData<BlockData>(StorageId, StorageClassId, data, parentStorageId);
@@ -49,10 +49,10 @@
         {
             base.LoadOrCreate(storageId, parentStorageId);
 
-            if(!Storage.ExistsData<BlockData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
+            if (!Storage.ExistsData<BlockData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
 
             BlockData data = Storage.LoadData<BlockData>(storageId, StorageClassId, parentStorageId);
-            
+
             Title = data.Title;
             Description = data.Description;
 

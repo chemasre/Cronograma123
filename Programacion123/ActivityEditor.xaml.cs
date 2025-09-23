@@ -14,13 +14,13 @@ namespace Programacion123
         Activity entity;
         string? parentStorageId;
 
-        WeakReferenceFieldController<CommonText, EntityPicker<CommonText> > metodologyController;
-        WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > contentPointsController;
-        WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > keyCompetencesController;
-        WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > spaceResourcesController;
-        WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > materialResourcesController;
-        WeakReferenceFieldController<CommonText, EntityPicker<CommonText> > evaluationInstrumentController;
-        WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > criteriasController;
+        WeakReferenceFieldController<CommonText, EntityPicker<CommonText>> metodologyController;
+        WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> contentPointsController;
+        WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> keyCompetencesController;
+        WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> spaceResourcesController;
+        WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> materialResourcesController;
+        WeakReferenceFieldController<CommonText, EntityPicker<CommonText>> evaluationInstrumentController;
+        WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> criteriasController;
 
 
         string subjectStorageId;
@@ -147,7 +147,7 @@ namespace Programacion123
                                                .WithPick(ButtonMetodologyPick)
                                                .WithPickerTitle("Elige una metodología")
                                                .WithFormat(EntityFormatContent.Title)
-                                               .WithPickListQuery(() => Storage.GetStorageIds<CommonText>(subject.Metodologies.ToList()) )
+                                               .WithPickListQuery(() => Storage.GetStorageIds<CommonText>(subject.Metodologies.ToList()))
                                                .WithBlocker(Blocker);
 
             metodologyController = new(configMetodology);
@@ -156,15 +156,15 @@ namespace Programacion123
                 () =>
                 {
                     List<string> contentPoints = new();
-                    if(subject.Template != null)
+                    if (subject.Template != null)
                     {
                         List<Content> contentList = subject.Template.Contents.ToList();
 
-                        foreach(Content c in contentList)
+                        foreach (Content c in contentList)
                         {
                             List<CommonText> pointsList = c.Points.ToList();
 
-                            foreach(CommonText p in pointsList)
+                            foreach (CommonText p in pointsList)
                             {
                                 contentPoints.Add(p.StorageId);
                             }
@@ -177,7 +177,7 @@ namespace Programacion123
             Func<CommonText, int, string> contentsFormatter =
                 (e, i) =>
                 {
-                    bool canFormat;                    
+                    bool canFormat;
                     SubjectTemplate? template = null;
                     List<Content>? contents = null;
                     string? contentStorageId = null;
@@ -185,31 +185,34 @@ namespace Programacion123
                     int contentIndex = -1;
 
                     canFormat = (subject.Template != null);
-                    if(canFormat)
+                    if (canFormat)
                     {
                         template = subject.Template;
                     }
-                    if(canFormat)
-                    {   contents = template.Contents.ToList();
+                    if (canFormat)
+                    {
+                        contents = template.Contents.ToList();
                         contentStorageId = Storage.FindParentStorageId(e.StorageId, e.StorageClassId);
                         canFormat = (contentStorageId != null);
                     }
-                    if(canFormat)
-                    {   contentIndex = contents.FindIndex(c => c.StorageId == contentStorageId);
+                    if (canFormat)
+                    {
+                        contentIndex = contents.FindIndex(c => c.StorageId == contentStorageId);
                         canFormat = (contentIndex >= 0);
                     }
-                    if(canFormat)
-                    {   pointIndex = contents[contentIndex].Points.ToList().FindIndex(p => p.StorageId == e.StorageId);
+                    if (canFormat)
+                    {
+                        pointIndex = contents[contentIndex].Points.ToList().FindIndex(p => p.StorageId == e.StorageId);
                         canFormat = (pointIndex >= 0);
                     }
-                    
-                    if(canFormat)
+
+                    if (canFormat)
                     {
                         return String.Format("{0}.{1}: {2}", contentIndex + 1, pointIndex + 1, e.Description);
                     }
                     else
                     {
-                        return "<no se encuentra la referencia>";    
+                        return "<no se encuentra la referencia>";
                     }
                 };
 
@@ -217,13 +220,13 @@ namespace Programacion123
                 () =>
                 {
                     List<string> keyCompetences = new();
-                    if(subject.Template != null)
+                    if (subject.Template != null)
                     {
-                        if(subject.Template.GradeTemplate != null)
+                        if (subject.Template.GradeTemplate != null)
                         {
                             List<CommonText> competencesList = subject.Template.GradeTemplate.KeyCapacities.ToList();
 
-                            foreach(CommonText c in competencesList)
+                            foreach (CommonText c in competencesList)
                             {
                                 keyCompetences.Add(c.StorageId);
                             }
@@ -236,35 +239,35 @@ namespace Programacion123
             Func<CommonText, int, string> keyCompetenceFormatter =
                 (c, i) =>
                 {
-                    bool canFormat;                    
+                    bool canFormat;
                     SubjectTemplate? template = null;
                     GradeTemplate? gradeTemplate = null;
                     int capacityIndex = -1;
 
                     canFormat = (subject.Template != null);
-                    if(canFormat)
+                    if (canFormat)
                     {
                         template = subject.Template;
                         canFormat = subject.Template.GradeTemplate != null;
                     }
-                    if(canFormat)
+                    if (canFormat)
                     {
                         gradeTemplate = template.GradeTemplate;
                         canFormat = (gradeTemplate != null);
                     }
-                    if(canFormat)
-                    {   
+                    if (canFormat)
+                    {
                         capacityIndex = gradeTemplate.KeyCapacities.ToList().FindIndex(k => k.StorageId == c.StorageId);
                         canFormat = (capacityIndex >= 0);
                     }
-                    
-                    if(canFormat)
+
+                    if (canFormat)
                     {
                         return String.Format("{0}: {1}", capacityIndex + 1, c.Title);
                     }
                     else
                     {
-                        return "<no se encuentra la referencia>";    
+                        return "<no se encuentra la referencia>";
                     }
                 };
 
@@ -315,7 +318,7 @@ namespace Programacion123
                                                .WithPick(ButtonEvaluationInstrumentPick)
                                                .WithPickerTitle("Elige un instrumento de evaluación")
                                                .WithFormat(EntityFormatContent.Title)
-                                               .WithPickListQuery(() => Storage.GetStorageIds<CommonText>(subject.EvaluationInstrumentsTypes.ToList()) )
+                                               .WithPickListQuery(() => Storage.GetStorageIds<CommonText>(subject.EvaluationInstrumentsTypes.ToList()))
                                                .WithBlocker(Blocker);
 
             evaluationInstrumentController = new(configEvaluationInstrument);
@@ -324,15 +327,15 @@ namespace Programacion123
                 () =>
                 {
                     List<string> criterias = new();
-                    if(subject.Template != null)
+                    if (subject.Template != null)
                     {
                         List<LearningResult> resultList = subject.Template.LearningResults.ToList();
 
-                        foreach(LearningResult r in resultList)
+                        foreach (LearningResult r in resultList)
                         {
                             List<CommonText> criteriasList = r.Criterias.ToList();
 
-                            foreach(CommonText c in criteriasList)
+                            foreach (CommonText c in criteriasList)
                             {
                                 criterias.Add(c.StorageId);
                             }
@@ -345,7 +348,7 @@ namespace Programacion123
             Func<CommonText, int, string> criteriaFormatter =
                 (e, i) =>
                 {
-                    bool canFormat;                    
+                    bool canFormat;
                     SubjectTemplate? template = null;
                     List<LearningResult>? results = null;
                     string? resultStorageId = null;
@@ -353,31 +356,34 @@ namespace Programacion123
                     int resultIndex = -1;
 
                     canFormat = (subject.Template != null);
-                    if(canFormat)
+                    if (canFormat)
                     {
                         template = subject.Template;
                     }
-                    if(canFormat)
-                    {   results = template.LearningResults.ToList();
+                    if (canFormat)
+                    {
+                        results = template.LearningResults.ToList();
                         resultStorageId = Storage.FindParentStorageId(e.StorageId, e.StorageClassId);
                         canFormat = (resultStorageId != null);
                     }
-                    if(canFormat)
-                    {   resultIndex = results.FindIndex(c => c.StorageId == resultStorageId);
+                    if (canFormat)
+                    {
+                        resultIndex = results.FindIndex(c => c.StorageId == resultStorageId);
                         canFormat = (resultIndex >= 0);
                     }
-                    if(canFormat)
-                    {   criteriaIndex = results[resultIndex].Criterias.ToList().FindIndex(c => c.StorageId == e.StorageId);
+                    if (canFormat)
+                    {
+                        criteriaIndex = results[resultIndex].Criterias.ToList().FindIndex(c => c.StorageId == e.StorageId);
                         canFormat = (criteriaIndex >= 0);
                     }
-                    
-                    if(canFormat)
+
+                    if (canFormat)
                     {
                         return String.Format("RA{0}.{1}: {2}", resultIndex + 1, criteriaIndex + 1, e.Description);
                     }
                     else
                     {
-                        return "<no se encuentra la referencia>";    
+                        return "<no se encuentra la referencia>";
                     }
                 };
 
@@ -397,7 +403,7 @@ namespace Programacion123
             ComboDurationFraction.Items.Add(".5");
             ComboDurationFraction.Items.Add(".75");
 
-            for (int i = 0; i < 5; i++) { ComboStartWeekDay.Items.Add(Utils.WeekdayToText(Utils.IndexToWeekday(i + 1)));  }
+            for (int i = 0; i < 5; i++) { ComboStartWeekDay.Items.Add(Utils.WeekdayToText(Utils.IndexToWeekday(i + 1))); }
 
             ComboEvaluationType.Items.Add("No evaluable");
             ComboEvaluationType.Items.Add("Evaluación continua");
@@ -427,7 +433,7 @@ namespace Programacion123
             TextScheduledSessions.IsReadOnly = true;
 
             dataTableResultsWeight = new DataTable();
-            
+
             DataGridLearningResultsWeight.ItemsSource = dataTableResultsWeight.DefaultView;
             DataGridLearningResultsWeight.CanUserAddRows = false;
             DataGridLearningResultsWeight.CanUserDeleteRows = false;
@@ -559,7 +565,7 @@ namespace Programacion123
         private void ComboDuration_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CombosDurationApplyLimits();
-               
+
             UpdateEntity();
             Validate();
             UpdateActivityScheduleUI();
@@ -628,7 +634,7 @@ namespace Programacion123
             Validate();
         }
 
-        void ContentPointsController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText> > controller)
+        void ContentPointsController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity();
             Validate();
@@ -657,7 +663,7 @@ namespace Programacion123
             {
                 int activityIndex = block.Activities.ToList().Where(a => a.EvaluationType == entity.EvaluationType).ToList().FindIndex(a => a.StorageId == entity.StorageId);
                 int blockIndex = subject.Blocks.ToList().FindIndex((b) => b.StorageId == block.StorageId);
-                TextActivityCode.Text = String.Format(entity.EvaluationType == ActivityEvaluationType.Continous ? "B{0}-A{1}":"B{0}-EX{1}", blockIndex + 1, activityIndex + 1);
+                TextActivityCode.Text = String.Format(entity.EvaluationType == ActivityEvaluationType.Continous ? "B{0}-A{1}" : "B{0}-EX{1}", blockIndex + 1, activityIndex + 1);
             }
             else
             {
@@ -677,12 +683,12 @@ namespace Programacion123
         {
             bool cannotSchedule = false;
 
-            if(subject.CanScheduleActivities())
+            if (subject.CanScheduleActivities())
             {
                 List<ActivitySchedule> schedules = subject.ScheduleActivities();
                 int scheduleIndex = schedules.FindIndex(s => s.activity.StorageId == entity.StorageId);
-                
-                if(scheduleIndex >= 0)
+
+                if (scheduleIndex >= 0)
                 {
                     ActivitySchedule schedule = schedules[scheduleIndex];
 
@@ -690,9 +696,9 @@ namespace Programacion123
                     TextScheduledEndDay.Text = Utils.FormatStartDayHour(schedule.end.day, schedule.end.hour, subject.WeekSchedule);
 
                     int count = 0;
-                    for(DateTime d = schedule.start.day; d <= schedule.end.day; d = d.AddDays(1))
+                    for (DateTime d = schedule.start.day; d <= schedule.end.day; d = d.AddDays(1))
                     {
-                        if(Utils.IsSchoolDay(d, subject.Calendar, subject.WeekSchedule)) { count++; }
+                        if (Utils.IsSchoolDay(d, subject.Calendar, subject.WeekSchedule)) { count++; }
                     }
 
                     TextScheduledSessions.Text = count.ToString();
@@ -707,7 +713,7 @@ namespace Programacion123
                 cannotSchedule = true;
             }
 
-            if(cannotSchedule)
+            if (cannotSchedule)
             {
                 TextScheduledStartDay.Text = "<no planificable>";
                 TextScheduledEndDay.Text = "<no planificable>";
@@ -749,14 +755,14 @@ namespace Programacion123
         public HashSet<int> GetReferencedResults(List<CommonText> criteriasList, List<LearningResult> resultsList)
         {
             HashSet<int> referencedResults = new();
-            for(int i = 0; i < resultsList.Count; i ++)
+            for (int i = 0; i < resultsList.Count; i++)
             {
                 bool done = false;
                 List<CommonText> resultCriteriaList = resultsList[i].Criterias.ToList();
                 int j = 0;
-                while(j < resultCriteriaList.Count && !done)
+                while (j < resultCriteriaList.Count && !done)
                 {
-                    if(criteriasList.Find(r => r.StorageId == resultCriteriaList[j].StorageId) != null)
+                    if (criteriasList.Find(r => r.StorageId == resultCriteriaList[j].StorageId) != null)
                     {
                         referencedResults.Add(i);
                         done = true;
@@ -766,7 +772,7 @@ namespace Programacion123
                         j++;
                     }
                 }
-                    
+
             }
 
             return referencedResults;

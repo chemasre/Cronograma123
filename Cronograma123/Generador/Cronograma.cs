@@ -1,7 +1,7 @@
-﻿using System.IO;
+﻿using Microsoft.Office.Interop.Excel;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Json;
-using Microsoft.Office.Interop.Excel;
 
 namespace Cronogramador
 {
@@ -159,7 +159,7 @@ namespace Cronogramador
             int cursorFila = config.filaInicioMeses;
             int cursorColumna = config.columnaInicioMeses;
 
-            excel =  new Application();
+            excel = new Application();
 
             excel.DisplayAlerts = false;
 
@@ -178,7 +178,7 @@ namespace Cronogramador
 
             // Rellenamos los meses
 
-            for (int i = 0; i < mesesOrdenados.Count; i ++)
+            for (int i = 0; i < mesesOrdenados.Count; i++)
             {
                 int mesAnyo = mesesOrdenados[i];
                 int mes = mesAnyo % 100;
@@ -200,7 +200,7 @@ namespace Cronogramador
 
                 cursorFila++;
 
-                for(int j = 1; j <= 7; j ++)
+                for (int j = 1; j <= 7; j++)
                 {
                     hoja.Cells[cursorFila, cursorColumna] = Utils.TraduceDiaSemana(Utils.IndiceADiaSemana(j), true);
                     hoja.Cells[cursorFila, cursorColumna].Interior.Color = config.colorDiaSemana;
@@ -211,11 +211,11 @@ namespace Cronogramador
                     cursorColumna++;
                 }
 
-                cursorFila ++;
+                cursorFila++;
 
                 int anteriorUF = 0;
 
-                for(DateTime dia = primerDia; dia <= ultimoDia; dia = dia.AddDays(1))
+                for (DateTime dia = primerDia; dia <= ultimoDia; dia = dia.AddDays(1))
                 {
                     cursorColumna = config.columnaInicioMeses + Utils.DiaSemanaAIndice(dia.DayOfWeek) - 1;
 
@@ -235,19 +235,19 @@ namespace Cronogramador
                     List<XlRgbColor> coloresGradiente = null;
                     bool ponerGradiente = false;
 
-                    if(contenido.ContainsKey(dia))
+                    if (contenido.ContainsKey(dia))
                     {
                         ContenidoDia contenidoDia = contenido[dia];
 
                         if (contenidoDia.tipo == TipoDia.festivo)
-                        {   
+                        {
                             color = config.colorFestivos;
                             colorTexto = config.colorTextoFestivos;
                             ponerColor = true;
                             ponerColorTexto = true;
                         }
-                        else if(contenidoDia.tipo == TipoDia.finDeSemana)
-                        {   
+                        else if (contenidoDia.tipo == TipoDia.finDeSemana)
+                        {
                             color = config.colorFinesDeSemana;
                             colorTexto = config.colorTextoFinesDeSemana;
                             ponerColor = true;
@@ -263,15 +263,15 @@ namespace Cronogramador
 
                             bool tieneUFs = false;
 
-                            if(horasUF.Count == 0)
+                            if (horasUF.Count == 0)
                             {
-                                if(config.estiloContinuo && anteriorUF > 0)
+                                if (config.estiloContinuo && anteriorUF > 0)
                                 {
                                     color = config.coloresUFs[anteriorUF - 1];
                                     colorTexto = config.colorTextoUFs;
                                     ponerColor = true;
                                     ponerColorTexto = true;
-                                 }
+                                }
                             }
                             else if (horasUF.Count == 1)
                             {
@@ -295,30 +295,30 @@ namespace Cronogramador
                                 ponerColorTexto = true;
                             }
 
-                            if (horasUF.Count > 0) { anteriorUF =  horasUF[horasUF.Count - 1].uf; }
+                            if (horasUF.Count > 0) { anteriorUF = horasUF[horasUF.Count - 1].uf; }
 
                         }
 
                     }
 
-                    if(ponerColor)
+                    if (ponerColor)
                     {
                         hoja.Cells[cursorFila, cursorColumna].Interior.Color = color;
                     }
-                    else if(ponerGradiente)
+                    else if (ponerGradiente)
                     {
                         hoja.Cells[cursorFila, cursorColumna].Interior.Pattern = XlPattern.xlPatternLinearGradient;
                         hoja.Cells[cursorFila, cursorColumna].Interior.Gradient.Degree = 0;
                         hoja.Cells[cursorFila, cursorColumna].Interior.Gradient.ColorStops.Clear();
 
-                        for (int j = 0; j < coloresGradiente.Count; j ++)
+                        for (int j = 0; j < coloresGradiente.Count; j++)
                         {
                             hoja.Cells[cursorFila, cursorColumna].Interior.Gradient.ColorStops.Add(j * (1.0f / (coloresGradiente.Count - 1))).Color = coloresGradiente[j];
                         }
 
                     }
 
-                    if(ponerColorTexto)
+                    if (ponerColorTexto)
                     {
                         hoja.Cells[cursorFila, cursorColumna].Font.Color = colorTexto;
                     }
@@ -338,7 +338,7 @@ namespace Cronogramador
 
             hoja.Columns[cursorColumna + 1].ColumnWidth = config.anchoColumnaTitulosUFs;
 
-            for(int i = 0; i < asignatura.ObtenNumUFs(); i ++)
+            for (int i = 0; i < asignatura.ObtenNumUFs(); i++)
             {
                 int uf = asignatura.ObtenUFPorIndice(i);
                 hoja.Cells[cursorFila, cursorColumna] = uf;
@@ -351,7 +351,7 @@ namespace Cronogramador
                 hoja.Cells[cursorFila, cursorColumna + 2] = asignatura.ObtenHorasUF(uf) + "h";
                 hoja.Cells[cursorFila, cursorColumna + 2].Borders.LineStyle = XlLineStyle.xlContinuous;
 
-                cursorFila ++;
+                cursorFila++;
 
             }
 
@@ -369,7 +369,7 @@ namespace Cronogramador
 
             if (calendario.ObtenFestivos().Count > 0)
             {
-                cursorFila ++;
+                cursorFila++;
 
                 hoja.Cells[cursorFila, cursorColumna] = "";
                 hoja.Cells[cursorFila, cursorColumna].Interior.Color = config.colorFestivos;

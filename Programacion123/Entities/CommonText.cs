@@ -38,12 +38,12 @@
         header3Contents,
         header2Blocks,
         header2Activities,
-            
+
     }
 
 
 
-    public class CommonText: Entity
+    public class CommonText : Entity
     {
 
         public CommonText() : base()
@@ -80,7 +80,7 @@
         {
             base.LoadOrCreate(storageId, parentStorageId);
 
-            if(!Storage.ExistsData<CommonTextData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
+            if (!Storage.ExistsData<CommonTextData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
 
             CommonTextData data = Storage.LoadData<CommonTextData>(storageId, StorageClassId, parentStorageId);
 

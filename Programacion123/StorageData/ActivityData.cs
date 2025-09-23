@@ -12,17 +12,17 @@
 
         public string? MetodologyWeakStorageId { get; set; } = null;
 
-        public List<string> ContentPointsWeakStorageIds  { get; set; } = new List<string>();
-        public List<string> KeyCompetencesWeakStorageIds  { get; set; } = new List<string>();
-        public List<string> SpaceResourcesWeakStorageIds  { get; set; } = new List<string>();
-        public List<string> MaterialResourcesWeakStorageIds  { get; set; } = new List<string>();
+        public List<string> ContentPointsWeakStorageIds { get; set; } = new List<string>();
+        public List<string> KeyCompetencesWeakStorageIds { get; set; } = new List<string>();
+        public List<string> SpaceResourcesWeakStorageIds { get; set; } = new List<string>();
+        public List<string> MaterialResourcesWeakStorageIds { get; set; } = new List<string>();
 
         public ActivityEvaluationType EvaluationType { get; set; }
 
-        public string? EvaluationInstrumentTypeWeakStorageId  { get; set; } = null;
-        public List<string> CriteriasWeakStorageIds  { get; set; } = new List<string>();
+        public string? EvaluationInstrumentTypeWeakStorageId { get; set; } = null;
+        public List<string> CriteriasWeakStorageIds { get; set; } = new List<string>();
 
-        public List< KeyValuePair<string, float> > LearningResultsWeakStorageIdsWeights { get; set; } = new List<KeyValuePair<string, float>>();
+        public List<KeyValuePair<string, float>> LearningResultsWeakStorageIdsWeights { get; set; } = new List<KeyValuePair<string, float>>();
 
     }
 }

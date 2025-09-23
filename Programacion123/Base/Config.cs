@@ -16,7 +16,7 @@ namespace Programacion123
 
         public int monthTitleSize { get; set; } = 16;
         public XlRgbColor monthTitleColor { get; set; } = XlRgbColor.rgbSteelBlue;
-        public XlRgbColor monthTitleTextColor { get; set; }  = XlRgbColor.rgbWhite;
+        public XlRgbColor monthTitleTextColor { get; set; } = XlRgbColor.rgbWhite;
 
         public XlRgbColor weekDayColor { get; set; } = XlRgbColor.rgbLightSteelBlue;
 

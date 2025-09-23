@@ -14,8 +14,8 @@ namespace Programacion123
 
             if (screen != null)
             {
-                dpiX = (float) (96.0 * screen.CompositionTarget.TransformToDevice.M11);
-                dpiY = (float) (96.0 * screen.CompositionTarget.TransformToDevice.M22);
+                dpiX = (float)(96.0 * screen.CompositionTarget.TransformToDevice.M11);
+                dpiY = (float)(96.0 * screen.CompositionTarget.TransformToDevice.M22);
             }
         }
     }

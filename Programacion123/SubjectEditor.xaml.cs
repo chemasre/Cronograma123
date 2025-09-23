@@ -21,12 +21,12 @@ namespace Programacion123
         StrongReferencesBoxController<CommonText, CommonTextEditor> commonTextsController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> metodologiesController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> spaceResourcesController;
-        StrongReferencesBoxController<CommonText, CommonTextEditor > materialResourcesController;
+        StrongReferencesBoxController<CommonText, CommonTextEditor> materialResourcesController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> evaluationInstrumentTypesController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> citationsController;
 
         StrongReferencesBoxController<Block, BlockEditor> blocksController;
-        
+
         DataTable dataTableResultsWeight;
         DataTable dataTableActivitiesWeight;
 
@@ -206,7 +206,7 @@ namespace Programacion123
             TextTitle.TextChanged += TextTitle_TextChanged;
 
             dataTableResultsWeight = new DataTable();
-            
+
             DataGridLearningResultsWeight.ItemsSource = dataTableResultsWeight.DefaultView;
             DataGridLearningResultsWeight.CanUserAddRows = false;
             DataGridLearningResultsWeight.CanUserDeleteRows = false;
@@ -259,21 +259,21 @@ namespace Programacion123
             dataTableResultsWeight.Rows.Clear();
             dataTableResultsWeight.Columns.Clear();
 
-            if(entity.Template != null)
+            if (entity.Template != null)
             {
-                List< KeyValuePair<LearningResult, float> > resultsWeightsList = entity.LearningResultsWeights.ToList();
+                List<KeyValuePair<LearningResult, float>> resultsWeightsList = entity.LearningResultsWeights.ToList();
                 List<LearningResult> resultsList = entity.Template.LearningResults.ToList();
                 int resultsCount = resultsList.Count;
-                for(int i = 0; i < resultsCount; i++)
+                for (int i = 0; i < resultsCount; i++)
                 { dataTableResultsWeight.Columns.Add(String.Format("RA{0}", i + 1), typeof(float)); }
 
                 DataRow row = dataTableResultsWeight.NewRow();
-                for(int i = 0; i < resultsCount; i++)
+                for (int i = 0; i < resultsCount; i++)
                 {
                     int weightIndex;
-                    float weight;                    
+                    float weight;
                     weightIndex = resultsWeightsList.FindIndex(r => r.Key.StorageId == resultsList[i].StorageId);
-                    if(weightIndex >= 0) { weight = resultsWeightsList[weightIndex].Value; }
+                    if (weightIndex >= 0) { weight = resultsWeightsList[weightIndex].Value; }
                     else { weight = 0; }
 
                     row[String.Format("RA{0}", i + 1)] = weight;
@@ -294,24 +294,24 @@ namespace Programacion123
             dataTableActivitiesWeight.Rows.Clear();
             dataTableActivitiesWeight.Columns.Clear();
 
-            if(entity.Template != null)
+            if (entity.Template != null)
             {
                 dataTableActivitiesWeight.Columns.Add("Actividad", typeof(string));
 
                 List<LearningResult> results = entity.Template.LearningResults.ToList();
-                for(int i = 0; i < results.Count; i++)
+                for (int i = 0; i < results.Count; i++)
                 { dataTableActivitiesWeight.Columns.Add(String.Format("RA{0}", i + 1), typeof(float)); }
 
-                for(int b = 0; b < entity.Blocks.Count; b++)
+                for (int b = 0; b < entity.Blocks.Count; b++)
                 {
                     Block block = entity.Blocks[b];
 
-                    for(int a = 0; a < block.Activities.Count; a++)
+                    for (int a = 0; a < block.Activities.Count; a++)
                     {
                         Activity activity = block.Activities[a];
                         //activity = Storage.LoadOrCreateEntity<Activity>(activity.StorageId, block.StorageId);
 
-                        if(activity.EvaluationType != ActivityEvaluationType.NotEvaluable)
+                        if (activity.EvaluationType != ActivityEvaluationType.NotEvaluable)
                         {
                             DataRow row = dataTableActivitiesWeight.NewRow();
 
@@ -321,8 +321,8 @@ namespace Programacion123
 
                             List<KeyValuePair<LearningResult, float>> resultsWeightsList = activity.LearningResultsWeights.ToList();
 
-                            for(int i = 0; i < results.Count; i++)
-                            { 
+                            for (int i = 0; i < results.Count; i++)
+                            {
                                 int weightIndex = resultsWeightsList.FindIndex(r => r.Key.StorageId == results[i].StorageId);
                                 float weight = weightIndex >= 0 ? resultsWeightsList[weightIndex].Value : 0;
                                 row[String.Format("RA{0}", i + 1)] = weight;
@@ -334,7 +334,7 @@ namespace Programacion123
                         }
                     }
                 }
-            }            
+            }
 
             DataGridActivitiesWeight.ItemsSource = null;
             DataGridActivitiesWeight.ItemsSource = dataTableActivitiesWeight.DefaultView;
@@ -364,9 +364,9 @@ namespace Programacion123
             b =>
             {
                 b.Activities.ToList().ForEach(
-                a => 
+                a =>
                 {
-                    if(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
+                    if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
                     {
                         activityStorageIdToBlockIndex.Add(a.StorageId, bIndex);
                         activityStorageIdToActivityIndex.Add(a.StorageId, aIndex);
@@ -404,11 +404,11 @@ namespace Programacion123
             {
                 DataRow row = dataTableActivitiesSchedule.NewRow();
 
-                row["Actividad"] =  a.EvaluationType != ActivityEvaluationType.NotEvaluable ?
+                row["Actividad"] = a.EvaluationType != ActivityEvaluationType.NotEvaluable ?
                                         String.Format("B{0:00}-A{1:00}",
                                         activityStorageIdToBlockIndex[a.StorageId] + 1,
                                         activityStorageIdToActivityIndex[a.StorageId] + 1) :
-                                        a.Title.Substring(0, Math.Min(a.Title.Length, 20)) + 
+                                        a.Title.Substring(0, Math.Min(a.Title.Length, 20)) +
                                         (a.Title.Length > 20 ? "..." : "");
 
                 row["Horas"] = a.Duration;
@@ -419,7 +419,7 @@ namespace Programacion123
                     if (activityIndex < scheduledActivities.Count) { schedule = scheduledActivities[activityIndex]; }
                 }
 
-                if(schedule.HasValue)
+                if (schedule.HasValue)
                 {
                     row["Inicio"] = Utils.FormatStartDayHour(schedule.Value.start.day, schedule.Value.start.hour, entity.WeekSchedule);
                     row["Fin"] = Utils.FormatEndDayHour(schedule.Value.end.day, schedule.Value.end.hour, entity.WeekSchedule);
@@ -443,11 +443,11 @@ namespace Programacion123
                 dataTableActivitiesSchedule.Rows.Add(row);
                 dataTableActivitiesSchedule.RowChanged += DataTableActivitiesSchedule_RowChanged;
 
-                activityIndex ++;
+                activityIndex++;
             }
 
             // Fixes Index out of range exception in ShowDialog, that maybe occurs because the ItemSource reset is done two times in the same event
-            if(!dontChangeItemSource)
+            if (!dontChangeItemSource)
             {
                 DataGridActivitiesSchedule.ItemsSource = null;
                 DataGridActivitiesSchedule.ItemsSource = dataTableActivitiesSchedule.DefaultView;
@@ -517,7 +517,7 @@ namespace Programacion123
             Validate();
         }
 
-        private void WeekScheduleController_Changed(WeakReferenceFieldController<WeekSchedule, EntityPicker<WeekSchedule> > controller)
+        private void WeekScheduleController_Changed(WeakReferenceFieldController<WeekSchedule, EntityPicker<WeekSchedule>> controller)
         {
             UpdateEntity();
             UpdateScheduleUIFromEntity();
@@ -552,7 +552,7 @@ namespace Programacion123
         }
 
         private void UpdateEntity()
-        {            
+        {
             entity.Title = TextTitle.Text;
 
             entity.Template = subjectTemplateController.GetEntity();
@@ -574,11 +574,11 @@ namespace Programacion123
             entity.Blocks.Set(Storage.LoadOrCreateEntities<Block>(blocksController.StorageIds, entity.StorageId));
 
             entity.LearningResultsWeights.Clear();
-            if(entity.Template != null)
+            if (entity.Template != null)
             {
                 int columnIndex = 0;
                 int count = Math.Min(dataTableResultsWeight.Columns.Count, entity.Template.LearningResults.Count);
-                for(int i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
                 {
                     DataColumn c = dataTableResultsWeight.Columns[i];
                     LearningResult r = entity.Template.LearningResults[columnIndex];
@@ -593,23 +593,23 @@ namespace Programacion123
 
             int evaluableActivityIndex = 0;
             List<Block> blocksList = entity.Blocks.ToList();
-            foreach(Block b in blocksList)
+            foreach (Block b in blocksList)
             {
                 List<Activity> activitiesList = b.Activities.ToList();
-                foreach(Activity a in activitiesList)
+                foreach (Activity a in activitiesList)
                 {
-                    if(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
+                    if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
                     {
-                        if(entity.Template != null)
+                        if (entity.Template != null)
                         {
                             a.LearningResultsWeights.Clear();
                             List<LearningResult> resultList = entity.Template.LearningResults.ToList();
                             int columnCount = Math.Min(dataTableActivitiesWeight.Columns.Count - 1, resultList.Count);
-                            for(int i = 0; i < columnCount; i++)
+                            for (int i = 0; i < columnCount; i++)
                             {
                                 string columnName = dataTableActivitiesWeight.Columns[i + 1].ColumnName;
                                 float weight;
-                                if(dataTableActivitiesWeight.Rows.Count > evaluableActivityIndex)
+                                if (dataTableActivitiesWeight.Rows.Count > evaluableActivityIndex)
                                 { weight = (float)dataTableActivitiesWeight.Rows[evaluableActivityIndex][columnName]; }
                                 else { weight = 0; }
 
@@ -643,7 +643,7 @@ namespace Programacion123
                     {
                         DataRow row = dataTableActivitiesSchedule.Rows[activityScheduleIndex];
 
-                        float h = (int)((float)row["Horas"] / 0.25f) *0.25f;
+                        float h = (int)((float)row["Horas"] / 0.25f) * 0.25f;
                         if (h <= 0) { h = 0.25f; }
 
                         a.Duration = h;
@@ -661,17 +661,17 @@ namespace Programacion123
 
         void UpdateEntityTemplateReferences()
         {
-            if(entity.Template == null)
+            if (entity.Template == null)
             {
                 entity.LearningResultsWeights.Clear();
 
                 List<Block> blocksList = entity.Blocks.ToList();
 
-                foreach(Block b in blocksList)
+                foreach (Block b in blocksList)
                 {
                     List<Activity> activitiesList = b.Activities.ToList();
 
-                    foreach(Activity a in activitiesList)
+                    foreach (Activity a in activitiesList)
                     {
                         a.LearningResultsWeights.Clear();
                     }
@@ -683,7 +683,7 @@ namespace Programacion123
 
                 List<LearningResult> resultsList = entity.Template.LearningResults.ToList();
                 entity.LearningResultsWeights.Clear();
-                foreach(LearningResult r in resultsList)
+                foreach (LearningResult r in resultsList)
                 {
                     int weightIndex = previousWeights.FindIndex(p => p.Key.StorageId == r.StorageId);
                     float weight = weightIndex >= 0 ? previousWeights[weightIndex].Value : 0;
@@ -692,15 +692,15 @@ namespace Programacion123
 
                 List<Block> blocksList = entity.Blocks.ToList();
 
-                foreach(Block b in blocksList)
+                foreach (Block b in blocksList)
                 {
                     List<Activity> activitiesList = b.Activities.ToList();
 
-                    foreach(Activity a in activitiesList)
+                    foreach (Activity a in activitiesList)
                     {
                         List<KeyValuePair<LearningResult, float>> previousActivityWeights = a.LearningResultsWeights.ToList();
                         a.LearningResultsWeights.Clear();
-                        foreach(LearningResult r in resultsList)
+                        foreach (LearningResult r in resultsList)
                         {
                             int weightIndex = previousActivityWeights.FindIndex(p => p.Key.StorageId == r.StorageId);
                             float weight = weightIndex >= 0 ? previousActivityWeights[weightIndex].Value : 0;

@@ -44,7 +44,7 @@ namespace Programacion123
             IconInfo.Visibility = (_iconType == ConfirmIconType.info ? Visibility.Visible : Visibility.Hidden);
             IconQuestion.Visibility = (_iconType == ConfirmIconType.question ? Visibility.Visible : Visibility.Hidden);
 
-            ButtonAccept.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel || _chooseType == ConfirmChooseType.yesAndNo? Visibility.Visible : Visibility.Hidden);
+            ButtonAccept.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel || _chooseType == ConfirmChooseType.yesAndNo ? Visibility.Visible : Visibility.Hidden);
             ButtonCancel.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel || _chooseType == ConfirmChooseType.yesAndNo ? Visibility.Visible : Visibility.Hidden);
             BorderOption1.Visibility = (_chooseType == ConfirmChooseType.acceptAndCancel || _chooseType == ConfirmChooseType.yesAndNo ? Visibility.Visible : Visibility.Hidden);
 

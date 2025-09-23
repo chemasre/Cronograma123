@@ -24,7 +24,7 @@ namespace Programacion123
         public List<string> WeekSchedulesStorageIds { get { return weekSchedulesController.StorageIds; } }
         public List<string> CalendarsStorageIds { get { return calendarsController.StorageIds; } }
         public List<string> SubjectsStorageIds { get { return subjectsController.StorageIds; } }
-        public string? DocumentStyleStorageId  { get { return documentStyleStorageId; } }
+        public string? DocumentStyleStorageId { get { return documentStyleStorageId; } }
 
         string previousStorageBasePath;
 
@@ -44,7 +44,7 @@ namespace Programacion123
             public bool includeDocumentStyle;
             public string? documentStyleStorageId;
             public Func<bool, ExportImportDialog, bool>? closeAction;
-            
+
         }
 
         public void Init(ExportImportDialogConfiguration config)
@@ -121,21 +121,21 @@ namespace Programacion123
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             bool? cancel = closeAction?.Invoke(false, this);
-            if(!cancel.GetValueOrDefault()) { Close(); }
+            if (!cancel.GetValueOrDefault()) { Close(); }
         }
 
         private void ButtonAccept_Click(object sender, RoutedEventArgs e)
         {
             bool? cancel = closeAction?.Invoke(true, this);
 
-            if(!cancel.GetValueOrDefault()) { Close(); }
+            if (!cancel.GetValueOrDefault()) { Close(); }
         }
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             bool? cancel = closeAction?.Invoke(false, this);
 
-            if(!cancel.GetValueOrDefault()) { Close(); }
+            if (!cancel.GetValueOrDefault()) { Close(); }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Programacion123
 {
@@ -45,5 +34,23 @@ namespace Programacion123
             }
 
         }
+
+        //private void ButtonHome_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Blocker.Visibility = Visibility.Visible;
+
+        //    ConfirmDialog question = new();
+
+        //    question.Init(ConfirmIconType.info,
+        //        "Abrir navegador",
+        //        "Esto abrirá tu navegador por defecto y te dirigirá a la página principal de la aplicación",
+        //        ConfirmChooseType.acceptAndCancel,
+        //        (b) => { if (b) { Utils.OpenUrl(Constants.homeUrl); } });
+
+        //    question.ShowDialog();
+
+        //    Blocker.Visibility = Visibility.Hidden;            
+        //}
+
     }
 }

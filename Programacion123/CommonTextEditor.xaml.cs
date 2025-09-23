@@ -102,7 +102,7 @@ namespace Programacion123
             UpdateEntity();
             //entity.Save(parentStorageId);
 
-            if(titleEditable)
+            if (titleEditable)
             {
                 TextTitle.TextChanged -= TextTitle_TextChanged;
                 TextBoxDescription.TextChanged -= TextBoxDescription_TextChanged;

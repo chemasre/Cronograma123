@@ -43,7 +43,7 @@
         TableWeightsNormalCell,
         TableWeightsHeader1Cell,
         TableWeightsHeader2Cell
-    
+
     }
 
 }

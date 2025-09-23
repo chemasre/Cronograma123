@@ -37,7 +37,7 @@
                 validation = ValidationResult.Create(ValidationCode.calendarStartDayAfterEndDay);
             }
 
-            if(validation.code == ValidationCode.success)
+            if (validation.code == ValidationCode.success)
             {
                 int i = 0;
                 var listaFestivos = FreeDays.ToList();
@@ -55,18 +55,18 @@
 
             }
 
-            if(validation.code == ValidationCode.success)
+            if (validation.code == ValidationCode.success)
             {
                 DateTime d = StartDay;
                 bool foundSchoolDay = false;
 
-                while(d <= EndDay && !foundSchoolDay)
+                while (d <= EndDay && !foundSchoolDay)
                 {
-                    if(!FreeDays.Contains(d) && d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday) { foundSchoolDay = true; }
+                    if (!FreeDays.Contains(d) && d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday) { foundSchoolDay = true; }
                     else { d = d.AddDays(1); }
                 }
 
-                if(!foundSchoolDay) { validation = ValidationResult.Create(ValidationCode.calendarNoSchoolDays); }
+                if (!foundSchoolDay) { validation = ValidationResult.Create(ValidationCode.calendarNoSchoolDays); }
             }
 
             return validation;
@@ -83,7 +83,7 @@
         {
             base.LoadOrCreate(storageId, parentStorageId);
 
-            if(!Storage.ExistsData<CalendarData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
+            if (!Storage.ExistsData<CalendarData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
 
             var data = Storage.LoadData<CalendarData>(storageId, StorageClassId, parentStorageId);
 

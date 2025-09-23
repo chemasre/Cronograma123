@@ -13,7 +13,7 @@ namespace Programacion123
         string? parentStorageId;
         Content entity;
 
-        StrongReferencesBoxController<CommonText, CommonTextEditor > pointsController;
+        StrongReferencesBoxController<CommonText, CommonTextEditor> pointsController;
 
         public ContentEditor()
         {

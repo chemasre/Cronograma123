@@ -29,8 +29,8 @@
 
         public virtual ValidationResult Validate()
         {
-            if(Title.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.entityTitleEmpty); }
-            else if(Description.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.entityDescriptionEmpty); }
+            if (Title.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.entityTitleEmpty); }
+            else if (Description.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.entityDescriptionEmpty); }
             else { return ValidationResult.Create(ValidationCode.success); }
         }
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Programacion123
+﻿namespace Programacion123
 {
     public struct DocumentCoverElementPosition
     {
@@ -18,7 +12,7 @@ namespace Programacion123
         public float Top { get; set; }
         public float Bottom { get; set; }
         public float Left { get; set; }
-        public float Right {  get; set; }
+        public float Right { get; set; }
     }
 
     public struct DocumentTableElementPadding
@@ -26,7 +20,7 @@ namespace Programacion123
         public int Top { get; set; }
         public int Bottom { get; set; }
         public int Left { get; set; }
-        public int Right {  get; set; }
+        public int Right { get; set; }
     }
 
     public struct DocumentTextElementMargins
@@ -53,7 +47,7 @@ namespace Programacion123
     public enum DocumentTextElementFontFamily
     {
         SansSerif,
-        Serif        
+        Serif
     }
 
     public enum DocumentTextElementAlign
@@ -67,7 +61,7 @@ namespace Programacion123
     public struct DocumentCoverElementStyle
     {
         public DocumentCoverElementPosition Position { get; set; }
-    
+
     }
 
     public struct DocumentTextElementStyle
@@ -80,9 +74,9 @@ namespace Programacion123
         public bool Underscore { get; set; }
         public DocumentTextElementAlign Align { get; set; }
         public DocumentTextElementMargins Margins { get; set; }
-    
+
     }
-    
+
     public struct DocumentTableElementStyle
     {
         public DocumentElementColor BackgroundColor { get; set; }
@@ -98,7 +92,7 @@ namespace Programacion123
         public DocumentOrientation Orientation { get; set; } = DocumentOrientation.Portrait;
         public DocumentMargins Margins { get; set; } = new() { Top = 2.0f, Bottom = 2.5f, Left = 1.5f, Right = 1.0f };
 
-        public Dictionary<DocumentCoverElementId, DocumentCoverElementStyle> CoverElementStyles { get; set; } = new () {
+        public Dictionary<DocumentCoverElementId, DocumentCoverElementStyle> CoverElementStyles { get; set; } = new() {
                                             { DocumentCoverElementId.Logo, new() { Position = new() { Left = 0, Top = 0 } } },
                                             { DocumentCoverElementId.SubjectCode, new() { Position = new() { Left = 0, Top = 0 } } },
                                             { DocumentCoverElementId.SubjectName, new() { Position = new() { Left = 0, Top = 0 } } },
@@ -135,7 +129,7 @@ namespace Programacion123
                                             { DocumentTableElementId.TableHeader2Cell, new() { BackgroundColor = DocumentElementColor.LightGray, Padding = new() { Top = 0, Bottom = 0, Left = 0, Right = 0 } } },
                                             { DocumentTableElementId.TableWeightsNormalCell, new() { BackgroundColor = DocumentElementColor.White, Padding = new() { Top = 0, Bottom = 0, Left = 0, Right = 0 } } },
                                             { DocumentTableElementId.TableWeightsHeader1Cell, new() { BackgroundColor = DocumentElementColor.Gray, Padding = new() { Top = 0, Bottom = 0, Left = 0, Right = 0 } } },
-                                            { DocumentTableElementId.TableWeightsHeader2Cell, new() { BackgroundColor = DocumentElementColor.LightGray, Padding = new() { Top = 0, Bottom = 0, Left = 0, Right = 0 } } }                                            
+                                            { DocumentTableElementId.TableWeightsHeader2Cell, new() { BackgroundColor = DocumentElementColor.LightGray, Padding = new() { Top = 0, Bottom = 0, Left = 0, Right = 0 } } }
                                         };
 
         public DocumentStyle()
@@ -179,10 +173,10 @@ namespace Programacion123
         {
             base.LoadOrCreate(storageId, parentStorageId);
 
-            if(!Storage.ExistsData<DocumentStyleData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
+            if (!Storage.ExistsData<DocumentStyleData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
 
             DocumentStyleData data = Storage.LoadData<DocumentStyleData>(storageId, StorageClassId, parentStorageId);
-            
+
             Title = data.Title;
             Description = data.Description;
 
@@ -192,9 +186,9 @@ namespace Programacion123
             Orientation = data.Orientation;
             Margins = data.Margins;
 
-            CoverElementStyles = new (data.CoverElementStyles);
-            TextElementStyles = new (data.TextElementStyles);
-            TableElementStyles = new (data.TableElementStyles);
+            CoverElementStyles = new(data.CoverElementStyles);
+            TextElementStyles = new(data.TextElementStyles);
+            TableElementStyles = new(data.TableElementStyles);
 
         }
 

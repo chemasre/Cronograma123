@@ -17,10 +17,13 @@ namespace Programacion123
 
         public override string ToString()
         {
-            if(code == GeneratorResultCode.success) { return "La programación se ha generado correctamente"; }
-            else if(code == GeneratorResultCode.fileWriteError) { return "No se ha podido crear el fichero. " +
+            if (code == GeneratorResultCode.success) { return "La programación se ha generado correctamente"; }
+            else if (code == GeneratorResultCode.fileWriteError)
+            {
+                return "No se ha podido crear el fichero. " +
                                                                          "Asegúrate de que tienes permiso para escribir en la carpeta " +
-                                                                         "y que el fichero no está abierto en otro programa."; }
+                                                                         "y que el fichero no está abierto en otro programa.";
+            }
             else // code == GeneratorResultCode.wordNotFound
             { return "Para poder generar un fichero en este formato es necesario que tengas instalada una versión compatible de Microsoft Word"; }
         }
@@ -37,7 +40,7 @@ namespace Programacion123
         public override string ToString()
         {
             if (code == GeneratorValidationCode.success) { return "No se detectan problemas."; }
-            else if(code == GeneratorValidationCode.subjectIsNull) { return "No se ha seleccionado una programación de módulo"; }
+            else if (code == GeneratorValidationCode.subjectIsNull) { return "No se ha seleccionado una programación de módulo"; }
             else // code == GeneratorValidationCode.subjectNotValid)
             { return String.Format("La programación del módulo presenta algún problema."); }
 
@@ -70,7 +73,7 @@ namespace Programacion123
         {
             GeneratorSettings defaultSettings = new();
 
-            Style = new ()
+            Style = new()
             {
                 LogoBase64 = new(defaultSettings.DocumentStyle.LogoBase64),
                 CoverBase64 = new(defaultSettings.DocumentStyle.CoverBase64),
@@ -118,7 +121,7 @@ namespace Programacion123
         {
             string spacesText = "";
             bool first = true;
-            foreach(CommonText s in a.SpaceResources.ToList()) { spacesText += (first?"":LineBreak) + s.Title; }
+            foreach (CommonText s in a.SpaceResources.ToList()) { spacesText += (first ? "" : LineBreak) + s.Title; }
             return spacesText;
         }
 
@@ -126,7 +129,7 @@ namespace Programacion123
         {
             string materialsText = "";
             bool first = true;
-            foreach(CommonText s in a.MaterialResources.ToList()) { materialsText += (first?"":LineBreak) + s.Title; }
+            foreach (CommonText s in a.MaterialResources.ToList()) { materialsText += (first ? "" : LineBreak) + s.Title; }
             return materialsText.Length > 0 ? materialsText : "-";
         }
 
@@ -142,7 +145,7 @@ namespace Programacion123
 
             string contentsText = "";
             bool first = true;
-            foreach(ContentPointIndex c in contentPoints.ToList()) { contentsText += (first?"":", ") + Utils.FormatContentPoint(c.contentIndex, c.pointIndex); first = false; }
+            foreach (ContentPointIndex c in contentPoints.ToList()) { contentsText += (first ? "" : ", ") + Utils.FormatContentPoint(c.contentIndex, c.pointIndex); first = false; }
 
             return contentsText;
         }
@@ -151,7 +154,7 @@ namespace Programacion123
         {
             string capacitiesText = "";
             bool first = true;
-            foreach(CommonText capacity in a.KeyCompetences.ToList()) { capacitiesText += (first?"":LineBreak) + capacity.Title; first = false; }
+            foreach (CommonText capacity in a.KeyCompetences.ToList()) { capacitiesText += (first ? "" : LineBreak) + capacity.Title; first = false; }
 
             return capacitiesText.Length > 0 ? capacitiesText : "-";
         }
@@ -163,11 +166,11 @@ namespace Programacion123
 
             int activityIndex = Subject.QueryActivityIndex(blockIndex, a);
             List<SubjectLearningResultIndexesWeight> resultWeights = Subject.QueryActivityLearningResultsIndexesWeight(blockIndex, activityIndex);
-            foreach(SubjectLearningResultIndexesWeight resultWeight in resultWeights)
+            foreach (SubjectLearningResultIndexesWeight resultWeight in resultWeights)
             {
-                if(resultWeight.weight > 0)
+                if (resultWeight.weight > 0)
                 {
-                    resultsWeightsText += (first?"":", ") + String.Format("RA{0}" + NonBreakingSpace + "({1}%)", resultWeight.learningResultIndex + 1, resultWeight.weight);
+                    resultsWeightsText += (first ? "" : ", ") + String.Format("RA{0}" + NonBreakingSpace + "({1}%)", resultWeight.learningResultIndex + 1, resultWeight.weight);
                     first = false;
                 }
             }
@@ -182,10 +185,10 @@ namespace Programacion123
 
             int activityIndex = Subject.QueryActivityIndex(blockIndex, a);
             List<SubjectLearningResultCriteriaIndex> criterias = Subject.QueryActivityReferencedLearningResultCriteriaIndexes(blockIndex, activityIndex);
-            foreach(SubjectLearningResultCriteriaIndex criteria in criterias)
+            foreach (SubjectLearningResultCriteriaIndex criteria in criterias)
             {
                 string criteriaPrefix = Utils.FormatLearningResultCriteria(criteria.learningResultIndex, criteria.criteriaIndex);
-                criteriasText += (first?"":", ") + String.Format("{0}", criteriaPrefix);
+                criteriasText += (first ? "" : ", ") + String.Format("{0}", criteriaPrefix);
                 first = false;
             }
 
@@ -197,7 +200,7 @@ namespace Programacion123
             List<DocumentIndexItem> indexMetodologies = new();
             Subject.Metodologies.ToList().ForEach(m => indexMetodologies.Add(new() { Title = m.Title, Subitems = new() }));
 
-            List<DocumentIndexItem> indexInstrumentTypes= new();
+            List<DocumentIndexItem> indexInstrumentTypes = new();
             Subject.EvaluationInstrumentsTypes.ToList().ForEach(instrument => indexInstrumentTypes.Add(new() { Title = instrument.Title, Subitems = new() }));
 
             List<DocumentIndexItem> indexMaterialResources = new();

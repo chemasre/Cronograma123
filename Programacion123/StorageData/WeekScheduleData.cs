@@ -2,6 +2,6 @@
 {
     public class WeekScheduleData : StorageData
     {
-        public HashSet< KeyValuePair<DayOfWeek, int> > HoursPerWeekDay { get; set; }
+        public HashSet<KeyValuePair<DayOfWeek, int>> HoursPerWeekDay { get; set; }
     }
 }

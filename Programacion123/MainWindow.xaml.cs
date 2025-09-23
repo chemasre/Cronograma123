@@ -1,10 +1,9 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.Win32;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Input;
-using Microsoft.Win32;
-using Microsoft.Windows.Themes;
 using static Programacion123.ExportImportDialog;
 
 namespace Programacion123
@@ -27,19 +26,6 @@ namespace Programacion123
         T? GetPickedEntity();
         List<T> GetPickedEntities();
         bool GetWasCancelled();
-    }
-
-    public class Constants
-    {
-        public const string appName = "Programabara";
-        public const string contactName = "Chema";
-        public const string contactEmail = "chema.sre@gmail.com";
-        public const string version = "0.8.0";
-        public const string configFileName = "Config.json";
-        public const float  restartWaitTime = 2.0f;
-
-        public const string helpUrl = "http://youtube.com";
-
     }
 
     /// <summary>
@@ -73,7 +59,7 @@ namespace Programacion123
             List<DocumentStyle> styles = Storage.LoadAllEntities<DocumentStyle>();
             Debug.Assert(styles.Count <= 1, "More than one style found");
 
-            if(styles.Count == 0) { style = new(); style.Save(); }
+            if (styles.Count == 0) { style = new(); style.Save(); }
             else { style = styles[0]; }
 
             InitUI();
@@ -87,14 +73,14 @@ namespace Programacion123
             Dispatcher.BeginInvoke(
                 async () =>
                 {
-                    if(configuration.FirstRun)
+                    if (configuration.FirstRun)
                     {
                         AboutDialog about = new();
 
                         Blocker.Visibility = Visibility.Visible;
                         about.ShowDialog();
                         Blocker.Visibility = Visibility.Hidden;
-                
+
                         bool wordFound = false;
 
                         LongTaskDialog longTask = new();
@@ -104,10 +90,10 @@ namespace Programacion123
                         Blocker.Visibility = Visibility.Visible;
                         longTask.Show();
 
-                        await Task.Run(() => 
+                        await Task.Run(() =>
                         {
                             Microsoft.Office.Interop.Word.Application app = new();
-                            if(app == null) { wordFound = false; }
+                            if (app == null) { wordFound = false; }
                             else { app.Quit(); wordFound = true; }
 
                         });
@@ -115,7 +101,7 @@ namespace Programacion123
                         longTask.Close();
                         Blocker.Visibility = Visibility.Hidden;
 
-                        if(!wordFound)
+                        if (!wordFound)
                         {
                             ConfirmDialog wordCheckFailed = new ConfirmDialog();
 
@@ -146,19 +132,19 @@ namespace Programacion123
                         ConfirmDialog tutorialQuestion = new ConfirmDialog();
 
                         tutorialQuestion.Init(ConfirmIconType.question, "Ver tutorial",
-                                "Parece que es la primera vez que arrancas la aplicación ¿quieres ver el tutorial?\n" + 
+                                "Parece que es la primera vez que arrancas la aplicación ¿quieres ver el tutorial?\n" +
                                 "(se abrirá en tu navegador por defecto).",
                                 ConfirmChooseType.yesAndNo,
                                 (b) =>
                                 {
-                                    if(b) { OpenUrl(Constants.helpUrl); }
+                                    if (b) { Utils.OpenUrl(Constants.helpUrl); }
                                     else
                                     {
                                         ConfirmDialog checkLater = new();
 
                                         checkLater.Init(ConfirmIconType.info, "Ver más tarde", "Si quieres ver el tutorial más adelante, " +
                                             "pulsa el botón Ayuda en la ventana principal de la aplicación.",
-                                            ConfirmChooseType.acceptOnly, (b)=> { });
+                                            ConfirmChooseType.acceptOnly, (b) => { });
 
                                         checkLater.ShowDialog();
                                     }
@@ -177,22 +163,22 @@ namespace Programacion123
 
         void InitConfiguration()
         {
-            configuration = new Configuration(); 
+            configuration = new Configuration();
 
-            if(File.Exists(Constants.configFileName))
+            if (File.Exists(Constants.configFileName))
             {
                 string text = File.ReadAllText(Constants.configFileName);
                 Configuration? loaded = JsonSerializer.Deserialize<Configuration>(text);
-                if(loaded != null) { configuration = loaded; }
+                if (loaded != null) { configuration = loaded; }
             }
 
         }
 
         void ResetConfiguration()
         {
-            configuration = new Configuration(); 
+            configuration = new Configuration();
 
-            if(File.Exists(Constants.configFileName))
+            if (File.Exists(Constants.configFileName))
             {
                 File.Delete(Constants.configFileName);
             }
@@ -243,8 +229,8 @@ namespace Programacion123
                                                    .WithDeleteConfirmQuestion("Esto eliminará permanentemente la plantilla de módulo seleccionada junto con los elementos curriculares definidos en ella. ¿Estás seguro/a?")
                                                    .WithBlocker(Blocker);
 
-            weekSchedulesController = new (configWeeks);
-            calendarsController = new (configCalendars);
+            weekSchedulesController = new(configWeeks);
+            calendarsController = new(configCalendars);
             subjectTemplatesController = new(configSubjectTemplates);
             gradeTemplatesController = new(configGradeTemplates);
 
@@ -265,7 +251,7 @@ namespace Programacion123
 
 
 
-            subjectsController = new (configSubjects);
+            subjectsController = new(configSubjects);
 
             ButtonClose.ToolTip = "Salir";
             ButtonExport.ToolTip = "Exportar";
@@ -303,21 +289,14 @@ namespace Programacion123
             ConfirmDialog question = new();
 
             question.Init(ConfirmIconType.info,
-                "Abrir navegador", 
+                "Abrir navegador",
                 "Esto abrirá tu navegador por defecto y te dirigirá al tutorial de la aplicación",
                 ConfirmChooseType.acceptAndCancel,
-                (b) => { if(b) { OpenUrl(Constants.helpUrl); } });    
-            
+                (b) => { if (b) { Utils.OpenUrl(Constants.helpUrl); } });
+
             question.ShowDialog();
 
-            Blocker.Visibility = Visibility.Hidden;        }
-
-        void OpenUrl(string url)
-        {
-            ProcessStartInfo info = new ();
-            info.FileName = url;
-            info.UseShellExecute = true;
-            Process.Start (info);
+            Blocker.Visibility = Visibility.Hidden;
         }
 
         private void ButtonReset_Click(object sender, RoutedEventArgs e)
@@ -331,13 +310,13 @@ namespace Programacion123
                          ConfirmChooseType.acceptAndCancel,
                 async (e) =>
                 {
-                    if(e)
+                    if (e)
                     {
                         ResetConfiguration();
                         Storage.Reset();
 
                         LongTaskDialog longTask = new();
-                        
+
                         Hide();
 
                         longTask.Init("Reiniciando la aplicación");
@@ -349,7 +328,7 @@ namespace Programacion123
                         RestartUI();
 
                         Show();
-    
+
                         Blocker.Visibility = Visibility.Hidden;
                         LaunchFirstRunDialogs();
                     }
@@ -374,12 +353,12 @@ namespace Programacion123
 
             Blocker.Visibility = Visibility.Visible;
 
-            if(openFileDialog.ShowDialog().GetValueOrDefault())
+            if (openFileDialog.ShowDialog().GetValueOrDefault())
             {
 
                 Storage.Archive_Open(openFileDialog.FileName);
 
-                List<DocumentStyle> styles = Storage.LoadAllEntities<DocumentStyle>(); 
+                List<DocumentStyle> styles = Storage.LoadAllEntities<DocumentStyle>();
                 bool hasStyle = (styles.Count > 0);
 
                 ExportImportDialogConfiguration config = new()
@@ -398,7 +377,7 @@ namespace Programacion123
                             bool replaceStyle = false;
                             string replaceStyleId = "";
 
-                            if(accepted)
+                            if (accepted)
                             {
                                 List<string> storageIds = new();
                                 storageIds.AddRange(exportDialog.GradeTemplatesStorageIds);
@@ -407,7 +386,7 @@ namespace Programacion123
                                 storageIds.AddRange(exportDialog.WeekSchedulesStorageIds);
                                 storageIds.AddRange(exportDialog.SubjectsStorageIds);
 
-                                if(exportDialog.CheckBoxIncludeDocumentStyle.IsChecked.GetValueOrDefault())
+                                if (exportDialog.CheckBoxIncludeDocumentStyle.IsChecked.GetValueOrDefault())
                                 {
                                     replaceStyle = true;
                                     replaceStyleId = exportDialog.DocumentStyleStorageId;
@@ -423,17 +402,17 @@ namespace Programacion123
 
                             Blocker.Visibility = Visibility.Hidden;
 
-                            if(accepted)
+                            if (accepted)
                             {
-                                if(replaceStyle)
+                                if (replaceStyle)
                                 {
-                                    if(replaceStyleId != style.StorageId)
+                                    if (replaceStyleId != style.StorageId)
                                     {
                                         style.Delete();
                                     }
 
                                     style.LoadOrCreate(replaceStyleId);
-                                    
+
                                 }
 
                                 RestartUI();
@@ -463,12 +442,12 @@ namespace Programacion123
 
             ExportImportDialog dialog = new();
 
-            Func<bool, ExportImportDialog, bool> closeAction = 
+            Func<bool, ExportImportDialog, bool> closeAction =
             (accepted, exportDialog) =>
             {
                 bool cancelClose = false;
 
-                if(accepted)
+                if (accepted)
                 {
                     SaveFileDialog saveFileDialog = new();
                     saveFileDialog.Title = "Elige archivo para guardar";
@@ -476,7 +455,7 @@ namespace Programacion123
 
                     exportDialog.Blocker.Visibility = Visibility.Visible;
 
-                    if(saveFileDialog.ShowDialog().GetValueOrDefault())
+                    if (saveFileDialog.ShowDialog().GetValueOrDefault())
                     {
                         List<string> storageIds = new();
                         storageIds.AddRange(dialog.GradeTemplatesStorageIds);
@@ -485,7 +464,7 @@ namespace Programacion123
                         storageIds.AddRange(dialog.WeekSchedulesStorageIds);
                         storageIds.AddRange(dialog.SubjectsStorageIds);
 
-                        if(exportDialog.CheckBoxIncludeDocumentStyle.IsChecked.GetValueOrDefault())
+                        if (exportDialog.CheckBoxIncludeDocumentStyle.IsChecked.GetValueOrDefault())
                         {
                             storageIds.Add(dialog.DocumentStyleStorageId);
                         }
@@ -502,7 +481,7 @@ namespace Programacion123
                     exportDialog.Blocker.Visibility = Visibility.Hidden;
                 }
 
-                if(!cancelClose)
+                if (!cancelClose)
                 {
                     Blocker.Visibility = Visibility.Hidden;
                 }
@@ -544,7 +523,7 @@ namespace Programacion123
             Blocker.Visibility = Visibility.Visible;
 
             Subject? subject = subjectsController.GetSelectedEntity();
-            if(subject != null)
+            if (subject != null)
             {
                 HTMLGeneratorDialog generatorDialog = new();
 
@@ -565,7 +544,7 @@ namespace Programacion123
             Blocker.Visibility = Visibility.Visible;
 
             AboutDialog dialog = new();
-            
+
             dialog.ShowDialog();
 
             Blocker.Visibility = Visibility.Hidden;

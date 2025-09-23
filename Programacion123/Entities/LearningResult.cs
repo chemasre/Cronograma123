@@ -16,10 +16,10 @@
         {
             ValidationResult result = base.Validate();
 
-            if(result.code != ValidationCode.success) { return result; }
+            if (result.code != ValidationCode.success) { return result; }
 
-            if (Criterias.Count <= 0) { return ValidationResult.Create(ValidationCode.learningResultNoCriterias);  }
-            for(int i = 0; i < Criterias.Count; i++) { if(Criterias[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.learningResultCriteriaInvalid).WithIndex(i); } }
+            if (Criterias.Count <= 0) { return ValidationResult.Create(ValidationCode.learningResultNoCriterias); }
+            for (int i = 0; i < Criterias.Count; i++) { if (Criterias[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.learningResultCriteriaInvalid).WithIndex(i); } }
 
             return ValidationResult.Create(ValidationCode.success);
         }
@@ -39,7 +39,7 @@
             data.Description = Description;
 
             List<CommonText> list = Criterias.ToList();
-            list.ForEach(e => e.Save(StorageId));            
+            list.ForEach(e => e.Save(StorageId));
             data.CriteriasStorageIds = Storage.GetStorageIds<CommonText>(list);
 
             Storage.SaveData<LearningResultData>(StorageId, StorageClassId, data, parentStorageId);
@@ -49,10 +49,10 @@
         {
             base.LoadOrCreate(storageId, parentStorageId);
 
-            if(!Storage.ExistsData<LearningResultData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
+            if (!Storage.ExistsData<LearningResultData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); }
 
             LearningResultData data = Storage.LoadData<LearningResultData>(storageId, StorageClassId, parentStorageId);
-            
+
             Title = data.Title;
             Description = data.Description;
 

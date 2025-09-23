@@ -32,13 +32,13 @@ namespace Programacion123
             string sourceFile = Directory.GetFiles(archiveExtractionPath + (parentStorageId != null ? parentStorageId : ""), storageId + ".*")[0];
             string destinationFile = basePath + (parentStorageId != null ? parentStorageId + "\\" : "") + Path.GetFileName(sourceFile);
 
-            if(Directory.Exists(archiveExtractionPath + storageId))
+            if (Directory.Exists(archiveExtractionPath + storageId))
             {
                 Directory.CreateDirectory(basePath + storageId);
 
                 string[] files = Directory.GetFiles(archiveExtractionPath + storageId);
 
-                foreach(string f in files)
+                foreach (string f in files)
                 {
                     Archive_CopyStorageIdToBaseRecursive(Path.GetFileNameWithoutExtension(f), storageId);
                 }
@@ -56,11 +56,11 @@ namespace Programacion123
         {
             string file = Directory.GetFiles(basePath + (parentStorageId != null ? parentStorageId : ""), storageId + ".*")[0];
 
-            if(Directory.Exists(basePath + storageId))
+            if (Directory.Exists(basePath + storageId))
             {
                 string[] directoryFiles = Directory.GetFiles(basePath + storageId, "*.*");
 
-                foreach(string f in directoryFiles)
+                foreach (string f in directoryFiles)
                 {
                     Archive_DeleteStorageIdFromBaseRecursive(Path.GetFileNameWithoutExtension(f), storageId);
                 }
@@ -76,7 +76,7 @@ namespace Programacion123
         {
             string[] files = Directory.GetFiles(basePath);
 
-            if(Array.Find<string>(files, (f => Path.GetFileNameWithoutExtension(f) == rootStorageId)) != null)
+            if (Array.Find<string>(files, (f => Path.GetFileNameWithoutExtension(f) == rootStorageId)) != null)
             {
                 return true;
             }
@@ -102,9 +102,9 @@ namespace Programacion123
 
         public static void Archive_CopyStorageIdsToBase(List<string> rootStorageIds)
         {
-            foreach(string s in rootStorageIds)
+            foreach (string s in rootStorageIds)
             {
-                if(Archive_ExistsStorageIdInBase(s)) { Archive_DeleteStorageIdFromBase(s); }
+                if (Archive_ExistsStorageIdInBase(s)) { Archive_DeleteStorageIdFromBase(s); }
 
                 Archive_CopyStorageIdToBase(s);
             }
@@ -112,7 +112,7 @@ namespace Programacion123
 
         public static void Archive_Create(List<string> rootStorageIds, string archivePath)
         {
-            using(ZipArchive zip = ZipFile.Open(archivePath, ZipArchiveMode.Update))
+            using (ZipArchive zip = ZipFile.Open(archivePath, ZipArchiveMode.Update))
             {
                 ArchiveCreate_Recursive(basePath, rootStorageIds, zip);
             }
@@ -124,17 +124,17 @@ namespace Programacion123
             string[] files = Directory.GetFiles(path, "*.*");
             Array.ForEach<string>(files, (f) => storageIdToFilePath.Add(Path.GetFileNameWithoutExtension(f), f));
 
-            foreach(string s in storageIds)
+            foreach (string s in storageIds)
             {
                 zip.CreateEntryFromFile(storageIdToFilePath[s], storageIdToFilePath[s].Substring(basePath.Length));
 
                 string directory = basePath + s;
-                if(Directory.Exists(directory))
+                if (Directory.Exists(directory))
                 {
                     List<string> directoryStorageIds = new();
-                    Array.ForEach<string>(Directory.GetFiles(directory, "*.*"), (f) => directoryStorageIds.Add(Path.GetFileNameWithoutExtension(f) ));
+                    Array.ForEach<string>(Directory.GetFiles(directory, "*.*"), (f) => directoryStorageIds.Add(Path.GetFileNameWithoutExtension(f)));
 
-                    ArchiveCreate_Recursive(directory, directoryStorageIds, zip); 
+                    ArchiveCreate_Recursive(directory, directoryStorageIds, zip);
                 }
             }
         }

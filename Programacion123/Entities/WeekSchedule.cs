@@ -16,13 +16,13 @@
         {
             ValidationResult validation = base.Validate();
 
-            if(validation.code == ValidationCode.success)
+            if (validation.code == ValidationCode.success)
             {
                 int total = 0;
                 HoursPerWeekDay.ToList().ForEach(e => total += e.Value);
                 if (total <= 0) { validation = ValidationResult.Create(ValidationCode.weekScheduleOneHourMinimum); }
             }
-            
+
             return validation;
         }
 
@@ -43,12 +43,12 @@
         }
 
         public override void LoadOrCreate(string storageId, string? parentStorageId = null)
-        {   
+        {
             base.LoadOrCreate(storageId, parentStorageId);
 
             bool created = false;
 
-            if(!Storage.ExistsData<WeekScheduleData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); created = true; }
+            if (!Storage.ExistsData<WeekScheduleData>(storageId, StorageClassId, parentStorageId)) { Save(parentStorageId); created = true; }
 
             var data = Storage.LoadData<WeekScheduleData>(storageId, StorageClassId, parentStorageId);
 
