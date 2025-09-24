@@ -270,7 +270,7 @@ namespace Programacion123
             Close();
         }
 
-        private void Window_MouseDown_1(object sender, MouseButtonEventArgs e)
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
