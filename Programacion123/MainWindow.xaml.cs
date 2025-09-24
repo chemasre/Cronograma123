@@ -56,15 +56,21 @@ namespace Programacion123
 
             Storage.Init();
 
+            CreatDefaultStyleIfNotPresent();
+
+            InitUI();
+
+            LaunchFirstRunDialogs();
+
+        }
+
+        private void CreatDefaultStyleIfNotPresent()
+        {
             List<DocumentStyle> styles = Storage.LoadAllEntities<DocumentStyle>();
             Debug.Assert(styles.Count <= 1, "More than one style found");
 
             if (styles.Count == 0) { style = new(); style.Save(); }
             else { style = styles[0]; }
-
-            InitUI();
-
-            LaunchFirstRunDialogs();
 
         }
 
@@ -314,6 +320,8 @@ namespace Programacion123
                     {
                         ResetConfiguration();
                         Storage.Reset();
+
+                        CreatDefaultStyleIfNotPresent();
 
                         LongTaskDialog longTask = new();
 
