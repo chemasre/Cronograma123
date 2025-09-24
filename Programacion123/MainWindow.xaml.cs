@@ -317,8 +317,6 @@ namespace Programacion123
 
                         CreatDefaultStyleIfNotPresent();
 
-                        LongTaskDialog longTask = new();
-
                         await RunInformativeTask("Reiniciando la aplicación", Constants.restartWaitTime);
 
                         RestartUI();
@@ -574,7 +572,7 @@ namespace Programacion123
 
         private async Task RunInformativeTask(string title, float duration = Constants.informativeTaskWaitTime)
         {
-            await RunLongTaskAsync(title, () => { Thread.Sleep((int)(Constants.restartWaitTime * 1000)); });
+            await RunLongTaskAsync(title, () => { Thread.Sleep((int)(duration * 1000)); });
         }
 
         private void ShowMessageDialog(string title, string text)
