@@ -8,6 +8,9 @@ namespace Programacion123
     /// </summary>
     public partial class ExportImportDialog : Window
     {
+        public bool Result { get { return result; } }
+
+        bool result;
 
         Func<bool, ExportImportDialog, bool>? closeAction;
 
@@ -120,12 +123,14 @@ namespace Programacion123
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
+            result = false;
             bool? cancel = closeAction?.Invoke(false, this);
             if (!cancel.GetValueOrDefault()) { Close(); }
         }
 
         private void ButtonAccept_Click(object sender, RoutedEventArgs e)
         {
+            result = true;
             bool? cancel = closeAction?.Invoke(true, this);
 
             if (!cancel.GetValueOrDefault()) { Close(); }
@@ -133,6 +138,7 @@ namespace Programacion123
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
+            result = false;
             bool? cancel = closeAction?.Invoke(false, this);
 
             if (!cancel.GetValueOrDefault()) { Close(); }

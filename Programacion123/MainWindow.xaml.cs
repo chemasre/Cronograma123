@@ -89,23 +89,13 @@ namespace Programacion123
 
                         bool wordFound = false;
 
-                        LongTaskDialog longTask = new();
-
-                        longTask.Init("Buscando Word en el equipo");
-
-                        Blocker.Visibility = Visibility.Visible;
-                        longTask.Show();
-
-                        await Task.Run(() =>
+                        await RunLongTaskAsync("Buscando Word en el equipo", () =>
                         {
                             Microsoft.Office.Interop.Word.Application app = new();
                             if (app == null) { wordFound = false; }
                             else { app.Quit(); wordFound = true; }
 
                         });
-
-                        longTask.Close();
-                        Blocker.Visibility = Visibility.Hidden;
 
                         if (!wordFound)
                         {
@@ -305,19 +295,23 @@ namespace Programacion123
             Blocker.Visibility = Visibility.Hidden;
         }
 
-        private void ButtonReset_Click(object sender, RoutedEventArgs e)
+        async private void ButtonReset_Click(object sender, RoutedEventArgs e)
         {
             Blocker.Visibility = Visibility.Visible;
 
             ConfirmDialog confirm = new();
             confirm.Init(ConfirmIconType.warning, "Confirmación",
-                        "Esto eliminará TODOS los datos y ajustes guardados y reiniciará " +
+                        "Esto eliminará TODOS los elementos y ajustes guardados y reiniciará " +
                         "la aplicación ¿estás seguro/a?",
                          ConfirmChooseType.acceptAndCancel,
                 async (e) =>
                 {
                     if (e)
                     {
+                        Hide();
+
+                        await RunInformativeTask("Eliminando elementos y ajustes");
+
                         ResetConfiguration();
                         Storage.Reset();
 
@@ -325,13 +319,7 @@ namespace Programacion123
 
                         LongTaskDialog longTask = new();
 
-                        Hide();
-
-                        longTask.Init("Reiniciando la aplicación");
-
-                        longTask.Show();
-                        await Task.Run(() => { Thread.Sleep((int)(Constants.restartWaitTime * 1000)); });
-                        longTask.Close();
+                        await RunInformativeTask("Reiniciando la aplicación", Constants.restartWaitTime);
 
                         RestartUI();
 
@@ -352,7 +340,7 @@ namespace Programacion123
 
         }
 
-        private void ButtonImport_Click(object sender, RoutedEventArgs e)
+        async private void ButtonImport_Click(object sender, RoutedEventArgs e)
         {
 
             OpenFileDialog openFileDialog = new();
@@ -403,7 +391,6 @@ namespace Programacion123
 
                                 Storage.Archive_CopyStorageIdsToBase(storageIds);
 
-
                             }
 
                             Storage.Archive_Close();
@@ -437,6 +424,12 @@ namespace Programacion123
 
                 dialog.ShowDialog();
 
+                if(dialog.Result)
+                {
+                    await RunInformativeTask("Importando elementos del zip");
+                    ShowMessageDialog("Importación completada", "Se han importado los elementos del zip seleccionados.");
+                }
+
             }
             else
             {
@@ -444,7 +437,7 @@ namespace Programacion123
             }
         }
 
-        private void ButtonExport_Click(object sender, RoutedEventArgs e)
+        async void ButtonExport_Click(object sender, RoutedEventArgs e)
         {
             Blocker.Visibility = Visibility.Visible;
 
@@ -513,6 +506,12 @@ namespace Programacion123
             dialog.Init(config);
 
             dialog.ShowDialog();
+
+            if(dialog.Result)
+            {
+                await RunInformativeTask("Exportando al zip");
+                ShowMessageDialog("Exportación completada", "Los elementos seleccionados se han guardado en el zip");
+            }
         }
 
         void RestartUI()
@@ -555,6 +554,36 @@ namespace Programacion123
 
             dialog.ShowDialog();
 
+            Blocker.Visibility = Visibility.Hidden;
+        }
+
+        private async Task RunLongTaskAsync(string title, Action action)
+        {
+            LongTaskDialog longTask = new();
+
+            longTask.Init(title);
+
+            Blocker.Visibility = Visibility.Visible;
+            longTask.Show();
+
+            await Task.Run(action);
+
+            longTask.Close();
+            Blocker.Visibility = Visibility.Hidden;
+        }
+
+        private async Task RunInformativeTask(string title, float duration = Constants.informativeTaskWaitTime)
+        {
+            await RunLongTaskAsync(title, () => { Thread.Sleep((int)(Constants.restartWaitTime * 1000)); });
+        }
+
+        private void ShowMessageDialog(string title, string text)
+        {
+            Blocker.Visibility = Visibility.Visible;
+            ConfirmDialog confirm = new();
+            confirm.Init(ConfirmIconType.info, title,text,
+                        ConfirmChooseType.acceptOnly, (b)=>{ });
+            confirm.ShowDialog();
             Blocker.Visibility = Visibility.Hidden;
         }
     }

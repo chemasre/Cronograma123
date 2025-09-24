@@ -23,6 +23,7 @@ namespace Programacion123
     /// </summary>
     public partial class ConfirmDialog : Window
     {
+        public bool Result { get { return result; } }
         bool result;
 
         Action<bool>? closeAction;
