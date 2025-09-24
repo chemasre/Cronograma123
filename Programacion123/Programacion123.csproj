@@ -15,16 +15,11 @@
   <ItemGroup>
     <None Remove="BotonNew.png" />
     <None Remove="ButtonClose.png" />
-    <None Remove="ButtonEdit.png" />
     <None Remove="ButtonMoveDown.png" />
     <None Remove="ButtonMoveUp.png" />
     <None Remove="ButtonWarning.png" />
     <None Remove="IconEdit.png" />
-    <None Remove="Images\Background01.jpg" />
-    <None Remove="Images\Background02.jpg" />
-    <None Remove="Images\Background03.jpg" />
     <None Remove="Images\Background04.jpg" />
-    <None Remove="Images\Background04.png" />
     <None Remove="Images\BackgroundAbout.png" />
     <None Remove="Images\BackgroundClouds.png" />
     <None Remove="Images\BackgroundSteps.png" />
@@ -40,7 +35,6 @@
     <None Remove="Images\ButtonEditMedium.png" />
     <None Remove="Images\ButtonFolder.png" />
     <None Remove="Images\ButtonHelp.png" />
-    <None Remove="Images\ButtonHome.png" />
     <None Remove="Images\ButtonNewMedium.png" />
     <None Remove="Images\ButtonPick.png" />
     <None Remove="Images\ButtonReferenceAddBig.png" />
@@ -62,7 +56,6 @@
     <None Remove="Images\IconInfo.png" />
     <None Remove="Images\IconQuestion.png" />
     <None Remove="Images\IconWarning.png" />
-    <None Remove="Images\ValidatorCapy.png" />
     <None Remove="Images\ValidatorCapyBig.png" />
   </ItemGroup>
 
@@ -110,11 +103,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="ButtonEdit.png" />
-    <Resource Include="Images\Background01.jpg" />
-    <Resource Include="Images\Background02.jpg" />
-    <Resource Include="Images\Background03.jpg" />
-    <Resource Include="Images\Background04.png" />
+    <Resource Include="Images\Background.png" />
     <Resource Include="Images\BackgroundAbout.png" />
     <Resource Include="Images\BackgroundClouds.png" />
     <Resource Include="Images\BackgroundSteps.png" />
@@ -128,7 +117,6 @@
     <Resource Include="Images\ButtonEditMedium.png" />
     <Resource Include="Images\ButtonFolder.png" />
     <Resource Include="Images\ButtonHelp.png" />
-    <Resource Include="Images\ButtonHome.png" />
     <Resource Include="Images\ButtonMoveDown.png" />
     <Resource Include="Images\ButtonMoveUp.png" />
   </ItemGroup>
@@ -162,7 +150,6 @@
     <Resource Include="Images\IconInfo.png" />
     <Resource Include="Images\IconQuestion.png" />
     <Resource Include="Images\IconWarning.png" />
-    <Resource Include="Images\ValidatorCapy.png" />
     <Resource Include="Images\ValidatorCapyBig.png" />
   </ItemGroup>
 

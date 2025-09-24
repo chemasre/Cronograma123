@@ -61,7 +61,7 @@
             </Button>
             <Border BorderThickness="1" Height="613" Width="762" Canvas.Left="692" Canvas.Top="131" CornerRadius="30,30,30,30" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Border.Background>
-                    <ImageBrush ImageSource="/Images/Background04.png" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="/Images/Background.png" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
             <Border BorderThickness="1" Height="487" Width="631" Canvas.Left="32" Canvas.Top="131" HorizontalAlignment="Center" VerticalAlignment="Top" CornerRadius="30,30,30,30">
