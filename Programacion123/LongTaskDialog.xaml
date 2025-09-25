@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="LongTaskDialog" Height="184" Width="470" ResizeMode="NoResize" Topmost="True" WindowStyle="None" Foreground="{x:Null}" Background="{x:Null}" WindowStartupLocation="CenterScreen" AllowsTransparency="True" MouseDown="Window_MouseDown" ShowInTaskbar="False">
+        Title="LongTaskDialog" Height="184" Width="470" ResizeMode="NoResize" Topmost="True" WindowStyle="None" Foreground="{x:Null}" Background="{x:Null}" WindowStartupLocation="CenterScreen" AllowsTransparency="True" MouseDown="Window_MouseDown" ShowInTaskbar="False" MinWidth="470" MinHeight="184">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>

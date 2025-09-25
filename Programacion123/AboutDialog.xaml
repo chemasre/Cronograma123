@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="About" Height="532" Width="862" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" Foreground="{x:Null}" Background="{x:Null}" WindowStyle="None" AllowsTransparency="True" MouseDown="Window_MouseDown">
+        Title="About" Height="532" Width="862" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" Foreground="{x:Null}" Background="{x:Null}" WindowStyle="None" AllowsTransparency="True" MouseDown="Window_MouseDown" HorizontalAlignment="Right" MinWidth="862" MinHeight="532">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>
