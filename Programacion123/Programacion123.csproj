@@ -13,6 +13,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Document\**" />
+    <EmbeddedResource Remove="Document\**" />
+    <None Remove="Document\**" />
+    <Page Remove="Document\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="BotonNew.png" />
     <None Remove="ButtonClose.png" />
     <None Remove="ButtonMoveDown.png" />
@@ -57,6 +64,7 @@
     <None Remove="Images\IconQuestion.png" />
     <None Remove="Images\IconWarning.png" />
     <None Remove="Images\ValidatorCapyBig.png" />
+    <None Remove="Packages\Tutorial.zip" />
   </ItemGroup>
 
   <ItemGroup>
@@ -100,6 +108,9 @@
 
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <Content Include="Packages\Tutorial.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -151,10 +162,6 @@
     <Resource Include="Images\IconQuestion.png" />
     <Resource Include="Images\IconWarning.png" />
     <Resource Include="Images\ValidatorCapyBig.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Document\" />
   </ItemGroup>
 
 </Project>
