@@ -53,10 +53,10 @@
             <GradientStop Color="#FFC3B7FF"/>
             <GradientStop Color="#FFC3B7FF" Offset="1"/>
         </LinearGradientBrush>
-        <FontFamily x:Key="TitleFont">Verdana Pro Cond</FontFamily>
+        <FontFamily x:Key="TitleFont">pack://application:,,,/Fonts/#Germano</FontFamily>
         <SolidColorBrush x:Key="FreeLabel" Color="#FF000000"/>
-        <FontFamily x:Key="Font">Yu Gothic UI</FontFamily>
-        <FontFamily x:Key="WindowTitleFont">Comic Sans MS</FontFamily>
+        <FontFamily x:Key="Font">pack://application:,,,/Fonts/#Roboto</FontFamily>
+        <FontFamily x:Key="WindowTitleFont">pack://application:,,,/Fonts/#Comic Relief</FontFamily>
         <ImageBrush x:Key="TabBackground" ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
         <SolidColorBrush x:Key="FreeLabelMainWindow" Color="#B200506B"/>
     </Application.Resources>

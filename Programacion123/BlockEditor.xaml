@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="BlockEditor" Height="790" Width="573" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}" Foreground="{x:Null}" Topmost="True" MouseDown="Window_MouseDown" ShowInTaskbar="False" FontSize="{DynamicResource NormalTextSize}" MinWidth="573" MinHeight="790">
+        Title="BlockEditor" Height="790" Width="573" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}" Foreground="{x:Null}" Topmost="True" MouseDown="Window_MouseDown" ShowInTaskbar="False" FontSize="{DynamicResource NormalTextSize}" MinWidth="573" MinHeight="790" FontFamily="{DynamicResource Font}">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>

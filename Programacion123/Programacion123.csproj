@@ -25,6 +25,16 @@
     <None Remove="ButtonMoveDown.png" />
     <None Remove="ButtonMoveUp.png" />
     <None Remove="ButtonWarning.png" />
+    <None Remove="Fonts\ComicRelief-Bold.ttf" />
+    <None Remove="Fonts\ComicRelief.ttf" />
+    <None Remove="Fonts\Germano-Bold.otf" />
+    <None Remove="Fonts\Germano-BoldOblique.otf" />
+    <None Remove="Fonts\Germano-Italic.otf" />
+    <None Remove="Fonts\Germano-Regular.otf" />
+    <None Remove="Fonts\Roboto-Bold.ttf" />
+    <None Remove="Fonts\Roboto-BoldItalic.ttf" />
+    <None Remove="Fonts\Roboto-Italic.ttf" />
+    <None Remove="Fonts\Roboto-Regular.ttf" />
     <None Remove="IconEdit.png" />
     <None Remove="Images\Background04.jpg" />
     <None Remove="Images\BackgroundAbout.png" />
@@ -114,6 +124,36 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Fonts\ComicRelief-Bold.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\ComicRelief.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Germano-Bold.otf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Germano-BoldOblique.otf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Germano-Italic.otf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Germano-Regular.otf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Roboto-Bold.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Roboto-BoldItalic.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Roboto-Italic.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Roboto-Regular.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\Background.png" />
     <Resource Include="Images\BackgroundAbout.png" />
     <Resource Include="Images\BackgroundClouds.png" />

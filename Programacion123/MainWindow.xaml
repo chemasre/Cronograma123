@@ -71,8 +71,8 @@
             </Border>
             <ComboBox x:Name="ComboSubjectTemplates" Width="401" HorizontalAlignment="Center" Canvas.Left="115" Canvas.Top="281" VerticalAlignment="Top" BorderBrush="{x:Null}" Background="{x:Null}" Effect="{DynamicResource EffectDropShadow}" FontSize="16"/>
             <ComboBox x:Name="ComboBoxCalendars" Width="401" HorizontalAlignment="Center" Canvas.Left="115" Canvas.Top="368" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}" FontSize="16"/>
-            <ComboBox x:Name="ComboWeekSchedules" Width="408" HorizontalAlignment="Center" Canvas.Left="108" Canvas.Top="459" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}" FontSize="16"/>
-            <ComboBox x:Name="ComboSubjects" Width="408" HorizontalAlignment="Center" Canvas.Left="108" Canvas.Top="551" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}" FontSize="16"/>
+            <ComboBox x:Name="ComboWeekSchedules" Width="401" HorizontalAlignment="Left" Canvas.Left="115" Canvas.Top="459" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}" FontSize="16"/>
+            <ComboBox x:Name="ComboSubjects" Width="401" HorizontalAlignment="Left" Canvas.Left="115" Canvas.Top="551" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}" FontSize="16"/>
             <Button x:Name="ButtonSubjectTemplateNew" Content="" Width="32" Height="32" BorderBrush="{x:Null}" HorizontalAlignment="Center" Canvas.Left="530" Canvas.Top="277" VerticalAlignment="Top" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonNewMedium.png"/>
@@ -174,16 +174,16 @@
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
-            <Label Content="Limpiar" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="102" Canvas.Left="463" Canvas.Top="814" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Limpiar" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="102" Canvas.Left="463" Canvas.Top="813" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label x:Name="LabelTitle" Content="Programabara" FontSize="42" FontWeight="Bold" Width="1348" Canvas.Left="32" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="13" HorizontalContentAlignment="Center" FontFamily="{DynamicResource WindowTitleFont}"/>
-            <Label Content="2" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="233" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label Content="3" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="323" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label Content="4" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="414" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label Content="5" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="506" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label Content="Define la plantilla del módulo" FontSize="22" Width="374" Canvas.Left="105" Canvas.Top="240" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}"/>
-            <Label Content="Define el calendario" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="374" Canvas.Left="105" Canvas.Top="329" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label Content="Define el horario" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="374" Canvas.Left="108" Canvas.Top="417" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabelMainWindow}"/>
-            <Label Content="Programa el módulo" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="409" Canvas.Left="107" Canvas.Top="509" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="2" FontSize="48" FontFamily="{DynamicResource TitleFont}" Width="42" Canvas.Left="53" Canvas.Top="233" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold"/>
+            <Label Content="3" FontSize="48" FontFamily="{DynamicResource TitleFont}" Width="42" Canvas.Left="53" Canvas.Top="323" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold"/>
+            <Label Content="4" FontSize="48" FontFamily="{DynamicResource TitleFont}" Width="42" Canvas.Left="53" Canvas.Top="414" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold"/>
+            <Label Content="5" FontSize="48" FontFamily="{DynamicResource TitleFont}" Width="42" Canvas.Left="53" Canvas.Top="506" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold"/>
+            <Label Content="Define la plantilla del módulo" FontSize="24" Width="374" Canvas.Left="105" Canvas.Top="240" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="{DynamicResource TitleFont}"/>
+            <Label Content="Define el calendario" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="374" Canvas.Left="105" Canvas.Top="329" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Define el horario" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="375" Canvas.Left="105" Canvas.Top="417" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource FreeLabelMainWindow}"/>
+            <Label Content="Programa el módulo" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="413" Canvas.Left="103" Canvas.Top="509" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Border BorderThickness="1" Height="63" Width="195" Canvas.Left="32" Canvas.Top="803" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
@@ -194,13 +194,13 @@
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
-            <Label Content="Ayuda" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="128" Canvas.Left="1250" Canvas.Top="814" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Ayuda" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="128" Canvas.Left="1250" Canvas.Top="813" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Border BorderThickness="1" Height="63" Width="194" Canvas.Left="1021" Canvas.Top="803" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
-            <Label Content="Acerca de" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="128" Canvas.Left="1051" Canvas.Top="814" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Acerca de" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="128" Canvas.Left="1051" Canvas.Top="813" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Button x:Name="ButtonAbout" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="1158" Canvas.Top="810" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonAbout_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonAbout.png"/>
@@ -250,14 +250,14 @@
                     <ImageBrush ImageSource="/Images/ButtonDelete.png"/>
                 </Button.Foreground>
             </Button>
-            <Label Content="1" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="147" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label Content="Define la plantilla del ciclo" FontSize="22" Width="374" Canvas.Left="105" Canvas.Top="154" FontWeight="Bold" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabelMainWindow}"/>
+            <Label Content="1" FontSize="48" FontFamily="{DynamicResource TitleFont}" Width="42" Canvas.Left="53" Canvas.Top="147" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
+            <Label Content="Define la plantilla del ciclo" FontSize="24" Width="374" Canvas.Left="105" Canvas.Top="154" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabelMainWindow}"/>
             <Border BorderThickness="1" Height="63" Width="195" Canvas.Left="233" Canvas.Top="803" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
-            <Label Content="Exportar" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="103" Canvas.Left="263" Canvas.Top="814" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Exportar" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="103" Canvas.Left="263" Canvas.Top="813" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Button x:Name="ButtonExport" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="371" Canvas.Top="810" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonExport_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonZipExport.png"/>
@@ -279,8 +279,8 @@
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
-            <Label Content="6" FontSize="48" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="42" Canvas.Left="53" Canvas.Top="657" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label Content="Genera la programación didáctica" FontSize="28" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="436" Canvas.Left="109" Canvas.Top="660" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label Content="6" FontSize="48" FontFamily="{DynamicResource TitleFont}" Width="42" Canvas.Left="53" Canvas.Top="657" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold"/>
+            <Label Content="Genera la programación didáctica" FontSize="32" FontFamily="{DynamicResource TitleFont}" Width="436" Canvas.Left="109" Canvas.Top="662" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Button x:Name="ButtonGenerateDocument" Content="" Width="72" Height="72" BorderBrush="{x:Null}" Canvas.Left="566" Canvas.Top="652" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonGenerateDocument_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonBigGenerateDoc.png"/>
@@ -300,7 +300,7 @@
                 </Image.RenderTransform>
             </Image>
             <Border BorderThickness="1" Height="8" Width="1422" Canvas.Left="32" Canvas.Top="776" CornerRadius="30,30,30,30" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#99EDEBB1"/>
-            <Label Content="Importar" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="101" Canvas.Left="62" Canvas.Top="814" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Importar" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="101" Canvas.Left="62" Canvas.Top="813" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Border x:Name="Blocker" Padding="5" Background="#7F000000" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="900" Width="1500" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
         </Canvas>
     </Border>

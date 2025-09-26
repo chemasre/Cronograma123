@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="ExportImportDialog" Height="750" Width="1112" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True" Background="{x:Null}" WindowStyle="None" AllowsTransparency="True" MouseDown="Window_MouseDown" ShowInTaskbar="False" FontSize="{DynamicResource NormalTextSize}" MinWidth="1112" MinHeight="750">
+        Title="ExportImportDialog" Height="750" Width="1112" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True" Background="{x:Null}" WindowStyle="None" AllowsTransparency="True" MouseDown="Window_MouseDown" ShowInTaskbar="False" FontSize="{DynamicResource NormalTextSize}" MinWidth="1112" MinHeight="750" FontFamily="{DynamicResource Font}">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>
@@ -61,13 +61,13 @@
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
-            <Label x:Name="LabelAccept" Content="Exportar" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="129" Canvas.Left="675" Canvas.Top="662" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label x:Name="LabelAccept" Content="Exportar" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="129" Canvas.Left="675" Canvas.Top="662" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Border BorderThickness="1" Height="63" Width="196" Canvas.Left="854" Canvas.Top="651" CornerRadius="30,30,30,30" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Border.Background>
                     <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
-            <Label Content="Cancelar" FontSize="22" FontFamily="{DynamicResource TitleFont}" FontWeight="Bold" Width="130" Canvas.Left="884" Canvas.Top="662" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label Content="Cancelar" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="130" Canvas.Left="884" Canvas.Top="662" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonAccept" Content="" Height="48" Width="48" Canvas.Left="783" BorderBrush="{x:Null}" Canvas.Top="658" Style="{DynamicResource PushableButton}" Click="ButtonAccept_Click" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonAccept.png"/>
