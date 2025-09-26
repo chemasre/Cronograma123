@@ -78,7 +78,6 @@
     <None Remove="Images\IconInfo.png" />
     <None Remove="Images\IconQuestion.png" />
     <None Remove="Images\IconWarning.png" />
-    <None Remove="Images\ValidatorCapyBig.jpg" />
     <None Remove="Images\ValidatorCapyBig.png" />
     <None Remove="Packages\Tutorial.zip" />
   </ItemGroup>
@@ -302,9 +301,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\IconWarning.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\ValidatorCapyBig.jpg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\ValidatorCapyBig.png">
