@@ -8,7 +8,7 @@
         Title="SubjectEditor" Height="900" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" AllowsTransparency="True" Topmost="True" MouseDown="Window_MouseDown" FontFamily="{DynamicResource Font}" Foreground="{x:Null}" ShowInTaskbar="False" FontSize="{DynamicResource NormalTextSize}" MinWidth="800" MinHeight="900">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
-            <ImageBrush ImageSource="/Images/BackgroundClouds.png"/>
+            <ImageBrush ImageSource="/Images/BackgroundClouds.jpg"/>
         </Border.Background>
         <Canvas>
             <Border BorderThickness="1" Height="73" Width="784" CornerRadius="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource TitleBackground}"/>
@@ -26,7 +26,7 @@
             <Label Content="Título" Canvas.Left="25" Canvas.Top="89" HorizontalAlignment="Center" VerticalAlignment="Top" Width="169" Foreground="{DynamicResource FreeLabel}"/>
             <TabControl Height="479" Width="730" HorizontalAlignment="Center" Canvas.Top="257" VerticalAlignment="Top" Canvas.Left="26" BorderBrush="#00ACACAC">
                 <TabControl.Background>
-                    <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundSteps.png"/>
+                    <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundSteps.jpg"/>
                 </TabControl.Background>
                 <TabItem Header="Bloques y actividades">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">

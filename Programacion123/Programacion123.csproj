@@ -10,6 +10,7 @@
     <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
     <EnableNETAnalyzers>False</EnableNETAnalyzers>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <AssemblyName>Programabara</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,10 +37,11 @@
     <None Remove="Fonts\Roboto-Italic.ttf" />
     <None Remove="Fonts\Roboto-Regular.ttf" />
     <None Remove="IconEdit.png" />
+    <None Remove="Images\Background.jpg" />
     <None Remove="Images\Background04.jpg" />
-    <None Remove="Images\BackgroundAbout.png" />
-    <None Remove="Images\BackgroundClouds.png" />
-    <None Remove="Images\BackgroundSteps.png" />
+    <None Remove="Images\BackgroundAbout.jpg" />
+    <None Remove="Images\BackgroundClouds.jpg" />
+    <None Remove="Images\BackgroundSteps.jpg" />
     <None Remove="Images\BackgroundTitle.png" />
     <None Remove="Images\ButonReferenceAdd.png" />
     <None Remove="Images\ButonReferenceRemove.png" />
@@ -53,12 +55,15 @@
     <None Remove="Images\ButtonFolder.png" />
     <None Remove="Images\ButtonHelp.png" />
     <None Remove="Images\ButtonNewMedium.png" />
+    <None Remove="Images\ButtonNo.png" />
     <None Remove="Images\ButtonPick.png" />
     <None Remove="Images\ButtonReferenceAddBig.png" />
     <None Remove="Images\ButtonReset.png" />
+    <None Remove="Images\ButtonYes.png" />
     <None Remove="Images\ButtonZipExport.png" />
     <None Remove="Images\ButtonZipImport.png" />
     <None Remove="Images\CaptionColor.png" />
+    <None Remove="Images\CaptionHeight.png" />
     <None Remove="Images\CaptionPaddingBottom.png" />
     <None Remove="Images\CaptionPaddingLeft.png" />
     <None Remove="Images\CaptionPaddingRight.png" />
@@ -73,6 +78,7 @@
     <None Remove="Images\IconInfo.png" />
     <None Remove="Images\IconQuestion.png" />
     <None Remove="Images\IconWarning.png" />
+    <None Remove="Images\ValidatorCapyBig.jpg" />
     <None Remove="Images\ValidatorCapyBig.png" />
     <None Remove="Packages\Tutorial.zip" />
   </ItemGroup>
@@ -154,54 +160,156 @@
     <Resource Include="Fonts\Roboto-Regular.ttf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Images\Background.png" />
-    <Resource Include="Images\BackgroundAbout.png" />
-    <Resource Include="Images\BackgroundClouds.png" />
-    <Resource Include="Images\BackgroundSteps.png" />
-    <Resource Include="Images\BackgroundTitle.png" />
-    <Resource Include="Images\ButonReferenceAdd.png" />
-    <Resource Include="Images\ButonReferenceRemove.png" />
-    <Resource Include="Images\ButonReferenceSetBig.png" />
-    <Resource Include="Images\ButtonAbout.png" />
-    <Resource Include="Images\ButtonBigGenerateDoc.png" />
-    <Resource Include="Images\ButtonDeleteMedium.png" />
-    <Resource Include="Images\ButtonEditMedium.png" />
-    <Resource Include="Images\ButtonFolder.png" />
-    <Resource Include="Images\ButtonHelp.png" />
-    <Resource Include="Images\ButtonMoveDown.png" />
-    <Resource Include="Images\ButtonMoveUp.png" />
+    <Resource Include="Images\Background.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BackgroundAbout.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BackgroundClouds.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BackgroundSteps.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BackgroundTitle.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButonReferenceAdd.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButonReferenceRemove.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButonReferenceSetBig.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonAbout.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonBigGenerateDoc.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonDeleteMedium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonEditMedium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonFolder.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonHelp.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonMoveDown.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonMoveUp.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\ButtonAccept.png" />
-    <Resource Include="Images\ButtonCancel.png" />
-    <Resource Include="Images\ButtonClose.png" />
-    <Resource Include="Images\ButtonDelete.png" />
-    <Resource Include="Images\ButtonEdit.png" />
-    <Resource Include="Images\ButtonNew.png" />
-    <Resource Include="Images\ButtonNewMedium.png" />
-    <Resource Include="Images\ButtonPick.png" />
-    <Resource Include="Images\ButtonReferenceAddBig.png" />
-    <Resource Include="Images\ButtonReset.png" />
-    <Resource Include="Images\ButtonWarning.png" />
-    <Resource Include="Images\ButtonZipExport.png" />
-    <Resource Include="Images\ButtonZipImport.png" />
-    <Resource Include="Images\CaptionColor.png" />
-    <Resource Include="Images\CaptionPaddingBottom.png" />
-    <Resource Include="Images\CaptionPaddingLeft.png" />
-    <Resource Include="Images\CaptionPaddingRight.png" />
-    <Resource Include="Images\CaptionPaddingTop.png" />
-    <Resource Include="Images\CaptionPositionX.png" />
-    <Resource Include="Images\CaptionPositionY.png" />
-    <Resource Include="Images\CaptionSeparationBottom.png" />
-    <Resource Include="Images\CaptionSeparationLeft.png" />
-    <Resource Include="Images\CaptionSeparationRight.png" />
-    <Resource Include="Images\CaptionSeparationTop.png" />
-    <Resource Include="Images\CaptionWidth.png" />
-    <Resource Include="Images\IconInfo.png" />
-    <Resource Include="Images\IconQuestion.png" />
-    <Resource Include="Images\IconWarning.png" />
-    <Resource Include="Images\ValidatorCapyBig.png" />
+    <Resource Include="Images\ButtonAccept.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonCancel.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonClose.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonDelete.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonEdit.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonNew.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonNewMedium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonNo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonPick.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonReferenceAddBig.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonReset.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonWarning.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonYes.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonZipExport.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonZipImport.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\CaptionColor.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\CaptionHeight.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\CaptionPaddingBottom.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\CaptionPaddingLeft.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\CaptionPaddingRight.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\CaptionPaddingTop.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\CaptionPositionX.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\CaptionPositionY.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\CaptionSeparationBottom.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\CaptionSeparationLeft.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\CaptionSeparationRight.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\CaptionSeparationTop.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\CaptionWidth.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\IconInfo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\IconQuestion.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\IconWarning.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ValidatorCapyBig.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ValidatorCapyBig.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

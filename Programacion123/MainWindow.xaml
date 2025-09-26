@@ -50,7 +50,7 @@
     </Window.Resources>
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
-            <ImageBrush ImageSource="/Images/BackgroundClouds.png" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="/Images/BackgroundClouds.jpg" Stretch="UniformToFill"/>
         </Border.Background>
         <Canvas>
             <Border BorderThickness="1" Height="97" Width="1484" CornerRadius="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource TitleBackground}"/>
@@ -61,12 +61,12 @@
             </Button>
             <Border BorderThickness="1" Height="613" Width="762" Canvas.Left="692" Canvas.Top="131" CornerRadius="30,30,30,30" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Border.Background>
-                    <ImageBrush ImageSource="/Images/Background.png" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="/Images/Background.jpg" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
             <Border BorderThickness="1" Height="487" Width="631" Canvas.Left="32" Canvas.Top="131" HorizontalAlignment="Center" VerticalAlignment="Top" CornerRadius="30,30,30,30">
                 <Border.Background>
-                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.jpg" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
             <ComboBox x:Name="ComboSubjectTemplates" Width="401" HorizontalAlignment="Center" Canvas.Left="115" Canvas.Top="281" VerticalAlignment="Top" BorderBrush="{x:Null}" Background="{x:Null}" Effect="{DynamicResource EffectDropShadow}" FontSize="16"/>
@@ -171,7 +171,7 @@
             </Button>
             <Border BorderThickness="1" Height="63" Width="195" Canvas.Left="433" Canvas.Top="803" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
-                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.jpg" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
             <Label Content="Limpiar" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="102" Canvas.Left="463" Canvas.Top="813" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -186,18 +186,18 @@
             <Label Content="Programa el módulo" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="413" Canvas.Left="103" Canvas.Top="509" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Border BorderThickness="1" Height="63" Width="195" Canvas.Left="32" Canvas.Top="803" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
-                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.jpg" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
             <Border BorderThickness="1" Height="63" Width="194" Canvas.Left="1220" Canvas.Top="803" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
-                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.jpg" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
             <Label Content="Ayuda" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="128" Canvas.Left="1250" Canvas.Top="813" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Border BorderThickness="1" Height="63" Width="194" Canvas.Left="1021" Canvas.Top="803" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
-                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.jpg" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
             <Label Content="Acerca de" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="128" Canvas.Left="1051" Canvas.Top="813" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -254,7 +254,7 @@
             <Label Content="Define la plantilla del ciclo" FontSize="24" Width="374" Canvas.Left="105" Canvas.Top="154" FontFamily="{DynamicResource TitleFont}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabelMainWindow}"/>
             <Border BorderThickness="1" Height="63" Width="195" Canvas.Left="233" Canvas.Top="803" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
-                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.jpg" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
             <Label Content="Exportar" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="103" Canvas.Left="263" Canvas.Top="813" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -276,7 +276,7 @@
             </Button>
             <Border BorderThickness="1" Height="108" Width="631" Canvas.Left="32" Canvas.Top="636" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
-                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.jpg" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
             <Label Content="6" FontSize="48" FontFamily="{DynamicResource TitleFont}" Width="42" Canvas.Left="53" Canvas.Top="657" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold"/>

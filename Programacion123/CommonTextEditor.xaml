@@ -8,7 +8,7 @@
         Title="CommonTextEditor" Height="628" Width="556" WindowStyle="None" ResizeMode="NoResize" Background="{x:Null}" Foreground="{x:Null}" AllowsTransparency="True" MouseDown="Window_MouseDown" WindowStartupLocation="CenterScreen" Topmost="True" FontFamily="{DynamicResource Font}" ShowInTaskbar="False" FontSize="{DynamicResource NormalTextSize}" MinWidth="556" MinHeight="628">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
-            <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.png"/>
+            <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.jpg"/>
         </Border.Background>
         <Canvas>
             <Border BorderThickness="1" Height="86" Width="540" CornerRadius="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource TitleBackground}"/>
@@ -24,12 +24,12 @@
             <TextBox x:Name="TextTitle" Canvas.Left="118" Canvas.Top="97" Width="375" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
             <Border x:Name="BorderDescriptionBase" BorderThickness="1" Height="297" Width="481" Canvas.Left="29" Canvas.Top="142" CornerRadius="10,10,10,10" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
-                    <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundSteps.png"/>
+                    <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundSteps.jpg"/>
                 </Border.Background>
             </Border>
             <Border x:Name="NoTitleBorderDescriptionBase" BorderThickness="1" Height="337" Width="481" Canvas.Left="29" Canvas.Top="102" CornerRadius="10,10,10,10" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Border.Background>
-                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.jpg" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
             <Label x:Name="LabelTitle" Content="Título" Canvas.Left="29" Canvas.Top="93" HorizontalAlignment="Center" VerticalAlignment="Center" Width="89" Foreground="{DynamicResource FreeLabel}"/>

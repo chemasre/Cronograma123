@@ -8,7 +8,7 @@
         Title="SubjectTemplateEditor" Height="833" Width="736" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}" MouseDown="Window_MouseDown" Topmost="True" FontFamily="{DynamicResource Font}" ShowInTaskbar="False" FontSize="{DynamicResource NormalTextSize}" MinWidth="736" MinHeight="833">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
-            <ImageBrush ImageSource="/Images/BackgroundClouds.png" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="/Images/BackgroundClouds.jpg" Stretch="UniformToFill"/>
         </Border.Background>
         <Canvas>
             <Border BorderThickness="1" Height="73" Width="720" CornerRadius="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource TitleBackground}"/>
@@ -26,7 +26,7 @@
             <Label Content="Título de la plantilla" Canvas.Left="25" Canvas.Top="95" HorizontalAlignment="Center" VerticalAlignment="Top" Width="169" Foreground="{DynamicResource FreeLabel}"/>
             <TabControl Height="470" Width="666" HorizontalAlignment="Center" Canvas.Top="195" VerticalAlignment="Top" Canvas.Left="26" BorderBrush="#00ACACAC">
                 <TabControl.Background>
-                    <ImageBrush ImageSource="/Images/BackgroundSteps.png" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="/Images/BackgroundSteps.jpg" Stretch="UniformToFill"/>
                 </TabControl.Background>
                 <TabItem Header="Datos esenciales">
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">

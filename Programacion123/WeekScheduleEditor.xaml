@@ -8,7 +8,7 @@
     Title="WeekScheduleEditor" Height="466" Width="460" Topmost="True" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize" MouseDown="Window_MouseDown" AllowsTransparency="True" Background="{x:Null}" FontFamily="{DynamicResource Font}" ShowInTaskbar="False" FontSize="{DynamicResource NormalTextSize}" MinWidth="460" MinHeight="466">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
-            <ImageBrush ImageSource="/Images/BackgroundClouds.png" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="/Images/BackgroundClouds.jpg" Stretch="UniformToFill"/>
         </Border.Background>
         <Canvas>
             <Border Background="{DynamicResource TitleBackground}" BorderThickness="1" Height="58" Width="444" CornerRadius="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
