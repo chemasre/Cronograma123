@@ -112,7 +112,12 @@ namespace Programacion123
 
         public static void Archive_Create(List<string> rootStorageIds, string archivePath)
         {
-            using (ZipArchive zip = ZipFile.Open(archivePath, ZipArchiveMode.Update))
+            if(File.Exists(archivePath))
+            {
+                File.Delete(archivePath);
+            }
+
+            using (ZipArchive zip = ZipFile.Open(archivePath, ZipArchiveMode.Create))
             {
                 ArchiveCreate_Recursive(basePath, rootStorageIds, zip);
             }
