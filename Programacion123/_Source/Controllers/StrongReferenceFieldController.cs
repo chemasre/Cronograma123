@@ -4,6 +4,7 @@
 
     //
     // NOTE: It seems to have bug that creates data files in storage with an empty name when you press the "new" (+) button
+    //       -> This is fixed in the weak entity picker. It happens because it tries to store the entity even when the initially picked one is null
     //
     //public struct StrongReferenceFieldConfiguration<TEntity>
     //{

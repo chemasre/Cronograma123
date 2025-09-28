@@ -89,8 +89,12 @@ namespace Programacion123
                 });
 
             ListBoxEntities.SelectionMode = SelectionMode.Single;
-            ListBoxEntities.SelectedIndex = entities.FindIndex(e => e.StorageId == _pickedEntity.StorageId);
 
+            if(_pickedEntity != null)
+            {
+                ListBoxEntities.SelectedIndex = entities.FindIndex(e => e.StorageId == _pickedEntity.StorageId);
+            }
+            
             LabelSetReference.Visibility = Visibility.Visible;
             ButtonSetReference.Visibility = Visibility.Visible;
             LabelAddReference.Visibility = Visibility.Hidden;

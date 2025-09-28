@@ -110,7 +110,11 @@ namespace Programacion123
 
         void ButtonPick_Click(object sender, RoutedEventArgs e)
         {
-            var entity = Storage.LoadOrCreateEntity<TEntity>(storageId, parentStorageId);
+            TEntity entity = null;
+            if(storageId != null)
+            {
+                entity = Storage.LoadOrCreateEntity<TEntity>(storageId, parentStorageId);
+            }
 
             picker = new TPicker();
             if (pickerTitle != null) { picker.SetPickerTitle(pickerTitle); }
