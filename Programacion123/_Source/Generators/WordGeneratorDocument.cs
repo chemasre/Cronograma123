@@ -80,7 +80,8 @@ namespace Programacion123
                 wordStylesCache.Add(s.NameLocal);
             }
 
-            _app.Visible = true;
+            if(Switches.debugMakeWordVisible) { _app.Visible = true; }
+            else { _app.Visible = false; }
 
             application = _app;
 
