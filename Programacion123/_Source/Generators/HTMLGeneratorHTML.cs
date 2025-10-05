@@ -105,8 +105,8 @@ namespace Programacion123
                             //////////////////////////////////////////////////////////////////
 
                             .WithInner(Tag.Create("h1").WithInner(index[0].Title).WithId("Apartado1"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1ModuleOrganization), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1ModuleOrganization), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1ModuleOrganization), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1ModuleOrganization), addCommonTextTags)
                             .WithInner(
                                 Table.Create().WithRow().WithCell(gradeTypeName + " - " + gradeTemplate.GradeName, 1, 3).WithCellClass("tableHeader1")
                                               .WithRow().WithCell("<b>Módulo profesional:</b> MP" + subjectTemplate.SubjectCode + " - " + subjectTemplate.SubjectName, 1, 3).WithCellClass("tableHeader2")
@@ -176,8 +176,8 @@ namespace Programacion123
                             /////////////////////////////////////////////////////////////////////////////////////
 
                             .WithInner(Tag.Create("h1").WithInner(index[1].Title).WithId("Apartado2"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1ImportanceJustification), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1ImportanceJustification), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1ImportanceJustification), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1ImportanceJustification), addCommonTextTags)
                             .WithInner(pageBreak)
 
                             /////////////////////////////////////////////////////////////////
@@ -185,11 +185,11 @@ namespace Programacion123
                             /////////////////////////////////////////////////////////////////
 
                             .WithInner(Tag.Create("h1").WithInner(index[2].Title).WithId("Apartado3"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1CurricularElements), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1CurricularElements), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1CurricularElements), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1CurricularElements), addCommonTextTags)
                             .WithInner(Tag.Create("h2").WithInner(index[2].Subitems[0].Title).WithId("Apartado3-1"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2GeneralObjectives), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2GeneralObjectives), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2GeneralObjectives), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2GeneralObjectives), addCommonTextTags)
                             .WithInner(Tag.Create("div")
                                 .WithInnerForeach<CommonText>(subjectTemplate.GeneralObjectives.ToList(),
                                     (o, i, l) =>
@@ -200,8 +200,8 @@ namespace Programacion123
                                 )
                              )
                             .WithInner(Tag.Create("h2").WithInner(index[2].Subitems[1].Title).WithId("Apartado3-2"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2GeneralCompetences), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2GeneralCompetences), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2GeneralCompetences), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2GeneralCompetences), addCommonTextTags)
                             .WithInner(Tag.Create("div")
                                 .WithInnerForeach<CommonText>(subjectTemplate.GeneralCompetences.ToList(),
                                     (c, i, l) =>
@@ -212,8 +212,8 @@ namespace Programacion123
                                 )
                              )
                             .WithInner(Tag.Create("h2").WithInner(index[2].Subitems[2].Title).WithId("Apartado3-3"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2KeyCompetences), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2KeyCompetences), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2KeyCompetences), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2KeyCompetences), addCommonTextTags)
                             .WithInnerForeach<int>(Subject.QueryReferencedKeyCompetencesIndexes(),
                                 (c, i, l) =>
                                 {
@@ -228,11 +228,11 @@ namespace Programacion123
                             /////////////////////////////////////////////////////////////////////////////////
 
                             .WithInner(Tag.Create("h1").WithInner(index[3].Title).WithId("Apartado4"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1MetodologyAndDidacticOrientations), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1MetodologyAndDidacticOrientations), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1MetodologyAndDidacticOrientations), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1MetodologyAndDidacticOrientations), addCommonTextTags)
                             .WithInner(Tag.Create("h2").WithInner("Metodología general y específica de la materia").WithId("Apartado4-1"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2Metodology), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2Metodology), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2Metodology), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2Metodology), addCommonTextTags)
                             .WithInnerForeach<CommonText>(Subject.Metodologies.ToList(),
                                 (c, i, l) =>
                                 {
@@ -241,8 +241,8 @@ namespace Programacion123
                                 }
                             )
                             .WithInner(Tag.Create("h2").WithInner("Medidas de atención al alumnado con necesidad específica de apoyo educativo o con necesidad de compensación educativa: atención a la diversidad").WithId("Apartado4-2"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2Diversity), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2Diversity), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2Diversity), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2Diversity), addCommonTextTags)
                             .WithInner(pageBreak)
 
                             ////////////////////////////////////////////////////////////////
@@ -250,21 +250,33 @@ namespace Programacion123
                             ////////////////////////////////////////////////////////////////
 
                             .WithInner(Tag.Create("h1").WithInner(index[4].Title).WithId("Apartado5"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1EvaluationSystem), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1EvaluationSystem), addCommonTextTags)
-                            .WithInner(Tag.Create("h2").WithInner("Instrumentos de evaluación").WithId("Apartado5-1"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2EvaluationInstruments), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2EvaluationInstruments), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1EvaluationSystem), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1EvaluationSystem), addCommonTextTags)
+                            .WithInner(Tag.Create("h2").WithInner("Líneas de evaluación del centro").WithId("Apartado5-1"))
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2Evaluation), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2Evaluation), addCommonTextTags)
+                            .WithInner(Tag.Create("h2").WithInner("Tipos de evaluación").WithId("Apartado5-2"))
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2EvaluationTypes), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2EvaluationTypes), addCommonTextTags)
+                            .WithInner(Tag.Create("h3").WithInner("Evaluación ordinaria").WithId("Apartado5-2-1"))
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header3OrdinaryEvaluation), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header3OrdinaryEvaluation), addCommonTextTags)
+                            .WithInner(Tag.Create("h3").WithInner("Evaluación extraordinaria").WithId("Apartado5-2-2"))
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header3ExtraordinaryEvaluation), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header3ExtraordinaryEvaluation), addCommonTextTags)
+                            .WithInner(Tag.Create("h2").WithInner("Instrumentos de evaluación").WithId("Apartado5-3"))
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2EvaluationInstruments), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2EvaluationInstruments), addCommonTextTags)
                             .WithInnerForeach<CommonText>(Subject.EvaluationInstrumentsTypes.ToList(),
                                 (c, i, l) =>
                                 {
-                                    l.Add(Tag.Create("h3").WithInner(c.Title).WithId(String.Format("Apartado5-1-{0}", i + 1)));
+                                    l.Add(Tag.Create("h3").WithInner(c.Title).WithId(String.Format("Apartado5-3-{0}", i + 1)));
                                     l.Add(Tag.Create("div").WithInner(c.Description));
                                 }
                             )
-                            .WithInner(Tag.Create("h2").WithInner("Evaluación del funcionamiento de la programación").WithId("Apartado5-2"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2EvaluationOfProgramming), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2EvaluationOfProgramming), addCommonTextTags)
+                            .WithInner(Tag.Create("h2").WithInner("Evaluación del funcionamiento de la programación").WithId("Apartado5-4"))
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2EvaluationOfProgramming), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2EvaluationOfProgramming), addCommonTextTags)
                             .WithInner(pageBreak)
 
                             ///////////////////////////////////////////////////////////////////
@@ -272,14 +284,14 @@ namespace Programacion123
                             ///////////////////////////////////////////////////////////////////
 
                             .WithInner(Tag.Create("h1").WithInner(index[5].Title).WithId("Apartado6"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1TraversalElements), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1TraversalElements), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1TraversalElements), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1TraversalElements), addCommonTextTags)
                             .WithInner(Tag.Create("h2").WithInner("Fomento de la lectura y tecnologías de la información y de comunicación").WithId("Apartado6-1"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2TraversalReadingAndTIC), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2TraversalReadingAndTIC), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2TraversalReadingAndTIC), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2TraversalReadingAndTIC), addCommonTextTags)
                             .WithInner(Tag.Create("h2").WithInner("Comunicación audiovisual, emprendimiento, educación cívica y constitucional").WithId("Apartado6-2"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation), addCommonTextTags)
                             .WithInner(pageBreak)
 
 
@@ -289,11 +301,11 @@ namespace Programacion123
                             //////////////////////////////////////////////////////////////////////////////
 
                             .WithInner(Tag.Create("h1").WithInner(index[6].Title).WithId("Apartado7"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1Resources), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1Resources), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1Resources), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1Resources), addCommonTextTags)
                             .WithInner(Tag.Create("h2").WithInner("Espacios requeridos").WithId("Apartado7-1"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2ResourcesSpaces), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2ResourcesSpaces), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2ResourcesSpaces), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2ResourcesSpaces), addCommonTextTags)
                             .WithInnerForeach<CommonText>(Subject.SpaceResources.ToList(),
                                 (c, i, l) =>
                                 {
@@ -303,8 +315,8 @@ namespace Programacion123
                              )
 
                             .WithInner(Tag.Create("h2").WithInner("Materiales y herramientas").WithId("Apartado7-2"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2ResourcesMaterialAndTools), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2ResourcesMaterialAndTools), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2ResourcesMaterialAndTools), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2ResourcesMaterialAndTools), addCommonTextTags)
                             .WithInnerForeach<CommonText>(Subject.MaterialResources.ToList(),
                                 (c, i, l) =>
                                 {
@@ -319,14 +331,14 @@ namespace Programacion123
                             ///////////////////////////////////////////////////////////////////////////////
 
                             .WithInner(Tag.Create("h1").WithInner(index[7].Title).WithId("Apartado8"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header1SubjectProgramming), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header1SubjectProgramming), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1SubjectProgramming), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1SubjectProgramming), addCommonTextTags)
                             .WithInner(Tag.Create("h2").WithInner("Resultados de aprendizaje, criterios de evaluación y contenidos").WithId("Apartado8-1"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2LearningResultsAndContents), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2LearningResultsAndContents), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2LearningResultsAndContents), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2LearningResultsAndContents), addCommonTextTags)
                             .WithInner(Tag.Create("h3").WithInner("Resultados de aprendizaje y criterios de evaluación").WithId("Apartado8-1-1"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header3LearningResults), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header3LearningResults), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header3LearningResults), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header3LearningResults), addCommonTextTags)
                             .WithInnerForeach<LearningResult>(subjectTemplate.LearningResults.ToList(),
                                 (r, i, l) =>
                                 {
@@ -343,8 +355,8 @@ namespace Programacion123
                                 }
                              )
                             .WithInner(Tag.Create("h3").WithInner("Contenidos").WithId("Apartado8-1-2"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header3Contents), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header3Contents), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header3Contents), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header3Contents), addCommonTextTags)
                             .WithInnerForeach<Content>(subjectTemplate.Contents.ToList(),
                                 (c, i, l) =>
                                 {
@@ -360,8 +372,8 @@ namespace Programacion123
                                 }
                             )
                             .WithInner(Tag.Create("h2").WithInner("Bloques de enseñanza y aprendizaje").WithId("Apartado8-2"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2Blocks), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2Blocks), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2Blocks), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2Blocks), addCommonTextTags)
                             .WithInner(
                                 Table.Create()
                                     .WithRow()
@@ -427,8 +439,8 @@ namespace Programacion123
                                     )
                             )
                             .WithInner(Tag.Create("h2").WithInner("Programación de actividades de enseñanza-aprendizaje").WithId("Apartado8-3"))
-                            .WithInnerForeach<string>(GetGradeCommonText(CommonTextId.header2Activities), addCommonTextTags)
-                            .WithInnerForeach<string>(GetSubjectCommonText(CommonTextId.header2Activities), addCommonTextTags)
+                            .WithInnerForeach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2Activities), addCommonTextTags)
+                            .WithInnerForeach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2Activities), addCommonTextTags)
                             .WithInnerForeach<Block>(Subject.Blocks.ToList(),
                                 (b, i, l) =>
                                 {

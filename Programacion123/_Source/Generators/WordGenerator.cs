@@ -107,8 +107,8 @@ namespace Programacion123
                    //////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[0].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header1ModuleOrganization), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header1ModuleOrganization), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1ModuleOrganization), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1ModuleOrganization), addParagraph)
 
                     .WithTable(5, 3)
                     .WithCellSpan(1, 1, 1, 3).WithCellHeader1(1, 1, GetGradeTypeName() + " - " + gradeTemplate.GradeName)
@@ -174,8 +174,8 @@ namespace Programacion123
                    /////////////////////////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[1].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header1ImportanceJustification), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header1ImportanceJustification), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1ImportanceJustification), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1ImportanceJustification), addParagraph)
 
                     .WithPageBreak()
 
@@ -184,20 +184,45 @@ namespace Programacion123
                    /////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[2].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header1CurricularElements), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header1CurricularElements), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1CurricularElements), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1CurricularElements), addParagraph)
 
                    .WithHeader2(index[2].Subitems[0].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header2GeneralObjectives), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header2GeneralObjectives), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2GeneralObjectives), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2GeneralObjectives), addParagraph)
+
+                   .Foreach<CommonText>(subjectTemplate.GeneralObjectives.ToList(),
+                        (o, i, d) =>
+                        {
+                            int index = subjectTemplate.GradeTemplate.GeneralObjectives.ToList().FindIndex(_o => _o.StorageId == o.StorageId);
+                            d.WithParagraph(String.Format("{0}. {1}", Utils.FormatLetterPrefixLowercase(index), o.Description));
+
+                        }                   
+                   )
 
                    .WithHeader2(index[2].Subitems[1].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header2GeneralCompetences), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header2GeneralCompetences), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2GeneralCompetences), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2GeneralCompetences), addParagraph)
+
+                   .Foreach<CommonText>(subjectTemplate.GeneralCompetences.ToList(),
+                        (c, i, d) =>
+                        {
+                            int index = subjectTemplate.GradeTemplate.GeneralCompetences.ToList().FindIndex(_c => _c.StorageId == c.StorageId);
+                            d.WithParagraph(String.Format("{0}. {1}", Utils.FormatLetterPrefixLowercase(index), c.Description));
+                        }                   
+                   )
 
                    .WithHeader2(index[2].Subitems[2].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header2KeyCompetences), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header2KeyCompetences), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2KeyCompetences), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2KeyCompetences), addParagraph)
+
+                   .Foreach<CommonText>(gradeTemplate.KeyCapacities.ToList(),
+                        (c, i, d) =>
+                        {
+                            d.WithHeader3(c.Title);
+                            d.Foreach<string>(GetCommonTextParagraphs(c.Description), addParagraph);
+                        }                   
+                   )
 
                     .WithPageBreak()
 
@@ -206,8 +231,8 @@ namespace Programacion123
                    /////////////////////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[3].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header1MetodologyAndDidacticOrientations), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header1MetodologyAndDidacticOrientations), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1MetodologyAndDidacticOrientations), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1MetodologyAndDidacticOrientations), addParagraph)
 
                    .Foreach<CommonText>(Subject.Metodologies.ToList(),
                         (c, i, d) =>
@@ -218,12 +243,12 @@ namespace Programacion123
                    )
 
                    .WithHeader2(index[3].Subitems[0].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header2Metodology), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header2Metodology), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2Metodology), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2Metodology), addParagraph)
 
                    .WithHeader2(index[3].Subitems[1].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header2Diversity), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header2Diversity), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2Diversity), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2Diversity), addParagraph)
 
                     .WithPageBreak()
 
@@ -232,12 +257,28 @@ namespace Programacion123
                    ////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[4].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header1EvaluationSystem), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header1EvaluationSystem), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1EvaluationSystem), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1EvaluationSystem), addParagraph)
 
                    .WithHeader2(index[4].Subitems[0].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header2EvaluationInstruments), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header2EvaluationInstruments), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2Evaluation), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2Evaluation), addParagraph)
+
+                   .WithHeader2(index[4].Subitems[1].Title)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2EvaluationTypes), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2EvaluationTypes), addParagraph)
+
+                   .WithHeader3(index[4].Subitems[1].Subitems[0].Title)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header3OrdinaryEvaluation), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header3OrdinaryEvaluation), addParagraph)
+
+                   .WithHeader3(index[4].Subitems[1].Subitems[1].Title)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header3ExtraordinaryEvaluation), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header3ExtraordinaryEvaluation), addParagraph)
+
+                   .WithHeader2(index[4].Subitems[2].Title)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2EvaluationInstruments), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2EvaluationInstruments), addParagraph)
 
                    .Foreach<CommonText>(Subject.EvaluationInstrumentsTypes.ToList(),
                         (c, i, d) =>
@@ -247,9 +288,9 @@ namespace Programacion123
                         }
                    )
 
-                   .WithHeader2(index[4].Subitems[1].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header2EvaluationOfProgramming), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header2EvaluationOfProgramming), addParagraph)
+                   .WithHeader2(index[4].Subitems[3].Title)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2EvaluationOfProgramming), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2EvaluationOfProgramming), addParagraph)
 
                     .WithPageBreak()
 
@@ -258,16 +299,16 @@ namespace Programacion123
                    ///////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[5].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header1TraversalElements), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header1TraversalElements), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1TraversalElements), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1TraversalElements), addParagraph)
 
                    .WithHeader2(index[5].Subitems[0].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header2TraversalReadingAndTIC), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header2TraversalReadingAndTIC), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2TraversalReadingAndTIC), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2TraversalReadingAndTIC), addParagraph)
 
                    .WithHeader2(index[5].Subitems[1].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation), addParagraph)
 
                     .WithPageBreak()
 
@@ -276,12 +317,12 @@ namespace Programacion123
                    //////////////////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[6].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header1Resources), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header1Resources), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1Resources), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1Resources), addParagraph)
 
                    .WithHeader2(index[6].Subitems[0].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header2ResourcesSpaces), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header2ResourcesSpaces), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2ResourcesSpaces), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2ResourcesSpaces), addParagraph)
 
                    .Foreach<CommonText>(Subject.SpaceResources.ToList(),
                         (c, i, d) =>
@@ -292,8 +333,8 @@ namespace Programacion123
                    )
 
                    .WithHeader2(index[6].Subitems[1].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header2ResourcesMaterialAndTools), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header2ResourcesMaterialAndTools), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2ResourcesMaterialAndTools), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2ResourcesMaterialAndTools), addParagraph)
 
                    .Foreach<CommonText>(Subject.MaterialResources.ToList(),
                         (c, i, d) =>
@@ -310,16 +351,16 @@ namespace Programacion123
                    ///////////////////////////////////////////////////////////////////////////////
 
                    .WithHeader1(index[7].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header1SubjectProgramming), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header1SubjectProgramming), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header1SubjectProgramming), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1SubjectProgramming), addParagraph)
 
                    .WithHeader2(index[7].Subitems[0].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header2LearningResultsAndContents), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header2LearningResultsAndContents), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2LearningResultsAndContents), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2LearningResultsAndContents), addParagraph)
 
                    .WithHeader3(index[7].Subitems[0].Subitems[0].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header3LearningResults), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header3LearningResults), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header3LearningResults), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header3LearningResults), addParagraph)
 
                    .Foreach<LearningResult>(subjectTemplate.LearningResults.ToList(),
                         (r, i, d) =>
@@ -336,8 +377,8 @@ namespace Programacion123
                     )
 
                    .WithHeader3(index[7].Subitems[0].Subitems[1].Title)
-                   .Foreach<string>(GetGradeCommonText(CommonTextId.header3Contents), addParagraph)
-                   .Foreach<string>(GetSubjectCommonText(CommonTextId.header3Contents), addParagraph)
+                   .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header3Contents), addParagraph)
+                   .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header3Contents), addParagraph)
 
                     .Foreach<Content>(subjectTemplate.Contents.ToList(),
                         (c, i, d) =>
@@ -353,8 +394,8 @@ namespace Programacion123
                     )
 
                     .WithHeader2(index[7].Subitems[1].Title)
-                    .Foreach<string>(GetGradeCommonText(CommonTextId.header2Blocks), addParagraph)
-                    .Foreach<string>(GetSubjectCommonText(CommonTextId.header2Blocks), addParagraph)
+                    .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2Blocks), addParagraph)
+                    .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2Blocks), addParagraph)
 
                     .WithTable(2 * Subject.Blocks.Count + 3, 6)
                     .WithCellSpan(1, 1, 1, 5).WithCellHeader1(1, 1, String.Format("{0}: {1}", subjectTemplate.SubjectCode, subjectTemplate.SubjectName))
@@ -427,8 +468,8 @@ namespace Programacion123
                     )
 
                     .WithHeader2(index[7].Subitems[2].Title)
-                    .Foreach<string>(GetGradeCommonText(CommonTextId.header2Activities), addParagraph)
-                    .Foreach<string>(GetSubjectCommonText(CommonTextId.header2Activities), addParagraph)
+                    .Foreach<string>(GetGradeCommonTextParagraphs(CommonTextId.header2Activities), addParagraph)
+                    .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2Activities), addParagraph)
 
                     .Foreach<Block>(Subject.Blocks.ToList(),
                         (b, i, d) =>

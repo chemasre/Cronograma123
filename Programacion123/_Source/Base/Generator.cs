@@ -88,13 +88,18 @@ namespace Programacion123
         public abstract GeneratorResult Generate(string path);
         public abstract GeneratorValidationResult Validate();
 
-        public List<string> GetGradeCommonText(CommonTextId id)
+        public List<string> GetCommonTextParagraphs(string text)
+        {
+            return text.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList<string>();
+        }
+
+        public List<string> GetGradeCommonTextParagraphs(CommonTextId id)
         {
             Debug.Assert(Subject != null);
             Debug.Assert(Subject.Template != null);
             Debug.Assert(Subject.Template.GradeTemplate != null);
 
-            return Subject.Template.GradeTemplate.CommonTexts[id].Description.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList<string>();
+            return GetCommonTextParagraphs(Subject.Template.GradeTemplate.CommonTexts[id].Description);
         }
 
         public string GetGradeTypeName()
@@ -108,13 +113,13 @@ namespace Programacion123
 
         }
 
-        public List<string> GetSubjectCommonText(CommonTextId id)
+        public List<string> GetSubjectCommonTextParagraphs(CommonTextId id)
         {
             Debug.Assert(Subject != null);
             Debug.Assert(Subject.Template != null);
             Debug.Assert(Subject.Template.GradeTemplate != null);
 
-            return Subject.CommonTexts[id].Description.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList<string>();
+            return GetCommonTextParagraphs(Subject.CommonTexts[id].Description);
         }
 
         public string GetSpacesText(Activity a)
@@ -238,6 +243,13 @@ namespace Programacion123
                 },
                 new DocumentIndexItem(){ Title = "Sistema de evaluación", Subitems = new ()
                     {
+                        new DocumentIndexItem() { Title = "Líneas evaluativas del centro", Subitems = new () { } },
+                        new DocumentIndexItem() { Title = "Tipos de evaluación", Subitems = new ()
+                            {
+                                new DocumentIndexItem() { Title = "Evaluación ordinaria", Subitems = new (){ } },
+                                new DocumentIndexItem() { Title = "Evaluación extraordinaria", Subitems = new (){ } },
+                            }
+                        },
                         new DocumentIndexItem() { Title = "Instrumentos de evaluación", Subitems = indexInstrumentTypes },
                         new DocumentIndexItem() { Title = "Evaluación del funcionamiento de la programación", Subitems = new (){ } }
                     }
