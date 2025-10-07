@@ -8,6 +8,111 @@ using static Programacion123.ExportImportDialog;
 
 namespace Programacion123
 {
+    public struct UpdateFlags
+    {
+        public const uint entityFlagGradeTemplate   = 1 << (16 + 0);
+        public const uint entityFlagSubjectTemplate = 1 << (16 + 1);
+        public const uint entityFlagLearningResult  = 1 << (16 + 2);
+        public const uint entityFlagContent         = 1 << (16 + 3);
+        public const uint entityFlagCommonText      = 1 << (16 + 4);
+        public const uint entityFlagCalendar        = 1 << (16 + 5);
+        public const uint entityFlagWeekSchedule    = 1 << (16 + 6);
+        public const uint entityFlagSubject         = 1 << (16 + 7);
+        public const uint entityFlagBlock           = 1 << (16 + 8);
+        public const uint entityFlagActivity        = 1 << (16 + 9);
+        public const uint entityFlagDocumentStyle   = 1 << (16 + 10);
+
+        public const uint propertyFlagTitle       = 1 << 0;
+        public const uint propertyFlagDescription = 1 << 1;
+
+        public const uint propertyFlagGradeTemplateGradeType          = 1 << 2;
+        public const uint propertyFlagGradeTemplateGradeName          = 1 << 3;
+        public const uint propertyFlagGradeTemplateGradeFamilyName    = 1 << 4;
+        public const uint propertyFlagGradeTemplateGeneralObjectives  = 1 << 5;
+        public const uint propertyFlagGradeTemplateGeneralCompetences = 1 << 6;
+        public const uint propertyFlagGradeTemplateKeyCapacities      = 1 << 7;
+        public const uint propertyFlagGradeTemplateCommonTexts        = 1 << 8;
+
+        public const uint updateFlagSubjectTemplateGradeTemplate        = 1 << 2;
+        public const uint updateFlagSubjectTemplateSubjectName          = 1 << 3;
+        public const uint updateFlagSubjectTemplateSubjectCode          = 1 << 4;
+        public const uint updateFlagSubjectTemplateGradeClassroomHours  = 1 << 5;
+        public const uint updateFlagSubjectTemplateGradeCompanyHours    = 1 << 6;
+        public const uint updateFlagSubjectTemplateGeneralObjectives    = 1 << 7;
+        public const uint updateFlagSubjectTemplateGeneralCompetences   = 1 << 8;
+        public const uint updateFlagSubjectTemplateLearningResults      = 1 << 9;
+        public const uint updateFlagSubjectTemplateContents             = 1 << 10;
+
+        public const uint updateFlagCalendarStartDay    = 1 << 2;
+        public const uint updateFlagCalendarEndDay      = 1 << 3;
+        public const uint updateFlagCalendarFreeDays    = 1 << 4;
+
+        public const uint updateFlagContentPoints = 1 << 2;
+
+        public const uint updateFlagDocumentStyleLogo               = 1 << 2;
+        public const uint updateFlagDocumentStyleCover              = 1 << 3;
+        public const uint updateFlagDocumentStyleSize               = 1 << 4;
+        public const uint updateFlagDocumentStyleMargins            = 1 << 5;
+        public const uint updateFlagDocumentStyleCoverElementStyles = 1 << 6;
+        public const uint updateFlagDocumentStyleTextElementStyles  = 1 << 7;
+        public const uint updateFlagDocumentStyleTableElementStyles = 1 << 8;
+
+        public const uint updateFlagLearningResultCriterias = 1 << 2;
+
+        public const uint updateFlagSubjectTemplate                  = 1 << 2;
+        public const uint updateFlagSubjectCalendar                  = 1 << 3;
+        public const uint updateFlagSubjectWeekSchedule              = 1 << 4;
+        public const uint updateFlagSubjectMetodologies              = 1 << 5;
+        public const uint updateFlagSubjectSpaceResources            = 1 << 6;
+        public const uint updateFlagSubjectMaterialResources         = 1 << 7;
+        public const uint updateFlagSubjectEvaluationInstrumentTypes = 1 << 8;
+
+        public const uint updateFlagBlockActivities = 1 << 2;
+
+
+        uint flags;
+
+        public static UpdateFlags Create()
+        {
+            UpdateFlags result = new UpdateFlags();
+            result.flags = 0;
+
+            return result;
+        }
+
+        public static UpdateFlags Create(uint entityFlags, uint propertyFlags)
+        {
+            UpdateFlags result = Create();
+            result.flags = entityFlags | propertyFlags;
+            return result;
+        }
+
+        public UpdateFlags WithEntity(uint entityFlag)
+        {
+            UpdateFlags result = Create();
+            result.flags = (flags & 0xFFFF) | entityFlag;
+            return result;
+        }
+
+        public UpdateFlags WithProperty(uint propertyFlag)
+        {
+            UpdateFlags result = Create();
+            result.flags = flags | propertyFlag;
+            return result;
+        }
+
+        public bool IsEntity(uint entityFlag)
+        {
+            return (flags & entityFlag) != 0;
+        }
+
+        public bool HasProperty(uint propertyFlag)
+        {
+            return (flags & propertyFlag) != 0;
+        }
+    }
+
+
     public interface IEntityEditor<T>
     {
         void SetEntityTitleEditable(bool editable);
