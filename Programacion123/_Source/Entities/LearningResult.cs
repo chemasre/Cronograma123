@@ -2,14 +2,14 @@
 {
     public class LearningResult : Entity
     {
-        public ListProperty<CommonText> Criterias { get; } = new ListProperty<CommonText>();
+        public ListEntityProperty<CommonText> Criterias { get; } = new ListEntityProperty<CommonText>();
 
         public LearningResult() : base()
         {
             StorageClassId = "learningresult";
 
-            Title = "Título del resultado de aprendizaje";
-            Description = "Descripción del resultado de aprendizaje";
+            Title.Value = "Título del resultado de aprendizaje";
+            Description.Value = "Descripción del resultado de aprendizaje";
         }
 
         public override ValidationResult Validate()
@@ -35,8 +35,8 @@
 
             LearningResultData data = new();
 
-            data.Title = Title;
-            data.Description = Description;
+            data.Title = Title.Value;
+            data.Description = Description.Value;
 
             List<CommonText> list = Criterias.ToList();
             list.ForEach(e => e.Save(StorageId));
@@ -53,8 +53,8 @@
 
             LearningResultData data = Storage.LoadData<LearningResultData>(storageId, StorageClassId, parentStorageId);
 
-            Title = data.Title;
-            Description = data.Description;
+            Title.Value = data.Title;
+            Description.Value = data.Description;
 
             Criterias.Set(Storage.LoadOrCreateEntities<CommonText>(data.CriteriasStorageIds, storageId));
 

@@ -31,20 +31,20 @@ namespace Programacion123
                 (Activity a) =>
                 {
                     Subject subject = Storage.FindEntity<Subject>(Storage.FindParentStorageId(entity.StorageId, entity.StorageClassId), null);
-                    if (subject.Template != null)
+                    if (subject.Template.Value != null)
                     {
-                        List<LearningResult> results = subject.Template.LearningResults.ToList();
+                        List<LearningResult> results = subject.Template.Value.LearningResults.ToList();
                         foreach (LearningResult r in results) { a.LearningResultsWeights.Add(r, 0); }
                     }
 
-                    if (subject.Calendar != null)
+                    if (subject.Calendar.Value != null)
                     {
-                        a.StartDate = subject.Calendar.StartDay;
+                        a.StartDate.Value = subject.Calendar.Value.StartDay.Value;
                     }
                     else
                     {
                         DateTime now = DateTime.Now;
-                        a.StartDate = new DateTime(now.Year, now.Month, now.Day);
+                        a.StartDate.Value = new DateTime(now.Year, now.Month, now.Day);
                     }
                 };
 
@@ -65,9 +65,9 @@ namespace Programacion123
             activitiesController.Changed += ActivitiesController_Changed;
 
 
-            TextTitle.Text = _entity.Title;
+            TextTitle.Text = _entity.Title.Value;
 
-            TextBoxDescription.Text = _entity.Description;
+            TextBoxDescription.Text = _entity.Description.Value;
 
             ButtonClose.ToolTip = "Cerrar";
 
@@ -81,7 +81,7 @@ namespace Programacion123
         private void ActivitiesController_Changed(StrongReferencesBoxController<Activity, ActivityEditor> controller)
         {
             UpdateEntity();
-            Validate();
+            Validate(true);
         }
 
         public Block GetEntity()
@@ -91,8 +91,8 @@ namespace Programacion123
 
         void UpdateEntity()
         {
-            entity.Title = TextTitle.Text.Trim();
-            entity.Description = TextBoxDescription.Text;
+            entity.Title.Value = TextTitle.Text.Trim();
+            entity.Description.Value = TextBoxDescription.Text;
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
             entity.Activities.Set(Storage.LoadOrCreateEntities<Activity>(activitiesController.StorageIds, entity.StorageId));
@@ -100,8 +100,10 @@ namespace Programacion123
             entity.Save(parentStorageId);
         }
 
-        void Validate()
+        void Validate(bool force = false)
         {
+            if(force) { entity.Invalidate(); }
+
             ValidationResult validation = entity.Validate();
 
             string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");

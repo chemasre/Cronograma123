@@ -44,7 +44,7 @@
             int count = 0;
             for (DateTime d = startDay; d <= endDay; d = d.AddDays(1))
             {
-                if (Utils.IsSchoolDay(d, Calendar, WeekSchedule)) { count++; }
+                if (Utils.IsSchoolDay(d, Calendar.Value, WeekSchedule.Value)) { count++; }
             }
 
             return count;
@@ -69,18 +69,18 @@
             Blocks[blockIndex].Activities.ToList().ForEach(
                 a =>
                 {
-                    if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
+                    if (a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
                     {
                         result.Add(
                             new EvaluableActivityIndex()
                             {
                                 blockIndex = blockIndex,
                                 activityIndex = activityIndex,
-                                evaluationType = a.EvaluationType,
-                                activityTypeIndex = typeIndexes[a.EvaluationType]
+                                evaluationType = a.EvaluationType.Value,
+                                activityTypeIndex = typeIndexes[a.EvaluationType.Value]
                             });
 
-                        typeIndexes[a.EvaluationType]++;
+                        typeIndexes[a.EvaluationType.Value]++;
                         typeIndex++;
                     }
 
@@ -119,17 +119,17 @@
                     b.Activities.ToList().ForEach(
                     (a) =>
                     {
-                        if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
+                        if (a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
                         {
                             result.Add(
                                 new()
                                 {
                                     blockIndex = blockIndex,
                                     activityIndex = activityIndex,
-                                    evaluationType = a.EvaluationType,
-                                    activityTypeIndex = typeIndexes[a.EvaluationType]
+                                    evaluationType = a.EvaluationType.Value,
+                                    activityTypeIndex = typeIndexes[a.EvaluationType.Value]
                                 });
-                            typeIndexes[a.EvaluationType]++;
+                            typeIndexes[a.EvaluationType.Value]++;
                         }
 
                         activityIndex++;
@@ -150,7 +150,7 @@
         {
             return Blocks[blockIndex].Activities
                     .ToList()
-                    .Where(a => a.EvaluationType == activity.EvaluationType)
+                    .Where(a => a.EvaluationType.Value == activity.EvaluationType.Value)
                     .ToList()
                     .FindIndex(a => a.StorageId == activity.StorageId);
         }
@@ -161,7 +161,7 @@
         public float QueryBlockDuration(int blockIndex)
         {
             float hours = 0;
-            Blocks[blockIndex].Activities.ToList().ForEach(a => hours += a.Duration);
+            Blocks[blockIndex].Activities.ToList().ForEach(a => hours += a.Duration.Value);
             return hours;
 
         }
@@ -219,7 +219,7 @@
             HashSet<int> referencedSet = new();
             foreach (Activity a in Blocks[blockIndex].Activities.ToList())
             {
-                if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
+                if (a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
                 {
                     a.Criterias.ToList().ForEach(c => referencedSet.Add(FindCriteriaLearningResultIndex(c)));
                 }
@@ -242,7 +242,7 @@
             HashSet<int> referencedSet = new();
             Activity a = Blocks[blockIndex].Activities[activityIndex];
 
-            if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
+            if (a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
             {
                 a.Criterias.ToList().ForEach(c => referencedSet.Add(FindCriteriaLearningResultIndex(c)));
             }
@@ -268,14 +268,14 @@
 
             Dictionary<int, HashSet<int>> referencedCriteriasByLearningResult = new();
 
-            if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
+            if (a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
             {
                 foreach (var c in a.Criterias.ToList())
                 {
                     referencedLearningResults.ForEach(
                         (learningResultIndex) =>
                         {
-                            int criteriaIndex = FindCriteriaIndex(Template.LearningResults[learningResultIndex], c);
+                            int criteriaIndex = FindCriteriaIndex(Template.Value.LearningResults[learningResultIndex], c);
                             if (criteriaIndex >= 0)
                             {
                                 if (!referencedCriteriasByLearningResult.ContainsKey(learningResultIndex))
@@ -315,14 +315,14 @@
 
             foreach (Activity a in Blocks[blockIndex].Activities.ToList())
             {
-                if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
+                if (a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
                 {
                     foreach (var c in a.Criterias.ToList())
                     {
                         referencedLearningResults.ForEach(
                             (learningResultIndex) =>
                             {
-                                int criteriaIndex = FindCriteriaIndex(Template.LearningResults[learningResultIndex], c);
+                                int criteriaIndex = FindCriteriaIndex(Template.Value.LearningResults[learningResultIndex], c);
                                 if (criteriaIndex >= 0)
                                 {
                                     if (!referencedCriteriasByLearningResult.ContainsKey(learningResultIndex))
@@ -382,7 +382,7 @@
             List<SubjectLearningResultIndexesWeight> result = new();
 
             List<KeyValuePair<LearningResult, float>> learningResultsWeights = LearningResultsWeights.ToList();
-            List<LearningResult> learningResultsList = Template.LearningResults.ToList();
+            List<LearningResult> learningResultsList = Template.Value.LearningResults.ToList();
 
             for (int i = 0; i < learningResultsList.Count; i++)
             {
@@ -406,7 +406,7 @@
         {
             List<SubjectLearningResultIndexesWeight> result = new();
 
-            List<LearningResult> learningResultList = Template.LearningResults.ToList();
+            List<LearningResult> learningResultList = Template.Value.LearningResults.ToList();
             List<KeyValuePair<LearningResult, float>> learningResultsWeightsList = Blocks[blockIndex].Activities[activityIndex].LearningResultsWeights.ToList();
 
             for (int i = 0; i < learningResultList.Count; i++)
@@ -437,7 +437,7 @@
             List<CommonText> activityContentPoints = Blocks[blockIndex].Activities[activityIndex].ContentPoints.ToList();
 
             int contentIndex = 0;
-            foreach (Content c in Template.Contents.ToList())
+            foreach (Content c in Template.Value.Contents.ToList())
             {
                 int pointIndex = 0;
                 foreach (CommonText p in c.Points.ToList())
@@ -471,7 +471,7 @@
 
         int FindCriteriaLearningResultIndex(CommonText criteria)
         {
-            return Template.LearningResults.ToList().FindIndex(r => FindCriteriaIndex(r, criteria) >= 0);
+            return Template.Value.LearningResults.ToList().FindIndex(r => FindCriteriaIndex(r, criteria) >= 0);
         }
 
         int FindContentPointIndex(Content content, CommonText contentPoint)
@@ -481,12 +481,12 @@
 
         int FindContentPointContentIndex(CommonText contentPoint)
         {
-            return Template.Contents.ToList().FindIndex(c => FindContentPointIndex(c, contentPoint) >= 0);
+            return Template.Value.Contents.ToList().FindIndex(c => FindContentPointIndex(c, contentPoint) >= 0);
         }
 
         int FindKeyCompetenceIndex(CommonText competence)
         {
-            return Template.GradeTemplate.KeyCapacities.ToList().FindIndex(c => c.StorageId == competence.StorageId);
+            return Template.Value.GradeTemplate.Value.KeyCapacities.ToList().FindIndex(c => c.StorageId == competence.StorageId);
         }
 
     }

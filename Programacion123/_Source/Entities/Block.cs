@@ -2,26 +2,73 @@
 {
     public class Block : Entity
     {
-        public ListProperty<Activity> Activities { get; } = new ListProperty<Activity>();
+        public ListEntityProperty<Activity> Activities { get; } = new ListEntityProperty<Activity>();
+
+        bool checkActivities;
+
+        ValidationResult cachedResult;
 
         public Block() : base()
         {
             StorageClassId = "block";
 
-            Title = "Título del bloque";
-            Description = "Descripción del bloque";
+            Title.Value = "Título del bloque";
+            Description.Value = "Descripción del bloque";
+
+            Activities.OnAdded += (element) => { checkActivities = true; };
+            Activities.OnRemoved += (element) => { checkActivities = true; };
+            Activities.OnEntityUpdated += (entity) => { checkActivities = true; };
+
+            checkActivities = true;
+        }
+
+        public override void Invalidate()
+        {
+            base.Invalidate();
+            checkActivities = true;
         }
 
         public override ValidationResult Validate()
         {
-            ValidationResult result = base.Validate();
+            ValidationResult baseResult = base.Validate();
 
-            if (result.code != ValidationCode.success) { return result; }
+            if (baseResult.code != ValidationCode.success) { return baseResult; }
 
-            if (Activities.Count <= 0) { return ValidationResult.Create(ValidationCode.blockNoActivities); }
-            for (int i = 0; i < Activities.Count; i++) { if (Activities[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.blockActivityInvalid).WithIndex(i); } }
+            if(!checkActivities) { return cachedResult; }
 
-            return ValidationResult.Create(ValidationCode.success);
+            bool invalidFound = false;
+
+            if(!invalidFound && checkActivities)
+            {
+                if (Activities.Count <= 0)
+                {
+                    cachedResult = ValidationResult.Create(ValidationCode.blockNoActivities);
+                    invalidFound = true;
+                }
+
+                if(!invalidFound)
+                {
+                    for (int i = 0; i < Activities.Count; i++)
+                    {
+                        if (Activities[i].Validate().code != ValidationCode.success)
+                        {
+                            cachedResult = ValidationResult.Create(ValidationCode.blockActivityInvalid).WithIndex(i);
+                            invalidFound = true;
+                        }
+                    }
+                }
+
+                checkActivities = false;
+            }
+
+
+            if(!invalidFound)
+            {
+                cachedResult = ValidationResult.Create(ValidationCode.success);
+            }
+
+            return cachedResult;
+
         }
 
         public override bool Exists(string storageId, string? parentStorageId)
@@ -35,8 +82,8 @@
 
             BlockData data = new();
 
-            data.Title = Title;
-            data.Description = Description;
+            data.Title = Title.Value;
+            data.Description = Description.Value;
 
             List<Activity> list = Activities.ToList();
             list.ForEach(e => e.Save(StorageId));
@@ -53,8 +100,8 @@
 
             BlockData data = Storage.LoadData<BlockData>(storageId, StorageClassId, parentStorageId);
 
-            Title = data.Title;
-            Description = data.Description;
+            Title.Value = data.Title;
+            Description.Value = data.Description;
 
             Activities.Set(Storage.LoadOrCreateEntities<Activity>(data.ActivitiesStorageIds, storageId));
 

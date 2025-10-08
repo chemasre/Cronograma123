@@ -16,25 +16,25 @@
 
     public class Activity : Entity
     {
-        public ActivityStartType StartType { get; set; } = ActivityStartType.AsSoonAsPossible;
-        public DateTime StartDate { get; set; }
-        public DayOfWeek StartDayOfWeek { get; set; } = DayOfWeek.Monday;
+        public Property<ActivityStartType> StartType { get; } = new(ActivityStartType.AsSoonAsPossible);
+        public Property<DateTime> StartDate  { get; }= new(DateTime.MinValue);
+        public Property<DayOfWeek> StartDayOfWeek  { get; }= new(DayOfWeek.Monday);
 
-        public float Duration { get; set; } = 1;
+        public Property<float> Duration { get; } = new(1);
 
-        public bool NoActivitiesBefore { get; set; } = true;
-        public bool NoActivitiesAfter { get; set; } = true;
+        public Property<bool> NoActivitiesBefore { get; } = new(true);
+        public Property<bool> NoActivitiesAfter { get; } = new(true);
 
-        public CommonText? Metodology = null;
+        public EntityProperty<CommonText?> Metodology { get; } = new(null);
 
-        public SetProperty<CommonText> ContentPoints { get; } = new SetProperty<CommonText>();
-        public SetProperty<CommonText> KeyCompetences { get; } = new SetProperty<CommonText>();
-        public SetProperty<CommonText> SpaceResources { get; } = new SetProperty<CommonText>();
-        public SetProperty<CommonText> MaterialResources { get; } = new SetProperty<CommonText>();
+        public SetEntityProperty<CommonText> ContentPoints { get; } = new SetEntityProperty<CommonText>();
+        public SetEntityProperty<CommonText> KeyCompetences { get; } = new SetEntityProperty<CommonText>();
+        public SetEntityProperty<CommonText> SpaceResources { get; } = new SetEntityProperty<CommonText>();
+        public SetEntityProperty<CommonText> MaterialResources { get; } = new SetEntityProperty<CommonText>();
 
-        public ActivityEvaluationType EvaluationType = ActivityEvaluationType.NotEvaluable;
-        public CommonText? EvaluationInstrumentType = null;
-        public SetProperty<CommonText> Criterias { get; } = new SetProperty<CommonText>();
+        public Property<ActivityEvaluationType> EvaluationType { get; } = new(ActivityEvaluationType.NotEvaluable);
+        public EntityProperty<CommonText?> EvaluationInstrumentType { get; } = new(null);
+        public SetEntityProperty<CommonText> Criterias { get; } = new SetEntityProperty<CommonText>();
 
         public DictionaryProperty<LearningResult, float> LearningResultsWeights { get; } = new DictionaryProperty<LearningResult, float>();
 
@@ -42,8 +42,8 @@
         {
             StorageClassId = "activity";
 
-            Title = "Título de la actividad";
-            Description = "Descripción de la actividad";
+            Title.Value = "Título de la actividad";
+            Description.Value = "Descripción de la actividad";
 
         }
 
@@ -53,14 +53,14 @@
 
             if (result.code != ValidationCode.success) { return result; }
 
-            if (Metodology == null) { return ValidationResult.Create(ValidationCode.activityNotLinkedToMetodology); }
+            if (Metodology.Value == null) { return ValidationResult.Create(ValidationCode.activityNotLinkedToMetodology); }
 
             if (ContentPoints.Count <= 0) { return ValidationResult.Create(ValidationCode.activityNotLinkedToContents); }
             if (KeyCompetences.Count <= 0) { return ValidationResult.Create(ValidationCode.activityNotLinkedToKeyCompetences); }
 
-            if (EvaluationType != ActivityEvaluationType.NotEvaluable)
+            if (EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
             {
-                if (EvaluationInstrumentType == null) { return ValidationResult.Create(ValidationCode.activityEvaluableAndNotLinkedToEvaluationInstrumentType); }
+                if (EvaluationInstrumentType.Value == null) { return ValidationResult.Create(ValidationCode.activityEvaluableAndNotLinkedToEvaluationInstrumentType); }
 
                 if (Criterias.Count <= 0) { return ValidationResult.Create(ValidationCode.activityEvaluableAndNotLinkedToCriterias); }
 
@@ -113,17 +113,17 @@
 
             ActivityData data = new();
 
-            data.Title = Title;
-            data.Description = Description;
-            data.StartType = StartType;
-            data.StartDate = StartDate;
-            data.StartDayOfWeek = StartDayOfWeek;
-            data.Duration = Duration;
-            data.NoActivitiesBefore = NoActivitiesBefore;
-            data.NoActivitiesAfter = NoActivitiesAfter;
+            data.Title = Title.Value;
+            data.Description = Description.Value;
+            data.StartType = StartType.Value;
+            data.StartDate = StartDate.Value;
+            data.StartDayOfWeek = StartDayOfWeek.Value;
+            data.Duration = Duration.Value;
+            data.NoActivitiesBefore = NoActivitiesBefore.Value;
+            data.NoActivitiesAfter = NoActivitiesAfter.Value;
 
 
-            data.MetodologyWeakStorageId = Metodology?.StorageId;
+            data.MetodologyWeakStorageId = Metodology.Value?.StorageId;
 
             List<CommonText> list = ContentPoints.ToList();
             data.ContentPointsWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
@@ -137,9 +137,9 @@
             list = MaterialResources.ToList();
             data.MaterialResourcesWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
 
-            data.EvaluationType = EvaluationType;
+            data.EvaluationType = EvaluationType.Value;
 
-            data.EvaluationInstrumentTypeWeakStorageId = EvaluationInstrumentType?.StorageId;
+            data.EvaluationInstrumentTypeWeakStorageId = EvaluationInstrumentType.Value?.StorageId;
 
             list = Criterias.ToList();
             data.CriteriasWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
@@ -161,27 +161,27 @@
 
             ActivityData data = Storage.LoadData<ActivityData>(storageId, StorageClassId, parentStorageId);
 
-            Title = data.Title;
-            Description = data.Description;
+            Title.Value = data.Title;
+            Description.Value = data.Description;
 
-            StartType = data.StartType;
-            StartDate = data.StartDate;
-            StartDayOfWeek = data.StartDayOfWeek;
-            Duration = data.Duration;
-            NoActivitiesBefore = data.NoActivitiesBefore;
-            NoActivitiesAfter = data.NoActivitiesAfter;
+            StartType.Value = data.StartType;
+            StartDate.Value = data.StartDate;
+            StartDayOfWeek.Value = data.StartDayOfWeek;
+            Duration.Value = data.Duration;
+            NoActivitiesBefore.Value = data.NoActivitiesBefore;
+            NoActivitiesAfter.Value = data.NoActivitiesAfter;
 
             string subjectStorageId = Storage.FindParentStorageId(Storage.FindParentStorageId(StorageId, StorageClassId), new Block().StorageClassId);
-            Metodology = data.MetodologyWeakStorageId != null ? Storage.FindEntity<CommonText>(data.MetodologyWeakStorageId, subjectStorageId) : null;
+            Metodology.Value = data.MetodologyWeakStorageId != null ? Storage.FindEntity<CommonText>(data.MetodologyWeakStorageId, subjectStorageId) : null;
 
             ContentPoints.Set(Storage.FindChildEntities<CommonText>(data.ContentPointsWeakStorageIds));
             KeyCompetences.Set(Storage.FindChildEntities<CommonText>(data.KeyCompetencesWeakStorageIds));
             SpaceResources.Set(Storage.FindChildEntities<CommonText>(data.SpaceResourcesWeakStorageIds));
             MaterialResources.Set(Storage.FindChildEntities<CommonText>(data.MaterialResourcesWeakStorageIds));
 
-            EvaluationType = data.EvaluationType;
+            EvaluationType.Value = data.EvaluationType;
 
-            EvaluationInstrumentType = data.EvaluationInstrumentTypeWeakStorageId != null ? Storage.FindEntity<CommonText>(data.EvaluationInstrumentTypeWeakStorageId, subjectStorageId) : null;
+            EvaluationInstrumentType.Value = data.EvaluationInstrumentTypeWeakStorageId != null ? Storage.FindEntity<CommonText>(data.EvaluationInstrumentTypeWeakStorageId, subjectStorageId) : null;
             Criterias.Set(Storage.FindChildEntities<CommonText>(data.CriteriasWeakStorageIds));
 
             List<KeyValuePair<string, float>> resultsWithIds = data.LearningResultsWeakStorageIdsWeights;

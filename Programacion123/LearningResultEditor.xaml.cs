@@ -55,7 +55,7 @@ namespace Programacion123
 
             criteriasController.Changed += CriteriasController_Changed;
 
-            TextBoxDescription.Text = _entity.Description;
+            TextBoxDescription.Text = _entity.Description.Value;
 
             TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
 
@@ -78,7 +78,7 @@ namespace Programacion123
 
         void UpdateEntity()
         {
-            entity.Description = TextBoxDescription.Text;
+            entity.Description.Value = TextBoxDescription.Text;
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
             entity.Criterias.Set(Storage.LoadOrCreateEntities<CommonText>(criteriasController.StorageIds, entity.StorageId));

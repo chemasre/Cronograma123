@@ -96,19 +96,19 @@ namespace Programacion123
         public List<string> GetGradeCommonTextParagraphs(CommonTextId id)
         {
             Debug.Assert(Subject != null);
-            Debug.Assert(Subject.Template != null);
-            Debug.Assert(Subject.Template.GradeTemplate != null);
+            Debug.Assert(Subject.Template.Value != null);
+            Debug.Assert(Subject.Template.Value.GradeTemplate.Value != null);
 
-            return GetCommonTextParagraphs(Subject.Template.GradeTemplate.CommonTexts[id].Description);
+            return GetCommonTextParagraphs(Subject.Template.Value.GradeTemplate.Value.CommonTexts[id].Description.Value);
         }
 
         public string GetGradeTypeName()
         {
             Debug.Assert(Subject != null);
-            Debug.Assert(Subject.Template != null);
-            Debug.Assert(Subject.Template.GradeTemplate != null);
+            Debug.Assert(Subject.Template.Value != null);
+            Debug.Assert(Subject.Template.Value.GradeTemplate.Value != null);
 
-            return (Subject.Template.GradeTemplate.GradeType == GradeType.superior ?
+            return (Subject.Template.Value.GradeTemplate.Value.GradeType.Value == GradeType.superior ?
                                     "Ciclo formativo de grado superior" : "Ciclo formativo de grado medio");
 
         }
@@ -116,10 +116,10 @@ namespace Programacion123
         public List<string> GetSubjectCommonTextParagraphs(CommonTextId id)
         {
             Debug.Assert(Subject != null);
-            Debug.Assert(Subject.Template != null);
-            Debug.Assert(Subject.Template.GradeTemplate != null);
+            Debug.Assert(Subject.Template.Value != null);
+            Debug.Assert(Subject.Template.Value.GradeTemplate.Value != null);
 
-            return GetCommonTextParagraphs(Subject.CommonTexts[id].Description);
+            return GetCommonTextParagraphs(Subject.CommonTexts[id].Description.Value);
         }
 
         public string GetSpacesText(Activity a)
@@ -203,16 +203,16 @@ namespace Programacion123
         protected List<DocumentIndexItem> BuildIndex()
         {
             List<DocumentIndexItem> indexMetodologies = new();
-            Subject.Metodologies.ToList().ForEach(m => indexMetodologies.Add(new() { Title = m.Title, Subitems = new() }));
+            Subject.Metodologies.ToList().ForEach(m => indexMetodologies.Add(new() { Title = m.Title.Value, Subitems = new() }));
 
             List<DocumentIndexItem> indexInstrumentTypes = new();
-            Subject.EvaluationInstrumentsTypes.ToList().ForEach(instrument => indexInstrumentTypes.Add(new() { Title = instrument.Title, Subitems = new() }));
+            Subject.EvaluationInstrumentsTypes.ToList().ForEach(instrument => indexInstrumentTypes.Add(new() { Title = instrument.Title.Value, Subitems = new() }));
 
             List<DocumentIndexItem> indexMaterialResources = new();
-            Subject.MaterialResources.ToList().ForEach(resource => indexMaterialResources.Add(new() { Title = resource.Title, Subitems = new() }));
+            Subject.MaterialResources.ToList().ForEach(resource => indexMaterialResources.Add(new() { Title = resource.Title.Value, Subitems = new() }));
 
             List<DocumentIndexItem> indexSpaceResources = new();
-            Subject.SpaceResources.ToList().ForEach(resource => indexSpaceResources.Add(new() { Title = resource.Title, Subitems = new() }));
+            Subject.SpaceResources.ToList().ForEach(resource => indexSpaceResources.Add(new() { Title = resource.Title.Value, Subitems = new() }));
 
             List<DocumentIndexItem> indexBlocks = new();
             int blockIndex = 0;

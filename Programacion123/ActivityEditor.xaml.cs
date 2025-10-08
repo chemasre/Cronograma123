@@ -63,20 +63,20 @@ namespace Programacion123
 
         public void UpdateEntity()
         {
-            entity.Title = TextTitle.Text;
-            entity.Description = TextBoxDescription.Text;
+            entity.Title.Value = TextTitle.Text;
+            entity.Description.Value = TextBoxDescription.Text;
 
-            entity.StartType = (ActivityStartType)ComboStartType.SelectedIndex;
-            entity.StartDate = DateStartDate.SelectedDate.Value;
-            entity.StartDayOfWeek = (DayOfWeek)(ComboStartWeekDay.SelectedIndex + 1);
+            entity.StartType.Value = (ActivityStartType)ComboStartType.SelectedIndex;
+            entity.StartDate.Value = DateStartDate.SelectedDate.Value;
+            entity.StartDayOfWeek.Value = (DayOfWeek)(ComboStartWeekDay.SelectedIndex + 1);
 
-            entity.Duration = ComboDuration.SelectedIndex + ComboDurationFraction.SelectedIndex * 0.25f;
+            entity.Duration.Value = ComboDuration.SelectedIndex + ComboDurationFraction.SelectedIndex * 0.25f;
 
-            entity.NoActivitiesBefore = CheckboxNoActivitiesBefore.IsChecked.GetValueOrDefault();
-            entity.NoActivitiesAfter = CheckboxNoActivitiesAfter.IsChecked.GetValueOrDefault();
+            entity.NoActivitiesBefore.Value = CheckboxNoActivitiesBefore.IsChecked.GetValueOrDefault();
+            entity.NoActivitiesAfter.Value = CheckboxNoActivitiesAfter.IsChecked.GetValueOrDefault();
 
 
-            entity.Metodology = metodologyController.GetEntity();
+            entity.Metodology.Value = metodologyController.GetEntity();
 
             entity.ContentPoints.Set(contentPointsController.GetSelectedEntities());
             entity.KeyCompetences.Set(keyCompetencesController.GetSelectedEntities());
@@ -84,16 +84,16 @@ namespace Programacion123
             entity.SpaceResources.Set(spaceResourcesController.GetSelectedEntities());
             entity.MaterialResources.Set(materialResourcesController.GetSelectedEntities());
 
-            entity.EvaluationType = (ActivityEvaluationType)ComboEvaluationType.SelectedIndex;
+            entity.EvaluationType.Value = (ActivityEvaluationType)ComboEvaluationType.SelectedIndex;
 
-            entity.EvaluationInstrumentType = evaluationInstrumentController.GetEntity();
+            entity.EvaluationInstrumentType.Value = evaluationInstrumentController.GetEntity();
             entity.Criterias.Set(criteriasController.GetSelectedEntities());
             entity.LearningResultsWeights.Clear();
 
-            if (subject.Template != null)
+            if (subject.Template.Value != null)
             {
                 int resultIndex = 0;
-                List<LearningResult> results = subject.Template.LearningResults.ToList();
+                List<LearningResult> results = subject.Template.Value.LearningResults.ToList();
                 foreach (DataColumn c in dataTableResultsWeight.Columns)
                 {
                     entity.LearningResultsWeights.Add(results[resultIndex], (float)dataTableResultsWeight.Rows[0][c.ColumnName]);
@@ -138,11 +138,11 @@ namespace Programacion123
             subject.LoadOrCreate(subjectStorageId);
             block.LoadOrCreate(blockStorageId, subjectStorageId);
 
-            TextBlock.Text = block.Title;
+            TextBlock.Text = block.Title.Value;
             TextBlock.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
 
             var configMetodology = WeakReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextMetodology)
-                                               .WithStorageId(entity.Metodology?.StorageId)
+                                               .WithStorageId(entity.Metodology.Value?.StorageId)
                                                .WithParentStorageId(subject.StorageId)
                                                .WithPick(ButtonMetodologyPick)
                                                .WithPickerTitle("Elige una metodología")
@@ -156,9 +156,9 @@ namespace Programacion123
                 () =>
                 {
                     List<string> contentPoints = new();
-                    if (subject.Template != null)
+                    if (subject.Template.Value != null)
                     {
-                        List<Content> contentList = subject.Template.Contents.ToList();
+                        List<Content> contentList = subject.Template.Value.Contents.ToList();
 
                         foreach (Content c in contentList)
                         {
@@ -184,10 +184,10 @@ namespace Programacion123
                     int pointIndex = -1;
                     int contentIndex = -1;
 
-                    canFormat = (subject.Template != null);
+                    canFormat = (subject.Template.Value != null);
                     if (canFormat)
                     {
-                        template = subject.Template;
+                        template = subject.Template.Value;
                     }
                     if (canFormat)
                     {
@@ -220,11 +220,11 @@ namespace Programacion123
                 () =>
                 {
                     List<string> keyCompetences = new();
-                    if (subject.Template != null)
+                    if (subject.Template.Value != null)
                     {
-                        if (subject.Template.GradeTemplate != null)
+                        if (subject.Template.Value.GradeTemplate.Value != null)
                         {
-                            List<CommonText> competencesList = subject.Template.GradeTemplate.KeyCapacities.ToList();
+                            List<CommonText> competencesList = subject.Template.Value.GradeTemplate.Value.KeyCapacities.ToList();
 
                             foreach (CommonText c in competencesList)
                             {
@@ -244,15 +244,15 @@ namespace Programacion123
                     GradeTemplate? gradeTemplate = null;
                     int capacityIndex = -1;
 
-                    canFormat = (subject.Template != null);
+                    canFormat = (subject.Template.Value != null);
                     if (canFormat)
                     {
-                        template = subject.Template;
-                        canFormat = subject.Template.GradeTemplate != null;
+                        template = subject.Template.Value;
+                        canFormat = subject.Template.Value.GradeTemplate.Value != null;
                     }
                     if (canFormat)
                     {
-                        gradeTemplate = template.GradeTemplate;
+                        gradeTemplate = template.GradeTemplate.Value;
                         canFormat = (gradeTemplate != null);
                     }
                     if (canFormat)
@@ -313,7 +313,7 @@ namespace Programacion123
 
 
             var configEvaluationInstrument = WeakReferenceFieldConfiguration<CommonText>.CreateForTextBox(TextEvaluationInstrument)
-                                               .WithStorageId(entity.EvaluationInstrumentType?.StorageId)
+                                               .WithStorageId(entity.EvaluationInstrumentType.Value?.StorageId)
                                                .WithParentStorageId(subject.StorageId)
                                                .WithPick(ButtonEvaluationInstrumentPick)
                                                .WithPickerTitle("Elige un instrumento de evaluación")
@@ -327,9 +327,9 @@ namespace Programacion123
                 () =>
                 {
                     List<string> criterias = new();
-                    if (subject.Template != null)
+                    if (subject.Template.Value != null)
                     {
-                        List<LearningResult> resultList = subject.Template.LearningResults.ToList();
+                        List<LearningResult> resultList = subject.Template.Value.LearningResults.ToList();
 
                         foreach (LearningResult r in resultList)
                         {
@@ -355,10 +355,10 @@ namespace Programacion123
                     int criteriaIndex = -1;
                     int resultIndex = -1;
 
-                    canFormat = (subject.Template != null);
+                    canFormat = (subject.Template.Value != null);
                     if (canFormat)
                     {
-                        template = subject.Template;
+                        template = subject.Template.Value;
                     }
                     if (canFormat)
                     {
@@ -409,16 +409,16 @@ namespace Programacion123
             ComboEvaluationType.Items.Add("Evaluación continua");
             ComboEvaluationType.Items.Add("Examen");
 
-            TextTitle.Text = entity.Title;
-            TextBoxDescription.Text = entity.Description;
-            ComboStartType.SelectedIndex = (int)entity.StartType;
-            DateStartDate.SelectedDate = entity.StartDate;
-            ComboStartWeekDay.SelectedIndex = (int)(entity.StartDayOfWeek - 1);
-            ComboDuration.SelectedIndex = (int)entity.Duration;
-            ComboDurationFraction.SelectedIndex = (int)((entity.Duration - MathF.Floor(entity.Duration)) / 0.25f);
-            CheckboxNoActivitiesBefore.IsChecked = entity.NoActivitiesBefore;
-            CheckboxNoActivitiesAfter.IsChecked = entity.NoActivitiesAfter;
-            ComboEvaluationType.SelectedIndex = (int)entity.EvaluationType;
+            TextTitle.Text = entity.Title.Value;
+            TextBoxDescription.Text = entity.Description.Value;
+            ComboStartType.SelectedIndex = (int)entity.StartType.Value;
+            DateStartDate.SelectedDate = entity.StartDate.Value;
+            ComboStartWeekDay.SelectedIndex = (int)(entity.StartDayOfWeek.Value - 1);
+            ComboDuration.SelectedIndex = (int)entity.Duration.Value;
+            ComboDurationFraction.SelectedIndex = (int)((entity.Duration.Value - MathF.Floor(entity.Duration.Value)) / 0.25f);
+            CheckboxNoActivitiesBefore.IsChecked = entity.NoActivitiesBefore.Value;
+            CheckboxNoActivitiesAfter.IsChecked = entity.NoActivitiesAfter.Value;
+            ComboEvaluationType.SelectedIndex = (int)entity.EvaluationType.Value;
 
             TextActivityCode.Background = new SolidColorBrush((Color)Application.Current.Resources["ColorLocked"]);
             TextActivityCode.IsReadOnly = true;
@@ -484,7 +484,7 @@ namespace Programacion123
 
         private void UpdateEvaluableUI()
         {
-            Visibility visibility = (entity.EvaluationType != ActivityEvaluationType.NotEvaluable) ? Visibility.Visible : Visibility.Hidden;
+            Visibility visibility = (entity.EvaluationType.Value != ActivityEvaluationType.NotEvaluable) ? Visibility.Visible : Visibility.Hidden;
             LabelActivityCode.Visibility = visibility;
             TextActivityCode.Visibility = visibility;
             LabelEvaluationInstrument.Visibility = visibility;
@@ -661,9 +661,9 @@ namespace Programacion123
 
             if (evaluationType != ActivityEvaluationType.NotEvaluable)
             {
-                int activityIndex = block.Activities.ToList().Where(a => a.EvaluationType == entity.EvaluationType).ToList().FindIndex(a => a.StorageId == entity.StorageId);
+                int activityIndex = block.Activities.ToList().Where(a => a.EvaluationType.Value == entity.EvaluationType.Value).ToList().FindIndex(a => a.StorageId == entity.StorageId);
                 int blockIndex = subject.Blocks.ToList().FindIndex((b) => b.StorageId == block.StorageId);
-                TextActivityCode.Text = String.Format(entity.EvaluationType == ActivityEvaluationType.Continous ? "B{0}-A{1}" : "B{0}-EX{1}", blockIndex + 1, activityIndex + 1);
+                TextActivityCode.Text = String.Format(entity.EvaluationType.Value == ActivityEvaluationType.Continous ? "B{0}-A{1}" : "B{0}-EX{1}", blockIndex + 1, activityIndex + 1);
             }
             else
             {
@@ -692,13 +692,13 @@ namespace Programacion123
                 {
                     ActivitySchedule schedule = schedules[scheduleIndex];
 
-                    TextScheduledStartDay.Text = Utils.FormatStartDayHour(schedule.start.day, schedule.start.hour, subject.WeekSchedule);
-                    TextScheduledEndDay.Text = Utils.FormatStartDayHour(schedule.end.day, schedule.end.hour, subject.WeekSchedule);
+                    TextScheduledStartDay.Text = Utils.FormatStartDayHour(schedule.start.day, schedule.start.hour, subject.WeekSchedule.Value);
+                    TextScheduledEndDay.Text = Utils.FormatStartDayHour(schedule.end.day, schedule.end.hour, subject.WeekSchedule.Value);
 
                     int count = 0;
                     for (DateTime d = schedule.start.day; d <= schedule.end.day; d = d.AddDays(1))
                     {
-                        if (Utils.IsSchoolDay(d, subject.Calendar, subject.WeekSchedule)) { count++; }
+                        if (Utils.IsSchoolDay(d, subject.Calendar.Value, subject.WeekSchedule.Value)) { count++; }
                     }
 
                     TextScheduledSessions.Text = count.ToString();
@@ -727,7 +727,7 @@ namespace Programacion123
             dataTableResultsWeight.Rows.Clear();
             dataTableResultsWeight.Columns.Clear();
 
-            List<LearningResult> learningResultList = subject.Template.LearningResults.ToList();
+            List<LearningResult> learningResultList = subject.Template.Value.LearningResults.ToList();
             for (int i = 0; i < learningResultList.Count; i++)
             {
                 string columnName = String.Format("RA{0}", i + 1);

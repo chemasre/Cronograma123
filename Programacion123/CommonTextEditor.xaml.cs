@@ -29,7 +29,7 @@ namespace Programacion123
             parentStorageId = _parentStorageId;
             entity = _entity;
 
-            TextTitle.Text = _entity.Title;
+            TextTitle.Text = _entity.Title.Value;
 
             ButtonClose.ToolTip = "Cerrar";
 
@@ -42,7 +42,7 @@ namespace Programacion123
                 TextBoxDescription.Visibility = Visibility.Visible;
                 NoTitleBorderDescriptionBase.Visibility = Visibility.Hidden;
                 NoTitleTextBoxDescription.Visibility = Visibility.Hidden;
-                TextBoxDescription.Text = _entity.Description;
+                TextBoxDescription.Text = _entity.Description.Value;
 
                 TextTitle.TextChanged += TextTitle_TextChanged;
                 TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
@@ -56,7 +56,7 @@ namespace Programacion123
                 TextBoxDescription.Visibility = Visibility.Hidden;
                 NoTitleBorderDescriptionBase.Visibility = Visibility.Visible;
                 NoTitleTextBoxDescription.Visibility = Visibility.Visible;
-                NoTitleTextBoxDescription.Text = _entity.Description;
+                NoTitleTextBoxDescription.Text = _entity.Description.Value;
 
                 NoTitleTextBoxDescription.TextChanged += NoTitleTextBoxDescription_TextChanged;
             }
@@ -79,8 +79,8 @@ namespace Programacion123
 
         void UpdateEntity()
         {
-            entity.Title = TextTitle.Text.Trim();
-            entity.Description = (titleEditable ? TextBoxDescription.Text : NoTitleTextBoxDescription.Text).Trim();
+            entity.Title.Value = TextTitle.Text.Trim();
+            entity.Description.Value = (titleEditable ? TextBoxDescription.Text : NoTitleTextBoxDescription.Text).Trim();
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
             entity.Save(parentStorageId);

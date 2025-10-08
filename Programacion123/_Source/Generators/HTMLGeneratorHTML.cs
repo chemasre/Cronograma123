@@ -12,13 +12,13 @@ namespace Programacion123
         {
             Debug.Assert(Style != null);
             Debug.Assert(Subject != null);
-            Debug.Assert(Subject.Template != null);
-            Debug.Assert(Subject.Template.GradeTemplate != null);
+            Debug.Assert(Subject.Template.Value != null);
+            Debug.Assert(Subject.Template.Value.GradeTemplate.Value != null);
 
-            SubjectTemplate subjectTemplate = Subject.Template;
+            SubjectTemplate subjectTemplate = Subject.Template.Value;
 
 
-            GradeTemplate gradeTemplate = Subject.Template.GradeTemplate;
+            GradeTemplate gradeTemplate = Subject.Template.Value.GradeTemplate.Value;
 
             List<DocumentIndexItem> index = BuildIndex();
 
@@ -64,9 +64,9 @@ namespace Programacion123
                                .WithInner(Tag.Create("img").WithClass("coverLogo").WithParam("src", "data:image/png;base64," + Style.LogoBase64))
                                .WithInner(Tag.Create("img").WithClass("coverCover").WithParam("src", "data:image/png;base64," + Style.CoverBase64))
                                .WithInner(Tag.Create("div").WithClass("coverSubjectCode").WithInner("Módulo profesional " + subjectTemplate.SubjectCode))
-                               .WithInner(Tag.Create("div").WithClass("coverSubjectName").WithInner(subjectTemplate.SubjectName))
+                               .WithInner(Tag.Create("div").WithClass("coverSubjectName").WithInner(subjectTemplate.SubjectName.Value))
                                .WithInner(Tag.Create("div").WithClass("coverGradeTypeName").WithInner(gradeTypeName))
-                               .WithInner(Tag.Create("div").WithClass("coverGradeName").WithInner(gradeTemplate.GradeName))
+                               .WithInner(Tag.Create("div").WithClass("coverGradeName").WithInner(gradeTemplate.GradeName.Value))
                              )
                             .WithInner(pageBreak)
 
@@ -112,7 +112,7 @@ namespace Programacion123
                                               .WithRow().WithCell("<b>Módulo profesional:</b> MP" + subjectTemplate.SubjectCode + " - " + subjectTemplate.SubjectName, 1, 3).WithCellClass("tableHeader2")
                                               .WithRow().WithCell("<b>Horas centro educativo:</b> " + subjectTemplate.GradeClassroomHours)
                                                         .WithCell("<b>Horas empresa:</b> " + subjectTemplate.GradeCompanyHours)
-                                                        .WithCell("<b>Horas totales:</b> " + (subjectTemplate.GradeClassroomHours + subjectTemplate.GradeCompanyHours))
+                                                        .WithCell("<b>Horas totales:</b> " + (subjectTemplate.GradeClassroomHours.Value + subjectTemplate.GradeCompanyHours.Value))
                                               .WithRow().WithCell("<b>Modalidad:</b> Presencial", 1, 2)
                                                         .WithCell("<b>Régimen:</b> Anual")
                                               .WithRow().WithCell("<b>Familia profesional:</b> " + gradeTemplate.GradeFamilyName, 1, 3)
@@ -194,7 +194,7 @@ namespace Programacion123
                                 .WithInnerForeach<CommonText>(subjectTemplate.GeneralObjectives.ToList(),
                                     (o, i, l) =>
                                     {
-                                        int index = subjectTemplate.GradeTemplate.GeneralObjectives.ToList().FindIndex(_o => _o.StorageId == o.StorageId);
+                                        int index = subjectTemplate.GradeTemplate.Value.GeneralObjectives.ToList().FindIndex(_o => _o.StorageId == o.StorageId);
                                         l.Add(Tag.Create("div").WithInner(String.Format("{0}. {1}", Utils.FormatLetterPrefixLowercase(index), o.Description)));
                                     }
                                 )
@@ -206,7 +206,7 @@ namespace Programacion123
                                 .WithInnerForeach<CommonText>(subjectTemplate.GeneralCompetences.ToList(),
                                     (c, i, l) =>
                                     {
-                                        int index = subjectTemplate.GradeTemplate.GeneralCompetences.ToList().FindIndex(_c => _c.StorageId == c.StorageId);
+                                        int index = subjectTemplate.GradeTemplate.Value.GeneralCompetences.ToList().FindIndex(_c => _c.StorageId == c.StorageId);
                                         l.Add(Tag.Create("div").WithInner(String.Format("{0}. {1}", Utils.FormatLetterPrefixLowercase(index), c.Description)));
                                     }
                                 )
@@ -217,8 +217,8 @@ namespace Programacion123
                             .WithInnerForeach<int>(Subject.QueryReferencedKeyCompetencesIndexes(),
                                 (c, i, l) =>
                                 {
-                                    l.Add(Tag.Create("h3").WithInner(gradeTemplate.KeyCapacities[c].Title));
-                                    l.Add(Tag.Create("div").WithInner(gradeTemplate.KeyCapacities[c].Description));
+                                    l.Add(Tag.Create("h3").WithInner(gradeTemplate.KeyCapacities[c].Title.Value));
+                                    l.Add(Tag.Create("div").WithInner(gradeTemplate.KeyCapacities[c].Description.Value));
                                 }
                              )
                             .WithInner(pageBreak)
@@ -236,8 +236,8 @@ namespace Programacion123
                             .WithInnerForeach<CommonText>(Subject.Metodologies.ToList(),
                                 (c, i, l) =>
                                 {
-                                    l.Add(Tag.Create("h3").WithInner(c.Title).WithId(String.Format("Apartado4-1-{0}", i + 1)));
-                                    l.Add(Tag.Create("div").WithInner(c.Description));
+                                    l.Add(Tag.Create("h3").WithInner(c.Title.Value).WithId(String.Format("Apartado4-1-{0}", i + 1)));
+                                    l.Add(Tag.Create("div").WithInner(c.Description.Value));
                                 }
                             )
                             .WithInner(Tag.Create("h2").WithInner("Medidas de atención al alumnado con necesidad específica de apoyo educativo o con necesidad de compensación educativa: atención a la diversidad").WithId("Apartado4-2"))
@@ -270,8 +270,8 @@ namespace Programacion123
                             .WithInnerForeach<CommonText>(Subject.EvaluationInstrumentsTypes.ToList(),
                                 (c, i, l) =>
                                 {
-                                    l.Add(Tag.Create("h3").WithInner(c.Title).WithId(String.Format("Apartado5-3-{0}", i + 1)));
-                                    l.Add(Tag.Create("div").WithInner(c.Description));
+                                    l.Add(Tag.Create("h3").WithInner(c.Title.Value).WithId(String.Format("Apartado5-3-{0}", i + 1)));
+                                    l.Add(Tag.Create("div").WithInner(c.Description.Value));
                                 }
                             )
                             .WithInner(Tag.Create("h2").WithInner("Evaluación del funcionamiento de la programación").WithId("Apartado5-4"))
@@ -309,8 +309,8 @@ namespace Programacion123
                             .WithInnerForeach<CommonText>(Subject.SpaceResources.ToList(),
                                 (c, i, l) =>
                                 {
-                                    l.Add(Tag.Create("h3").WithInner(c.Title).WithId(String.Format("Apartado7-1-{0}", i + 1)));
-                                    l.Add(Tag.Create("div").WithInner(c.Description));
+                                    l.Add(Tag.Create("h3").WithInner(c.Title.Value).WithId(String.Format("Apartado7-1-{0}", i + 1)));
+                                    l.Add(Tag.Create("div").WithInner(c.Description.Value));
                                 }
                              )
 
@@ -320,8 +320,8 @@ namespace Programacion123
                             .WithInnerForeach<CommonText>(Subject.MaterialResources.ToList(),
                                 (c, i, l) =>
                                 {
-                                    l.Add(Tag.Create("h3").WithInner(c.Title).WithId(String.Format("Apartado7-2-{0}", i + 1)));
-                                    l.Add(Tag.Create("div").WithInner(c.Description));
+                                    l.Add(Tag.Create("h3").WithInner(c.Title.Value).WithId(String.Format("Apartado7-2-{0}", i + 1)));
+                                    l.Add(Tag.Create("div").WithInner(c.Description.Value));
                                 }
                              )
                             .WithInner(pageBreak)
@@ -378,7 +378,7 @@ namespace Programacion123
                                 Table.Create()
                                     .WithRow()
                                         .WithCell(String.Format("{0}: {1}", subjectTemplate.SubjectCode, subjectTemplate.SubjectName), 1, 5).WithCellClass("tableHeader1")
-                                        .WithCell(String.Format("Horas: {0}", subjectTemplate.GradeClassroomHours + subjectTemplate.GradeCompanyHours)).WithCellClass("tableHeader1")
+                                        .WithCell(String.Format("Horas: {0}", subjectTemplate.GradeClassroomHours.Value + subjectTemplate.GradeCompanyHours.Value)).WithCellClass("tableHeader1")
                                     .WithRow()
                                         .WithCell("Bloque de enseñanza-aprendizaje", 2, 2).WithCellClass("tableHeader2")
                                         .WithCell("RA", 2, 1).WithCellClass("tableHeader2")
@@ -434,7 +434,7 @@ namespace Programacion123
                                             t.WithCell(contentText, 2, 1);
                                             t.WithCell(criteriaText, 2, 1);
                                             t.WithCell(evaluableActivitiesText, 2, 1);
-                                            t.WithRow().WithCell(b.Description, 1, 2);
+                                            t.WithRow().WithCell(b.Description.Value, 1, 2);
                                         }
                                     )
                             )
@@ -452,19 +452,19 @@ namespace Programacion123
                                         l.Add(
                                             Table.Create()
                                                     .WithRow()
-                                                        .WithCell(a.Title, 1, 4).WithCellClass("tableHeader1")
+                                                        .WithCell(a.Title.Value, 1, 4).WithCellClass("tableHeader1")
                                                     .WithRow()
-                                                        .WithCell(a.Description, 1, 4)
+                                                        .WithCell(a.Description.Value, 1, 4)
                                                     .WithRow()
                                                         .WithCell("Metodología").WithCellClass("tableHeader2")
                                                         .WithCell("Duración").WithCellClass("tableHeader2")
                                                         .WithCell("Fecha de inicio").WithCellClass("tableHeader2")
                                                         .WithCell("Fecha de fin").WithCellClass("tableHeader2")
                                                     .WithRow()
-                                                        .WithCell(a.Metodology.Title)
+                                                        .WithCell(a.Metodology.Value.Title.Value)
                                                         .WithCell(String.Format(CultureInfo.InvariantCulture, "{0:0}h ({1} sesiones)", a.Duration, GetSessionsCountText(a, schedule)))
-                                                        .WithCell(Utils.FormatStartDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).start, Subject.WeekSchedule))
-                                                        .WithCell(Utils.FormatEndDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).end, Subject.WeekSchedule))
+                                                        .WithCell(Utils.FormatStartDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).start, Subject.WeekSchedule.Value))
+                                                        .WithCell(Utils.FormatEndDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).end, Subject.WeekSchedule.Value))
                                                     .WithRow()
                                                         .WithCell("Espacios").WithCellClass("tableHeader2")
                                                         .WithCell("Materiales").WithCellClass("tableHeader2")
@@ -475,14 +475,14 @@ namespace Programacion123
                                                         .WithCell(GetMaterialsText(a))
                                                         .WithCell(GetContentsText(i, a))
                                                         .WithCell(GetKeyCapacitiesText(a))
-                                                     .WithRowIf(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
+                                                     .WithRowIf(a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
                                                         .WithCell("Código de actividad evaluable").WithCellClass("tableHeader2")
                                                         .WithCell("Instrumento de evaluación").WithCellClass("tableHeader2")
                                                         .WithCell("Peso en los resultados de aprendizaje").WithCellClass("tableHeader2")
                                                         .WithCell("Criterios de evaluación").WithCellClass("tableHeader2")
-                                                     .WithRowIf(a.EvaluationType != ActivityEvaluationType.NotEvaluable)
-                                                        .WithCell(a.EvaluationType != ActivityEvaluationType.NotEvaluable ? Utils.FormatEvaluableActivity(i, a.EvaluationType, Subject.QueryEvaluableActivityTypeIndex(i, a)) : "")
-                                                        .WithCell(a.EvaluationType != ActivityEvaluationType.NotEvaluable ? a.EvaluationInstrumentType.Title : "")
+                                                     .WithRowIf(a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
+                                                        .WithCell(a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable ? Utils.FormatEvaluableActivity(i, a.EvaluationType.Value, Subject.QueryEvaluableActivityTypeIndex(i, a)) : "")
+                                                        .WithCell(a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable ? a.EvaluationInstrumentType.Value.Title.Value : "")
                                                         .WithCell(GetReferencedLearningResultsWeightsText(i, a))
                                                         .WithCell(GetReferencedCriteriasText(i, a))
                                         );

@@ -50,8 +50,8 @@
         {
             StorageClassId = "commontext";
 
-            Title = "Escribe un título";
-            Description = "Escribe un texto";
+            Title.Value = "Escribe un título";
+            Description.Value = "Escribe un texto";
 
         }
 
@@ -70,8 +70,8 @@
             base.Save(parentStorageId);
 
             CommonTextData data = new();
-            data.Title = Title;
-            data.Description = Description;
+            data.Title = Title.Value;
+            data.Description = Description.Value;
 
             Storage.SaveData<CommonTextData>(StorageId, StorageClassId, data, parentStorageId);
         }
@@ -84,8 +84,8 @@
 
             CommonTextData data = Storage.LoadData<CommonTextData>(storageId, StorageClassId, parentStorageId);
 
-            Title = data.Title;
-            Description = data.Description;
+            Title.Value = data.Title;
+            Description.Value = data.Description;
 
         }
 

@@ -2,23 +2,23 @@
 {
     public class SubjectTemplate : Entity
     {
-        public GradeTemplate? GradeTemplate { get; set; }
+        public EntityProperty<GradeTemplate?> GradeTemplate { get; } = new (null);
 
-        public string SubjectName { get; set; } = "Nombre completo del módulo";
-        public string SubjectCode { get; set; } = "Código del módulo";
-        public int GradeClassroomHours { get; set; } = 100;
-        public int GradeCompanyHours { get; set; } = 50;
-        public ListProperty<CommonText> GeneralObjectives { get; } = new ListProperty<CommonText>();
-        public ListProperty<CommonText> GeneralCompetences { get; } = new ListProperty<CommonText>();
-        public ListProperty<LearningResult> LearningResults { get; } = new ListProperty<LearningResult>();
-        public ListProperty<Content> Contents { get; } = new ListProperty<Content>();
+        public Property<string> SubjectName { get; } = new ("Nombre completo del módulo");
+        public Property<string> SubjectCode { get; } = new ("Código del módulo");
+        public Property<int> GradeClassroomHours { get; } = new (100);
+        public Property<int> GradeCompanyHours { get; } = new (50);
+        public ListEntityProperty<CommonText> GeneralObjectives { get; } = new ListEntityProperty<CommonText>();
+        public ListEntityProperty<CommonText> GeneralCompetences { get; } = new ListEntityProperty<CommonText>();
+        public ListEntityProperty<LearningResult> LearningResults { get; } = new ListEntityProperty<LearningResult>();
+        public ListEntityProperty<Content> Contents { get; } = new ListEntityProperty<Content>();
 
         public SubjectTemplate() : base()
         {
             StorageClassId = "subjecttemplate";
 
-            Title = "Título de la plantilla de módulo";
-            Description = "Descripción de la plantilla de módulo";
+            Title.Value = "Título de la plantilla de módulo";
+            Description.Value = "Descripción de la plantilla de módulo";
         }
 
         public override ValidationResult Validate()
@@ -27,11 +27,11 @@
 
             if (result.code != ValidationCode.success) { return result; }
 
-            if (GradeTemplate == null) { return ValidationResult.Create(ValidationCode.templateSubjectNotLinkedToGradeTemplate); }
+            if (GradeTemplate.Value == null) { return ValidationResult.Create(ValidationCode.templateSubjectNotLinkedToGradeTemplate); }
 
-            if (SubjectName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNameEmpty); }
-            if (SubjectCode.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectCodeEmpty); }
-            if (GradeClassroomHours <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectClassroomHoursZero); }
+            if (SubjectName.Value.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNameEmpty); }
+            if (SubjectCode.Value.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectCodeEmpty); }
+            if (GradeClassroomHours.Value <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectClassroomHoursZero); }
 
             List<CommonText> objectivesList = GeneralObjectives.ToList();
             if (objectivesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoGeneralObjectivesReferenced); }
@@ -62,15 +62,15 @@
 
             SubjectTemplateData data = new();
 
-            data.Title = Title;
-            data.Description = Description;
+            data.Title = Title.Value;
+            data.Description = Description.Value;
 
-            data.GradeTemplateWeakStorageId = GradeTemplate?.StorageId;
+            data.GradeTemplateWeakStorageId = GradeTemplate.Value?.StorageId;
 
-            data.SubjectName = SubjectName;
-            data.SubjectCode = SubjectCode;
-            data.GradeClassroomHours = GradeClassroomHours;
-            data.GradeCompanyHours = GradeCompanyHours;
+            data.SubjectName = SubjectName.Value;
+            data.SubjectCode = SubjectCode.Value;
+            data.GradeClassroomHours = GradeClassroomHours.Value;
+            data.GradeCompanyHours = GradeCompanyHours.Value;
 
             List<CommonText> list = GeneralObjectives.ToList();
             data.GeneralObjectivesWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
@@ -98,15 +98,15 @@
 
             SubjectTemplateData data = Storage.LoadData<SubjectTemplateData>(storageId, StorageClassId, parentStorageId);
 
-            Title = data.Title;
-            Description = data.Description;
+            Title.Value = data.Title;
+            Description.Value = data.Description;
 
-            GradeTemplate = data.GradeTemplateWeakStorageId != null ? Storage.LoadOrCreateEntity<GradeTemplate>(data.GradeTemplateWeakStorageId, null) : null;
+            GradeTemplate.Value = data.GradeTemplateWeakStorageId != null ? Storage.LoadOrCreateEntity<GradeTemplate>(data.GradeTemplateWeakStorageId, null) : null;
 
-            SubjectName = data.SubjectName;
-            SubjectCode = data.SubjectCode;
-            GradeClassroomHours = data.GradeClassroomHours;
-            GradeCompanyHours = data.GradeCompanyHours;
+            SubjectName.Value = data.SubjectName;
+            SubjectCode.Value = data.SubjectCode;
+            GradeClassroomHours.Value = data.GradeClassroomHours;
+            GradeCompanyHours.Value = data.GradeCompanyHours;
 
             GeneralObjectives.Set(Storage.FindChildEntities<CommonText>(data.GeneralObjectivesWeakStorageIds));
 

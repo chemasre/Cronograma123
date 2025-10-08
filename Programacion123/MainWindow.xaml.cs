@@ -217,7 +217,7 @@ namespace Programacion123
                                                    .WithEntityInitializer(
                                                             (SubjectTemplate t) =>
                                                             {
-                                                                t.GradeTemplate = gradeTemplatesController.GetSelectedEntity();
+                                                                t.GradeTemplate.Value = gradeTemplatesController.GetSelectedEntity();
                                                             })
                                                    .WithNew(ButtonSubjectTemplateNew)
                                                    .WithEdit(ButtonSubjectTemplateEdit)
@@ -235,9 +235,9 @@ namespace Programacion123
                                                    .WithEntityInitializer(
                                                             (Subject s) =>
                                                             {
-                                                                s.Template = subjectTemplatesController.GetSelectedEntity();
-                                                                s.Calendar = calendarsController.GetSelectedEntity();
-                                                                s.WeekSchedule = weekSchedulesController.GetSelectedEntity();
+                                                                s.Template.Value = subjectTemplatesController.GetSelectedEntity();
+                                                                s.Calendar.Value = calendarsController.GetSelectedEntity();
+                                                                s.WeekSchedule.Value = weekSchedulesController.GetSelectedEntity();
                                                             })
                                                    .WithNew(ButtonSubjectNew)
                                                    .WithEdit(ButtonSubjectEdit)

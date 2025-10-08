@@ -39,10 +39,10 @@ namespace Programacion123
             parentStorageId = _parentStorageId;
             calendar = entity;
 
-            TextTitle.Text = entity.Title;
+            TextTitle.Text = entity.Title.Value;
 
-            DateStart.SelectedDate = entity.StartDay;
-            DateEnd.SelectedDate = entity.EndDay;
+            DateStart.SelectedDate = entity.StartDay.Value;
+            DateEnd.SelectedDate = entity.EndDay.Value;
 
             freeDaysList = calendar.FreeDays.ToList();
             freeDaysList.Sort();
@@ -58,7 +58,7 @@ namespace Programacion123
             }
             else
             {
-                DateFreeDay.SelectedDate = calendar.StartDay;
+                DateFreeDay.SelectedDate = calendar.StartDay.Value;
                 ListBoxFreeDays.SelectedIndex = -1;
             }
 
@@ -97,9 +97,9 @@ namespace Programacion123
 
         private void UpdateEntity()
         {
-            calendar.Title = TextTitle.Text.Trim();
-            calendar.StartDay = DateStart.SelectedDate.GetValueOrDefault();
-            calendar.EndDay = DateEnd.SelectedDate.GetValueOrDefault();
+            calendar.Title.Value = TextTitle.Text.Trim();
+            calendar.StartDay.Value = DateStart.SelectedDate.GetValueOrDefault();
+            calendar.EndDay.Value = DateEnd.SelectedDate.GetValueOrDefault();
 
             calendar.FreeDays.Clear();
             calendar.FreeDays.Add(freeDaysList);

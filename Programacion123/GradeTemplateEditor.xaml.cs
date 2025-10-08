@@ -102,11 +102,11 @@ namespace Programacion123
 
             commonTextsController.Changed += CommonTextsController_Changed;
 
-            TextTitle.Text = _gradeTemplate.Title;
+            TextTitle.Text = _gradeTemplate.Title.Value;
 
-            ComboType.SelectedIndex = (int)_gradeTemplate.GradeType;
-            TextName.Text = _gradeTemplate.GradeName;
-            TextFamilyName.Text = _gradeTemplate.GradeFamilyName;
+            ComboType.SelectedIndex = (int)_gradeTemplate.GradeType.Value;
+            TextName.Text = _gradeTemplate.GradeName.Value;
+            TextFamilyName.Text = _gradeTemplate.GradeFamilyName.Value;
 
             ButtonClose.ToolTip = "Cerrar";
 
@@ -187,7 +187,7 @@ namespace Programacion123
 
         private void UpdateEntity()
         {
-            entity.Title = TextTitle.Text;
+            entity.Title.Value = TextTitle.Text;
             entity.GeneralObjectives.Set(Storage.LoadOrCreateEntities<CommonText>(generalObjectivesController.StorageIds, entity.StorageId));
             entity.GeneralCompetences.Set(Storage.LoadOrCreateEntities<CommonText>(generalCompetencesController.StorageIds, entity.StorageId));
             entity.KeyCapacities.Set(Storage.LoadOrCreateEntities<CommonText>(keyCapacitiesController.StorageIds, entity.StorageId));
@@ -195,9 +195,9 @@ namespace Programacion123
             for (int i = 0; i < commonTextsController.StorageIds.Count; i++)
             { entity.CommonTexts.Set((CommonTextId)i, Storage.LoadOrCreateEntity<CommonText>(commonTextsController.StorageIds[i], entity.StorageId)); }
 
-            entity.GradeName = TextName.Text;
-            entity.GradeType = (GradeType)(ComboType.SelectedIndex >= 0 ? ComboType.SelectedIndex : 0);
-            entity.GradeFamilyName = TextFamilyName.Text;
+            entity.GradeName.Value = TextName.Text;
+            entity.GradeType.Value = (GradeType)(ComboType.SelectedIndex >= 0 ? ComboType.SelectedIndex : 0);
+            entity.GradeFamilyName.Value = TextFamilyName.Text;
 
             entity.Save(parentStorageId);
         }

@@ -16,22 +16,82 @@
         protected StorageState storageState;
         public string StorageId { get; set; }
         public string StorageClassId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
+
+        public Property<string> Title { get; } = new Property<string>("");
+        public Property<string> Description { get; } = new Property<string>("");
+
+        public delegate void OnChangedHandler(Entity e);
+        public event OnChangedHandler OnUpdated;
+
+        // Validation
+
+        bool checkTitle;
+        bool checkDescription;
+        
+        ValidationResult cachedResult;
 
         public Entity()
         {
-            Title = "Escribe un título";
-            Description = "Escribe una descripción";
+            Title.Value = "Escribe un título";
+            Description.Value = "Escribe una descripción";
+
             StorageId = Guid.NewGuid().ToString();
             storageState = StorageState.detached;
+
+            Title.OnSetted += (previous, current) => { if(previous != current) { OnUpdated?.Invoke(this); checkTitle = true; } };
+            Description.OnSetted += (previous, current) => { if(previous != current) { OnUpdated?.Invoke(this); checkDescription = true; } };
+
+            checkTitle = true;
+            checkDescription = true;
+
+        }
+
+        protected void InvokeOnUpdated()
+        {
+            OnUpdated?.Invoke(this);
+        }
+
+        public virtual void Invalidate()
+        {
+            checkTitle = true;
+            checkDescription = true;
         }
 
         public virtual ValidationResult Validate()
         {
-            if (Title.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.entityTitleEmpty); }
-            else if (Description.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.entityDescriptionEmpty); }
-            else { return ValidationResult.Create(ValidationCode.success); }
+            if(!checkTitle && !checkDescription) { return cachedResult; }
+
+            bool invalid = false;
+
+            if(!invalid && checkTitle)
+            {
+                if(Title.Value.Trim().Length <= 0)
+                {
+                    cachedResult = ValidationResult.Create(ValidationCode.entityTitleEmpty);
+                    invalid = true;
+                }
+
+                checkTitle = false;
+            }
+
+            if(!invalid && checkDescription)
+            {
+                if(Description.Value.Trim().Length <= 0)
+                {
+                    cachedResult = ValidationResult.Create(ValidationCode.entityDescriptionEmpty);
+                    invalid = true;
+                }
+
+                checkDescription = false;
+            }
+
+            if(!invalid)
+            {
+                cachedResult = ValidationResult.Create(ValidationCode.success);
+            }
+
+            return cachedResult;
+
         }
 
         public virtual void SetDirty()

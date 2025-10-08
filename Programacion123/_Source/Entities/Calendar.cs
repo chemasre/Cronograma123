@@ -2,21 +2,37 @@
 {
     public class Calendar : Entity
     {
-        public DateTime StartDay { get; set; }
-        public DateTime EndDay { get; set; }
+        public Property<DateTime> StartDay { get; } = new(DateTime.MinValue);
+        public Property<DateTime> EndDay { get; } = new(DateTime.MinValue);
 
         public SetProperty<DateTime> FreeDays { get; } = new SetProperty<DateTime>();
+
+        bool checkStartDay;
+        bool checkEndDay;
+        bool checkFreeDays;
+
+        ValidationResult cachedResult;
 
         public Calendar()
         {
             DateTime date = DateTime.Now.Date;
-            StartDay = date;
-            EndDay = date;
+            StartDay.Value = date;
+            EndDay.Value = date;
 
             StorageClassId = "calendar";
 
-            Title = "Título del calendario";
-            Description = "Descripción del calendario";
+            Title.Value = "Título del calendario";
+            Description.Value = "Descripción del calendario";
+
+            StartDay.OnSetted += (previous, current) => { if(previous != current) { checkStartDay = true; } };
+            EndDay.OnSetted += (previous, current) => { if(previous != current) { checkStartDay = true; } };
+
+            FreeDays.OnAdded += (element) => { checkFreeDays = true; };
+            FreeDays.OnRemoved += (element) => { checkFreeDays = true; };
+
+            checkStartDay = true;
+            checkEndDay   = true;
+            checkFreeDays = true;
 
         }
 
@@ -27,55 +43,77 @@
             return lista;
         }
 
+        public override void Invalidate()
+        {
+            base.Invalidate();
+
+            checkStartDay = true;
+            checkEndDay = true;
+            checkFreeDays = true;
+        }
+
         public override ValidationResult Validate()
         {
-            ValidationResult validation = base.Validate();
+            ValidationResult baseResult = base.Validate();
 
-            if (validation.code == ValidationCode.success && StartDay > EndDay)
-            {
-                //Console.WriteLine("La fecha de inicio no puede ser posterior a la fecha de fin");
-                validation = ValidationResult.Create(ValidationCode.calendarStartDayAfterEndDay);
-            }
+            if(baseResult.code != ValidationCode.success) { return baseResult; }
 
-            if (validation.code == ValidationCode.success)
+            if(!checkStartDay && !checkEndDay && !checkFreeDays) { return cachedResult; }
+           
+            bool invalid = false;
+
+            if (!invalid && checkFreeDays)
             {
                 int i = 0;
                 var listaFestivos = FreeDays.ToList();
 
-                while (validation.code == ValidationCode.success && i < listaFestivos.Count)
+                while (!invalid && i < listaFestivos.Count)
                 {
-                    if (listaFestivos[i] > EndDay || listaFestivos[i] < StartDay)
+                    if (listaFestivos[i] > EndDay.Value || listaFestivos[i] < StartDay.Value)
                     {
-                        //Utils.MuestraError("El festivo " + listaFestivos[i].ToString("dd/MM/yyyy") + " esta fuera del calendario");
-                        validation = ValidationResult.Create(ValidationCode.calendarFreeDayBeforeStartOrAfterEnd);
+                        cachedResult = ValidationResult.Create(ValidationCode.calendarFreeDayBeforeStartOrAfterEnd);
+                        invalid = true;
                     }
 
                     i++;
                 }
 
+                checkFreeDays = false;
             }
 
-            if (validation.code == ValidationCode.success)
+            if (!invalid && (checkStartDay || checkEndDay))
             {
-                DateTime d = StartDay;
+                DateTime d = StartDay.Value;
                 bool foundSchoolDay = false;
 
-                while (d <= EndDay && !foundSchoolDay)
+                while (d <= EndDay.Value && !foundSchoolDay)
                 {
                     if (!FreeDays.Contains(d) && d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday) { foundSchoolDay = true; }
                     else { d = d.AddDays(1); }
                 }
 
-                if (!foundSchoolDay) { validation = ValidationResult.Create(ValidationCode.calendarNoSchoolDays); }
+                if (!foundSchoolDay)
+                {
+                    cachedResult = ValidationResult.Create(ValidationCode.calendarNoSchoolDays);
+                    invalid = true;
+                }
+
+                checkStartDay = false;
+                checkEndDay = false;
             }
 
-            return validation;
+            if(!invalid)
+            {
+                cachedResult = ValidationResult.Create(ValidationCode.success);
+            }
+
+            return cachedResult;
         }
 
         public void Reset()
         {
-            StartDay = new DateTime();
-            EndDay = new DateTime();
+            StartDay.Value = new DateTime();
+            EndDay.Value = new DateTime();
             FreeDays.Clear();
         }
 
@@ -87,10 +125,10 @@
 
             var data = Storage.LoadData<CalendarData>(storageId, StorageClassId, parentStorageId);
 
-            Title = data.Title;
+            Title.Value = data.Title;
 
-            StartDay = data.StartDay;
-            EndDay = data.EndDay;
+            StartDay.Value = data.StartDay;
+            EndDay.Value = data.EndDay;
             FreeDays.Clear();
             FreeDays.Add(data.FreeDays.ToList<DateTime>());
 
@@ -107,10 +145,10 @@
 
             var data = new CalendarData();
 
-            data.Title = Title;
+            data.Title = Title.Value;
 
-            data.StartDay = StartDay;
-            data.EndDay = EndDay;
+            data.StartDay = StartDay.Value;
+            data.EndDay = EndDay.Value;
             data.FreeDays = new HashSet<DateTime>(FreeDays.ToList());
 
             Storage.SaveData<CalendarData>(StorageId, StorageClassId, data, parentStorageId);
@@ -126,13 +164,13 @@
 
         public Calendar Clone()
         {
-            var otro = new Calendar();
+            var other = new Calendar();
 
-            otro.StartDay = StartDay;
-            otro.EndDay = EndDay;
-            otro.FreeDays.Add(FreeDays.ToList());
+            other.StartDay.Value = StartDay.Value;
+            other.EndDay.Value = EndDay.Value;
+            other.FreeDays.Add(FreeDays.ToList());
 
-            return otro;
+            return other;
         }
 
     }

@@ -53,7 +53,7 @@ namespace Programacion123
             parentStorageId = _parentStorageId;
 
             var configTemplate = WeakReferenceFieldConfiguration<SubjectTemplate>.CreateForTextBox(TextTemplate)
-                                               .WithStorageId(entity.Template?.StorageId)
+                                               .WithStorageId(entity.Template.Value?.StorageId)
                                                .WithPick(ButtonTemplatePick)
                                                .WithFormat(EntityFormatContent.Title)
                                                .WithPickerTitle("Selecciona una plantilla")
@@ -64,7 +64,7 @@ namespace Programacion123
             subjectTemplateController.Changed += SubjectTemplateController_Changed;
 
             var configCalendar = WeakReferenceFieldConfiguration<Calendar>.CreateForTextBox(TextCalendar)
-                                               .WithStorageId(entity.Calendar?.StorageId)
+                                               .WithStorageId(entity.Calendar.Value?.StorageId)
                                                .WithPick(ButtonCalendarPick)
                                                .WithFormat(EntityFormatContent.Title)
                                                .WithPickerTitle("Selecciona un calendario")
@@ -75,7 +75,7 @@ namespace Programacion123
             calendarController.Changed += CalendarController_Changed;
 
             var configWeekSchedule = WeakReferenceFieldConfiguration<WeekSchedule>.CreateForTextBox(TextWeekSchedule)
-                                               .WithStorageId(entity.WeekSchedule?.StorageId)
+                                               .WithStorageId(entity.WeekSchedule.Value?.StorageId)
                                                .WithPick(ButtonWeekSchedulePick)
                                                .WithFormat(EntityFormatContent.Title)
                                                .WithPickerTitle("Selecciona un horario")
@@ -201,7 +201,7 @@ namespace Programacion123
 
             commonTextsController.Changed += CommonTextsController_Changed;
 
-            TextTitle.Text = entity.Title;
+            TextTitle.Text = entity.Title.Value;
 
             TextTitle.TextChanged += TextTitle_TextChanged;
 
@@ -259,10 +259,10 @@ namespace Programacion123
             dataTableResultsWeight.Rows.Clear();
             dataTableResultsWeight.Columns.Clear();
 
-            if (entity.Template != null)
+            if (entity.Template.Value != null)
             {
                 List<KeyValuePair<LearningResult, float>> resultsWeightsList = entity.LearningResultsWeights.ToList();
-                List<LearningResult> resultsList = entity.Template.LearningResults.ToList();
+                List<LearningResult> resultsList = entity.Template.Value.LearningResults.ToList();
                 int resultsCount = resultsList.Count;
                 for (int i = 0; i < resultsCount; i++)
                 { dataTableResultsWeight.Columns.Add(String.Format("RA{0}", i + 1), typeof(float)); }
@@ -294,11 +294,11 @@ namespace Programacion123
             dataTableActivitiesWeight.Rows.Clear();
             dataTableActivitiesWeight.Columns.Clear();
 
-            if (entity.Template != null)
+            if (entity.Template.Value != null)
             {
                 dataTableActivitiesWeight.Columns.Add("Actividad", typeof(string));
 
-                List<LearningResult> results = entity.Template.LearningResults.ToList();
+                List<LearningResult> results = entity.Template.Value.LearningResults.ToList();
                 for (int i = 0; i < results.Count; i++)
                 { dataTableActivitiesWeight.Columns.Add(String.Format("RA{0}", i + 1), typeof(float)); }
 
@@ -311,12 +311,12 @@ namespace Programacion123
                         Activity activity = block.Activities[a];
                         //activity = Storage.LoadOrCreateEntity<Activity>(activity.StorageId, block.StorageId);
 
-                        if (activity.EvaluationType != ActivityEvaluationType.NotEvaluable)
+                        if (activity.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
                         {
                             DataRow row = dataTableActivitiesWeight.NewRow();
 
                             int evaluableActivityIndex = entity.QueryEvaluableActivityTypeIndex(b, activity);
-                            row["Actividad"] = String.Format(activity.EvaluationType == ActivityEvaluationType.Continous ? "B{0}-A{1}" : "B{0}-EX{1}",
+                            row["Actividad"] = String.Format(activity.EvaluationType.Value == ActivityEvaluationType.Continous ? "B{0}-A{1}" : "B{0}-EX{1}",
                                                             b + 1, evaluableActivityIndex + 1);
 
                             List<KeyValuePair<LearningResult, float>> resultsWeightsList = activity.LearningResultsWeights.ToList();
@@ -366,7 +366,7 @@ namespace Programacion123
                 b.Activities.ToList().ForEach(
                 a =>
                 {
-                    if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
+                    if (a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
                     {
                         activityStorageIdToBlockIndex.Add(a.StorageId, bIndex);
                         activityStorageIdToActivityIndex.Add(a.StorageId, aIndex);
@@ -404,14 +404,14 @@ namespace Programacion123
             {
                 DataRow row = dataTableActivitiesSchedule.NewRow();
 
-                row["Actividad"] = a.EvaluationType != ActivityEvaluationType.NotEvaluable ?
+                row["Actividad"] = a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable ?
                                         String.Format("B{0:00}-A{1:00}",
                                         activityStorageIdToBlockIndex[a.StorageId] + 1,
                                         activityStorageIdToActivityIndex[a.StorageId] + 1) :
-                                        a.Title.Substring(0, Math.Min(a.Title.Length, 20)) +
-                                        (a.Title.Length > 20 ? "..." : "");
+                                        a.Title.Value.Substring(0, Math.Min(a.Title.Value.Length, 20)) +
+                                        (a.Title.Value.Length > 20 ? "..." : "");
 
-                row["Horas"] = a.Duration;
+                row["Horas"] = a.Duration.Value;
 
                 ActivitySchedule? schedule = null;
                 if (scheduledActivities != null)
@@ -421,13 +421,13 @@ namespace Programacion123
 
                 if (schedule.HasValue)
                 {
-                    row["Inicio"] = Utils.FormatStartDayHour(schedule.Value.start.day, schedule.Value.start.hour, entity.WeekSchedule);
-                    row["Fin"] = Utils.FormatEndDayHour(schedule.Value.end.day, schedule.Value.end.hour, entity.WeekSchedule);
+                    row["Inicio"] = Utils.FormatStartDayHour(schedule.Value.start.day, schedule.Value.start.hour, entity.WeekSchedule.Value);
+                    row["Fin"] = Utils.FormatEndDayHour(schedule.Value.end.day, schedule.Value.end.hour, entity.WeekSchedule.Value);
 
                     float count = 0;
                     for (DateTime d = schedule.Value.start.day; d <= schedule.Value.end.day; d = d.AddDays(1))
                     {
-                        if (Utils.IsSchoolDay(d, entity.Calendar, entity.WeekSchedule)) { count++; }
+                        if (Utils.IsSchoolDay(d, entity.Calendar.Value, entity.WeekSchedule.Value)) { count++; }
                     }
 
                     row["Sesiones"] = count;
@@ -553,11 +553,11 @@ namespace Programacion123
 
         private void UpdateEntity()
         {
-            entity.Title = TextTitle.Text;
+            entity.Title.Value = TextTitle.Text;
 
-            entity.Template = subjectTemplateController.GetEntity();
-            entity.Calendar = calendarController.GetEntity();
-            entity.WeekSchedule = weekScheduleController.GetEntity();
+            entity.Template.Value = subjectTemplateController.GetEntity();
+            entity.Calendar.Value = calendarController.GetEntity();
+            entity.WeekSchedule.Value = weekScheduleController.GetEntity();
 
             for (int i = 0; i < commonTextsController.StorageIds.Count; i++)
             { entity.CommonTexts.Set((CommonTextId)i, Storage.LoadOrCreateEntity<CommonText>(commonTextsController.StorageIds[i], entity.StorageId)); }
@@ -574,14 +574,14 @@ namespace Programacion123
             entity.Blocks.Set(Storage.LoadOrCreateEntities<Block>(blocksController.StorageIds, entity.StorageId));
 
             entity.LearningResultsWeights.Clear();
-            if (entity.Template != null)
+            if (entity.Template.Value != null)
             {
                 int columnIndex = 0;
-                int count = Math.Min(dataTableResultsWeight.Columns.Count, entity.Template.LearningResults.Count);
+                int count = Math.Min(dataTableResultsWeight.Columns.Count, entity.Template.Value.LearningResults.Count);
                 for (int i = 0; i < count; i++)
                 {
                     DataColumn c = dataTableResultsWeight.Columns[i];
-                    LearningResult r = entity.Template.LearningResults[columnIndex];
+                    LearningResult r = entity.Template.Value.LearningResults[columnIndex];
                     entity.LearningResultsWeights.Add(r, (float)dataTableResultsWeight.Rows[0][c.ColumnName]);
                     columnIndex++;
                 }
@@ -598,12 +598,12 @@ namespace Programacion123
                 List<Activity> activitiesList = b.Activities.ToList();
                 foreach (Activity a in activitiesList)
                 {
-                    if (a.EvaluationType != ActivityEvaluationType.NotEvaluable)
+                    if (a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
                     {
-                        if (entity.Template != null)
+                        if (entity.Template.Value != null)
                         {
                             a.LearningResultsWeights.Clear();
-                            List<LearningResult> resultList = entity.Template.LearningResults.ToList();
+                            List<LearningResult> resultList = entity.Template.Value.LearningResults.ToList();
                             int columnCount = Math.Min(dataTableActivitiesWeight.Columns.Count - 1, resultList.Count);
                             for (int i = 0; i < columnCount; i++)
                             {
@@ -646,7 +646,7 @@ namespace Programacion123
                         float h = (int)((float)row["Horas"] / 0.25f) * 0.25f;
                         if (h <= 0) { h = 0.25f; }
 
-                        a.Duration = h;
+                        a.Duration.Value = h;
                     }
 
                     activityScheduleIndex++;
@@ -661,7 +661,7 @@ namespace Programacion123
 
         void UpdateEntityTemplateReferences()
         {
-            if (entity.Template == null)
+            if (entity.Template.Value == null)
             {
                 entity.LearningResultsWeights.Clear();
 
@@ -681,7 +681,7 @@ namespace Programacion123
             {
                 List<KeyValuePair<LearningResult, float>> previousWeights = entity.LearningResultsWeights.ToList();
 
-                List<LearningResult> resultsList = entity.Template.LearningResults.ToList();
+                List<LearningResult> resultsList = entity.Template.Value.LearningResults.ToList();
                 entity.LearningResultsWeights.Clear();
                 foreach (LearningResult r in resultsList)
                 {

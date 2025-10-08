@@ -30,7 +30,7 @@ namespace Programacion123
 
         private void UpdateEntity()
         {
-            entity.Title = TextTitle.Text.Trim();
+            entity.Title.Value = TextTitle.Text.Trim();
 
             entity.HoursPerWeekDay.Clear();
             entity.HoursPerWeekDay.Add(DayOfWeek.Monday, (int)dataTable.Rows[0]["Horas"]);
@@ -132,7 +132,7 @@ namespace Programacion123
 
             entity = _weekSchedule;
 
-            TextTitle.Text = entity.Title;
+            TextTitle.Text = entity.Title.Value;
 
             if (_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Monday)) { dataTable.Rows[0]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Monday]; }
             if (_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Tuesday)) { dataTable.Rows[1]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Tuesday]; }

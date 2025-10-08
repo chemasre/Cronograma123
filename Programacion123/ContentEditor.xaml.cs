@@ -55,7 +55,7 @@ namespace Programacion123
 
             pointsController.Changed += PointsController_Changed;
 
-            TextBoxDescription.Text = _entity.Description;
+            TextBoxDescription.Text = _entity.Description.Value;
 
             TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
 
@@ -79,7 +79,7 @@ namespace Programacion123
 
         void UpdateEntity()
         {
-            entity.Description = TextBoxDescription.Text;
+            entity.Description.Value = TextBoxDescription.Text;
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
             entity.Points.Set(Storage.LoadOrCreateEntities<CommonText>(pointsController.StorageIds, entity.StorageId));

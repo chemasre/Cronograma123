@@ -2,14 +2,14 @@
 {
     public class Content : Entity
     {
-        public ListProperty<CommonText> Points { get; } = new ListProperty<CommonText>();
+        public ListEntityProperty<CommonText> Points { get; } = new ListEntityProperty<CommonText>();
 
         public Content() : base()
         {
             StorageClassId = "content";
 
-            Title = "Título del contenido";
-            Description = "Descripción del contenido";
+            Title.Value = "Título del contenido";
+            Description.Value = "Descripción del contenido";
         }
 
         public override ValidationResult Validate()
@@ -35,8 +35,8 @@
 
             ContentData data = new();
 
-            data.Title = Title;
-            data.Description = Description;
+            data.Title = Title.Value;
+            data.Description = Description.Value;
 
             List<CommonText> list = Points.ToList();
             list.ForEach(e => e.Save(StorageId));
@@ -53,8 +53,8 @@
 
             ContentData data = Storage.LoadData<ContentData>(storageId, StorageClassId, parentStorageId);
 
-            Title = data.Title;
-            Description = data.Description;
+            Title.Value = data.Title;
+            Description.Value = data.Description;
 
             Points.Set(Storage.LoadOrCreateEntities<CommonText>(data.PointsStorageIds, storageId));
 

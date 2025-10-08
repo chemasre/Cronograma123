@@ -38,7 +38,7 @@ namespace Programacion123
             parentStorageId = _parentStorageId;
 
             var configGradeTemplate = WeakReferenceFieldConfiguration<GradeTemplate>.CreateForTextBox(TextGradeTemplate)
-                                               .WithStorageId(entity.GradeTemplate?.StorageId)
+                                               .WithStorageId(entity.GradeTemplate.Value?.StorageId)
                                                .WithPick(ButtonGradeTemplatePick)
                                                .WithFormat(EntityFormatContent.Title)
                                                .WithPickerTitle("Selecciona una plantilla de ciclo")
@@ -52,9 +52,9 @@ namespace Programacion123
             () =>
             {
                 List<string> objectivesStorageIds = new();
-                if (entity.GradeTemplate != null)
+                if (entity.GradeTemplate.Value != null)
                 {
-                    List<CommonText> objectivesList = entity.GradeTemplate.GeneralObjectives.ToList();
+                    List<CommonText> objectivesList = entity.GradeTemplate.Value.GeneralObjectives.ToList();
                     objectivesStorageIds = Storage.GetStorageIds<CommonText>(objectivesList);
 
                 }
@@ -70,10 +70,10 @@ namespace Programacion123
                     List<CommonText>? objectives = null;
                     int objectiveIndex = -1;
 
-                    canFormat = (entity.GradeTemplate != null);
+                    canFormat = (entity.GradeTemplate.Value != null);
                     if (canFormat)
                     {
-                        gradeTemplate = entity.GradeTemplate;
+                        gradeTemplate = entity.GradeTemplate.Value;
                     }
                     if (canFormat)
                     {
@@ -110,9 +110,9 @@ namespace Programacion123
             () =>
             {
                 List<string> competencesStorageIds = new();
-                if (entity.GradeTemplate != null)
+                if (entity.GradeTemplate.Value != null)
                 {
-                    List<CommonText> competencesList = entity.GradeTemplate.GeneralCompetences.ToList();
+                    List<CommonText> competencesList = entity.GradeTemplate.Value.GeneralCompetences.ToList();
                     competencesStorageIds = Storage.GetStorageIds<CommonText>(competencesList);
 
                 }
@@ -128,10 +128,10 @@ namespace Programacion123
                     List<CommonText>? competences = null;
                     int competenceIndex = -1;
 
-                    canFormat = (entity.GradeTemplate != null);
+                    canFormat = (entity.GradeTemplate.Value != null);
                     if (canFormat)
                     {
-                        gradeTemplate = entity.GradeTemplate;
+                        gradeTemplate = entity.GradeTemplate.Value;
                     }
                     if (canFormat)
                     {
@@ -168,9 +168,9 @@ namespace Programacion123
             () =>
             {
                 List<string> keyCapacitiesStorageIds = new();
-                if (entity.GradeTemplate != null)
+                if (entity.GradeTemplate.Value != null)
                 {
-                    List<CommonText> capacitiesList = entity.GradeTemplate.KeyCapacities.ToList();
+                    List<CommonText> capacitiesList = entity.GradeTemplate.Value.KeyCapacities.ToList();
                     keyCapacitiesStorageIds = Storage.GetStorageIds<CommonText>(capacitiesList);
 
                 }
@@ -186,10 +186,10 @@ namespace Programacion123
                     List<CommonText>? capacities = null;
                     int capacityIndex = -1;
 
-                    canFormat = (entity.GradeTemplate != null);
+                    canFormat = (entity.GradeTemplate.Value != null);
                     if (canFormat)
                     {
-                        gradeTemplate = entity.GradeTemplate;
+                        gradeTemplate = entity.GradeTemplate.Value;
                     }
                     if (canFormat)
                     {
@@ -242,10 +242,10 @@ namespace Programacion123
 
             contentsController.Changed += ContentsController_Changed;
 
-            TextTitle.Text = _subjectTemplate.Title;
+            TextTitle.Text = _subjectTemplate.Title.Value;
 
-            TextSubjectName.Text = _subjectTemplate.SubjectName;
-            TextSubjectCode.Text = _subjectTemplate.SubjectCode;
+            TextSubjectName.Text = _subjectTemplate.SubjectName.Value;
+            TextSubjectCode.Text = _subjectTemplate.SubjectCode.Value;
             TextGradeClassroomHours.Text = _subjectTemplate.GradeClassroomHours.ToString();
             TextGradeCompanyHours.Text = _subjectTemplate.GradeCompanyHours.ToString();
 
@@ -346,9 +346,9 @@ namespace Programacion123
 
         private void UpdateEntity()
         {
-            entity.Title = TextTitle.Text;
+            entity.Title.Value = TextTitle.Text;
 
-            entity.GradeTemplate = gradeTemplateController.GetEntity();
+            entity.GradeTemplate.Value = gradeTemplateController.GetEntity();
 
             entity.GeneralObjectives.Set(generalObjectivesController.GetSelectedEntities());
             entity.GeneralCompetences.Set(generalCompetencesController.GetSelectedEntities());
@@ -356,12 +356,12 @@ namespace Programacion123
             entity.LearningResults.Set(Storage.LoadOrCreateEntities<LearningResult>(learningResultsController.StorageIds, entity.StorageId));
             entity.Contents.Set(Storage.LoadOrCreateEntities<Content>(contentsController.StorageIds, entity.StorageId));
 
-            entity.SubjectName = TextSubjectName.Text;
-            entity.SubjectCode = TextSubjectCode.Text;
+            entity.SubjectName.Value = TextSubjectName.Text;
+            entity.SubjectCode.Value = TextSubjectCode.Text;
 
             int number;
-            entity.GradeClassroomHours = Int32.TryParse(TextGradeClassroomHours.Text, out number) ? number : 0;
-            entity.GradeCompanyHours = Int32.TryParse(TextGradeCompanyHours.Text, out number) ? number : 0;
+            entity.GradeClassroomHours.Value = Int32.TryParse(TextGradeClassroomHours.Text, out number) ? number : 0;
+            entity.GradeCompanyHours.Value = Int32.TryParse(TextGradeCompanyHours.Text, out number) ? number : 0;
 
             entity.Save(parentStorageId);
         }

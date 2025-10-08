@@ -75,9 +75,9 @@ namespace Programacion123
         public static string FormatEntity<T>(T entity, EntityFormatContent formatContent) where T : Entity
         {
             string content;
-            if (formatContent == EntityFormatContent.Title) { content = entity.Title; }
+            if (formatContent == EntityFormatContent.Title) { content = entity.Title.Value; }
             else // formatContent == EntityFormatContent.description
-            { content = entity.Description; }
+            { content = entity.Description.Value; }
             if (content.Length > 100) { content = content.Substring(0, Math.Min(100, content.Length)) + "..."; }
 
             return content;
@@ -104,7 +104,7 @@ namespace Programacion123
 
         public static bool IsSchoolDay(DateTime day, Calendar calendar, WeekSchedule weekSchedule)
         {
-            if (day >= calendar.StartDay && day <= calendar.EndDay &&
+            if (day >= calendar.StartDay.Value && day <= calendar.EndDay.Value &&
                day.DayOfWeek != DayOfWeek.Saturday && day.DayOfWeek != DayOfWeek.Sunday &&
                weekSchedule.HoursPerWeekDay[day.DayOfWeek] > 0 &&
                !calendar.FreeDays.Contains(day))
