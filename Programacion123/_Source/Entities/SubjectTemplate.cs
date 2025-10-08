@@ -2,53 +2,174 @@
 {
     public class SubjectTemplate : Entity
     {
-        public GradeTemplate? GradeTemplate { get; set; }
+        public EntityProperty<GradeTemplate?> GradeTemplate { get; } = new (null);
 
-        public string SubjectName { get; set; } = "Nombre completo del módulo";
-        public string SubjectCode { get; set; } = "Código del módulo";
-        public int GradeClassroomHours { get; set; } = 100;
-        public int GradeCompanyHours { get; set; } = 50;
-        public ListProperty<CommonText> GeneralObjectives { get; } = new ListProperty<CommonText>();
-        public ListProperty<CommonText> GeneralCompetences { get; } = new ListProperty<CommonText>();
-        public ListProperty<LearningResult> LearningResults { get; } = new ListProperty<LearningResult>();
-        public ListProperty<Content> Contents { get; } = new ListProperty<Content>();
+        public Property<string> SubjectName { get; } = new ("Nombre completo del módulo");
+        public Property<string> SubjectCode { get; } = new ("Código del módulo");
+        public Property<int> GradeClassroomHours { get; } = new (100);
+        public Property<int> GradeCompanyHours { get; } = new (50);
+        public ListEntityProperty<CommonText> GeneralObjectives { get; } = new ListEntityProperty<CommonText>();
+        public ListEntityProperty<CommonText> GeneralCompetences { get; } = new ListEntityProperty<CommonText>();
+        public ListEntityProperty<LearningResult> LearningResults { get; } = new ListEntityProperty<LearningResult>();
+        public ListEntityProperty<Content> Contents { get; } = new ListEntityProperty<Content>();
+
+        const uint flagGradeTemplate            = 1 << 2;
+        const uint flagSubjectName              = 1 << 3;
+        const uint flagSubjectCode              = 1 << 4;
+        const uint flagGradeClassroomHours      = 1 << 5;
+        const uint flagGradeCompanyHours        = 1 << 6;
+        const uint flagGradeGeneralObjectives   = 1 << 7;
+        const uint flagGradeGeneralCompetences  = 1 << 8;
+        const uint flagGradeLearningResults     = 1 << 9;
+        const uint flagGradeContents            = 1 << 10;
+
+        const uint flagAll = ~0U;
 
         public SubjectTemplate() : base()
         {
             StorageClassId = "subjecttemplate";
 
-            Title = "Título de la plantilla de módulo";
-            Description = "Descripción de la plantilla de módulo";
+            Title.Value = "Título de la plantilla de módulo";
+            Description.Value = "Descripción de la plantilla de módulo";
+
+            GradeTemplate.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagGradeTemplate); InvokeOnUpdated(); };
+            GradeTemplate.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagGradeTemplate); InvokeOnUpdated(); };
+
+            SubjectName.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagSubjectName); InvokeOnUpdated(); };
+            SubjectCode.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagSubjectCode); InvokeOnUpdated(); };
+            GradeClassroomHours.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagGradeClassroomHours); InvokeOnUpdated(); };
+            GradeCompanyHours.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagGradeCompanyHours); InvokeOnUpdated(); };
+
+            GeneralObjectives.OnAdded += (element) => { Flags.Add(ref validationFlags, flagGradeGeneralObjectives); InvokeOnUpdated(); };
+            GeneralObjectives.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagGradeGeneralObjectives); InvokeOnUpdated(); };
+            GeneralObjectives.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagGradeGeneralObjectives); InvokeOnUpdated(); };
+
+            GeneralCompetences.OnAdded += (element) => { Flags.Add(ref validationFlags, flagGradeGeneralCompetences); InvokeOnUpdated(); };
+            GeneralCompetences.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagGradeGeneralCompetences); InvokeOnUpdated(); };
+            GeneralCompetences.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagGradeGeneralCompetences); InvokeOnUpdated(); };
+
+            LearningResults.OnAdded += (element) => { Flags.Add(ref validationFlags, flagGradeLearningResults); InvokeOnUpdated(); };
+            LearningResults.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagGradeLearningResults); InvokeOnUpdated(); };
+            LearningResults.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagGradeLearningResults); InvokeOnUpdated(); };
+
+            Contents.OnAdded += (element) => { Flags.Add(ref validationFlags, flagGradeContents); InvokeOnUpdated(); };
+            Contents.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagGradeContents); InvokeOnUpdated(); };
+            Contents.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagGradeContents); InvokeOnUpdated(); };
+
+            Flags.Add(ref validationFlags, flagGradeTemplate);            
+            Flags.Add(ref validationFlags, flagSubjectName);              
+            Flags.Add(ref validationFlags, flagSubjectCode);              
+            Flags.Add(ref validationFlags, flagGradeClassroomHours);      
+            Flags.Add(ref validationFlags, flagGradeCompanyHours);        
+            Flags.Add(ref validationFlags, flagGradeGeneralObjectives);   
+            Flags.Add(ref validationFlags, flagGradeGeneralCompetences);  
+            Flags.Add(ref validationFlags, flagGradeLearningResults);     
+            Flags.Add(ref validationFlags, flagGradeContents);            
         }
 
-        public override ValidationResult Validate()
+        public override ValidationResult Validate(bool force = false)
         {
-            ValidationResult result = base.Validate();
+            base.Validate(force);
 
-            if (result.code != ValidationCode.success) { return result; }
+            Utils.PrintLine(Title.Value + ": Subject template validation start");
 
-            if (GradeTemplate == null) { return ValidationResult.Create(ValidationCode.templateSubjectNotLinkedToGradeTemplate); }
+            if(Flags.Test(validationFlags, flagGradeTemplate) || force)
+            {
+                Utils.PrintLine("[gradeTemplate] => Validating grade template linked and valid");
 
-            if (SubjectName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNameEmpty); }
-            if (SubjectCode.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectCodeEmpty); }
-            if (GradeClassroomHours <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectClassroomHoursZero); }
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectNotLinkedToGradeTemplate);
 
-            List<CommonText> objectivesList = GeneralObjectives.ToList();
-            if (objectivesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoGeneralObjectivesReferenced); }
+                if (GradeTemplate.Value == null) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectNotLinkedToGradeTemplate)); }
+                else if(GradeTemplate.Value.Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectLinkedGradeTemplateInvalid)); }
+            }
 
-            List<CommonText> competencesList = GeneralCompetences.ToList();
-            if (competencesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoGeneralCompetencesReferenced); }
+            if(Flags.Test(validationFlags, flagSubjectName) || force)
+            {
+                Utils.PrintLine("[subjectName] => Validating subject name not empty");
 
-            List<LearningResult> resultsList = LearningResults.ToList();
-            if (resultsList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoLearningResults); }
-            for (int i = 0; i < resultsList.Count; i++) { if (resultsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateSubjectLearningResultsInvalid).WithIndex(i); } }
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectNameEmpty);
 
-            List<Content> contentsList = Contents.ToList();
-            if (contentsList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateSubjectNoContents); }
-            for (int i = 0; i < contentsList.Count; i++) { if (contentsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateSubjectContentsInvalid).WithIndex(i); } }
+                if (SubjectName.Value.Trim().Length <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectNameEmpty)); }
+            }
 
+            if(Flags.Test(validationFlags, flagSubjectCode) || force)
+            {
+                Utils.PrintLine("[subjectCode] => Validating subject code not empty");
 
-            return ValidationResult.Create(ValidationCode.success);
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectCodeEmpty);
+
+                if (SubjectCode.Value.Trim().Length <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectCodeEmpty)); }
+            }
+
+            if(Flags.Test(validationFlags, flagGradeClassroomHours) || force)
+            {
+                Utils.PrintLine("[classRoomHours] => Validating some classroom hour exist");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectClassroomHoursZero);
+
+                if (GradeClassroomHours.Value <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectClassroomHoursZero)); }
+            }
+
+            if(Flags.Test(validationFlags, flagGradeGeneralObjectives) || force)
+            {
+                Utils.PrintLine("[generalObjectives] => Validating some objective exist");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectNoGeneralObjectivesReferenced);
+
+                List<CommonText> objectivesList = GeneralObjectives.ToList();
+                if (objectivesList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectNoGeneralObjectivesReferenced)); }
+            }
+
+            if(Flags.Test(validationFlags, flagGradeGeneralCompetences) || force)
+            {
+                Utils.PrintLine("[generalCompetences] => Validating some competence exist");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectNoGeneralCompetencesReferenced);
+
+                List<CommonText> competencesList = GeneralCompetences.ToList();
+                if (competencesList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectNoGeneralCompetencesReferenced)); }
+            }
+
+            if(Flags.Test(validationFlags, flagGradeLearningResults) || force)
+            {
+                Utils.PrintLine("[learningResults] => Validating some learning result exist and all are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectNoLearningResults);
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectLearningResultsInvalid);
+
+                List<LearningResult> resultsList = LearningResults.ToList();
+                if (resultsList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectNoLearningResults)); }
+                for (int i = 0; i < resultsList.Count; i++) { if (resultsList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectLearningResultsInvalid).WithIndex(i)); } }
+            }
+
+            if(Flags.Test(validationFlags, flagGradeContents) || force)
+            {
+                Utils.PrintLine("[contents] => Validating some content point exist and all are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectNoContents);
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectContentsInvalid);
+
+                List<Content> contentsList = Contents.ToList();
+                if (contentsList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectNoContents)); }
+                for (int i = 0; i < contentsList.Count; i++) { if (contentsList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectContentsInvalid).WithIndex(i)); } }
+            }
+
+            Flags.Remove(ref validationFlags, flagGradeTemplate);            
+            Flags.Remove(ref validationFlags, flagSubjectName);              
+            Flags.Remove(ref validationFlags, flagSubjectCode);              
+            Flags.Remove(ref validationFlags, flagGradeClassroomHours);      
+            Flags.Remove(ref validationFlags, flagGradeCompanyHours);        
+            Flags.Remove(ref validationFlags, flagGradeGeneralObjectives);   
+            Flags.Remove(ref validationFlags, flagGradeGeneralCompetences);  
+            Flags.Remove(ref validationFlags, flagGradeLearningResults);     
+            Flags.Remove(ref validationFlags, flagGradeContents);            
+
+            Utils.PrintLine(Title.Value + ": Subject template validation end");
+            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
+
         }
 
         public override bool Exists(string storageId, string? parentStorageId)
@@ -62,15 +183,15 @@
 
             SubjectTemplateData data = new();
 
-            data.Title = Title;
-            data.Description = Description;
+            data.Title = Title.Value;
+            data.Description = Description.Value;
 
-            data.GradeTemplateWeakStorageId = GradeTemplate?.StorageId;
+            data.GradeTemplateWeakStorageId = GradeTemplate.Value?.StorageId;
 
-            data.SubjectName = SubjectName;
-            data.SubjectCode = SubjectCode;
-            data.GradeClassroomHours = GradeClassroomHours;
-            data.GradeCompanyHours = GradeCompanyHours;
+            data.SubjectName = SubjectName.Value;
+            data.SubjectCode = SubjectCode.Value;
+            data.GradeClassroomHours = GradeClassroomHours.Value;
+            data.GradeCompanyHours = GradeCompanyHours.Value;
 
             List<CommonText> list = GeneralObjectives.ToList();
             data.GeneralObjectivesWeakStorageIds = Storage.GetStorageIds<CommonText>(list);
@@ -98,19 +219,21 @@
 
             SubjectTemplateData data = Storage.LoadData<SubjectTemplateData>(storageId, StorageClassId, parentStorageId);
 
-            Title = data.Title;
-            Description = data.Description;
+            Title.Value = data.Title;
+            Description.Value = data.Description;
 
-            GradeTemplate = data.GradeTemplateWeakStorageId != null ? Storage.LoadOrCreateEntity<GradeTemplate>(data.GradeTemplateWeakStorageId, null) : null;
+            GradeTemplate.Value = data.GradeTemplateWeakStorageId != null ? Storage.FindEntity<GradeTemplate>(data.GradeTemplateWeakStorageId, null) : null;
 
-            SubjectName = data.SubjectName;
-            SubjectCode = data.SubjectCode;
-            GradeClassroomHours = data.GradeClassroomHours;
-            GradeCompanyHours = data.GradeCompanyHours;
+            SubjectName.Value = data.SubjectName;
+            SubjectCode.Value = data.SubjectCode;
+            GradeClassroomHours.Value = data.GradeClassroomHours;
+            GradeCompanyHours.Value = data.GradeCompanyHours;
 
-            GeneralObjectives.Set(Storage.FindChildEntities<CommonText>(data.GeneralObjectivesWeakStorageIds));
-
-            GeneralCompetences.Set(Storage.FindChildEntities<CommonText>(data.GeneralCompetencesWeakStorageIds));
+            if(GradeTemplate.Value != null)
+            {
+                GeneralObjectives.Set(Storage.FindSiblingEntities<CommonText>(data.GeneralObjectivesWeakStorageIds, GradeTemplate.Value.StorageId));
+                GeneralCompetences.Set(Storage.FindSiblingEntities<CommonText>(data.GeneralCompetencesWeakStorageIds, GradeTemplate.Value.StorageId));
+            }
 
             LearningResults.Set(Storage.LoadOrCreateEntities<LearningResult>(data.LearningResultsStorageIds, storageId));
 

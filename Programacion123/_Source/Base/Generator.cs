@@ -86,7 +86,7 @@ namespace Programacion123
         }
 
         public abstract GeneratorResult Generate(string path);
-        public abstract GeneratorValidationResult Validate();
+        public abstract GeneratorValidationResult Validate(bool force = false);
 
         public List<string> GetCommonTextParagraphs(string text)
         {
@@ -96,19 +96,19 @@ namespace Programacion123
         public List<string> GetGradeCommonTextParagraphs(CommonTextId id)
         {
             Debug.Assert(Subject != null);
-            Debug.Assert(Subject.Template != null);
-            Debug.Assert(Subject.Template.GradeTemplate != null);
+            Debug.Assert(Subject.Template.Value != null);
+            Debug.Assert(Subject.Template.Value.GradeTemplate.Value != null);
 
-            return GetCommonTextParagraphs(Subject.Template.GradeTemplate.CommonTexts[id].Description);
+            return GetCommonTextParagraphs(Subject.Template.Value.GradeTemplate.Value.CommonTexts[id].Description.Value);
         }
 
         public string GetGradeTypeName()
         {
             Debug.Assert(Subject != null);
-            Debug.Assert(Subject.Template != null);
-            Debug.Assert(Subject.Template.GradeTemplate != null);
+            Debug.Assert(Subject.Template.Value != null);
+            Debug.Assert(Subject.Template.Value.GradeTemplate.Value != null);
 
-            return (Subject.Template.GradeTemplate.GradeType == GradeType.superior ?
+            return (Subject.Template.Value.GradeTemplate.Value.GradeType.Value == GradeType.superior ?
                                     "Ciclo formativo de grado superior" : "Ciclo formativo de grado medio");
 
         }
@@ -116,17 +116,17 @@ namespace Programacion123
         public List<string> GetSubjectCommonTextParagraphs(CommonTextId id)
         {
             Debug.Assert(Subject != null);
-            Debug.Assert(Subject.Template != null);
-            Debug.Assert(Subject.Template.GradeTemplate != null);
+            Debug.Assert(Subject.Template.Value != null);
+            Debug.Assert(Subject.Template.Value.GradeTemplate.Value != null);
 
-            return GetCommonTextParagraphs(Subject.CommonTexts[id].Description);
+            return GetCommonTextParagraphs(Subject.CommonTexts[id].Description.Value);
         }
 
         public string GetSpacesText(Activity a)
         {
             string spacesText = "";
             bool first = true;
-            foreach (CommonText s in a.SpaceResources.ToList()) { spacesText += (first ? "" : LineBreak) + s.Title; }
+            foreach (CommonText s in a.SpaceResources.ToList()) { spacesText += (first ? "" : LineBreak) + s.Title.Value; }
             return spacesText;
         }
 
@@ -134,7 +134,7 @@ namespace Programacion123
         {
             string materialsText = "";
             bool first = true;
-            foreach (CommonText s in a.MaterialResources.ToList()) { materialsText += (first ? "" : LineBreak) + s.Title; }
+            foreach (CommonText s in a.MaterialResources.ToList()) { materialsText += (first ? "" : LineBreak) + s.Title.Value; }
             return materialsText.Length > 0 ? materialsText : "-";
         }
 
@@ -159,7 +159,7 @@ namespace Programacion123
         {
             string capacitiesText = "";
             bool first = true;
-            foreach (CommonText capacity in a.KeyCompetences.ToList()) { capacitiesText += (first ? "" : LineBreak) + capacity.Title; first = false; }
+            foreach (CommonText capacity in a.KeyCompetences.ToList()) { capacitiesText += (first ? "" : LineBreak) + capacity.Title.Value; first = false; }
 
             return capacitiesText.Length > 0 ? capacitiesText : "-";
         }
@@ -203,16 +203,16 @@ namespace Programacion123
         protected List<DocumentIndexItem> BuildIndex()
         {
             List<DocumentIndexItem> indexMetodologies = new();
-            Subject.Metodologies.ToList().ForEach(m => indexMetodologies.Add(new() { Title = m.Title, Subitems = new() }));
+            Subject.Metodologies.ToList().ForEach(m => indexMetodologies.Add(new() { Title = m.Title.Value, Subitems = new() }));
 
             List<DocumentIndexItem> indexInstrumentTypes = new();
-            Subject.EvaluationInstrumentsTypes.ToList().ForEach(instrument => indexInstrumentTypes.Add(new() { Title = instrument.Title, Subitems = new() }));
+            Subject.EvaluationInstrumentsTypes.ToList().ForEach(instrument => indexInstrumentTypes.Add(new() { Title = instrument.Title.Value, Subitems = new() }));
 
             List<DocumentIndexItem> indexMaterialResources = new();
-            Subject.MaterialResources.ToList().ForEach(resource => indexMaterialResources.Add(new() { Title = resource.Title, Subitems = new() }));
+            Subject.MaterialResources.ToList().ForEach(resource => indexMaterialResources.Add(new() { Title = resource.Title.Value, Subitems = new() }));
 
             List<DocumentIndexItem> indexSpaceResources = new();
-            Subject.SpaceResources.ToList().ForEach(resource => indexSpaceResources.Add(new() { Title = resource.Title, Subitems = new() }));
+            Subject.SpaceResources.ToList().ForEach(resource => indexSpaceResources.Add(new() { Title = resource.Title.Value, Subitems = new() }));
 
             List<DocumentIndexItem> indexBlocks = new();
             int blockIndex = 0;

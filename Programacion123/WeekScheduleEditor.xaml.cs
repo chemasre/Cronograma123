@@ -17,6 +17,11 @@ namespace Programacion123
         WeekSchedule entity;
         public string? parentStorageId;
 
+        const uint flagUpdateTitle = 1 << 0;
+        const uint flagHoursPerWeekDayUpdated = 1 << 1;
+        
+        const uint flagUpdateAll = ~0U;
+
         public WeekScheduleEditor()
         {
             InitializeComponent();
@@ -24,27 +29,33 @@ namespace Programacion123
 
         private void DataTable_RowChanged(object sender, DataRowChangeEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagHoursPerWeekDayUpdated);
             Validate();
         }
 
-        private void UpdateEntity()
+        private void UpdateEntity(uint flags)
         {
-            entity.Title = TextTitle.Text.Trim();
+            if(Flags.Test(flags, flagUpdateTitle))
+            {
+                entity.Title.Value = TextTitle.Text.Trim();
+            }
 
-            entity.HoursPerWeekDay.Clear();
-            entity.HoursPerWeekDay.Add(DayOfWeek.Monday, (int)dataTable.Rows[0]["Horas"]);
-            entity.HoursPerWeekDay.Add(DayOfWeek.Tuesday, (int)dataTable.Rows[1]["Horas"]);
-            entity.HoursPerWeekDay.Add(DayOfWeek.Wednesday, (int)dataTable.Rows[2]["Horas"]);
-            entity.HoursPerWeekDay.Add(DayOfWeek.Thursday, (int)dataTable.Rows[3]["Horas"]);
-            entity.HoursPerWeekDay.Add(DayOfWeek.Friday, (int)dataTable.Rows[4]["Horas"]);
+            if(Flags.Test(flags, flagHoursPerWeekDayUpdated))
+            {
+                entity.HoursPerWeekDay.Clear();
+                entity.HoursPerWeekDay.Add(DayOfWeek.Monday, (int)dataTable.Rows[0]["Horas"]);
+                entity.HoursPerWeekDay.Add(DayOfWeek.Tuesday, (int)dataTable.Rows[1]["Horas"]);
+                entity.HoursPerWeekDay.Add(DayOfWeek.Wednesday, (int)dataTable.Rows[2]["Horas"]);
+                entity.HoursPerWeekDay.Add(DayOfWeek.Thursday, (int)dataTable.Rows[3]["Horas"]);
+                entity.HoursPerWeekDay.Add(DayOfWeek.Friday, (int)dataTable.Rows[4]["Horas"]);
+            }
 
             entity.Save(parentStorageId);
         }
 
-        void Validate()
+        void Validate(bool force = false)
         {
-            ValidationResult validation = entity.Validate();
+            ValidationResult validation = entity.Validate(force);
 
             string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
             BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
@@ -73,7 +84,7 @@ namespace Programacion123
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateAll);
             // entity.Save(parentStorageId);
             TextTitle.TextChanged -= TextTitle_TextChanged;
             dataTable.RowChanged -= DataTable_RowChanged;
@@ -82,7 +93,7 @@ namespace Programacion123
 
         private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateTitle);
             Validate();
         }
 
@@ -132,7 +143,7 @@ namespace Programacion123
 
             entity = _weekSchedule;
 
-            TextTitle.Text = entity.Title;
+            TextTitle.Text = entity.Title.Value;
 
             if (_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Monday)) { dataTable.Rows[0]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Monday]; }
             if (_weekSchedule.HoursPerWeekDay.ContainsKey(DayOfWeek.Tuesday)) { dataTable.Rows[1]["Horas"] = _weekSchedule.HoursPerWeekDay[DayOfWeek.Tuesday]; }
@@ -143,7 +154,7 @@ namespace Programacion123
             dataTable.RowChanged += DataTable_RowChanged;
             TextTitle.TextChanged += TextTitle_TextChanged;
 
-            Validate();
+            Validate(true);
         }
 
         public WeekSchedule GetEntity()

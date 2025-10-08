@@ -2,21 +2,36 @@
 {
     public class Calendar : Entity
     {
-        public DateTime StartDay { get; set; }
-        public DateTime EndDay { get; set; }
+        public Property<DateTime> StartDay { get; } = new(DateTime.MinValue);
+        public Property<DateTime> EndDay { get; } = new(DateTime.MinValue);
 
         public SetProperty<DateTime> FreeDays { get; } = new SetProperty<DateTime>();
+
+        public uint flagStartDay                  = 1 << 2; 
+        public uint flagEndDay                    = 1 << 3; 
+        public uint flagFreeDays                  = 1 << 4; 
+
 
         public Calendar()
         {
             DateTime date = DateTime.Now.Date;
-            StartDay = date;
-            EndDay = date;
+            StartDay.Value = date;
+            EndDay.Value = date;
 
             StorageClassId = "calendar";
 
-            Title = "Título del calendario";
-            Description = "Descripción del calendario";
+            Title.Value = "Título del calendario";
+            Description.Value = "Descripción del calendario";
+
+            StartDay.OnSetted += (previous, current) => { if(previous != current) { Flags.Add(ref validationFlags, flagStartDay); } };
+            EndDay.OnSetted += (previous, current) => { if(previous != current) { Flags.Add(ref validationFlags, flagEndDay); } };
+
+            FreeDays.OnAdded += (element) => { Flags.Add(ref validationFlags, flagFreeDays); };
+            FreeDays.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagFreeDays); };
+
+            Flags.Add(ref validationFlags, flagStartDay);
+            Flags.Add(ref validationFlags, flagEndDay);
+            Flags.Add(ref validationFlags, flagFreeDays);
 
         }
 
@@ -27,27 +42,40 @@
             return lista;
         }
 
-        public override ValidationResult Validate()
+        public override ValidationResult Validate(bool force = false)
         {
-            ValidationResult validation = base.Validate();
+            base.Validate(force);
 
-            if (validation.code == ValidationCode.success && StartDay > EndDay)
+            Utils.PrintLine(Title.Value + ": Calendar validation start");
+
+
+            if (Flags.Test(validationFlags, flagStartDay | flagEndDay) || force)
             {
-                //Console.WriteLine("La fecha de inicio no puede ser posterior a la fecha de fin");
-                validation = ValidationResult.Create(ValidationCode.calendarStartDayAfterEndDay);
+                Utils.PrintLine("Checking start or end day");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.calendarStartDayAfterEndDay);
+
+                if(StartDay.Value > EndDay.Value)
+                {
+                    validationFails.Add(ValidationResult.Create(ValidationCode.calendarStartDayAfterEndDay));
+                }
             }
 
-            if (validation.code == ValidationCode.success)
+
+            if (Flags.Test(validationFlags, flagStartDay | flagEndDay | flagFreeDays) || force)
             {
+                Utils.PrintLine("Checking start, end or free days");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.calendarFreeDayBeforeStartOrAfterEnd);
+
                 int i = 0;
                 var listaFestivos = FreeDays.ToList();
 
-                while (validation.code == ValidationCode.success && i < listaFestivos.Count)
+                while (i < listaFestivos.Count)
                 {
-                    if (listaFestivos[i] > EndDay || listaFestivos[i] < StartDay)
+                    if (listaFestivos[i] > EndDay.Value || listaFestivos[i] < StartDay.Value)
                     {
-                        //Utils.MuestraError("El festivo " + listaFestivos[i].ToString("dd/MM/yyyy") + " esta fuera del calendario");
-                        validation = ValidationResult.Create(ValidationCode.calendarFreeDayBeforeStartOrAfterEnd);
+                        validationFails.Add(ValidationResult.Create(ValidationCode.calendarFreeDayBeforeStartOrAfterEnd));
                     }
 
                     i++;
@@ -55,27 +83,44 @@
 
             }
 
-            if (validation.code == ValidationCode.success)
+            if (Flags.Test(validationFlags, flagStartDay | flagEndDay | flagFreeDays) || force)
             {
-                DateTime d = StartDay;
+                Utils.PrintLine("Checking start, end or free days");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.calendarNoSchoolDays);
+
+                DateTime d = StartDay.Value;
                 bool foundSchoolDay = false;
 
-                while (d <= EndDay && !foundSchoolDay)
+                while (d <= EndDay.Value && !foundSchoolDay)
                 {
                     if (!FreeDays.Contains(d) && d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday) { foundSchoolDay = true; }
                     else { d = d.AddDays(1); }
                 }
 
-                if (!foundSchoolDay) { validation = ValidationResult.Create(ValidationCode.calendarNoSchoolDays); }
+                if (!foundSchoolDay)
+                {
+                    validationFails.Add(ValidationResult.Create(ValidationCode.calendarNoSchoolDays));
+                }
             }
 
-            return validation;
+            Flags.Remove(ref validationFlags, flagStartDay);
+            Flags.Remove(ref validationFlags, flagEndDay);
+            Flags.Remove(ref validationFlags, flagFreeDays);
+
+            Utils.PrintLine(Title.Value + ": Calendar validation end");
+            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+
+
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
+
         }
 
         public void Reset()
         {
-            StartDay = new DateTime();
-            EndDay = new DateTime();
+            StartDay.Value = new DateTime();
+            EndDay.Value = new DateTime();
             FreeDays.Clear();
         }
 
@@ -87,10 +132,10 @@
 
             var data = Storage.LoadData<CalendarData>(storageId, StorageClassId, parentStorageId);
 
-            Title = data.Title;
+            Title.Value = data.Title;
 
-            StartDay = data.StartDay;
-            EndDay = data.EndDay;
+            StartDay.Value = data.StartDay;
+            EndDay.Value = data.EndDay;
             FreeDays.Clear();
             FreeDays.Add(data.FreeDays.ToList<DateTime>());
 
@@ -107,10 +152,10 @@
 
             var data = new CalendarData();
 
-            data.Title = Title;
+            data.Title = Title.Value;
 
-            data.StartDay = StartDay;
-            data.EndDay = EndDay;
+            data.StartDay = StartDay.Value;
+            data.EndDay = EndDay.Value;
             data.FreeDays = new HashSet<DateTime>(FreeDays.ToList());
 
             Storage.SaveData<CalendarData>(StorageId, StorageClassId, data, parentStorageId);
@@ -126,13 +171,13 @@
 
         public Calendar Clone()
         {
-            var otro = new Calendar();
+            var other = new Calendar();
 
-            otro.StartDay = StartDay;
-            otro.EndDay = EndDay;
-            otro.FreeDays.Add(FreeDays.ToList());
+            other.StartDay.Value = StartDay.Value;
+            other.EndDay.Value = EndDay.Value;
+            other.FreeDays.Add(FreeDays.ToList());
 
-            return otro;
+            return other;
         }
 
     }

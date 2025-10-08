@@ -4,26 +4,53 @@
     {
         internal DictionaryProperty<DayOfWeek, int> HoursPerWeekDay { get; } = new DictionaryProperty<DayOfWeek, int>();
 
+        public const uint flagHoursPerWeekDay = 1 << 2; 
+
         public WeekSchedule()
         {
             StorageClassId = "weekschedule";
 
-            Title = "Título del horario";
-            Description = "Descripción del horario";
+            Title.Value = "Título del horario";
+            Description.Value = "Descripción del horario";
+
+            HoursPerWeekDay.OnAdded += (k, v) => { Flags.Add(ref validationFlags, flagHoursPerWeekDay); InvokeOnUpdated(); };
+            HoursPerWeekDay.OnRemoved += (k) => { Flags.Add(ref validationFlags, flagHoursPerWeekDay); InvokeOnUpdated(); };
+            HoursPerWeekDay.OnUpdated += (k, v) => { Flags.Add(ref validationFlags, flagHoursPerWeekDay); InvokeOnUpdated(); };
+
+            // Add flags
+
+            Flags.Add(ref validationFlags, flagHoursPerWeekDay);
         }
 
-        public override ValidationResult Validate()
+        public override ValidationResult Validate(bool force = false)
         {
-            ValidationResult validation = base.Validate();
+            base.Validate(force);
 
-            if (validation.code == ValidationCode.success)
+            Utils.PrintLine(Title.Value + ": WeekSchedule validation start");
+
+            if(Flags.Test(validationFlags, flagHoursPerWeekDay) || force)
             {
+                Utils.PrintLine("Checking hoursPerWeekDay");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.weekScheduleOneHourMinimum);
                 int total = 0;
                 HoursPerWeekDay.ToList().ForEach(e => total += e.Value);
-                if (total <= 0) { validation = ValidationResult.Create(ValidationCode.weekScheduleOneHourMinimum); }
+                if (total <= 0)
+                {
+                    validationFails.Add(ValidationResult.Create(ValidationCode.weekScheduleOneHourMinimum));
+                }
             }
 
-            return validation;
+            // Remove flags
+
+            Flags.Remove(ref validationFlags, flagHoursPerWeekDay);
+
+            Utils.PrintLine(Title.Value + ": WeekSchedule validation end");
+            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
+
         }
 
         public override bool Exists(string storageId, string? parentStorageId)
@@ -37,7 +64,7 @@
 
             WeekScheduleData data = new();
             data.HoursPerWeekDay = new(HoursPerWeekDay.ToList());
-            data.Title = Title;
+            data.Title = Title.Value;
 
             Storage.SaveData<WeekScheduleData>(StorageId, StorageClassId, data, parentStorageId);
         }
@@ -52,7 +79,7 @@
 
             var data = Storage.LoadData<WeekScheduleData>(storageId, StorageClassId, parentStorageId);
 
-            Title = data.Title;
+            Title.Value = data.Title;
             HoursPerWeekDay.Set(data.HoursPerWeekDay.ToList());
 
         }

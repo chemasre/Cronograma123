@@ -335,7 +335,7 @@ namespace Programacion123
 
         public WordDocument WithTable(int rows, int columns)
         {
-            Console.WriteLine("Table Rows: " + rows + " Columns: " + columns);
+            Utils.PrintLine("Table Rows: " + rows + " Columns: " + columns);
 
             missingValue = Missing.Value;
             Microsoft.Office.Interop.Word.Range range = document.Content;
@@ -358,7 +358,7 @@ namespace Programacion123
 
         public WordDocument WithCell(int row, int column, string text, string textStyleId = TextStyleTable, string cellStyleId = CellStyleNormal)
         {
-            Console.WriteLine("Row: " + row + " Column: " + column + " Content: " + text);
+            Utils.PrintLine("Row: " + row + " Column: " + column + " Content: " + text);
 
             cell = table.Cell(row, column);
             Range cellRange = cell.Range;
@@ -433,7 +433,7 @@ namespace Programacion123
 
         public WordDocument WithCellSpan(int row, int column, int rowSpan, int colSpan)
         {
-            Console.WriteLine("Row: " + row + " Column: " + column + " Rowspan: " + rowSpan + " Colspan: " + colSpan);
+            Utils.PrintLine("Row: " + row + " Column: " + column + " Rowspan: " + rowSpan + " Colspan: " + colSpan);
 
             Cell cell1 = table.Cell(row, column);
 

@@ -26,6 +26,7 @@ namespace Programacion123
         bool webPreviewReady;
         bool webPreviewValid;
 
+
         public HTMLGeneratorDialog()
         {
             InitializeComponent();
@@ -188,7 +189,7 @@ namespace Programacion123
             ComboDocumentMarginRight.SelectionChanged += ComboDocumentMarginRight_SelectionChanged;
 
 
-            Validate();
+            Validate(true);
 
             webPreviewLastScrollPosition = null;
             webPreviewReady = false;
@@ -906,9 +907,9 @@ namespace Programacion123
             UpdatePreviewUI();
         }
 
-        void Validate()
+        void Validate(bool force = false)
         {
-            GeneratorValidationResult result = previewGenerator.Validate();
+            GeneratorValidationResult result = previewGenerator.Validate(force);
 
             string colorResource = (result.code == GeneratorValidationCode.success ? "ColorValid" : "ColorInvalid");
             BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
@@ -918,8 +919,6 @@ namespace Programacion123
 
         void UpdateGenerator()
         {
-
-
             previewGenerator.Subject = subjectController.GetEntity();
 
             Debug.Assert(previewGenerator.Style != null);
@@ -986,7 +985,6 @@ namespace Programacion123
 
 
             previewGenerator.Style.Save();
-            //previewGenerator.SaveSettings();
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
@@ -997,7 +995,7 @@ namespace Programacion123
 
         private async void ButtonAccept_Click(object sender, RoutedEventArgs e)
         {
-            if (previewGenerator.Validate().code != GeneratorValidationCode.success)
+            if (previewGenerator.Validate(true).code != GeneratorValidationCode.success)
             {
                 ConfirmDialog dialog = new();
                 dialog.Init(ConfirmIconType.warning,

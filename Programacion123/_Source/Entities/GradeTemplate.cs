@@ -8,114 +8,212 @@
 
     public class GradeTemplate : Entity
     {
-        public GradeType GradeType { get; set; } = GradeType.superior;
-        public string GradeName { get; set; } = "Nombre completo del ciclo";
-        public string GradeFamilyName { get; set; } = "Nombre de la familia profesional";
-        public ListProperty<CommonText> GeneralObjectives { get; } = new ListProperty<CommonText>();
-        public ListProperty<CommonText> GeneralCompetences { get; } = new ListProperty<CommonText>();
-        public ListProperty<CommonText> KeyCapacities { get; } = new ListProperty<CommonText>();
-        public DictionaryProperty<CommonTextId, CommonText> CommonTexts { get; } = new DictionaryProperty<CommonTextId, CommonText>();
+        public Property<GradeType> GradeType { get; } = new(Programacion123.GradeType.superior);
+        public Property<string> GradeName { get; } = new("Nombre completo del ciclo");
+        public Property<string> GradeFamilyName { get; } = new("Nombre de la familia profesional");
+        public ListEntityProperty<CommonText> GeneralObjectives { get; } = new ListEntityProperty<CommonText>();
+        public ListEntityProperty<CommonText> GeneralCompetences { get; } = new ListEntityProperty<CommonText>();
+        public ListEntityProperty<CommonText> KeyCapacities { get; } = new ListEntityProperty<CommonText>();
+        public DictionaryEntityProperty<CommonTextId, CommonText> CommonTexts { get; } = new DictionaryEntityProperty<CommonTextId, CommonText>();
+
+        const uint flagGradeType          = 1 << 2;
+        const uint flagGradeName          = 1 << 3;
+        const uint flagGradeFamilyName    = 1 << 4;
+        const uint flagGeneralObjectives  = 1 << 5;
+        const uint flagGeneralCompetences = 1 << 6;
+        const uint flagKeyCapacities      = 1 << 7;
+        const uint flagCommonTexts        = 1 << 8;
+
+        const uint flagAll = ~0U;
 
         public GradeTemplate() : base()
         {
             StorageClassId = "gradetemplate";
 
-            Title = "Título de la plantilla de ciclo";
-            Description = "Descripción de la plantilla de ciclo";
+            Title.Value = "Título de la plantilla de ciclo";
+            Description.Value = "Descripción de la plantilla de ciclo";
 
             foreach (CommonTextId id in Enum.GetValues<CommonTextId>())
             {
                 CommonTexts.Add(id, new CommonText());
             }
 
-            CommonTexts[CommonTextId.header1ModuleOrganization].Title = "[Encabezado1] Organización del módulo";
-            CommonTexts[CommonTextId.header1ImportanceJustification].Title = "[Enabezado1] Justificación de la importancia del módulo";
-            CommonTexts[CommonTextId.header1CurricularElements].Title = "[Encabezado1] Elementos Curriculares";
-            CommonTexts[CommonTextId.header2GeneralObjectives].Title = "[Encabezado2] Objetivos generales relacionados con el módulo";
-            CommonTexts[CommonTextId.header2GeneralCompetences].Title = "[Encabezado2] Competencias generales, profesionales, personales y sociales";
-            CommonTexts[CommonTextId.header2KeyCompetences].Title = "[Encabezado2] Capacidades clave";
-            CommonTexts[CommonTextId.header1MetodologyAndDidacticOrientations].Title = "[Encabezado1] Metodología. Orientaciones didácticas";
-            CommonTexts[CommonTextId.header2Metodology].Title = "[Encabezado2] Metodología general y específica de la materia";
-            CommonTexts[CommonTextId.header2Diversity].Title = "[Encabezado2] Medidas de atención al alumnado con necesidad específica de apoyo educativo o con necesidad de compensación educativa: atención a la diversidad";
-            CommonTexts[CommonTextId.header1EvaluationSystem].Title = "[Encabezado1] Sistema de evaluación";
-            CommonTexts[CommonTextId.header2Evaluation].Title = "[Encabezado2] Líneas evaluativas";
-            CommonTexts[CommonTextId.header2EvaluationTypes].Title = "[Encabezado2] Tipos de evaluación";
-            CommonTexts[CommonTextId.header3OrdinaryEvaluation].Title = "[Encabezado3] Evaluación ordinaria";
-            CommonTexts[CommonTextId.header3ExtraordinaryEvaluation].Title = "[Encabezado3] Evaluación extraordinaria";
-            CommonTexts[CommonTextId.header2EvaluationInstruments].Title = "[Encabezado2] Instrumentos de evaluación";
-            CommonTexts[CommonTextId.header2EvaluationOfProgramming].Title = "[Encabezado2] Evaluación del funcionamiento de la programación";
-            CommonTexts[CommonTextId.header1TraversalElements].Title = "[Encabezado1] Elementos transversales";
-            CommonTexts[CommonTextId.header2TraversalReadingAndTIC].Title = "[Encabezado2] Fomento de la lectura y tecnologías de la información y de comunicación";
-            CommonTexts[CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation].Title = "[Encabezado2] Comunicación audiovisual, emprendimiento, educación cívica y constitucional";
-            CommonTexts[CommonTextId.header1Resources].Title = "[Encabezado1] Recursos didácticos y organizativos";
-            CommonTexts[CommonTextId.header2ResourcesSpaces].Title = "[Encabezado2] Espacios";
-            CommonTexts[CommonTextId.header2ResourcesMaterialAndTools].Title = "[Encabezado2] Materiales y herramientas";
-            CommonTexts[CommonTextId.header1SubjectProgramming].Title = "[Encabezado1] Programación del módulo profesional";
-            CommonTexts[CommonTextId.header2LearningResultsAndContents].Title = "[Encabezado2] Resultados de aprendizaje, criterios de evaluación y contenidos";
-            CommonTexts[CommonTextId.header3LearningResults].Title = "[Encabezado3] Resultados de aprendizaje y criterios de evaluación";
-            CommonTexts[CommonTextId.header3Contents].Title = "[Encabezado3] Contenidos";
-            CommonTexts[CommonTextId.header2Blocks].Title = "[Encabezado2] Bloques de enseñanza-aprendizaje";
-            CommonTexts[CommonTextId.header2Activities].Title = "[Encabezado2] Programación de actividades de enseñanza-aprendizaje";
+            CommonTexts[CommonTextId.header1ModuleOrganization].Title.Value = "[Encabezado1] Organización del módulo";
+            CommonTexts[CommonTextId.header1ImportanceJustification].Title.Value = "[Enabezado1] Justificación de la importancia del módulo";
+            CommonTexts[CommonTextId.header1CurricularElements].Title.Value = "[Encabezado1] Elementos Curriculares";
+            CommonTexts[CommonTextId.header2GeneralObjectives].Title.Value = "[Encabezado2] Objetivos generales relacionados con el módulo";
+            CommonTexts[CommonTextId.header2GeneralCompetences].Title.Value = "[Encabezado2] Competencias generales, profesionales, personales y sociales";
+            CommonTexts[CommonTextId.header2KeyCompetences].Title.Value = "[Encabezado2] Capacidades clave";
+            CommonTexts[CommonTextId.header1MetodologyAndDidacticOrientations].Title.Value = "[Encabezado1] Metodología. Orientaciones didácticas";
+            CommonTexts[CommonTextId.header2Metodology].Title.Value = "[Encabezado2] Metodología general y específica de la materia";
+            CommonTexts[CommonTextId.header2Diversity].Title.Value = "[Encabezado2] Medidas de atención al alumnado con necesidad específica de apoyo educativo o con necesidad de compensación educativa: atención a la diversidad";
+            CommonTexts[CommonTextId.header1EvaluationSystem].Title.Value = "[Encabezado1] Sistema de evaluación";
+            CommonTexts[CommonTextId.header2Evaluation].Title.Value = "[Encabezado2] Líneas evaluativas";
+            CommonTexts[CommonTextId.header2EvaluationTypes].Title.Value = "[Encabezado2] Tipos de evaluación";
+            CommonTexts[CommonTextId.header3OrdinaryEvaluation].Title.Value = "[Encabezado3] Evaluación ordinaria";
+            CommonTexts[CommonTextId.header3ExtraordinaryEvaluation].Title.Value = "[Encabezado3] Evaluación extraordinaria";
+            CommonTexts[CommonTextId.header2EvaluationInstruments].Title.Value = "[Encabezado2] Instrumentos de evaluación";
+            CommonTexts[CommonTextId.header2EvaluationOfProgramming].Title.Value = "[Encabezado2] Evaluación del funcionamiento de la programación";
+            CommonTexts[CommonTextId.header1TraversalElements].Title.Value = "[Encabezado1] Elementos transversales";
+            CommonTexts[CommonTextId.header2TraversalReadingAndTIC].Title.Value = "[Encabezado2] Fomento de la lectura y tecnologías de la información y de comunicación";
+            CommonTexts[CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation].Title.Value = "[Encabezado2] Comunicación audiovisual, emprendimiento, educación cívica y constitucional";
+            CommonTexts[CommonTextId.header1Resources].Title.Value = "[Encabezado1] Recursos didácticos y organizativos";
+            CommonTexts[CommonTextId.header2ResourcesSpaces].Title.Value = "[Encabezado2] Espacios";
+            CommonTexts[CommonTextId.header2ResourcesMaterialAndTools].Title.Value = "[Encabezado2] Materiales y herramientas";
+            CommonTexts[CommonTextId.header1SubjectProgramming].Title.Value = "[Encabezado1] Programación del módulo profesional";
+            CommonTexts[CommonTextId.header2LearningResultsAndContents].Title.Value = "[Encabezado2] Resultados de aprendizaje, criterios de evaluación y contenidos";
+            CommonTexts[CommonTextId.header3LearningResults].Title.Value = "[Encabezado3] Resultados de aprendizaje y criterios de evaluación";
+            CommonTexts[CommonTextId.header3Contents].Title.Value = "[Encabezado3] Contenidos";
+            CommonTexts[CommonTextId.header2Blocks].Title.Value = "[Encabezado2] Bloques de enseñanza-aprendizaje";
+            CommonTexts[CommonTextId.header2Activities].Title.Value = "[Encabezado2] Programación de actividades de enseñanza-aprendizaje";
 
-            CommonTexts[CommonTextId.header1ModuleOrganization].Description = "Escribe una introducción a la organización del módulo común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header1ImportanceJustification].Description = "Escribe una justificación de la importancia del módulo común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header1CurricularElements].Description = "Escribe una introducción a los elementos Curriculares común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2GeneralObjectives].Description = "Escribe una introducción a los objetivos generales relacionados con el módulo común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2GeneralCompetences].Description = "Escribe una introducción a los competencias generales, profesionales, personales y sociales común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2KeyCompetences].Description = "Escribe una introducción a las Capacidades clave común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header1MetodologyAndDidacticOrientations].Description = "Escribe una introducción a la metodología y las orientaciones didácticas común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2Metodology].Description = "Escribe una introducción a la metodología general y específica de la materia común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2Diversity].Description = "Escribe una introducción a las medidas de atención al alumnado con necesidad específica de apoyo educativo o con necesidad de compensación educativa: atención a la diversidad común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header1EvaluationSystem].Description = "Escribe una introducción al sistema de evaluación común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2Evaluation].Description = "Escribe una introducción a las líneas evaluativas común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2EvaluationTypes].Description = "Escribe una introducción a los tipos de evaluación común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header3OrdinaryEvaluation].Description = "Escribe una introducción a la evaluación ordinaria común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header3ExtraordinaryEvaluation].Description = "Escribe una introducción a la evaluación extraordinaria común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2EvaluationInstruments].Description = "Escribe una introducción a los instrumentos de evaluación común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2EvaluationOfProgramming].Description = "Escribe una introducción a la evaluación del funcionamiento de la programación común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header1TraversalElements].Description = "Escribe una introducción a los elementos transversales común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2TraversalReadingAndTIC].Description = "Escribe una introducción al elemento transversal de fomento de la lectura y tecnologías de la información y de comunicación común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation].Description = "Escribe una introducción al elemento transversal de comunicación audiovisual, emprendimiento, educación cívica y constitucional común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header1Resources].Description = "Escribe una introducción a los recursos didácticos y organizativos común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2ResourcesSpaces].Description = "Escribe una introducción a los espacios común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2ResourcesMaterialAndTools].Description = "Escribe una introducción a los materiales y herramientas común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header1SubjectProgramming].Description = "Escribe una introducción a la programación del módulo profesional común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2LearningResultsAndContents].Description = "Escribe una introducción a los resultados de aprendizaje, criterios de evaluación y contenidos común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header3LearningResults].Description = "Escribe una introducción a los resultados de aprendizaje y criterios de evaluación común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header3Contents].Description = "Escribe una introducción a los contenidos común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2Blocks].Description = "Escribe una introducción a los bloques de enseñanza-aprendizaje común a todos los módulos del ciclo";
-            CommonTexts[CommonTextId.header2Activities].Description = "Escribe una introducción a la programación de actividades de enseñanza-aprendizaje común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1ModuleOrganization].Description.Value = "Escribe una introducción a la organización del módulo común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1ImportanceJustification].Description.Value = "Escribe una justificación de la importancia del módulo común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1CurricularElements].Description.Value = "Escribe una introducción a los elementos Curriculares común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2GeneralObjectives].Description.Value = "Escribe una introducción a los objetivos generales relacionados con el módulo común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2GeneralCompetences].Description.Value = "Escribe una introducción a los competencias generales, profesionales, personales y sociales común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2KeyCompetences].Description.Value = "Escribe una introducción a las Capacidades clave común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1MetodologyAndDidacticOrientations].Description.Value = "Escribe una introducción a la metodología y las orientaciones didácticas común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2Metodology].Description.Value = "Escribe una introducción a la metodología general y específica de la materia común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2Diversity].Description.Value = "Escribe una introducción a las medidas de atención al alumnado con necesidad específica de apoyo educativo o con necesidad de compensación educativa: atención a la diversidad común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1EvaluationSystem].Description.Value = "Escribe una introducción al sistema de evaluación común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2Evaluation].Description.Value = "Escribe una introducción a las líneas evaluativas común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2EvaluationTypes].Description.Value = "Escribe una introducción a los tipos de evaluación común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header3OrdinaryEvaluation].Description.Value = "Escribe una introducción a la evaluación ordinaria común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header3ExtraordinaryEvaluation].Description.Value = "Escribe una introducción a la evaluación extraordinaria común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2EvaluationInstruments].Description.Value = "Escribe una introducción a los instrumentos de evaluación común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2EvaluationOfProgramming].Description.Value = "Escribe una introducción a la evaluación del funcionamiento de la programación común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1TraversalElements].Description.Value = "Escribe una introducción a los elementos transversales común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2TraversalReadingAndTIC].Description.Value = "Escribe una introducción al elemento transversal de fomento de la lectura y tecnologías de la información y de comunicación común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2TraversalCommunicationEntrepreneurshipAndEducation].Description.Value = "Escribe una introducción al elemento transversal de comunicación audiovisual, emprendimiento, educación cívica y constitucional común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1Resources].Description.Value = "Escribe una introducción a los recursos didácticos y organizativos común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2ResourcesSpaces].Description.Value = "Escribe una introducción a los espacios común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2ResourcesMaterialAndTools].Description.Value = "Escribe una introducción a los materiales y herramientas común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header1SubjectProgramming].Description.Value = "Escribe una introducción a la programación del módulo profesional común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2LearningResultsAndContents].Description.Value = "Escribe una introducción a los resultados de aprendizaje, criterios de evaluación y contenidos común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header3LearningResults].Description.Value = "Escribe una introducción a los resultados de aprendizaje y criterios de evaluación común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header3Contents].Description.Value = "Escribe una introducción a los contenidos común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2Blocks].Description.Value = "Escribe una introducción a los bloques de enseñanza-aprendizaje común a todos los módulos del ciclo";
+            CommonTexts[CommonTextId.header2Activities].Description.Value = "Escribe una introducción a la programación de actividades de enseñanza-aprendizaje común a todos los módulos del ciclo";
+
+            GradeType.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagGradeType); InvokeOnUpdated(); };
+            GradeName.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagGradeName); InvokeOnUpdated(); };
+            GradeFamilyName.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagGradeFamilyName); InvokeOnUpdated(); };
+
+            GeneralObjectives.OnAdded += (element) => { Flags.Add(ref validationFlags, flagGeneralObjectives); InvokeOnUpdated(); };
+            GeneralObjectives.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagGeneralObjectives); InvokeOnUpdated(); };
+            GeneralObjectives.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagGeneralObjectives); InvokeOnUpdated(); };
+
+            GeneralCompetences.OnAdded += (element) => { Flags.Add(ref validationFlags, flagGeneralCompetences); InvokeOnUpdated(); };
+            GeneralCompetences.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagGeneralCompetences); InvokeOnUpdated(); };
+            GeneralCompetences.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagGeneralCompetences); InvokeOnUpdated(); };
+
+            KeyCapacities.OnAdded += (element) => { Flags.Add(ref validationFlags, flagKeyCapacities); InvokeOnUpdated(); };
+            KeyCapacities.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagKeyCapacities); InvokeOnUpdated(); };
+            KeyCapacities.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagKeyCapacities); InvokeOnUpdated(); };
+
+            CommonTexts.OnAdded += (key, element) => { Flags.Add(ref validationFlags, flagCommonTexts); InvokeOnUpdated(); };
+            CommonTexts.OnRemoved += (key) => { Flags.Add(ref validationFlags, flagCommonTexts); InvokeOnUpdated(); };
+            CommonTexts.OnUpdated += (key, element) => { Flags.Add(ref validationFlags, flagCommonTexts); InvokeOnUpdated(); };
+            CommonTexts.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagCommonTexts); InvokeOnUpdated(); };
+
+            Flags.Add(ref validationFlags, flagGradeType);
+            Flags.Add(ref validationFlags, flagGradeName);
+            Flags.Add(ref validationFlags, flagGradeFamilyName);
+            Flags.Add(ref validationFlags, flagGeneralObjectives);
+            Flags.Add(ref validationFlags, flagGeneralCompetences);
+            Flags.Add(ref validationFlags, flagKeyCapacities);
+            Flags.Add(ref validationFlags, flagCommonTexts);
 
         }
 
-        public override ValidationResult Validate()
+        public override ValidationResult Validate(bool force = false)
         {
-            ValidationResult result = base.Validate();
+            base.Validate(force);
 
-            if (result.code != ValidationCode.success) { return result; }
+            Utils.PrintLine(Title.Value + ": Grade template validation start");
 
-            if (GradeName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNameEmpty); }
-            if (GradeFamilyName.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateGradeFamilyNameEmpty); }
-
-            List<CommonText> objectivesList = GeneralObjectives.ToList();
-            if (objectivesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoGeneralObjectives); }
-            for (int i = 0; i < objectivesList.Count; i++) { if (objectivesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeGeneralObjectiveInvalid).WithIndex(i); } }
-
-            List<CommonText> competencesList = GeneralCompetences.ToList();
-            if (competencesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoGeneralCompetences); }
-            for (int i = 0; i < competencesList.Count; i++) { if (competencesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeGeneralCompetenceInvalid).WithIndex(i); } }
-
-            List<CommonText> capacitiesList = KeyCapacities.ToList();
-            if (capacitiesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoKeyCapacities); }
-            for (int i = 0; i < capacitiesList.Count; i++) { if (capacitiesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeKeyCapacitiesInvalid).WithIndex(i); } }
-
-            List<KeyValuePair<CommonTextId, CommonText>> commonTexts = CommonTexts.ToList();
-            for (int i = 0; i < commonTexts.Count; i++)
+            if(Flags.Test(validationFlags, flagGradeName) || force)
             {
-                if (commonTexts[i].Value.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeCommonTextInvalid).WithIndex((int)commonTexts[i].Key); }
+                Utils.PrintLine("[gradeName] => Validating not empty");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeNameEmpty);
+
+                if (GradeName.Value.Trim().Length <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeNameEmpty)); }
             }
 
-            return ValidationResult.Create(ValidationCode.success);
+            if(Flags.Test(validationFlags, flagGradeFamilyName) || force)
+            {
+                Utils.PrintLine("[gradeFamilyName] => Validating not empty");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeFamilyNameEmpty);
+
+                if (GradeFamilyName.Value.Trim().Length <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeFamilyNameEmpty)); }
+            }
+
+            if(Flags.Test(validationFlags, flagGeneralObjectives) || force)
+            {
+                Utils.PrintLine("[objectives] => Validating at least one exist and all are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeNoGeneralObjectives);
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeGeneralObjectiveInvalid);
+
+                List<CommonText> objectivesList = GeneralObjectives.ToList();
+                if (objectivesList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeNoGeneralObjectives)); }
+                for (int i = 0; i < objectivesList.Count; i++) { if (objectivesList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeGeneralObjectiveInvalid).WithIndex(i)); } }
+            }
+
+
+            if(Flags.Test(validationFlags, flagGeneralCompetences) || force)
+            {
+                Utils.PrintLine("[competences] => Validating at least one exist and all are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeNoGeneralCompetences);
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeGeneralCompetenceInvalid);
+
+                List<CommonText> competencesList = GeneralCompetences.ToList();
+                if (competencesList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeNoGeneralCompetences)); }
+                for (int i = 0; i < competencesList.Count; i++) { if (competencesList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeGeneralCompetenceInvalid).WithIndex(i)); } }
+            }
+
+            if(Flags.Test(validationFlags, flagKeyCapacities) || force)
+            {
+                Utils.PrintLine("[capacities] => Validating at least one exist and all are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeNoKeyCapacities);
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeKeyCapacitiesInvalid);
+
+                List<CommonText> capacitiesList = KeyCapacities.ToList();
+                if (capacitiesList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeNoKeyCapacities)); }
+                for (int i = 0; i < capacitiesList.Count; i++) { if (capacitiesList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeKeyCapacitiesInvalid).WithIndex(i)); } }
+            }
+
+            if(Flags.Test(validationFlags, flagCommonTexts) || force)
+            {
+                Utils.PrintLine("[commonTexts] => Validating all are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeCommonTextInvalid);
+
+                List<KeyValuePair<CommonTextId, CommonText>> commonTexts = CommonTexts.ToList();
+                for (int i = 0; i < commonTexts.Count; i++)
+                {
+                    if (commonTexts[i].Value.Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeCommonTextInvalid).WithIndex((int)commonTexts[i].Key)); }
+                }
+            }
+
+            Flags.Remove(ref validationFlags, flagGradeType);
+            Flags.Remove(ref validationFlags, flagGradeName);
+            Flags.Remove(ref validationFlags, flagGradeFamilyName);
+            Flags.Remove(ref validationFlags, flagGeneralObjectives);
+            Flags.Remove(ref validationFlags, flagGeneralCompetences);
+            Flags.Remove(ref validationFlags, flagKeyCapacities);
+            Flags.Remove(ref validationFlags, flagCommonTexts);
+
+            Utils.PrintLine(Title.Value + ": Grade template validation end");
+            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
         }
 
         public override bool Exists(string storageId, string? parentStorageId)
@@ -129,12 +227,12 @@
 
             GradeTemplateData data = new();
 
-            data.Title = Title;
-            data.Description = Description;
+            data.Title = Title.Value;
+            data.Description = Description.Value;
 
-            data.GradeType = GradeType;
-            data.GradeName = GradeName;
-            data.GradeFamilyName = GradeFamilyName;
+            data.GradeType = GradeType.Value;
+            data.GradeName = GradeName.Value;
+            data.GradeFamilyName = GradeFamilyName.Value;
 
             List<CommonText> list = GeneralObjectives.ToList();
             list.ForEach(e => e.Save(StorageId));
@@ -163,12 +261,12 @@
 
             GradeTemplateData data = Storage.LoadData<GradeTemplateData>(storageId, StorageClassId, parentStorageId);
 
-            Title = data.Title;
-            Description = data.Description;
+            Title.Value = data.Title;
+            Description.Value = data.Description;
 
-            GradeType = data.GradeType;
-            GradeName = data.GradeName;
-            GradeFamilyName = data.GradeFamilyName;
+            GradeType.Value = data.GradeType;
+            GradeName.Value = data.GradeName;
+            GradeFamilyName.Value = data.GradeFamilyName;
 
             GeneralObjectives.Set(Storage.LoadOrCreateEntities<CommonText>(data.GeneralObjectivesStorageIds, storageId));
 

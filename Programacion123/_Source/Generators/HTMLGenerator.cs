@@ -36,10 +36,10 @@ namespace Programacion123
         }
 
 
-        public override GeneratorValidationResult Validate()
+        public override GeneratorValidationResult Validate(bool force = false)
         {
             if (Subject == null) { return GeneratorValidationResult.Create(GeneratorValidationCode.subjectIsNull); }
-            else if (Subject.Validate().code != ValidationCode.success) { return GeneratorValidationResult.Create(GeneratorValidationCode.subjectNotValid); }
+            else if (Subject.Validate(force).code != ValidationCode.success) { return GeneratorValidationResult.Create(GeneratorValidationCode.subjectNotValid); }
 
             return GeneratorValidationResult.Create(GeneratorValidationCode.success);
 

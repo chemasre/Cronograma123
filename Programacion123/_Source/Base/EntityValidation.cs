@@ -74,6 +74,7 @@
             else if (code == ValidationCode.learningResultCriteriaInvalid) { return String.Format("El criterio {0} presenta algún problema.", index + 1); }
             else if (code == ValidationCode.blockNoActivities) { return "El bloque al menos debe contar con una actividad."; }
             else if (code == ValidationCode.templateSubjectNotLinkedToGradeTemplate) { return "La plantilla de módulo no está vinculada a una plantilla de ciclo."; }
+            else if (code == ValidationCode.templateSubjectLinkedGradeTemplateInvalid) { return "La plantilla de ciclo vinculada tiene algún problema."; }
             else if (code == ValidationCode.templateSubjectNoGeneralObjectivesReferenced) { return "La plantilla de módulo no hace referencia a ningún objetivo general."; }
             else if (code == ValidationCode.templateSubjectNoGeneralCompetencesReferenced) { return "La plantilla de módulo no hace referencia a ninguna competencia general."; }
             else // code == ValidationCode.blockActivityInvalid)
@@ -140,6 +141,7 @@
         templateSubjectNoLearningResults,
         templateSubjectNoContents,
         templateSubjectNotLinkedToGradeTemplate,
+        templateSubjectLinkedGradeTemplateInvalid,
         templateSubjectNoGeneralObjectivesReferenced,
         templateSubjectNoGeneralCompetencesReferenced,
 
@@ -161,4 +163,6 @@
         blockNoActivities,
         blockActivityInvalid,
     };
+
+
 }

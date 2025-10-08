@@ -2,26 +2,60 @@
 {
     public class Block : Entity
     {
-        public ListProperty<Activity> Activities { get; } = new ListProperty<Activity>();
+        public ListEntityProperty<Activity> Activities { get; } = new ListEntityProperty<Activity>();
+
+        public const uint flagActivities = 1 << 2; 
 
         public Block() : base()
         {
             StorageClassId = "block";
 
-            Title = "Título del bloque";
-            Description = "Descripción del bloque";
+            Title.Value = "Título del bloque";
+            Description.Value = "Descripción del bloque";
+
+            Activities.OnAdded += (element) => { Flags.Add(ref validationFlags, flagActivities); };
+            Activities.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagActivities); };
+            Activities.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagActivities); };
+
+            Flags.Add(ref validationFlags, flagActivities);
         }
 
-        public override ValidationResult Validate()
+        public override ValidationResult Validate(bool force = false)
         {
-            ValidationResult result = base.Validate();
+            base.Validate(force);
 
-            if (result.code != ValidationCode.success) { return result; }
+            Utils.PrintLine(Title.Value + ": Block validation start");
 
-            if (Activities.Count <= 0) { return ValidationResult.Create(ValidationCode.blockNoActivities); }
-            for (int i = 0; i < Activities.Count; i++) { if (Activities[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.blockActivityInvalid).WithIndex(i); } }
+            if(Flags.Test(validationFlags, flagActivities) || force)
+            {
+                Utils.PrintLine("[activities] => Checking activities exist and are valid");
 
-            return ValidationResult.Create(ValidationCode.success);
+                validationFails.RemoveAll(e => e.code == ValidationCode.blockNoActivities);
+                validationFails.RemoveAll(e => e.code == ValidationCode.blockActivityInvalid);
+
+                if (Activities.Count <= 0)
+                {
+                    validationFails.Add(ValidationResult.Create(ValidationCode.blockNoActivities));
+                }
+
+                for (int i = 0; i < Activities.Count; i++)
+                {
+                    if(Activities[i].Validate().code != ValidationCode.success)
+                    {
+                        validationFails.Add(ValidationResult.Create(ValidationCode.blockActivityInvalid).WithIndex(i));
+                    }
+                }
+
+            }
+
+            Flags.Remove(ref validationFlags, flagActivities);
+
+            Utils.PrintLine(Title.Value + ": Block validation end");
+            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
+
         }
 
         public override bool Exists(string storageId, string? parentStorageId)
@@ -35,8 +69,8 @@
 
             BlockData data = new();
 
-            data.Title = Title;
-            data.Description = Description;
+            data.Title = Title.Value;
+            data.Description = Description.Value;
 
             List<Activity> list = Activities.ToList();
             list.ForEach(e => e.Save(StorageId));
@@ -53,8 +87,8 @@
 
             BlockData data = Storage.LoadData<BlockData>(storageId, StorageClassId, parentStorageId);
 
-            Title = data.Title;
-            Description = data.Description;
+            Title.Value = data.Title;
+            Description.Value = data.Description;
 
             Activities.Set(Storage.LoadOrCreateEntities<Activity>(data.ActivitiesStorageIds, storageId));
 

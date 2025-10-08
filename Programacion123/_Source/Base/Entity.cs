@@ -1,4 +1,6 @@
-﻿namespace Programacion123
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Programacion123
 {
     public enum StorageState
     {
@@ -10,34 +12,80 @@
 
     public abstract class Entity
     {
-
-        protected StorageState StorageState { get { return storageState; } }
-
-        protected StorageState storageState;
         public string StorageId { get; set; }
         public string StorageClassId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
+
+        public Property<string> Title { get; } = new Property<string>("");
+        public Property<string> Description { get; } = new Property<string>("");
+
+        public delegate void OnChangedHandler(Entity e);
+        public event OnChangedHandler OnUpdated;
+
+        // Validation
+
+        public const uint flagTitle       = 1 << 0; 
+        public const uint flagDescription = 1 << 1; 
+
+        protected uint validationFlags = Flags.Empty();
+        
+        protected List<ValidationResult> validationFails;
 
         public Entity()
         {
-            Title = "Escribe un título";
-            Description = "Escribe una descripción";
+            Title.Value = "Escribe un título";
+            Description.Value = "Escribe una descripción";
+
             StorageId = Guid.NewGuid().ToString();
-            storageState = StorageState.detached;
+
+            Title.OnSetted += (previous, current) => { OnUpdated?.Invoke(this); Flags.Add(ref validationFlags, flagTitle); };
+            Description.OnSetted += (previous, current) => { OnUpdated?.Invoke(this); Flags.Add(ref validationFlags, flagDescription); };
+
+            validationFails = new();
+
+            // Add flags
+
+            Flags.Add(ref validationFlags, flagTitle);
+            Flags.Add(ref validationFlags, flagDescription);
+
         }
 
-        public virtual ValidationResult Validate()
+        protected void InvokeOnUpdated()
         {
-            if (Title.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.entityTitleEmpty); }
-            else if (Description.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.entityDescriptionEmpty); }
-            else { return ValidationResult.Create(ValidationCode.success); }
+            OnUpdated?.Invoke(this);
         }
 
-        public virtual void SetDirty()
+        public virtual ValidationResult Validate(bool force = false)
         {
-            storageState = StorageState.dirty;
+            Utils.PrintLine("***************************************************");
+            Utils.PrintLine(Title.Value + ": Entity validation start");
+
+            if(Flags.Test(validationFlags, flagTitle) || force)
+            {
+                Utils.PrintLine("[title] => Checking not empty");
+                validationFails.RemoveAll((v) => v.code == ValidationCode.entityTitleEmpty);
+                if(Title.Value.Trim().Length <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.entityTitleEmpty)); }
+            }
+
+            if(Flags.Test(validationFlags, flagDescription) || force)
+            {
+                Utils.PrintLine("[description] => Checking not empty");
+                validationFails.RemoveAll((v) => v.code == ValidationCode.entityDescriptionEmpty);
+                if(Description.Value.Trim().Length <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.entityDescriptionEmpty)); }
+            }
+
+            // Remove flags
+
+            Flags.Remove(ref validationFlags, flagTitle);
+            Flags.Remove(ref validationFlags, flagDescription);
+
+            Utils.PrintLine(Title.Value + ": Entity validation end");
+            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
+
         }
+
 
         public virtual bool Exists(string storageId, string? parentStorageId)
         {
@@ -47,17 +95,14 @@
         public virtual void LoadOrCreate(string storageId, string? parentStorageId = null)
         {
             StorageId = storageId;
-            storageState = StorageState.saved;
         }
 
         public virtual void Save(string? parentStorageId = null)
         {
-            storageState = StorageState.saved;
         }
 
         public virtual void Delete(string? parentStorageId = null)
         {
-            storageState = StorageState.detached;
         }
 
     }

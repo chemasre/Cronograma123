@@ -89,7 +89,7 @@ namespace Programacion123
         public TEntity? GetEntity()
         {
             if (storageId == null) { return null; }
-            else { return Storage.LoadOrCreateEntity<TEntity>(storageId, parentStorageId); }
+            else { return Storage.FindEntity<TEntity>(storageId, parentStorageId); }
         }
 
         void UpdateField()
@@ -103,7 +103,7 @@ namespace Programacion123
                 TEntity entity = Storage.LoadOrCreateEntity<TEntity>(storageId, parentStorageId);
 
                 if (formatter != null) { textBox.Text = formatter.Invoke(entity, 0); }
-                string s = (formatContent == EntityFormatContent.Description ? entity.Description : entity.Title).Trim();
+                string s = (formatContent == EntityFormatContent.Description ? entity.Description.Value : entity.Title.Value).Trim();
                 textBox.Text = s.Substring(0, Math.Min(100, s.Length)) + "...";
             }
         }
@@ -155,8 +155,12 @@ namespace Programacion123
 
             if (!picker.GetWasCancelled())
             {
-                storageId = picker.GetPickedEntity()?.StorageId;
-                Changed?.Invoke(this);
+                string? nextStorageId = picker.GetPickedEntity()?.StorageId;
+                string? currentStorateId = storageId;
+
+                storageId = nextStorageId;
+
+                if(nextStorageId != currentStorateId) { Changed?.Invoke(this); }
             }
 
             picker.Closed -= OnDialogClosed;

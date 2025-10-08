@@ -29,7 +29,7 @@ namespace Programacion123
             {
                 get
                 {
-                    if (day <= calendar.EndDay) { return new SchoolDayHour() { day = day, hour = hour }; }
+                    if (day <= calendar.EndDay.Value) { return new SchoolDayHour() { day = day, hour = hour }; }
                     else { return null; }
                 }
             }
@@ -38,14 +38,14 @@ namespace Programacion123
             {
                 calendar = _calendar;
                 weekSchedule = _weekSchedule;
-                day = _calendar.StartDay;
+                day = _calendar.StartDay.Value;
                 hour = 0;
                 skipToNewDay = false;
             }
 
             public void Reset()
             {
-                day = calendar.StartDay;
+                day = calendar.StartDay.Value;
                 hour = 0;
                 skipToNewDay = false;
             }
@@ -54,22 +54,22 @@ namespace Programacion123
             {
                 DateTime lookupDay = day;
 
-                if (skipToNewDay || activity.NoActivitiesBefore && hour > 0) { lookupDay = lookupDay.AddDays(1); hour = 0; skipToNewDay = false; }
+                if (skipToNewDay || activity.NoActivitiesBefore.Value && hour > 0) { lookupDay = lookupDay.AddDays(1); hour = 0; skipToNewDay = false; }
 
                 bool found = false;
 
-                while (!found && lookupDay <= calendar.EndDay)
+                while (!found && lookupDay <= calendar.EndDay.Value)
                 {
                     if (Utils.IsSchoolDay(lookupDay, calendar, weekSchedule) &&
                        weekSchedule.HoursPerWeekDay[lookupDay.DayOfWeek] > 0 &&
                        (
-                        !(activity.StartType == ActivityStartType.Date) ||
-                          activity.StartType == ActivityStartType.Date && lookupDay == activity.StartDate
+                        !(activity.StartType.Value == ActivityStartType.Date) ||
+                          activity.StartType.Value == ActivityStartType.Date && lookupDay == activity.StartDate.Value
                        )
                        &&
                        (
-                        !(activity.StartType == ActivityStartType.DayOfWeek) ||
-                          activity.StartType == ActivityStartType.DayOfWeek && lookupDay.DayOfWeek == activity.StartDayOfWeek
+                        !(activity.StartType.Value == ActivityStartType.DayOfWeek) ||
+                          activity.StartType.Value == ActivityStartType.DayOfWeek && lookupDay.DayOfWeek == activity.StartDayOfWeek.Value
                        ) &&
                        hour < weekSchedule.HoursPerWeekDay[lookupDay.DayOfWeek])
                     {
@@ -88,15 +88,15 @@ namespace Programacion123
                 }
                 else
                 {
-                    day = calendar.EndDay.AddDays(1);
+                    day = calendar.EndDay.Value.AddDays(1);
                 }
             }
 
             public void GotoActivityEnd(Activity activity)
             {
-                float pending = activity.Duration;
+                float pending = activity.Duration.Value;
 
-                while (pending > 0 && day <= calendar.EndDay)
+                while (pending > 0 && day <= calendar.EndDay.Value)
                 {
                     if (Utils.IsSchoolDay(day, calendar, weekSchedule) && weekSchedule.HoursPerWeekDay[day.DayOfWeek] > 0)
                     {
@@ -108,7 +108,7 @@ namespace Programacion123
                     {
                         hour = weekSchedule.HoursPerWeekDay[day.DayOfWeek] + pending;
 
-                        skipToNewDay = activity.NoActivitiesAfter;
+                        skipToNewDay = activity.NoActivitiesAfter.Value;
                     }
                 }
             }
@@ -158,14 +158,14 @@ namespace Programacion123
 
         };
 
-        public bool CanScheduleActivities()
+        public bool CanScheduleActivities(bool force = false)
         {
-            if (Calendar == null) { return false; }
-            else if (Calendar.Validate().code != ValidationCode.success) { return false; }
-            else if (WeekSchedule == null) { return false; }
-            else if (WeekSchedule.Validate().code != ValidationCode.success) { return false; }
+            if (Calendar.Value == null) { return false; }
+            else if (Calendar.Value.Validate(force).code != ValidationCode.success) { return false; }
+            else if (WeekSchedule.Value == null) { return false; }
+            else if (WeekSchedule.Value.Validate(force).code != ValidationCode.success) { return false; }
             else if (Blocks.Count <= 0) { return false; }
-            else if (!Blocks.ToList().TrueForAll(b => b.Activities.Count > 0 && b.Activities.ToList().TrueForAll(a => a.Duration > 0))) { return false; }
+            else if (!Blocks.ToList().TrueForAll(b => b.Activities.Count > 0 && b.Activities.ToList().TrueForAll(a => a.Duration.Value > 0))) { return false; }
 
             return true;
         }
@@ -175,7 +175,7 @@ namespace Programacion123
             List<ActivitySchedule> output = new();
 
             ActivityCursor activityCursor = new(Blocks.ToList());
-            SchoolDayHourCursor schoolDayHourCursor = new(Calendar, WeekSchedule);
+            SchoolDayHourCursor schoolDayHourCursor = new(Calendar.Value, WeekSchedule.Value);
 
             activityCursor.Reset();
             schoolDayHourCursor.Reset();

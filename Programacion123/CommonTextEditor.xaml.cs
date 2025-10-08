@@ -15,6 +15,11 @@ namespace Programacion123
 
         bool titleEditable;
 
+        const uint flagUpdateTitle          = 1 << 0;
+        const uint flagUpdateDescription    = 1 << 1;
+        
+        const uint flagUpdateAll = ~0U;
+
         public CommonTextEditor()
         {
             InitializeComponent();
@@ -29,7 +34,7 @@ namespace Programacion123
             parentStorageId = _parentStorageId;
             entity = _entity;
 
-            TextTitle.Text = _entity.Title;
+            TextTitle.Text = _entity.Title.Value;
 
             ButtonClose.ToolTip = "Cerrar";
 
@@ -42,7 +47,7 @@ namespace Programacion123
                 TextBoxDescription.Visibility = Visibility.Visible;
                 NoTitleBorderDescriptionBase.Visibility = Visibility.Hidden;
                 NoTitleTextBoxDescription.Visibility = Visibility.Hidden;
-                TextBoxDescription.Text = _entity.Description;
+                TextBoxDescription.Text = _entity.Description.Value;
 
                 TextTitle.TextChanged += TextTitle_TextChanged;
                 TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
@@ -56,19 +61,18 @@ namespace Programacion123
                 TextBoxDescription.Visibility = Visibility.Hidden;
                 NoTitleBorderDescriptionBase.Visibility = Visibility.Visible;
                 NoTitleTextBoxDescription.Visibility = Visibility.Visible;
-                NoTitleTextBoxDescription.Text = _entity.Description;
+                NoTitleTextBoxDescription.Text = _entity.Description.Value;
 
                 NoTitleTextBoxDescription.TextChanged += NoTitleTextBoxDescription_TextChanged;
             }
 
-
-            Validate();
+            Validate(true);
 
         }
 
         private void NoTitleTextBoxDescription_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateDescription);
             Validate();
         }
 
@@ -77,19 +81,18 @@ namespace Programacion123
             return entity;
         }
 
-        void UpdateEntity()
+        void UpdateEntity(uint flags)
         {
-            entity.Title = TextTitle.Text.Trim();
-            entity.Description = (titleEditable ? TextBoxDescription.Text : NoTitleTextBoxDescription.Text).Trim();
-            //entity.Description = TextBoxDescription.Document.ToString().Trim();
-
+            if(Flags.Test(flags, flagUpdateTitle)) { entity.Title.Value = TextTitle.Text.Trim(); }
+            if(Flags.Test(flags, flagUpdateDescription)) { entity.Description.Value = (titleEditable ? TextBoxDescription.Text : NoTitleTextBoxDescription.Text).Trim(); }
+            
             entity.Save(parentStorageId);
 
         }
 
-        void Validate()
+        void Validate(bool force = false)
         {
-            ValidationResult validation = entity.Validate();
+            ValidationResult validation = entity.Validate(force);
 
             string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
             BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
@@ -99,7 +102,7 @@ namespace Programacion123
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateAll);
             //entity.Save(parentStorageId);
 
             if (titleEditable)
@@ -118,13 +121,13 @@ namespace Programacion123
 
         private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateTitle);
             Validate();
         }
 
         private void TextBoxDescription_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateDescription);
             Validate();
         }
 

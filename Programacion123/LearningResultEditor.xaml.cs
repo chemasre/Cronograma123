@@ -15,6 +15,11 @@ namespace Programacion123
 
         StrongReferencesBoxController<CommonText, CommonTextEditor> criteriasController;
 
+        const uint flagUpdateDescription = 1 << 1;
+        const uint flagUpdateCriterias = 1 << 1;
+
+        const uint flagUpdateAll = ~0U;
+
         public LearningResultEditor()
         {
             InitializeComponent();
@@ -35,7 +40,7 @@ namespace Programacion123
                 {
                     string resultStorageId = Storage.FindParentStorageId(e.StorageId, e.StorageClassId);
                     int resultIndex = template.LearningResults.ToList().FindIndex(r => r.StorageId == resultStorageId);
-                    return String.Format("RA{0}.{1}: {2}", resultIndex + 1, i + 1, e.Description);
+                    return String.Format("RA{0}.{1}: {2}", resultIndex + 1, i + 1, e.Description.Value);
                 };
 
             var configCriterias = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxCriterias)
@@ -55,19 +60,19 @@ namespace Programacion123
 
             criteriasController.Changed += CriteriasController_Changed;
 
-            TextBoxDescription.Text = _entity.Description;
+            TextBoxDescription.Text = _entity.Description.Value;
 
             TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
 
             ButtonClose.ToolTip = "Cerrar";
 
-            Validate();
+            Validate(true);
 
         }
 
         private void CriteriasController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateCriterias);
             Validate();
         }
 
@@ -76,19 +81,25 @@ namespace Programacion123
             return entity;
         }
 
-        void UpdateEntity()
+        void UpdateEntity(uint flags)
         {
-            entity.Description = TextBoxDescription.Text;
-            //entity.Description = TextBoxDescription.Document.ToString().Trim();
+            if(Flags.Test(flags, flagUpdateDescription))
+            {
+                entity.Description.Value = TextBoxDescription.Text;
+                //entity.Description = TextBoxDescription.Document.ToString().Trim();
+            }
 
-            entity.Criterias.Set(Storage.LoadOrCreateEntities<CommonText>(criteriasController.StorageIds, entity.StorageId));
+            if(Flags.Test(flags, flagUpdateCriterias))
+            {
+                entity.Criterias.Set(Storage.LoadOrCreateEntities<CommonText>(criteriasController.StorageIds, entity.StorageId));
+            }
 
             entity.Save(parentStorageId);
         }
 
-        void Validate()
+        void Validate(bool force = false)
         {
-            ValidationResult validation = entity.Validate();
+            ValidationResult validation = entity.Validate(force);
 
             string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
             BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
@@ -98,7 +109,7 @@ namespace Programacion123
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateAll);
             //entity.Save(parentStorageId);
 
             TextBoxDescription.TextChanged -= TextBoxDescription_TextChanged;
@@ -110,7 +121,7 @@ namespace Programacion123
 
         private void TextBoxDescription_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateDescription);
             Validate();
         }
 

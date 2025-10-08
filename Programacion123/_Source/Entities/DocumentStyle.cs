@@ -136,8 +136,8 @@
         {
             StorageClassId = "documentstyle";
 
-            Title = "Título del estilo";
-            Description = "Descripción del estilo";
+            Title.Value = "Título del estilo";
+            Description.Value = "Descripción del estilo";
 
         }
 
@@ -152,8 +152,8 @@
 
             DocumentStyleData data = new();
 
-            data.Title = Title;
-            data.Description = Description;
+            data.Title = Title.Value;
+            data.Description = Description.Value;
 
             data.LogoBase64 = LogoBase64;
             data.CoverBase64 = CoverBase64;
@@ -177,8 +177,8 @@
 
             DocumentStyleData data = Storage.LoadData<DocumentStyleData>(storageId, StorageClassId, parentStorageId);
 
-            Title = data.Title;
-            Description = data.Description;
+            Title.Value = data.Title;
+            Description.Value = data.Description;
 
             LogoBase64 = data.LogoBase64;
             CoverBase64 = data.CoverBase64;

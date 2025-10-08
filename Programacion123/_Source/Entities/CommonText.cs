@@ -50,14 +50,23 @@
         {
             StorageClassId = "commontext";
 
-            Title = "Escribe un título";
-            Description = "Escribe un texto";
+            Title.Value = "Escribe un título";
+            Description.Value = "Escribe un texto";
 
         }
 
-        public override ValidationResult Validate()
+        public override ValidationResult Validate(bool force = false)
         {
-            return base.Validate();
+            base.Validate(force);
+
+            Utils.PrintLine(Title.Value + ": Common text validation start");
+            Utils.PrintLine(Title.Value + ": Common text validation end");
+            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
+
+
         }
 
         public override bool Exists(string storageId, string? parentStorageId)
@@ -70,10 +79,11 @@
             base.Save(parentStorageId);
 
             CommonTextData data = new();
-            data.Title = Title;
-            data.Description = Description;
+            data.Title = Title.Value;
+            data.Description = Description.Value;
 
             Storage.SaveData<CommonTextData>(StorageId, StorageClassId, data, parentStorageId);
+
         }
 
         public override void LoadOrCreate(string storageId, string? parentStorageId = null)
@@ -84,8 +94,8 @@
 
             CommonTextData data = Storage.LoadData<CommonTextData>(storageId, StorageClassId, parentStorageId);
 
-            Title = data.Title;
-            Description = data.Description;
+            Title.Value = data.Title;
+            Description.Value = data.Description;
 
         }
 
