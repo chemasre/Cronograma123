@@ -158,12 +158,12 @@ namespace Programacion123
 
         };
 
-        public bool CanScheduleActivities()
+        public bool CanScheduleActivities(bool force = false)
         {
             if (Calendar.Value == null) { return false; }
-            else if (Calendar.Value.Validate().code != ValidationCode.success) { return false; }
+            else if (Calendar.Value.Validate(force).code != ValidationCode.success) { return false; }
             else if (WeekSchedule.Value == null) { return false; }
-            else if (WeekSchedule.Value.Validate().code != ValidationCode.success) { return false; }
+            else if (WeekSchedule.Value.Validate(force).code != ValidationCode.success) { return false; }
             else if (Blocks.Count <= 0) { return false; }
             else if (!Blocks.ToList().TrueForAll(b => b.Activities.Count > 0 && b.Activities.ToList().TrueForAll(a => a.Duration.Value > 0))) { return false; }
 

@@ -18,6 +18,17 @@
 
         public DictionaryEntityProperty<CommonTextId, CommonText> CommonTexts { get; } = new DictionaryEntityProperty<CommonTextId, CommonText>();
 
+        const uint flagTemplate                  = 1 << 2;
+        const uint flagCalendar                  = 1 << 3;
+        const uint flagWeekSchedule              = 1 << 4;
+        const uint flagMetodologies              = 1 << 5;
+        const uint flagSpaceResources            = 1 << 6;
+        const uint flagMaterialResources         = 1 << 7;
+        const uint flagEvaluationInstrumentTypes = 1 << 8;
+        const uint flagCitations                 = 1 << 9;
+        const uint flagBlocks                    = 1 << 10;
+        const uint flagLearningResultsWeights    = 1 << 11;
+        const uint flagCommonTexts               = 1 << 12;
 
         public Subject() : base()
         {
@@ -90,127 +101,300 @@
             CommonTexts[CommonTextId.header2Activities].Description.Value = "Escribe una introducción a la programación de actividades de enseñanza-aprendizaje específica del módulo";
 
 
+            Template.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagTemplate); InvokeOnUpdated(); };
+            Template.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagTemplate); InvokeOnUpdated(); };
+
+            Calendar.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagCalendar); InvokeOnUpdated(); };
+            Calendar.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagCalendar); InvokeOnUpdated(); };
+
+            WeekSchedule.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagWeekSchedule); InvokeOnUpdated(); };
+            WeekSchedule.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagWeekSchedule); InvokeOnUpdated(); };
+
+            Metodologies.OnAdded += (element) => { Flags.Add(ref validationFlags, flagMetodologies); InvokeOnUpdated(); };
+            Metodologies.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagMetodologies); InvokeOnUpdated(); };
+            Metodologies.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagMetodologies); InvokeOnUpdated(); };
+
+            SpaceResources.OnAdded += (element) => { Flags.Add(ref validationFlags, flagSpaceResources); InvokeOnUpdated(); };
+            SpaceResources.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagSpaceResources); InvokeOnUpdated(); };
+            SpaceResources.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagSpaceResources); InvokeOnUpdated(); };
+
+            MaterialResources.OnAdded += (element) => { Flags.Add(ref validationFlags, flagMaterialResources); InvokeOnUpdated(); };
+            MaterialResources.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagMaterialResources); InvokeOnUpdated(); };
+            MaterialResources.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagMaterialResources); InvokeOnUpdated(); };
+
+            EvaluationInstrumentsTypes.OnAdded += (element) => { Flags.Add(ref validationFlags, flagEvaluationInstrumentTypes); InvokeOnUpdated(); };
+            EvaluationInstrumentsTypes.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagEvaluationInstrumentTypes); InvokeOnUpdated(); };
+            EvaluationInstrumentsTypes.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagEvaluationInstrumentTypes); InvokeOnUpdated(); };
+
+            Citations.OnAdded += (element) => { Flags.Add(ref validationFlags, flagCitations); InvokeOnUpdated(); };
+            Citations.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagCitations); InvokeOnUpdated(); };
+            Citations.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagCitations); InvokeOnUpdated(); };
+
+            Blocks.OnAdded += (element) => { Flags.Add(ref validationFlags, flagBlocks); InvokeOnUpdated(); };
+            Blocks.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagBlocks); InvokeOnUpdated(); };
+            Blocks.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagBlocks); InvokeOnUpdated(); };
+
+            LearningResultsWeights.OnAdded += (key, element) => { Flags.Add(ref validationFlags, flagLearningResultsWeights); InvokeOnUpdated(); };
+            LearningResultsWeights.OnRemoved += (key) => { Flags.Add(ref validationFlags, flagLearningResultsWeights); InvokeOnUpdated(); };
+            LearningResultsWeights.OnUpdated += (key, element) => { Flags.Add(ref validationFlags, flagLearningResultsWeights); InvokeOnUpdated(); };
+
+            CommonTexts.OnAdded += (key, element) => { Flags.Add(ref validationFlags, flagCommonTexts); InvokeOnUpdated(); };
+            CommonTexts.OnRemoved += (key) => { Flags.Add(ref validationFlags, flagCommonTexts); InvokeOnUpdated(); };
+            CommonTexts.OnUpdated += (key, element) => { Flags.Add(ref validationFlags, flagCommonTexts); InvokeOnUpdated(); };
+            CommonTexts.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagCommonTexts); InvokeOnUpdated(); };
+
+            Flags.Add(ref validationFlags, flagTemplate);
+            Flags.Add(ref validationFlags, flagCalendar);
+            Flags.Add(ref validationFlags, flagWeekSchedule);
+            Flags.Add(ref validationFlags, flagMetodologies);
+            Flags.Add(ref validationFlags, flagSpaceResources);
+            Flags.Add(ref validationFlags, flagMaterialResources);
+            Flags.Add(ref validationFlags, flagEvaluationInstrumentTypes);
+            Flags.Add(ref validationFlags, flagCitations);
+            Flags.Add(ref validationFlags, flagBlocks);
+            Flags.Add(ref validationFlags, flagLearningResultsWeights);
+            Flags.Add(ref validationFlags, flagCommonTexts);
+
         }
 
         public override ValidationResult Validate(bool force = false)
         {
-            ValidationResult result = base.Validate(force);
+            base.Validate(force);
 
             Console.WriteLine(Title.Value + ": Subject validation start");
 
-            if (result.code != ValidationCode.success) { return result; }
 
-            if (Template.Value == null) { return ValidationResult.Create(ValidationCode.subjectNotLinkedToTemplate); }
-            if (Calendar.Value == null) { return ValidationResult.Create(ValidationCode.subjectNotLinkedToCalendar); }
-            if (WeekSchedule.Value == null) { return ValidationResult.Create(ValidationCode.subjectNotLinkedToWeekSchedule); }
-
-            if (Template.Value.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectTemplateInvalid); }
-            if (Calendar.Value.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectCalendarInvalid); }
-            if (WeekSchedule.Value.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectWeekScheduleInvalid); }
-
-            List<CommonText> metodologiesList = Metodologies.ToList();
-            if (metodologiesList.Count <= 0) { return ValidationResult.Create(ValidationCode.subjectNoMetodologies); }
-            for (int i = 0; i < metodologiesList.Count; i++) { if (metodologiesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectMetodologiesInvalid).WithIndex(i); } }
-
-            List<CommonText> spacesList = SpaceResources.ToList();
-            if (spacesList.Count <= 0) { return ValidationResult.Create(ValidationCode.subjectNoSpaces); }
-            for (int i = 0; i < spacesList.Count; i++) { if (spacesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectSpaceResourceInvalid).WithIndex(i); } }
-
-            List<CommonText> materialsList = MaterialResources.ToList();
-            for (int i = 0; i < materialsList.Count; i++) { if (materialsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectMaterialResourceInvalid).WithIndex(i); } }
-
-            List<CommonText> instrumentsList = EvaluationInstrumentsTypes.ToList();
-            if (instrumentsList.Count <= 0) { return ValidationResult.Create(ValidationCode.subjectNoEvaluationInstrumentTypes); }
-            for (int i = 0; i < instrumentsList.Count; i++) { if (instrumentsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectInstrumentTypeInvalid).WithIndex(i); } }
-
-            List<CommonText> citationsList = Citations.ToList();
-            for (int i = 0; i < citationsList.Count; i++) { if (citationsList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectCitationInvalid).WithIndex(i); } }
-
-            List<Block> blocksList = Blocks.ToList();
-            if (blocksList.Count <= 0) { return ValidationResult.Create(ValidationCode.subjectNoBlocks); }
-            for (int i = 0; i < blocksList.Count; i++) { if (blocksList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectBlockInvalid).WithIndex(i); } }
-
-            List<KeyValuePair<LearningResult, float>> learningResultsWeightsList = LearningResultsWeights.ToList();
-
-            float sum = 0;
-            for (int i = 0; i < learningResultsWeightsList.Count; i++)
+            if(Flags.Test(validationFlags, flagTemplate) || force)
             {
-                KeyValuePair<LearningResult, float> r = learningResultsWeightsList[i];
-                //if (r.Value <= 0) { return ValidationResult.Create(ValidationCode.subjectLearningResultWeightInvalid).WithIndex(i);  }
-                sum += r.Value;
+                Console.WriteLine("[template] => Checking linked to valid template");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectNotLinkedToTemplate);
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectTemplateInvalid);
+
+                if (Template.Value == null) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectNotLinkedToTemplate)); }
+                else if (Template.Value.Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectTemplateInvalid)); }
+
             }
 
-            if (sum != 100) { return ValidationResult.Create(ValidationCode.subjectLearningResultsWeightNotHundredPercent); }
-
-            List<LearningResult> learningResultsList = Template.Value.LearningResults.ToList();
-            HashSet<string> referencedLearningResults = new();
-            Dictionary<string, float> learningResultsWeights = new();
-
-            foreach (Block b in blocksList)
+            if(Flags.Test(validationFlags, flagCalendar) || force)
             {
-                List<Activity> activitiesList = b.Activities.ToList();
+                Console.WriteLine("[calendar] => Checking linked to valid calendar");
 
-                foreach (Activity a in activitiesList)
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectNotLinkedToCalendar);
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectCalendarInvalid);
+
+                if (Calendar.Value == null) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectNotLinkedToCalendar)); }
+                else if (Calendar.Value.Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectCalendarInvalid)); }
+            }
+
+            if(Flags.Test(validationFlags, flagWeekSchedule) || force)
+            {
+                Console.WriteLine("[weekSchedule] => Checking linked to valid week schedule");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectNotLinkedToWeekSchedule);
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectWeekScheduleInvalid);
+
+                if (WeekSchedule.Value == null) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectNotLinkedToWeekSchedule)); }
+                else if (WeekSchedule.Value.Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectWeekScheduleInvalid)); }
+            }
+
+            if(Flags.Test(validationFlags, flagMetodologies) || force)
+            {
+                Console.WriteLine("[metodologies] => Checking has at least one metodology and all metodologies are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectNoMetodologies);
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectMetodologiesInvalid);
+
+                List<CommonText> metodologiesList = Metodologies.ToList();
+                if (metodologiesList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectNoMetodologies)); }
+                for (int i = 0; i < metodologiesList.Count; i++) { if (metodologiesList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectMetodologiesInvalid).WithIndex(i)); } }
+            }
+
+            if(Flags.Test(validationFlags, flagSpaceResources) || force)
+            {
+                Console.WriteLine("[spaceResources] => Checking has at least one space resource and all space resources are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectNoSpaces);
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectSpaceResourceInvalid);
+
+                List<CommonText> spacesList = SpaceResources.ToList();
+                if (spacesList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectNoSpaces)); }
+                for (int i = 0; i < spacesList.Count; i++) { if (spacesList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectSpaceResourceInvalid).WithIndex(i)); } }
+            }
+
+            if(Flags.Test(validationFlags, flagMaterialResources) || force)
+            {
+                Console.WriteLine("[materialResources] => Checking all material resources are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectMaterialResourceInvalid);
+
+                List<CommonText> materialsList = MaterialResources.ToList();
+                for (int i = 0; i < materialsList.Count; i++) { if (materialsList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectMaterialResourceInvalid).WithIndex(i)); } }
+            }
+
+            if(Flags.Test(validationFlags, flagEvaluationInstrumentTypes) || force)
+            {
+                Console.WriteLine("[evaluationInstrumentTypes] => Checking has at least one evaluation instrument type and all evaluation instrument types are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectNoEvaluationInstrumentTypes);
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectInstrumentTypeInvalid);
+
+                List<CommonText> instrumentsList = EvaluationInstrumentsTypes.ToList();
+                if (instrumentsList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectNoEvaluationInstrumentTypes)); }
+                for (int i = 0; i < instrumentsList.Count; i++) { if (instrumentsList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectInstrumentTypeInvalid).WithIndex(i)); } }
+            }
+
+            if(Flags.Test(validationFlags, flagCitations) || force)
+            {
+                Console.WriteLine("[materialResources] => Checking all citations are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectCitationInvalid);
+
+                List<CommonText> citationsList = Citations.ToList();
+                for (int i = 0; i < citationsList.Count; i++) { if (citationsList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectCitationInvalid).WithIndex(i)); } }
+            }
+
+            if(Flags.Test(validationFlags, flagBlocks | flagCalendar | flagWeekSchedule | flagLearningResultsWeights) || force)
+            {
+                Console.WriteLine("[blocks] => Checking has at least one block and all blocks are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectNoBlocks);
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectBlockInvalid);
+
+                List<Block> blocksList = Blocks.ToList();
+                if (blocksList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectNoBlocks)); }
+                for (int i = 0; i < blocksList.Count; i++) { if (blocksList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectBlockInvalid).WithIndex(i)); } }
+            }
+
+
+            if(Flags.Test(validationFlags, flagLearningResultsWeights) || force)
+            {
+                Console.WriteLine("[learningResultsWeights] => Checking the sum of all learning results' weights is 100");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectLearningResultsWeightNotHundredPercent);
+
+                List<KeyValuePair<LearningResult, float>> learningResultsWeightsList = LearningResultsWeights.ToList();
+
+                float sum = 0;
+                for (int i = 0; i < learningResultsWeightsList.Count; i++)
                 {
-                    List<CommonText> criteriasList = a.Criterias.ToList();
+                    KeyValuePair<LearningResult, float> r = learningResultsWeightsList[i];
+                    sum += r.Value;
+                }
 
-                    criteriasList.ForEach(c => referencedLearningResults.Add(Storage.FindParentStorageId(c.StorageId, c.StorageClassId)));
+                if (sum != 100) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectLearningResultsWeightNotHundredPercent)); }
+            }
 
-                    if (a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
+            if(Flags.Test(validationFlags, flagTemplate | flagBlocks | flagLearningResultsWeights) || force)
+            {
+                Console.WriteLine("[template,blocks] => Checking all learning results are referenced by activities");
+                Console.WriteLine("[template,blocks] => Checking activities learning results' weights sum 100 for all learning results");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectLearningResultNotReferencedByActivities);
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectActivitiesLearningResultWeightNotHundredPercent);
+
+                List<LearningResult> learningResultsList = Template.Value.LearningResults.ToList();
+                HashSet<string> referencedLearningResults = new();
+                Dictionary<string, float> learningResultsWeights = new();
+
+                List<Block> blocksList = Blocks.ToList();
+
+                foreach (Block b in blocksList)
+                {
+                    List<Activity> activitiesList = b.Activities.ToList();
+
+                    foreach (Activity a in activitiesList)
                     {
-                        List<KeyValuePair<LearningResult, float>> weightsList = a.LearningResultsWeights.ToList();
+                        List<CommonText> criteriasList = a.Criterias.ToList();
 
-                        weightsList.ForEach(
-                            r =>
-                            {
-                                if (!learningResultsWeights.ContainsKey(r.Key.StorageId))
-                                { learningResultsWeights.Add(r.Key.StorageId, 0); }
+                        criteriasList.ForEach(c => referencedLearningResults.Add(Storage.FindParentStorageId(c.StorageId, c.StorageClassId)));
 
-                                learningResultsWeights[r.Key.StorageId] += r.Value;
+                        if (a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
+                        {
+                            List<KeyValuePair<LearningResult, float>> weightsList = a.LearningResultsWeights.ToList();
 
-                            });
+                            weightsList.ForEach(
+                                r =>
+                                {
+                                    if (!learningResultsWeights.ContainsKey(r.Key.StorageId))
+                                    { learningResultsWeights.Add(r.Key.StorageId, 0); }
+
+                                    learningResultsWeights[r.Key.StorageId] += r.Value;
+
+                                });
+                        }
                     }
                 }
-            }
 
-            for (int i = 0; i < learningResultsList.Count; i++)
-            {
-                if (!referencedLearningResults.Contains(learningResultsList[i].StorageId)) { return ValidationResult.Create(ValidationCode.subjectLearningResultNotReferencedByActivities).WithIndex(i); }
-            }
-
-            foreach (KeyValuePair<string, float> r in learningResultsWeights)
-            {
-                int index = learningResultsList.FindIndex(r2 => r2.StorageId == r.Key);
-                if (index >= 0 && r.Value != 100) { return ValidationResult.Create(ValidationCode.subjectActivitiesLearningResultWeightNotHundredPercent).WithIndex(index); }
-            }
-
-            bool foundSchoolDay = false;
-            DateTime d = Calendar.Value.StartDay.Value;
-            while (d <= Calendar.Value.EndDay.Value && !foundSchoolDay)
-            {
-                if (d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday)
+                for (int i = 0; i < learningResultsList.Count; i++)
                 {
-                    if (!Calendar.Value.FreeDays.Contains(d) && WeekSchedule.Value.HoursPerWeekDay[d.DayOfWeek] > 0) { foundSchoolDay = true; }
+                    if (!referencedLearningResults.Contains(learningResultsList[i].StorageId)) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectLearningResultNotReferencedByActivities).WithIndex(i)); }
                 }
 
-                if (!foundSchoolDay)
+                foreach (KeyValuePair<string, float> r in learningResultsWeights)
                 {
-                    d = d.AddDays(1);
+                    int index = learningResultsList.FindIndex(r2 => r2.StorageId == r.Key);
+                    if (index >= 0 && r.Value != 100) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectActivitiesLearningResultWeightNotHundredPercent).WithIndex(index)); }
                 }
+
             }
-
-            if (!foundSchoolDay) { return ValidationResult.Create(ValidationCode.subjectCalendarAndWeekScheduleLeaveNoSchoolDays); }
-
-            List<KeyValuePair<CommonTextId, CommonText>> commonTexts = CommonTexts.ToList();
-            for (int i = 0; i < commonTexts.Count; i++)
+            
+            if(Flags.Test(validationFlags, flagCalendar | flagWeekSchedule | flagBlocks) || force)
             {
-                if (commonTexts[i].Value.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectCommonTextInvalid).WithIndex((int)commonTexts[i].Key); }
+                Console.WriteLine("[calendar,weekSchedule,blocks] => Checking at least one school day exists");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectCalendarAndWeekScheduleLeaveNoSchoolDays);
+
+                bool foundSchoolDay = false;
+                DateTime d = Calendar.Value.StartDay.Value;
+                while (d <= Calendar.Value.EndDay.Value && !foundSchoolDay)
+                {
+                    if (d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday)
+                    {
+                        if (!Calendar.Value.FreeDays.Contains(d) && WeekSchedule.Value.HoursPerWeekDay[d.DayOfWeek] > 0) { foundSchoolDay = true; }
+                    }
+
+                    if (!foundSchoolDay)
+                    {
+                        d = d.AddDays(1);
+                    }
+                }
+
+                if (!foundSchoolDay) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectCalendarAndWeekScheduleLeaveNoSchoolDays)); }
             }
+
+            if(Flags.Test(validationFlags, flagCommonTexts) || force)
+            {
+                Console.WriteLine("[commonTexts] => Checking all commontexts are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.subjectCommonTextInvalid);
+
+                List<KeyValuePair<CommonTextId, CommonText>> commonTexts = CommonTexts.ToList();
+                for (int i = 0; i < commonTexts.Count; i++)
+                {
+                    if (commonTexts[i].Value.Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectCommonTextInvalid).WithIndex((int)commonTexts[i].Key)); }
+                }
+
+            }
+
+            Flags.Remove(ref validationFlags, flagTemplate);
+            Flags.Remove(ref validationFlags, flagCalendar);
+            Flags.Remove(ref validationFlags, flagWeekSchedule);
+            Flags.Remove(ref validationFlags, flagMetodologies);
+            Flags.Remove(ref validationFlags, flagSpaceResources);
+            Flags.Remove(ref validationFlags, flagMaterialResources);
+            Flags.Remove(ref validationFlags, flagEvaluationInstrumentTypes);
+            Flags.Remove(ref validationFlags, flagCitations);
+            Flags.Remove(ref validationFlags, flagBlocks);
+            Flags.Remove(ref validationFlags, flagLearningResultsWeights);
+            Flags.Remove(ref validationFlags, flagCommonTexts);
+
 
             Console.WriteLine(Title.Value + ": Subject validation end");
             foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
 
-            return ValidationResult.Create(ValidationCode.success);
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
         }
 
         public override bool Exists(string storageId, string? parentStorageId)

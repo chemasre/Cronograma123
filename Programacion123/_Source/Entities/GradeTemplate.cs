@@ -160,7 +160,7 @@
 
                 List<CommonText> objectivesList = GeneralObjectives.ToList();
                 if (objectivesList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeNoGeneralObjectives)); }
-                for (int i = 0; i < objectivesList.Count; i++) { if (objectivesList[i].Validate().code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeGeneralObjectiveInvalid).WithIndex(i)); } }
+                for (int i = 0; i < objectivesList.Count; i++) { if (objectivesList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeGeneralObjectiveInvalid).WithIndex(i)); } }
             }
 
 
@@ -173,7 +173,7 @@
 
                 List<CommonText> competencesList = GeneralCompetences.ToList();
                 if (competencesList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeNoGeneralCompetences)); }
-                for (int i = 0; i < competencesList.Count; i++) { if (competencesList[i].Validate().code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeGeneralCompetenceInvalid).WithIndex(i)); } }
+                for (int i = 0; i < competencesList.Count; i++) { if (competencesList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeGeneralCompetenceInvalid).WithIndex(i)); } }
             }
 
             if(Flags.Test(validationFlags, flagKeyCapacities) || force)
@@ -185,7 +185,7 @@
 
                 List<CommonText> capacitiesList = KeyCapacities.ToList();
                 if (capacitiesList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeNoKeyCapacities)); }
-                for (int i = 0; i < capacitiesList.Count; i++) { if (capacitiesList[i].Validate().code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeKeyCapacitiesInvalid).WithIndex(i)); } }
+                for (int i = 0; i < capacitiesList.Count; i++) { if (capacitiesList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeKeyCapacitiesInvalid).WithIndex(i)); } }
             }
 
             if(Flags.Test(validationFlags, flagCommonTexts) || force)
@@ -197,7 +197,7 @@
                 List<KeyValuePair<CommonTextId, CommonText>> commonTexts = CommonTexts.ToList();
                 for (int i = 0; i < commonTexts.Count; i++)
                 {
-                    if (commonTexts[i].Value.Validate().code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeCommonTextInvalid).WithIndex((int)commonTexts[i].Key)); }
+                    if (commonTexts[i].Value.Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeCommonTextInvalid).WithIndex((int)commonTexts[i].Key)); }
                 }
             }
 

@@ -138,7 +138,7 @@
 
                 List<LearningResult> resultsList = LearningResults.ToList();
                 if (resultsList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectNoLearningResults)); }
-                for (int i = 0; i < resultsList.Count; i++) { if (resultsList[i].Validate().code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectLearningResultsInvalid).WithIndex(i)); } }
+                for (int i = 0; i < resultsList.Count; i++) { if (resultsList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectLearningResultsInvalid).WithIndex(i)); } }
             }
 
             if(Flags.Test(validationFlags, flagGradeContents) || force)
@@ -150,7 +150,7 @@
 
                 List<Content> contentsList = Contents.ToList();
                 if (contentsList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectNoContents)); }
-                for (int i = 0; i < contentsList.Count; i++) { if (contentsList[i].Validate().code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectContentsInvalid).WithIndex(i)); } }
+                for (int i = 0; i < contentsList.Count; i++) { if (contentsList[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectContentsInvalid).WithIndex(i)); } }
             }
 
             Flags.Remove(ref validationFlags, flagGradeTemplate);            

@@ -35,7 +35,7 @@
                 validationFails.RemoveAll(e => e.code == ValidationCode.learningResultCriteriaInvalid);
 
                 if (Criterias.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.learningResultNoCriterias)); }
-                for (int i = 0; i < Criterias.Count; i++) { if (Criterias[i].Validate().code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.learningResultCriteriaInvalid).WithIndex(i)); } }
+                for (int i = 0; i < Criterias.Count; i++) { if (Criterias[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.learningResultCriteriaInvalid).WithIndex(i)); } }
             }
 
             Flags.Remove(ref validationFlags, flagCriterias);
