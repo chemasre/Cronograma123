@@ -86,7 +86,7 @@ namespace Programacion123
         }
 
         public abstract GeneratorResult Generate(string path);
-        public abstract GeneratorValidationResult Validate();
+        public abstract GeneratorValidationResult Validate(bool force = false);
 
         public List<string> GetCommonTextParagraphs(string text)
         {

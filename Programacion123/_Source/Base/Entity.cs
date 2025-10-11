@@ -56,19 +56,19 @@ namespace Programacion123
 
         public virtual ValidationResult Validate(bool force = false)
         {
-            Console.WriteLine("***************************************************");
-            Console.WriteLine(Title.Value + ": Entity validation start");
+            Utils.PrintLine("***************************************************");
+            Utils.PrintLine(Title.Value + ": Entity validation start");
 
             if(Flags.Test(validationFlags, flagTitle) || force)
             {
-                Console.WriteLine("[title] => Checking not empty");
+                Utils.PrintLine("[title] => Checking not empty");
                 validationFails.RemoveAll((v) => v.code == ValidationCode.entityTitleEmpty);
                 if(Title.Value.Trim().Length <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.entityTitleEmpty)); }
             }
 
             if(Flags.Test(validationFlags, flagDescription) || force)
             {
-                Console.WriteLine("[description] => Checking not empty");
+                Utils.PrintLine("[description] => Checking not empty");
                 validationFails.RemoveAll((v) => v.code == ValidationCode.entityDescriptionEmpty);
                 if(Description.Value.Trim().Length <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.entityDescriptionEmpty)); }
             }
@@ -78,8 +78,8 @@ namespace Programacion123
             Flags.Remove(ref validationFlags, flagTitle);
             Flags.Remove(ref validationFlags, flagDescription);
 
-            Console.WriteLine(Title.Value + ": Entity validation end");
-            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+            Utils.PrintLine(Title.Value + ": Entity validation end");
+            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }

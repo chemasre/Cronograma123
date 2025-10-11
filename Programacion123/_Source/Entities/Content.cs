@@ -25,11 +25,11 @@
         {
             base.Validate(force);
 
-            Console.WriteLine(Title.Value + ": Content validation start");
+            Utils.PrintLine(Title.Value + ": Content validation start");
 
             if(Flags.Test(validationFlags, flagPoints) || force)
             {
-                Console.WriteLine("[points] => Checking at least one points exist and all are valid");
+                Utils.PrintLine("[points] => Checking at least one points exist and all are valid");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.contentNoPoints);
                 validationFails.RemoveAll(e => e.code == ValidationCode.contentPointInvalid);
@@ -40,8 +40,8 @@
 
             Flags.Remove(ref validationFlags, flagPoints);
 
-            Console.WriteLine(Title.Value + ": Content validation end");
-            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+            Utils.PrintLine(Title.Value + ": Content validation end");
+            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }

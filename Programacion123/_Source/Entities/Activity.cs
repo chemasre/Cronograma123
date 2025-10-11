@@ -135,13 +135,13 @@
         {
             base.Validate(force);
 
-            Console.WriteLine(Title.Value + ": Activity validation start");
+            Utils.PrintLine(Title.Value + ": Activity validation start");
 
             // Check metodology
 
             if(Flags.Test(validationFlags, flagMetodology) || force)
             {
-                Console.WriteLine("[metodology] => Checking activity linked to metodology");
+                Utils.PrintLine("[metodology] => Checking activity linked to metodology");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.activityNotLinkedToMetodology);
                 if (Metodology.Value == null) { validationFails.Add(ValidationResult.Create(ValidationCode.activityNotLinkedToMetodology)); }
@@ -151,7 +151,7 @@
 
             if(Flags.Test(validationFlags, flagContentPoints) || force)
             {
-                Console.WriteLine("[contentPoints] => Checking activity linked to content points");
+                Utils.PrintLine("[contentPoints] => Checking activity linked to content points");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.activityNotLinkedToContents);
                 if (ContentPoints.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.activityNotLinkedToContents)); }
@@ -161,7 +161,7 @@
 
             if(Flags.Test(validationFlags, flagKeyCompetences) || force)
             {
-                Console.WriteLine("[keyCompetences] => Checking activity linked to key competences");
+                Utils.PrintLine("[keyCompetences] => Checking activity linked to key competences");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.activityNotLinkedToKeyCompetences);
                 if (KeyCompetences.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.activityNotLinkedToKeyCompetences)); }
@@ -171,7 +171,7 @@
 
             if(Flags.Test(validationFlags, flagSpaceResources) || force)
             {
-                Console.WriteLine("[spaceResources] => Checking activity linked to space resource");
+                Utils.PrintLine("[spaceResources] => Checking activity linked to space resource");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.activityNotLinkedToSpaceResource);
                 if (SpaceResources.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.activityNotLinkedToSpaceResource)); }
@@ -181,7 +181,7 @@
 
             if(Flags.Test(validationFlags, flagEvaluationType | flagEvaluationInstrumentType) || force)
             {
-                Console.WriteLine("[evaluationType, evaluationInstrumentType] => Checking evaluable activity linked to evaluation instrument");
+                Utils.PrintLine("[evaluationType, evaluationInstrumentType] => Checking evaluable activity linked to evaluation instrument");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.activityEvaluableAndNotLinkedToEvaluationInstrumentType);
                 if (EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
@@ -195,7 +195,7 @@
 
             if(Flags.Test(validationFlags, flagEvaluationType | flagCriterias) || force)
             {
-                Console.WriteLine("[evaluationType, criterias] => Checking evaluable activity linked to criterias");
+                Utils.PrintLine("[evaluationType, criterias] => Checking evaluable activity linked to criterias");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.activityEvaluableAndNotLinkedToCriterias);
                 if (EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
@@ -208,7 +208,7 @@
 
             if(Flags.Test(validationFlags, flagEvaluationType | flagLearningResultsWeights) || force)
             {
-                Console.WriteLine("[evaluationType, learningResultsWeights] => Checking evaluable activity linked to result weights");
+                Utils.PrintLine("[evaluationType, learningResultsWeights] => Checking evaluable activity linked to result weights");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.activityEvaluableAndNotLinkedToResultsWeights);
                 if (EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
@@ -219,7 +219,7 @@
 
             if(Flags.Test(validationFlags, flagEvaluationType | flagLearningResultsWeights | flagCriterias) || force)
             {
-                Console.WriteLine("[evaluationType, learningResultsWeights, criterias] => Checking learning results weights");
+                Utils.PrintLine("[evaluationType, learningResultsWeights, criterias] => Checking learning results weights");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.activityReferencesResultWithoutWeight);
                 validationFails.RemoveAll(e => e.code == ValidationCode.activityDoesntReferenceResultButHasWeight);
@@ -271,7 +271,7 @@
 
             if(Flags.Test(validationFlags, flagStartType | flagStartDate | flagStartDayOfWeek | flagDuration | flagNoActivitiesBefore | flagNoActivitiesAfter) || force)
             {
-                Console.WriteLine("[startType, startDate, startDayOfWee, duration, noActivitiesBefore, noActivitiesAfter] => Checking scheduling");
+                Utils.PrintLine("[startType, startDate, startDayOfWee, duration, noActivitiesBefore, noActivitiesAfter] => Checking scheduling");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.activityCannotSchedule);
 
@@ -301,8 +301,8 @@
             Flags.Remove(ref validationFlags, flagCriterias);               
             Flags.Remove(ref validationFlags, flagLearningResultsWeights);
 
-            Console.WriteLine(Title.Value + ": Activity validation end");
-            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+            Utils.PrintLine(Title.Value + ": Activity validation end");
+            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }

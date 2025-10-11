@@ -24,11 +24,11 @@
         {
             base.Validate(force);
 
-            Console.WriteLine(Title.Value + ": Block validation start");
+            Utils.PrintLine(Title.Value + ": Block validation start");
 
             if(Flags.Test(validationFlags, flagActivities) || force)
             {
-                Console.WriteLine("[activities] => Checking activities exist and are valid");
+                Utils.PrintLine("[activities] => Checking activities exist and are valid");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.blockNoActivities);
                 validationFails.RemoveAll(e => e.code == ValidationCode.blockActivityInvalid);
@@ -50,8 +50,8 @@
 
             Flags.Remove(ref validationFlags, flagActivities);
 
-            Console.WriteLine(Title.Value + ": Block validation end");
-            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+            Utils.PrintLine(Title.Value + ": Block validation end");
+            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }

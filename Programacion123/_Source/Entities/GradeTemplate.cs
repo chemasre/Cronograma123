@@ -131,11 +131,11 @@
         {
             base.Validate(force);
 
-            Console.WriteLine(Title.Value + ": Grade template validation start");
+            Utils.PrintLine(Title.Value + ": Grade template validation start");
 
             if(Flags.Test(validationFlags, flagGradeName) || force)
             {
-                Console.WriteLine("[gradeName] => Validating not empty");
+                Utils.PrintLine("[gradeName] => Validating not empty");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeNameEmpty);
 
@@ -144,7 +144,7 @@
 
             if(Flags.Test(validationFlags, flagGradeFamilyName) || force)
             {
-                Console.WriteLine("[gradeFamilyName] => Validating not empty");
+                Utils.PrintLine("[gradeFamilyName] => Validating not empty");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeFamilyNameEmpty);
 
@@ -153,7 +153,7 @@
 
             if(Flags.Test(validationFlags, flagGeneralObjectives) || force)
             {
-                Console.WriteLine("[objectives] => Validating at least one exist and all are valid");
+                Utils.PrintLine("[objectives] => Validating at least one exist and all are valid");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeNoGeneralObjectives);
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeGeneralObjectiveInvalid);
@@ -166,7 +166,7 @@
 
             if(Flags.Test(validationFlags, flagGeneralCompetences) || force)
             {
-                Console.WriteLine("[competences] => Validating at least one exist and all are valid");
+                Utils.PrintLine("[competences] => Validating at least one exist and all are valid");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeNoGeneralCompetences);
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeGeneralCompetenceInvalid);
@@ -178,7 +178,7 @@
 
             if(Flags.Test(validationFlags, flagKeyCapacities) || force)
             {
-                Console.WriteLine("[capacities] => Validating at least one exist and all are valid");
+                Utils.PrintLine("[capacities] => Validating at least one exist and all are valid");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeNoKeyCapacities);
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeKeyCapacitiesInvalid);
@@ -190,7 +190,7 @@
 
             if(Flags.Test(validationFlags, flagCommonTexts) || force)
             {
-                Console.WriteLine("[commonTexts] => Validating all are valid");
+                Utils.PrintLine("[commonTexts] => Validating all are valid");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeCommonTextInvalid);
 
@@ -209,8 +209,8 @@
             Flags.Remove(ref validationFlags, flagKeyCapacities);
             Flags.Remove(ref validationFlags, flagCommonTexts);
 
-            Console.WriteLine(Title.Value + ": Grade template validation end");
-            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+            Utils.PrintLine(Title.Value + ": Grade template validation end");
+            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }

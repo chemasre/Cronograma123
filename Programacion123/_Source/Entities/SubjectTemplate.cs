@@ -71,11 +71,11 @@
         {
             base.Validate(force);
 
-            Console.WriteLine(Title.Value + ": Subject template validation start");
+            Utils.PrintLine(Title.Value + ": Subject template validation start");
 
             if(Flags.Test(validationFlags, flagGradeTemplate) || force)
             {
-                Console.WriteLine("[gradeTemplate] => Validating grade template linked");
+                Utils.PrintLine("[gradeTemplate] => Validating grade template linked");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectNotLinkedToGradeTemplate);
 
@@ -84,7 +84,7 @@
 
             if(Flags.Test(validationFlags, flagSubjectName) || force)
             {
-                Console.WriteLine("[subjectName] => Validating subject name not empty");
+                Utils.PrintLine("[subjectName] => Validating subject name not empty");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectNameEmpty);
 
@@ -93,7 +93,7 @@
 
             if(Flags.Test(validationFlags, flagSubjectCode) || force)
             {
-                Console.WriteLine("[subjectCode] => Validating subject code not empty");
+                Utils.PrintLine("[subjectCode] => Validating subject code not empty");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectCodeEmpty);
 
@@ -102,7 +102,7 @@
 
             if(Flags.Test(validationFlags, flagGradeClassroomHours) || force)
             {
-                Console.WriteLine("[classRoomHours] => Validating some classroom hour exist");
+                Utils.PrintLine("[classRoomHours] => Validating some classroom hour exist");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectClassroomHoursZero);
 
@@ -111,7 +111,7 @@
 
             if(Flags.Test(validationFlags, flagGradeGeneralObjectives) || force)
             {
-                Console.WriteLine("[generalObjectives] => Validating some objective exist");
+                Utils.PrintLine("[generalObjectives] => Validating some objective exist");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectNoGeneralObjectivesReferenced);
 
@@ -121,7 +121,7 @@
 
             if(Flags.Test(validationFlags, flagGradeGeneralCompetences) || force)
             {
-                Console.WriteLine("[generalCompetences] => Validating some competence exist");
+                Utils.PrintLine("[generalCompetences] => Validating some competence exist");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectNoGeneralCompetencesReferenced);
 
@@ -131,7 +131,7 @@
 
             if(Flags.Test(validationFlags, flagGradeLearningResults) || force)
             {
-                Console.WriteLine("[learningResults] => Validating some learning result exist and all are valid");
+                Utils.PrintLine("[learningResults] => Validating some learning result exist and all are valid");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectNoLearningResults);
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectLearningResultsInvalid);
@@ -143,7 +143,7 @@
 
             if(Flags.Test(validationFlags, flagGradeContents) || force)
             {
-                Console.WriteLine("[contents] => Validating some content point exist and all are valid");
+                Utils.PrintLine("[contents] => Validating some content point exist and all are valid");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectNoContents);
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectContentsInvalid);
@@ -163,8 +163,8 @@
             Flags.Remove(ref validationFlags, flagGradeLearningResults);     
             Flags.Remove(ref validationFlags, flagGradeContents);            
 
-            Console.WriteLine(Title.Value + ": Subject template validation end");
-            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+            Utils.PrintLine(Title.Value + ": Subject template validation end");
+            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }

@@ -647,7 +647,7 @@ namespace Programacion123
 
         }
 
-        public override GeneratorValidationResult Validate()
+        public override GeneratorValidationResult Validate(bool force = false)
         {
             GeneratorValidationResult result = new() { code = GeneratorValidationCode.success };
 

@@ -59,9 +59,9 @@
         {
             base.Validate(force);
 
-            Console.WriteLine(Title.Value + ": Common text validation start");
-            Console.WriteLine(Title.Value + ": Common text validation end");
-            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+            Utils.PrintLine(Title.Value + ": Common text validation start");
+            Utils.PrintLine(Title.Value + ": Common text validation end");
+            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }
