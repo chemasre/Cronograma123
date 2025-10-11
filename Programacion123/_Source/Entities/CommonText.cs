@@ -55,9 +55,18 @@
 
         }
 
-        public override ValidationResult Validate()
+        public override ValidationResult Validate(bool force = false)
         {
-            return base.Validate();
+            base.Validate(force);
+
+            Console.WriteLine(Title.Value + ": Common text validation start");
+            Console.WriteLine(Title.Value + ": Common text validation end");
+            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
+
+
         }
 
         public override bool Exists(string storageId, string? parentStorageId)
@@ -74,6 +83,7 @@
             data.Description = Description.Value;
 
             Storage.SaveData<CommonTextData>(StorageId, StorageClassId, data, parentStorageId);
+
         }
 
         public override void LoadOrCreate(string storageId, string? parentStorageId = null)

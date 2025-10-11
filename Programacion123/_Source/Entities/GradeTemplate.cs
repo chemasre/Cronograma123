@@ -16,6 +16,16 @@
         public ListEntityProperty<CommonText> KeyCapacities { get; } = new ListEntityProperty<CommonText>();
         public DictionaryEntityProperty<CommonTextId, CommonText> CommonTexts { get; } = new DictionaryEntityProperty<CommonTextId, CommonText>();
 
+        const uint flagGradeType          = 1 << 2;
+        const uint flagGradeName          = 1 << 3;
+        const uint flagGradeFamilyName    = 1 << 4;
+        const uint flagGeneralObjectives  = 1 << 5;
+        const uint flagGeneralCompetences = 1 << 6;
+        const uint flagKeyCapacities      = 1 << 7;
+        const uint flagCommonTexts        = 1 << 8;
+
+        const uint flagAll = ~0U;
+
         public GradeTemplate() : base()
         {
             StorageClassId = "gradetemplate";
@@ -86,36 +96,124 @@
             CommonTexts[CommonTextId.header2Blocks].Description.Value = "Escribe una introducción a los bloques de enseñanza-aprendizaje común a todos los módulos del ciclo";
             CommonTexts[CommonTextId.header2Activities].Description.Value = "Escribe una introducción a la programación de actividades de enseñanza-aprendizaje común a todos los módulos del ciclo";
 
+            GradeType.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagGradeType); InvokeOnUpdated(); };
+            GradeName.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagGradeName); InvokeOnUpdated(); };
+            GradeFamilyName.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagGradeFamilyName); InvokeOnUpdated(); };
+
+            GeneralObjectives.OnAdded += (element) => { Flags.Add(ref validationFlags, flagGeneralObjectives); InvokeOnUpdated(); };
+            GeneralObjectives.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagGeneralObjectives); InvokeOnUpdated(); };
+            GeneralObjectives.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagGeneralObjectives); InvokeOnUpdated(); };
+
+            GeneralCompetences.OnAdded += (element) => { Flags.Add(ref validationFlags, flagGeneralCompetences); InvokeOnUpdated(); };
+            GeneralCompetences.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagGeneralCompetences); InvokeOnUpdated(); };
+            GeneralCompetences.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagGeneralCompetences); InvokeOnUpdated(); };
+
+            KeyCapacities.OnAdded += (element) => { Flags.Add(ref validationFlags, flagKeyCapacities); InvokeOnUpdated(); };
+            KeyCapacities.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagKeyCapacities); InvokeOnUpdated(); };
+            KeyCapacities.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagKeyCapacities); InvokeOnUpdated(); };
+
+            CommonTexts.OnAdded += (key, element) => { Flags.Add(ref validationFlags, flagCommonTexts); InvokeOnUpdated(); };
+            CommonTexts.OnRemoved += (key) => { Flags.Add(ref validationFlags, flagCommonTexts); InvokeOnUpdated(); };
+            CommonTexts.OnUpdated += (key, element) => { Flags.Add(ref validationFlags, flagCommonTexts); InvokeOnUpdated(); };
+            CommonTexts.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagCommonTexts); InvokeOnUpdated(); };
+
+            Flags.Add(ref validationFlags, flagGradeType);
+            Flags.Add(ref validationFlags, flagGradeName);
+            Flags.Add(ref validationFlags, flagGradeFamilyName);
+            Flags.Add(ref validationFlags, flagGeneralObjectives);
+            Flags.Add(ref validationFlags, flagGeneralCompetences);
+            Flags.Add(ref validationFlags, flagKeyCapacities);
+            Flags.Add(ref validationFlags, flagCommonTexts);
+
         }
 
-        public override ValidationResult Validate()
+        public override ValidationResult Validate(bool force = false)
         {
-            ValidationResult result = base.Validate();
+            base.Validate(force);
 
-            if (result.code != ValidationCode.success) { return result; }
+            Console.WriteLine(Title.Value + ": Grade template validation start");
 
-            if (GradeName.Value.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNameEmpty); }
-            if (GradeFamilyName.Value.Trim().Length <= 0) { return ValidationResult.Create(ValidationCode.templateGradeFamilyNameEmpty); }
-
-            List<CommonText> objectivesList = GeneralObjectives.ToList();
-            if (objectivesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoGeneralObjectives); }
-            for (int i = 0; i < objectivesList.Count; i++) { if (objectivesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeGeneralObjectiveInvalid).WithIndex(i); } }
-
-            List<CommonText> competencesList = GeneralCompetences.ToList();
-            if (competencesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoGeneralCompetences); }
-            for (int i = 0; i < competencesList.Count; i++) { if (competencesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeGeneralCompetenceInvalid).WithIndex(i); } }
-
-            List<CommonText> capacitiesList = KeyCapacities.ToList();
-            if (capacitiesList.Count <= 0) { return ValidationResult.Create(ValidationCode.templateGradeNoKeyCapacities); }
-            for (int i = 0; i < capacitiesList.Count; i++) { if (capacitiesList[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeKeyCapacitiesInvalid).WithIndex(i); } }
-
-            List<KeyValuePair<CommonTextId, CommonText>> commonTexts = CommonTexts.ToList();
-            for (int i = 0; i < commonTexts.Count; i++)
+            if(Flags.Test(validationFlags, flagGradeName) || force)
             {
-                if (commonTexts[i].Value.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.templateGradeCommonTextInvalid).WithIndex((int)commonTexts[i].Key); }
+                Console.WriteLine("[gradeName] => Validating not empty");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeNameEmpty);
+
+                if (GradeName.Value.Trim().Length <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeNameEmpty)); }
             }
 
-            return ValidationResult.Create(ValidationCode.success);
+            if(Flags.Test(validationFlags, flagGradeFamilyName) || force)
+            {
+                Console.WriteLine("[gradeFamilyName] => Validating not empty");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeFamilyNameEmpty);
+
+                if (GradeFamilyName.Value.Trim().Length <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeFamilyNameEmpty)); }
+            }
+
+            if(Flags.Test(validationFlags, flagGeneralObjectives) || force)
+            {
+                Console.WriteLine("[objectives] => Validating at least one exist and all are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeNoGeneralObjectives);
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeGeneralObjectiveInvalid);
+
+                List<CommonText> objectivesList = GeneralObjectives.ToList();
+                if (objectivesList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeNoGeneralObjectives)); }
+                for (int i = 0; i < objectivesList.Count; i++) { if (objectivesList[i].Validate().code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeGeneralObjectiveInvalid).WithIndex(i)); } }
+            }
+
+
+            if(Flags.Test(validationFlags, flagGeneralCompetences) || force)
+            {
+                Console.WriteLine("[competences] => Validating at least one exist and all are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeNoGeneralCompetences);
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeGeneralCompetenceInvalid);
+
+                List<CommonText> competencesList = GeneralCompetences.ToList();
+                if (competencesList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeNoGeneralCompetences)); }
+                for (int i = 0; i < competencesList.Count; i++) { if (competencesList[i].Validate().code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeGeneralCompetenceInvalid).WithIndex(i)); } }
+            }
+
+            if(Flags.Test(validationFlags, flagKeyCapacities) || force)
+            {
+                Console.WriteLine("[capacities] => Validating at least one exist and all are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeNoKeyCapacities);
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeKeyCapacitiesInvalid);
+
+                List<CommonText> capacitiesList = KeyCapacities.ToList();
+                if (capacitiesList.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeNoKeyCapacities)); }
+                for (int i = 0; i < capacitiesList.Count; i++) { if (capacitiesList[i].Validate().code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeKeyCapacitiesInvalid).WithIndex(i)); } }
+            }
+
+            if(Flags.Test(validationFlags, flagCommonTexts) || force)
+            {
+                Console.WriteLine("[commonTexts] => Validating all are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.templateGradeCommonTextInvalid);
+
+                List<KeyValuePair<CommonTextId, CommonText>> commonTexts = CommonTexts.ToList();
+                for (int i = 0; i < commonTexts.Count; i++)
+                {
+                    if (commonTexts[i].Value.Validate().code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateGradeCommonTextInvalid).WithIndex((int)commonTexts[i].Key)); }
+                }
+            }
+
+            Flags.Remove(ref validationFlags, flagGradeType);
+            Flags.Remove(ref validationFlags, flagGradeName);
+            Flags.Remove(ref validationFlags, flagGradeFamilyName);
+            Flags.Remove(ref validationFlags, flagGeneralObjectives);
+            Flags.Remove(ref validationFlags, flagGeneralCompetences);
+            Flags.Remove(ref validationFlags, flagKeyCapacities);
+            Flags.Remove(ref validationFlags, flagCommonTexts);
+
+            Console.WriteLine(Title.Value + ": Grade template validation end");
+            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
         }
 
         public override bool Exists(string storageId, string? parentStorageId)

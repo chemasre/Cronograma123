@@ -15,6 +15,12 @@ namespace Programacion123
 
         StrongReferencesBoxController<CommonText, CommonTextEditor> pointsController;
 
+        //const uint flagUpdateTitle          = 1 << 0;
+        const uint flagUpdateDescription    = 1 << 1;
+        const uint flagUpdatePoints         = 1 << 2;
+
+        const uint flagUpdateAll = ~0U;
+
         public ContentEditor()
         {
             InitializeComponent();
@@ -35,7 +41,7 @@ namespace Programacion123
                 {
                     string contentStorageId = Storage.FindParentStorageId(e.StorageId, e.StorageClassId);
                     int contentIndex = template.Contents.ToList().FindIndex(c => c.StorageId == contentStorageId);
-                    return String.Format("{0}.{1}: {2}", contentIndex + 1, i + 1, e.Description);
+                    return String.Format("{0}.{1}: {2}", contentIndex + 1, i + 1, e.Description.Value);
                 };
 
             var configPoints = StrongReferencesBoxConfiguration<CommonText>.CreateForList(ListBoxPoints)
@@ -62,13 +68,13 @@ namespace Programacion123
             ButtonClose.ToolTip = "Cerrar";
 
 
-            Validate();
+            Validate(true);
 
         }
 
         private void PointsController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdatePoints);
             Validate();
         }
 
@@ -77,19 +83,20 @@ namespace Programacion123
             return entity;
         }
 
-        void UpdateEntity()
+        void UpdateEntity(uint flags)
         {
-            entity.Description.Value = TextBoxDescription.Text;
+            if(Flags.Test(flags, flagUpdateDescription)) { entity.Description.Value = TextBoxDescription.Text; }
+
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
-            entity.Points.Set(Storage.LoadOrCreateEntities<CommonText>(pointsController.StorageIds, entity.StorageId));
+            if(Flags.Test(flags, flagUpdatePoints)) { entity.Points.Set(Storage.LoadOrCreateEntities<CommonText>(pointsController.StorageIds, entity.StorageId)); }
 
             entity.Save(parentStorageId);
         }
 
-        void Validate()
+        void Validate(bool force = false)
         {
-            ValidationResult validation = entity.Validate();
+            ValidationResult validation = entity.Validate(force);
 
             string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
             BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
@@ -99,7 +106,7 @@ namespace Programacion123
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateAll);
             //entity.Save(parentStorageId);
 
             TextBoxDescription.TextChanged -= TextBoxDescription_TextChanged;
@@ -110,7 +117,7 @@ namespace Programacion123
 
         private void TextBoxDescription_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateDescription);
             Validate();
         }
 

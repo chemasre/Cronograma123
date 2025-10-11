@@ -4,24 +4,47 @@
     {
         public ListEntityProperty<CommonText> Criterias { get; } = new ListEntityProperty<CommonText>();
 
+        const uint flagCriterias = 1 << 2;
+
         public LearningResult() : base()
         {
             StorageClassId = "learningresult";
 
             Title.Value = "Título del resultado de aprendizaje";
             Description.Value = "Descripción del resultado de aprendizaje";
+
+            Criterias.OnAdded += (element) => { Flags.Add(ref validationFlags, flagCriterias); };
+            Criterias.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagCriterias); };
+            Criterias.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagCriterias); };
+
+            Flags.Add(ref validationFlags, flagCriterias);
+
         }
 
-        public override ValidationResult Validate()
+        public override ValidationResult Validate(bool force = false)
         {
-            ValidationResult result = base.Validate();
+            base.Validate(force);
 
-            if (result.code != ValidationCode.success) { return result; }
+            Console.WriteLine(Title.Value + ": Learning result validation start");
 
-            if (Criterias.Count <= 0) { return ValidationResult.Create(ValidationCode.learningResultNoCriterias); }
-            for (int i = 0; i < Criterias.Count; i++) { if (Criterias[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.learningResultCriteriaInvalid).WithIndex(i); } }
+            if(Flags.Test(validationFlags, flagCriterias) || force)
+            {
+                Console.WriteLine("[criterias] => Validating some criteria exist and criterias valid");
 
-            return ValidationResult.Create(ValidationCode.success);
+                validationFails.RemoveAll(e => e.code == ValidationCode.learningResultNoCriterias);
+                validationFails.RemoveAll(e => e.code == ValidationCode.learningResultCriteriaInvalid);
+
+                if (Criterias.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.learningResultNoCriterias)); }
+                for (int i = 0; i < Criterias.Count; i++) { if (Criterias[i].Validate().code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.learningResultCriteriaInvalid).WithIndex(i)); } }
+            }
+
+            Flags.Remove(ref validationFlags, flagCriterias);
+
+            Console.WriteLine(Title.Value + ": Learning result validation end");
+            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
         }
 
         public override bool Exists(string storageId, string? parentStorageId)

@@ -4,9 +4,7 @@
     {
         public ListEntityProperty<Activity> Activities { get; } = new ListEntityProperty<Activity>();
 
-        bool checkActivities;
-
-        ValidationResult cachedResult;
+        public const uint flagActivities = 1 << 2; 
 
         public Block() : base()
         {
@@ -15,59 +13,48 @@
             Title.Value = "Título del bloque";
             Description.Value = "Descripción del bloque";
 
-            Activities.OnAdded += (element) => { checkActivities = true; };
-            Activities.OnRemoved += (element) => { checkActivities = true; };
-            Activities.OnEntityUpdated += (entity) => { checkActivities = true; };
+            Activities.OnAdded += (element) => { Flags.Add(ref validationFlags, flagActivities); };
+            Activities.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagActivities); };
+            Activities.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagActivities); };
 
-            checkActivities = true;
+            Flags.Add(ref validationFlags, flagActivities);
         }
 
-        public override void Invalidate()
+        public override ValidationResult Validate(bool force = false)
         {
-            base.Invalidate();
-            checkActivities = true;
-        }
+            base.Validate(force);
 
-        public override ValidationResult Validate()
-        {
-            ValidationResult baseResult = base.Validate();
+            Console.WriteLine(Title.Value + ": Block validation start");
 
-            if (baseResult.code != ValidationCode.success) { return baseResult; }
-
-            if(!checkActivities) { return cachedResult; }
-
-            bool invalidFound = false;
-
-            if(!invalidFound && checkActivities)
+            if(Flags.Test(validationFlags, flagActivities) || force)
             {
+                Console.WriteLine("[activities] => Checking activities exist and are valid");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.blockNoActivities);
+                validationFails.RemoveAll(e => e.code == ValidationCode.blockActivityInvalid);
+
                 if (Activities.Count <= 0)
                 {
-                    cachedResult = ValidationResult.Create(ValidationCode.blockNoActivities);
-                    invalidFound = true;
+                    validationFails.Add(ValidationResult.Create(ValidationCode.blockNoActivities));
                 }
 
-                if(!invalidFound)
+                for (int i = 0; i < Activities.Count; i++)
                 {
-                    for (int i = 0; i < Activities.Count; i++)
+                    if(Activities[i].Validate().code != ValidationCode.success)
                     {
-                        if (Activities[i].Validate().code != ValidationCode.success)
-                        {
-                            cachedResult = ValidationResult.Create(ValidationCode.blockActivityInvalid).WithIndex(i);
-                            invalidFound = true;
-                        }
+                        validationFails.Add(ValidationResult.Create(ValidationCode.blockActivityInvalid).WithIndex(i));
                     }
                 }
 
-                checkActivities = false;
             }
 
+            Flags.Remove(ref validationFlags, flagActivities);
 
-            if(!invalidFound)
-            {
-                cachedResult = ValidationResult.Create(ValidationCode.success);
-            }
+            Console.WriteLine(Title.Value + ": Block validation end");
+            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
 
-            return cachedResult;
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
 
         }
 

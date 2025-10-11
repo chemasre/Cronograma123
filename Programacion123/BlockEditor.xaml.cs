@@ -15,6 +15,12 @@ namespace Programacion123
 
         StrongReferencesBoxController<Activity, ActivityEditor> activitiesController;
 
+        const uint flagUpdateTitle          = 1 << 0;
+        const uint flagUpdateDescription    = 1 << 2;
+        const uint flagUpdateActivities     = 1 << 3;
+
+        const uint flagUpdateAll = ~0U;
+
         public BlockEditor()
         {
             InitializeComponent();
@@ -80,7 +86,7 @@ namespace Programacion123
 
         private void ActivitiesController_Changed(StrongReferencesBoxController<Activity, ActivityEditor> controller)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateActivities);
             Validate(true);
         }
 
@@ -89,22 +95,20 @@ namespace Programacion123
             return entity;
         }
 
-        void UpdateEntity()
+        void UpdateEntity(uint flags)
         {
-            entity.Title.Value = TextTitle.Text.Trim();
-            entity.Description.Value = TextBoxDescription.Text;
+            if(Flags.Test(flags, flagUpdateTitle)) { entity.Title.Value = TextTitle.Text.Trim(); }            
+            if(Flags.Test(flags, flagUpdateDescription)) { entity.Description.Value = TextBoxDescription.Text; }
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
-            entity.Activities.Set(Storage.LoadOrCreateEntities<Activity>(activitiesController.StorageIds, entity.StorageId));
+            if(Flags.Test(flags, flagUpdateActivities)) { entity.Activities.Set(Storage.LoadOrCreateEntities<Activity>(activitiesController.StorageIds, entity.StorageId)); }
 
             entity.Save(parentStorageId);
         }
 
         void Validate(bool force = false)
         {
-            if(force) { entity.Invalidate(); }
-
-            ValidationResult validation = entity.Validate();
+            ValidationResult validation = entity.Validate(force);
 
             string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
             BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
@@ -114,7 +118,7 @@ namespace Programacion123
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateAll);
 
             TextTitle.TextChanged -= TextTitle_TextChanged;
             TextBoxDescription.TextChanged -= TextBoxDescription_TextChanged;
@@ -126,13 +130,13 @@ namespace Programacion123
 
         private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateTitle);
             Validate();
         }
 
         private void TextBoxDescription_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateDescription);
             Validate();
         }
 

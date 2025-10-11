@@ -18,6 +18,14 @@ namespace Programacion123
         HashSet<DateTime> freeDaysSet;
         List<DateTime> freeDaysList;
 
+        const uint flagUpdateTitle      = 1 << 0;
+        const uint flagUpdateStartDay   = 1 << 1;
+        const uint flagUpdateEndDay     = 1 << 2;
+        const uint flagUpdateFreeDays   = 1 << 3;
+        
+        const uint flagUpdateAll = ~0U;
+
+
         public CalendarEditor()
         {
             InitializeComponent();
@@ -77,7 +85,7 @@ namespace Programacion123
             CalendarPreview.Loaded += CalendarPreview_Loaded;
 
             UpdateCalendarPreview();
-            Validate();
+            Validate(true);
 
 
         }
@@ -95,21 +103,35 @@ namespace Programacion123
             }
         }
 
-        private void UpdateEntity()
+        private void UpdateEntity(uint flags)
         {
-            calendar.Title.Value = TextTitle.Text.Trim();
-            calendar.StartDay.Value = DateStart.SelectedDate.GetValueOrDefault();
-            calendar.EndDay.Value = DateEnd.SelectedDate.GetValueOrDefault();
+            if(Flags.Test(flags, flagUpdateTitle))
+            {
+                calendar.Title.Value = TextTitle.Text.Trim();
+            }
 
-            calendar.FreeDays.Clear();
-            calendar.FreeDays.Add(freeDaysList);
+            if(Flags.Test(flags, flagUpdateStartDay))
+            {
+                calendar.StartDay.Value = DateStart.SelectedDate.GetValueOrDefault();
+            }
+
+            if(Flags.Test(flags, flagUpdateEndDay))
+            {
+                calendar.EndDay.Value = DateEnd.SelectedDate.GetValueOrDefault();
+            }
+
+            if(Flags.Test(flags, flagUpdateFreeDays))
+            {
+                calendar.FreeDays.Clear();
+                calendar.FreeDays.Add(freeDaysList);
+            }
 
             calendar.Save(parentStorageId);
         }
 
-        void Validate()
+        void Validate(bool force = false)
         {
-            ValidationResult validation = calendar.Validate();
+            ValidationResult validation = calendar.Validate(force);
 
             string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
             BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
@@ -119,7 +141,7 @@ namespace Programacion123
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateAll);
             //calendar.Save(parentStorageId);
 
             TextTitle.TextChanged -= TextTitle_TextChanged;
@@ -134,7 +156,7 @@ namespace Programacion123
 
         private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateTitle);
             Validate();
 
         }
@@ -143,7 +165,7 @@ namespace Programacion123
         {
             ListBoxFreeDays.SelectedIndex = freeDaysList.FindIndex(e => e == DateFreeDay.SelectedDate);
             if (DateFreeDay.SelectedDate.HasValue) { CalendarPreview.DisplayDate = DateFreeDay.SelectedDate.Value; }
-            UpdateEntity();
+            UpdateEntity(flagUpdateFreeDays);
             Validate();
         }
 
@@ -151,7 +173,7 @@ namespace Programacion123
         {
             if (DateStart.SelectedDate.HasValue) { CalendarPreview.DisplayDate = DateStart.SelectedDate.Value; }
             UpdateCalendarPreview();
-            UpdateEntity();
+            UpdateEntity(flagUpdateStartDay);
             Validate();
         }
 
@@ -159,7 +181,7 @@ namespace Programacion123
         {
             if (DateEnd.SelectedDate.HasValue) { CalendarPreview.DisplayDate = DateEnd.SelectedDate.Value; }
             UpdateCalendarPreview();
-            UpdateEntity();
+            UpdateEntity(flagUpdateEndDay);
             Validate();
         }
 
@@ -179,7 +201,7 @@ namespace Programacion123
                 DateFreeDay.SelectedDate = DateFreeDay.SelectedDate.Value.AddDays(1);
 
                 UpdateCalendarPreview();
-                UpdateEntity();
+                UpdateEntity(flagUpdateFreeDays);
                 Validate();
 
             }
@@ -204,7 +226,7 @@ namespace Programacion123
                     DateFreeDay.SelectedDate = DateFreeDay.SelectedDate.Value.AddDays(1);
 
                     UpdateCalendarPreview();
-                    UpdateEntity();
+                    UpdateEntity(flagUpdateFreeDays);
                     Validate();
                 }
 

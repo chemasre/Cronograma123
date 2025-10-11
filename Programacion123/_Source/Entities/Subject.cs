@@ -92,9 +92,11 @@
 
         }
 
-        public override ValidationResult Validate()
+        public override ValidationResult Validate(bool force = false)
         {
-            ValidationResult result = base.Validate();
+            ValidationResult result = base.Validate(force);
+
+            Console.WriteLine(Title.Value + ": Subject validation start");
 
             if (result.code != ValidationCode.success) { return result; }
 
@@ -204,6 +206,9 @@
             {
                 if (commonTexts[i].Value.Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.subjectCommonTextInvalid).WithIndex((int)commonTexts[i].Key); }
             }
+
+            Console.WriteLine(Title.Value + ": Subject validation end");
+            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
 
             return ValidationResult.Create(ValidationCode.success);
         }

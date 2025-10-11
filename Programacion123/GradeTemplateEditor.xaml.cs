@@ -16,6 +16,17 @@ namespace Programacion123
         StrongReferencesBoxController<CommonText, CommonTextEditor> keyCapacitiesController;
         StrongReferencesBoxController<CommonText, CommonTextEditor> commonTextsController;
 
+        const uint flagUpdateTitle       = 1 << 0;
+        const uint flagUpdateType        = 1 << 1;
+        const uint flagUpdateName        = 1 << 2;
+        const uint flagUpdateFamilyName  = 1 << 3;
+        const uint flagUpdateObjectives  = 1 << 4;
+        const uint flagUpdateCompetences = 1 << 5;
+        const uint flagUpdateCapacities  = 1 << 6;
+        const uint flagUpdateCommonTexts = 1 << 7;
+
+        const uint flagUpdateAll = ~0U;
+
         public GradeTemplateEditor()
         {
             InitializeComponent();
@@ -114,50 +125,43 @@ namespace Programacion123
             TextName.TextChanged += TextName_TextChanged;
             TextFamilyName.TextChanged += TextFamilyName_TextChanged;
 
-            Validate();
+            Validate(true);
 
         }
 
         private void CommonTextsController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateCommonTexts);
             Validate();
         }
 
         private void KeyCapacitiesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntity();
-            Validate();
-        }
-
-
-        private void TextSubjectCode_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            UpdateEntity();
+            UpdateEntity(flagUpdateCapacities);
             Validate();
         }
 
         private void TextFamilyName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateFamilyName);
             Validate();
         }
 
         private void TextName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateName);
             Validate();
         }
 
         private void TextTitle_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateTitle);
             Validate();
         }
 
-        void Validate()
+        void Validate(bool force = false)
         {
-            ValidationResult validation = entity.Validate();
+            ValidationResult validation = entity.Validate(force);
 
             string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
             BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
@@ -165,39 +169,36 @@ namespace Programacion123
 
         }
 
-        private void ContentsController_Changed(StrongReferencesBoxController<Content, ContentEditor> controller)
-        {
-            UpdateEntity();
-            Validate();
-        }
-
         private void GeneralCompetencesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateCompetences);
             Validate();
         }
 
 
         private void GeneralObjectivesController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
         {
-            UpdateEntity();
+            UpdateEntity(flagUpdateObjectives);
             Validate();
         }
 
 
-        private void UpdateEntity()
+        private void UpdateEntity(uint flags)
         {
-            entity.Title.Value = TextTitle.Text;
-            entity.GeneralObjectives.Set(Storage.LoadOrCreateEntities<CommonText>(generalObjectivesController.StorageIds, entity.StorageId));
-            entity.GeneralCompetences.Set(Storage.LoadOrCreateEntities<CommonText>(generalCompetencesController.StorageIds, entity.StorageId));
-            entity.KeyCapacities.Set(Storage.LoadOrCreateEntities<CommonText>(keyCapacitiesController.StorageIds, entity.StorageId));
+            if(Flags.Test(flags, flagUpdateTitle)) { entity.Title.Value = TextTitle.Text; }
+            if(Flags.Test(flags, flagUpdateObjectives)) { entity.GeneralObjectives.Set(Storage.LoadOrCreateEntities<CommonText>(generalObjectivesController.StorageIds, entity.StorageId)); }
+            if(Flags.Test(flags, flagUpdateCompetences)) { entity.GeneralCompetences.Set(Storage.LoadOrCreateEntities<CommonText>(generalCompetencesController.StorageIds, entity.StorageId)); }
+            if(Flags.Test(flags, flagUpdateCapacities)) { entity.KeyCapacities.Set(Storage.LoadOrCreateEntities<CommonText>(keyCapacitiesController.StorageIds, entity.StorageId)); }
 
-            for (int i = 0; i < commonTextsController.StorageIds.Count; i++)
-            { entity.CommonTexts.Set((CommonTextId)i, Storage.LoadOrCreateEntity<CommonText>(commonTextsController.StorageIds[i], entity.StorageId)); }
+            if(Flags.Test(flags, flagUpdateCommonTexts))
+            {
+                for (int i = 0; i < commonTextsController.StorageIds.Count; i++)
+                { entity.CommonTexts.Set((CommonTextId)i, Storage.LoadOrCreateEntity<CommonText>(commonTextsController.StorageIds[i], entity.StorageId)); }
+            }
 
-            entity.GradeName.Value = TextName.Text;
-            entity.GradeType.Value = (GradeType)(ComboType.SelectedIndex >= 0 ? ComboType.SelectedIndex : 0);
-            entity.GradeFamilyName.Value = TextFamilyName.Text;
+            if(Flags.Test(flags, flagUpdateName)) { entity.GradeName.Value = TextName.Text; }
+            if(Flags.Test(flags, flagUpdateType)) { entity.GradeType.Value = (GradeType)(ComboType.SelectedIndex >= 0 ? ComboType.SelectedIndex : 0); }
+            if(Flags.Test(flags, flagUpdateFamilyName)) { entity.GradeFamilyName.Value = TextFamilyName.Text; }
 
             entity.Save(parentStorageId);
         }
@@ -205,7 +206,7 @@ namespace Programacion123
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
 
-            UpdateEntity();
+            UpdateEntity(flagUpdateAll);
             // entity.Save(parentStorageId);
 
             Close();

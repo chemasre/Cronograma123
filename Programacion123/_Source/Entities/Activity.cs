@@ -38,6 +38,23 @@
 
         public DictionaryProperty<LearningResult, float> LearningResultsWeights { get; } = new DictionaryProperty<LearningResult, float>();
 
+        public const uint flagStartType                  = 1 << 2; 
+        public const uint flagStartDate                  = 1 << 3; 
+        public const uint flagStartDayOfWeek             = 1 << 4; 
+        public const uint flagDuration                   = 1 << 5; 
+        public const uint flagNoActivitiesBefore         = 1 << 6; 
+        public const uint flagNoActivitiesAfter          = 1 << 7; 
+        public const uint flagMetodology                 = 1 << 8; 
+        public const uint flagContentPoints              = 1 << 9; 
+        public const uint flagKeyCompetences             = 1 << 10; 
+        public const uint flagSpaceResources             = 1 << 11; 
+        public const uint flagMaterialResources          = 1 << 12; 
+        public const uint flagEvaluationType             = 1 << 13; 
+        public const uint flagEvaluationInstrumentType   = 1 << 14; 
+        public const uint flagCriterias                  = 1 << 15; 
+        public const uint flagLearningResultsWeights     = 1 << 16; 
+
+        
         public Activity() : base()
         {
             StorageClassId = "activity";
@@ -45,60 +62,250 @@
             Title.Value = "Título de la actividad";
             Description.Value = "Descripción de la actividad";
 
+            StartType.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagStartType); InvokeOnUpdated(); };
+            StartDate.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagStartDate); InvokeOnUpdated(); };
+            StartDayOfWeek.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagStartDayOfWeek); InvokeOnUpdated(); };
+            Duration.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagDuration); InvokeOnUpdated(); };
+
+            NoActivitiesBefore.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagNoActivitiesBefore); InvokeOnUpdated(); };
+            NoActivitiesAfter.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagNoActivitiesAfter); InvokeOnUpdated(); };
+
+            Metodology.OnSetted += (current, next) => { Flags.Add(ref validationFlags, flagMetodology); InvokeOnUpdated(); };
+            Metodology.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagMetodology); InvokeOnUpdated(); };
+
+            ContentPoints.OnAdded += (element) => { Flags.Add(ref validationFlags, flagContentPoints); InvokeOnUpdated(); };
+            ContentPoints.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagContentPoints); InvokeOnUpdated(); };
+            ContentPoints.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagContentPoints); InvokeOnUpdated(); };
+
+            KeyCompetences.OnAdded += (element) => { Flags.Add(ref validationFlags, flagKeyCompetences); InvokeOnUpdated(); };
+            KeyCompetences.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagKeyCompetences); InvokeOnUpdated(); };
+            KeyCompetences.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagKeyCompetences); InvokeOnUpdated(); };
+
+            SpaceResources.OnAdded += (element) => { Flags.Add(ref validationFlags, flagSpaceResources); InvokeOnUpdated(); };
+            SpaceResources.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagSpaceResources); InvokeOnUpdated(); };
+            SpaceResources.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagSpaceResources); InvokeOnUpdated(); };
+
+            MaterialResources.OnAdded += (element) => { Flags.Add(ref validationFlags, flagMaterialResources); InvokeOnUpdated(); };
+            MaterialResources.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagMaterialResources); InvokeOnUpdated(); };
+            MaterialResources.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagMaterialResources); InvokeOnUpdated(); };
+
+            EvaluationType.OnSetted += (previous, current) => { Flags.Add(ref validationFlags, flagEvaluationType); InvokeOnUpdated(); };            
+            EvaluationInstrumentType.OnSetted += (previous, current) => { Flags.Add(ref validationFlags, flagEvaluationInstrumentType); InvokeOnUpdated(); };
+            EvaluationInstrumentType.OnEntityUpdated += (entity) =>  { Flags.Add(ref validationFlags, flagEvaluationInstrumentType); InvokeOnUpdated(); };
+
+            Criterias.OnAdded += (element) => { Flags.Add(ref validationFlags, flagCriterias); InvokeOnUpdated(); };
+            Criterias.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagCriterias); InvokeOnUpdated(); };
+            Criterias.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagCriterias); InvokeOnUpdated(); };
+
+            LearningResultsWeights.OnAdded += (key, element) => { Flags.Add(ref validationFlags, flagLearningResultsWeights); InvokeOnUpdated(); };
+            LearningResultsWeights.OnRemoved += (key) => { Flags.Add(ref validationFlags, flagLearningResultsWeights); InvokeOnUpdated(); };
+            LearningResultsWeights.OnUpdated += (key, element) => { Flags.Add(ref validationFlags, flagLearningResultsWeights); InvokeOnUpdated(); };
+
+            Flags.Add(ref validationFlags, flagStartType);                  
+            Flags.Add(ref validationFlags, flagStartDate);                  
+            Flags.Add(ref validationFlags, flagStartDayOfWeek);          
+            Flags.Add(ref validationFlags, flagDuration);                
+            Flags.Add(ref validationFlags, flagNoActivitiesBefore);      
+            Flags.Add(ref validationFlags, flagNoActivitiesAfter);       
+            Flags.Add(ref validationFlags, flagMetodology);              
+            Flags.Add(ref validationFlags, flagContentPoints);           
+            Flags.Add(ref validationFlags, flagKeyCompetences);          
+            Flags.Add(ref validationFlags, flagSpaceResources);         
+            Flags.Add(ref validationFlags, flagMaterialResources);       
+            Flags.Add(ref validationFlags, flagEvaluationType);          
+            Flags.Add(ref validationFlags, flagEvaluationInstrumentType);
+            Flags.Add(ref validationFlags, flagCriterias);               
+            Flags.Add(ref validationFlags, flagLearningResultsWeights);  
+            
+            //validationDependencies[ValidationCode.activityNotLinkedToMetodology]                           = flagMetodology;
+            //validationDependencies[ValidationCode.activityNotLinkedToContents]                             = flagContentPoints;
+            //validationDependencies[ValidationCode.activityNotLinkedToKeyCompetences]                       = flagKeyCompetences;
+            //validationDependencies[ValidationCode.activityEvaluableAndNotLinkedToEvaluationInstrumentType] = flagEvaluationType | flagEvaluationInstrumentType;
+            //validationDependencies[ValidationCode.activityEvaluableAndNotLinkedToCriterias]                = flagEvaluationType | flagCriterias;
+            //validationDependencies[ValidationCode.activityEvaluableAndNotLinkedToResultsWeights]           = flagEvaluationType | flagLearningResultsWeights;
+            //validationDependencies[ValidationCode.activityNotLinkedToSpaceResource]                        = flagSpaceResources;
+            //validationDependencies[ValidationCode.activityReferencesResultWithoutWeight]                   = flagEvaluationType | flagCriterias | flagLearningResultsWeights;
+            //validationDependencies[ValidationCode.activityDoesntReferenceResultButHasWeight]               = flagEvaluationType | flagCriterias | flagLearningResultsWeights;
+            //validationDependencies[ValidationCode.activityCannotSchedule]                                  = flagStartType | flagStartDate | flagStartDayOfWeek;
+
+ 
         }
 
-        public override ValidationResult Validate()
+        public override ValidationResult Validate(bool force = false)
         {
-            ValidationResult result = base.Validate();
+            base.Validate(force);
 
-            if (result.code != ValidationCode.success) { return result; }
+            Console.WriteLine(Title.Value + ": Activity validation start");
 
-            if (Metodology.Value == null) { return ValidationResult.Create(ValidationCode.activityNotLinkedToMetodology); }
+            // Check metodology
 
-            if (ContentPoints.Count <= 0) { return ValidationResult.Create(ValidationCode.activityNotLinkedToContents); }
-            if (KeyCompetences.Count <= 0) { return ValidationResult.Create(ValidationCode.activityNotLinkedToKeyCompetences); }
-
-            if (EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
+            if(Flags.Test(validationFlags, flagMetodology) || force)
             {
-                if (EvaluationInstrumentType.Value == null) { return ValidationResult.Create(ValidationCode.activityEvaluableAndNotLinkedToEvaluationInstrumentType); }
+                Console.WriteLine("[metodology] => Checking activity linked to metodology");
 
-                if (Criterias.Count <= 0) { return ValidationResult.Create(ValidationCode.activityEvaluableAndNotLinkedToCriterias); }
+                validationFails.RemoveAll(e => e.code == ValidationCode.activityNotLinkedToMetodology);
+                if (Metodology.Value == null) { validationFails.Add(ValidationResult.Create(ValidationCode.activityNotLinkedToMetodology)); }
+            }
 
-                if (LearningResultsWeights.Count <= 0) { return ValidationResult.Create(ValidationCode.activityEvaluableAndNotLinkedToResultsWeights); }
+            // Check content points
 
-                if (SpaceResources.Count <= 0) { return ValidationResult.Create(ValidationCode.activityNotLinkedToSpaceResource); }
+            if(Flags.Test(validationFlags, flagContentPoints) || force)
+            {
+                Console.WriteLine("[contentPoints] => Checking activity linked to content points");
 
-                HashSet<string> referencedLearningResultsIds = new();
+                validationFails.RemoveAll(e => e.code == ValidationCode.activityNotLinkedToContents);
+                if (ContentPoints.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.activityNotLinkedToContents)); }
+            }
 
-                List<CommonText> criteriasList = Criterias.ToList();
-                for (int i = 0; i < criteriasList.Count; i++)
-                {
-                    referencedLearningResultsIds.Add(Storage.FindParentStorageId(criteriasList[i].StorageId, criteriasList[i].StorageClassId));
-                }
+            // Check key competences
 
-                List<KeyValuePair<LearningResult, float>> learningResultsWeightsList = LearningResultsWeights.ToList();
+            if(Flags.Test(validationFlags, flagKeyCompetences) || force)
+            {
+                Console.WriteLine("[keyCompetences] => Checking activity linked to key competences");
 
-                for (int i = 0; i < learningResultsWeightsList.Count; i++)
-                {
-                    if (referencedLearningResultsIds.Contains(learningResultsWeightsList[i].Key.StorageId))
-                    {
-                        if (learningResultsWeightsList[i].Value <= 0) { return ValidationResult.Create(ValidationCode.activityReferencesResultWithoutWeight).WithIndex(i); }
-                    }
-                    else
-                    {
-                        if (learningResultsWeightsList[i].Value > 0) { return ValidationResult.Create(ValidationCode.activityDoesntReferenceResultButHasWeight).WithIndex(i); }
-                    }
+                validationFails.RemoveAll(e => e.code == ValidationCode.activityNotLinkedToKeyCompetences);
+                if (KeyCompetences.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.activityNotLinkedToKeyCompetences)); }
+            }
+
+            // Check space resources
+
+            if(Flags.Test(validationFlags, flagSpaceResources) || force)
+            {
+                Console.WriteLine("[spaceResources] => Checking activity linked to space resource");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.activityNotLinkedToSpaceResource);
+                if (SpaceResources.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.activityNotLinkedToSpaceResource)); }
+            }
+
+            // Check evaluation instrument type
+
+            if(Flags.Test(validationFlags, flagEvaluationType | flagEvaluationInstrumentType) || force)
+            {
+                Console.WriteLine("[evaluationType, evaluationInstrumentType] => Checking evaluable activity linked to evaluation instrument");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.activityEvaluableAndNotLinkedToEvaluationInstrumentType);
+                if (EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
+                {   if (EvaluationInstrumentType.Value == null)
+                    { validationFails.Add(ValidationResult.Create(ValidationCode.activityEvaluableAndNotLinkedToEvaluationInstrumentType)); }
+
                 }
             }
 
-            string subjectStorageId = Storage.FindParentStorageId(Storage.FindParentStorageId(StorageId, StorageClassId), new Block().StorageClassId);
-            Subject subject = new Subject();
-            subject.LoadOrCreate(subjectStorageId);
+            // Check criterias
 
-            if (!subject.CanScheduleActivities()) { return ValidationResult.Create(ValidationCode.activityCannotSchedule); }
-            if (subject.ScheduleActivities().FindIndex(s => s.activity.StorageId == StorageId) < 0) { return ValidationResult.Create(ValidationCode.activityCannotSchedule); }
+            if(Flags.Test(validationFlags, flagEvaluationType | flagCriterias) || force)
+            {
+                Console.WriteLine("[evaluationType, criterias] => Checking evaluable activity linked to criterias");
 
-            return ValidationResult.Create(ValidationCode.success);
+                validationFails.RemoveAll(e => e.code == ValidationCode.activityEvaluableAndNotLinkedToCriterias);
+                if (EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
+                {   if (Criterias.Count <= 0)
+                    { validationFails.Add(ValidationResult.Create(ValidationCode.activityEvaluableAndNotLinkedToCriterias)); }
+                }
+            }
+
+            // Result weights
+
+            if(Flags.Test(validationFlags, flagEvaluationType | flagLearningResultsWeights) || force)
+            {
+                Console.WriteLine("[evaluationType, learningResultsWeights] => Checking evaluable activity linked to result weights");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.activityEvaluableAndNotLinkedToResultsWeights);
+                if (EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
+                {   if (LearningResultsWeights.Count <= 0)
+                    { validationFails.Add(ValidationResult.Create(ValidationCode.activityEvaluableAndNotLinkedToResultsWeights)); }
+                }
+            }
+
+            if(Flags.Test(validationFlags, flagEvaluationType | flagLearningResultsWeights | flagCriterias) || force)
+            {
+                Console.WriteLine("[evaluationType, learningResultsWeights, criterias] => Checking learning results weights");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.activityReferencesResultWithoutWeight);
+                validationFails.RemoveAll(e => e.code == ValidationCode.activityDoesntReferenceResultButHasWeight);
+
+                if (EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
+                {
+                    string subjectStorageId = Storage.FindParentStorageId(Storage.FindParentStorageId(StorageId, StorageClassId), new Block().StorageClassId);
+                    Subject subject = new Subject();
+                    subject.LoadOrCreate(subjectStorageId);
+                    SubjectTemplate? template = subject.Template.Value;
+                    if(template != null)
+                    {
+                        HashSet<string> referencedLearningResultsIds = new();
+
+                        List<CommonText> criteriasList = Criterias.ToList();
+                        for (int i = 0; i < criteriasList.Count; i++)
+                        {
+                            referencedLearningResultsIds.Add(Storage.FindParentStorageId(criteriasList[i].StorageId, criteriasList[i].StorageClassId));
+                        }
+
+                        List<KeyValuePair<LearningResult, float>> learningResultsWeightsList = LearningResultsWeights.ToList();
+                    
+                        for (int i = 0; i < learningResultsWeightsList.Count; i++)
+                        {
+                            if (referencedLearningResultsIds.Contains(learningResultsWeightsList[i].Key.StorageId))
+                            {
+                                if (learningResultsWeightsList[i].Value <= 0)
+                                {
+                                    int raIndex = template.LearningResults.ToList().FindIndex(r => r.StorageId == learningResultsWeightsList[i].Key.StorageId);
+                                    validationFails.Add(ValidationResult.Create(ValidationCode.activityReferencesResultWithoutWeight).WithIndex(raIndex));
+                                }
+                            }
+                            else
+                            {
+                                if (learningResultsWeightsList[i].Value > 0)
+                                {
+                                    int raIndex = template.LearningResults.ToList().FindIndex(r => r.StorageId == learningResultsWeightsList[i].Key.StorageId);
+                                    validationFails.Add(ValidationResult.Create(ValidationCode.activityDoesntReferenceResultButHasWeight).WithIndex(raIndex));
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+            }
+
+            // Scheduling
+
+            if(Flags.Test(validationFlags, flagStartType | flagStartDate | flagStartDayOfWeek | flagDuration | flagNoActivitiesBefore | flagNoActivitiesAfter) || force)
+            {
+                Console.WriteLine("[startType, startDate, startDayOfWee, duration, noActivitiesBefore, noActivitiesAfter] => Checking scheduling");
+
+                validationFails.RemoveAll(e => e.code == ValidationCode.activityCannotSchedule);
+
+                string subjectStorageId = Storage.FindParentStorageId(Storage.FindParentStorageId(StorageId, StorageClassId), new Block().StorageClassId);
+                Subject subject = new Subject();
+                subject.LoadOrCreate(subjectStorageId);
+
+                if (!subject.CanScheduleActivities())
+                { validationFails.Add(ValidationResult.Create(ValidationCode.activityCannotSchedule)); }
+                else if (subject.ScheduleActivities().FindIndex(s => s.activity.StorageId == StorageId) < 0)
+                { validationFails.Add(ValidationResult.Create(ValidationCode.activityCannotSchedule)); }
+            }
+
+            Flags.Remove(ref validationFlags, flagStartType);                  
+            Flags.Remove(ref validationFlags, flagStartDate);                  
+            Flags.Remove(ref validationFlags, flagStartDayOfWeek);          
+            Flags.Remove(ref validationFlags, flagDuration);                
+            Flags.Remove(ref validationFlags, flagNoActivitiesBefore);      
+            Flags.Remove(ref validationFlags, flagNoActivitiesAfter);       
+            Flags.Remove(ref validationFlags, flagMetodology);              
+            Flags.Remove(ref validationFlags, flagContentPoints);           
+            Flags.Remove(ref validationFlags, flagKeyCompetences);          
+            Flags.Remove(ref validationFlags, flagSpaceResources);         
+            Flags.Remove(ref validationFlags, flagMaterialResources);       
+            Flags.Remove(ref validationFlags, flagEvaluationType);          
+            Flags.Remove(ref validationFlags, flagEvaluationInstrumentType);
+            Flags.Remove(ref validationFlags, flagCriterias);               
+            Flags.Remove(ref validationFlags, flagLearningResultsWeights);
+
+            Console.WriteLine(Title.Value + ": Activity validation end");
+            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
 
         }
 

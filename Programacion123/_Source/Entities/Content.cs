@@ -4,24 +4,47 @@
     {
         public ListEntityProperty<CommonText> Points { get; } = new ListEntityProperty<CommonText>();
 
+        const uint flagPoints = 1 << 2;
+
         public Content() : base()
         {
             StorageClassId = "content";
 
             Title.Value = "Título del contenido";
             Description.Value = "Descripción del contenido";
+
+            Points.OnAdded += (element) => { Flags.Add(ref validationFlags, flagPoints); };
+            Points.OnRemoved += (element) => { Flags.Add(ref validationFlags, flagPoints); };
+            Points.OnEntityUpdated += (entity) => { Flags.Add(ref validationFlags, flagPoints); };
+
+            Flags.Add(ref validationFlags, flagPoints);
+
         }
 
-        public override ValidationResult Validate()
+        public override ValidationResult Validate(bool force = false)
         {
-            ValidationResult result = base.Validate();
+            base.Validate(force);
 
-            if (result.code != ValidationCode.success) { return result; }
+            Console.WriteLine(Title.Value + ": Content validation start");
 
-            if (Points.Count <= 0) { return ValidationResult.Create(ValidationCode.contentNoPoints); }
-            for (int i = 0; i < Points.Count; i++) { if (Points[i].Validate().code != ValidationCode.success) { return ValidationResult.Create(ValidationCode.contentPointInvalid).WithIndex(i); } }
+            if(Flags.Test(validationFlags, flagPoints) || force)
+            {
+                Console.WriteLine("[points] => Checking at least one points exist and all are valid");
 
-            return ValidationResult.Create(ValidationCode.success);
+                validationFails.RemoveAll(e => e.code == ValidationCode.contentNoPoints);
+                validationFails.RemoveAll(e => e.code == ValidationCode.contentPointInvalid);
+
+                if (Points.Count <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.contentNoPoints)); }
+                for (int i = 0; i < Points.Count; i++) { if (Points[i].Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.contentPointInvalid).WithIndex(i)); } }
+            }
+
+            Flags.Remove(ref validationFlags, flagPoints);
+
+            Console.WriteLine(Title.Value + ": Content validation end");
+            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
         }
 
         public override bool Exists(string storageId, string? parentStorageId)

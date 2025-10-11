@@ -1,4 +1,6 @@
-﻿namespace Programacion123
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Programacion123
 {
     public enum StorageState
     {
@@ -10,10 +12,6 @@
 
     public abstract class Entity
     {
-
-        protected StorageState StorageState { get { return storageState; } }
-
-        protected StorageState storageState;
         public string StorageId { get; set; }
         public string StorageClassId { get; set; }
 
@@ -25,10 +23,12 @@
 
         // Validation
 
-        bool checkTitle;
-        bool checkDescription;
+        public const uint flagTitle       = 1 << 0; 
+        public const uint flagDescription = 1 << 1; 
+
+        protected uint validationFlags = Flags.Empty();
         
-        ValidationResult cachedResult;
+        protected List<ValidationResult> validationFails;
 
         public Entity()
         {
@@ -36,13 +36,16 @@
             Description.Value = "Escribe una descripción";
 
             StorageId = Guid.NewGuid().ToString();
-            storageState = StorageState.detached;
 
-            Title.OnSetted += (previous, current) => { if(previous != current) { OnUpdated?.Invoke(this); checkTitle = true; } };
-            Description.OnSetted += (previous, current) => { if(previous != current) { OnUpdated?.Invoke(this); checkDescription = true; } };
+            Title.OnSetted += (previous, current) => { OnUpdated?.Invoke(this); Flags.Add(ref validationFlags, flagTitle); };
+            Description.OnSetted += (previous, current) => { OnUpdated?.Invoke(this); Flags.Add(ref validationFlags, flagDescription); };
 
-            checkTitle = true;
-            checkDescription = true;
+            validationFails = new();
+
+            // Add flags
+
+            Flags.Add(ref validationFlags, flagTitle);
+            Flags.Add(ref validationFlags, flagDescription);
 
         }
 
@@ -51,53 +54,38 @@
             OnUpdated?.Invoke(this);
         }
 
-        public virtual void Invalidate()
+        public virtual ValidationResult Validate(bool force = false)
         {
-            checkTitle = true;
-            checkDescription = true;
-        }
+            Console.WriteLine("***************************************************");
+            Console.WriteLine(Title.Value + ": Entity validation start");
 
-        public virtual ValidationResult Validate()
-        {
-            if(!checkTitle && !checkDescription) { return cachedResult; }
-
-            bool invalid = false;
-
-            if(!invalid && checkTitle)
+            if(Flags.Test(validationFlags, flagTitle) || force)
             {
-                if(Title.Value.Trim().Length <= 0)
-                {
-                    cachedResult = ValidationResult.Create(ValidationCode.entityTitleEmpty);
-                    invalid = true;
-                }
-
-                checkTitle = false;
+                Console.WriteLine("[title] => Checking not empty");
+                validationFails.RemoveAll((v) => v.code == ValidationCode.entityTitleEmpty);
+                if(Title.Value.Trim().Length <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.entityTitleEmpty)); }
             }
 
-            if(!invalid && checkDescription)
+            if(Flags.Test(validationFlags, flagDescription) || force)
             {
-                if(Description.Value.Trim().Length <= 0)
-                {
-                    cachedResult = ValidationResult.Create(ValidationCode.entityDescriptionEmpty);
-                    invalid = true;
-                }
-
-                checkDescription = false;
+                Console.WriteLine("[description] => Checking not empty");
+                validationFails.RemoveAll((v) => v.code == ValidationCode.entityDescriptionEmpty);
+                if(Description.Value.Trim().Length <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.entityDescriptionEmpty)); }
             }
 
-            if(!invalid)
-            {
-                cachedResult = ValidationResult.Create(ValidationCode.success);
-            }
+            // Remove flags
 
-            return cachedResult;
+            Flags.Remove(ref validationFlags, flagTitle);
+            Flags.Remove(ref validationFlags, flagDescription);
+
+            Console.WriteLine(Title.Value + ": Entity validation end");
+            foreach(ValidationResult fail in validationFails) { Console.WriteLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+
+            if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
+            else { return validationFails[0]; }
 
         }
 
-        public virtual void SetDirty()
-        {
-            storageState = StorageState.dirty;
-        }
 
         public virtual bool Exists(string storageId, string? parentStorageId)
         {
@@ -107,17 +95,14 @@
         public virtual void LoadOrCreate(string storageId, string? parentStorageId = null)
         {
             StorageId = storageId;
-            storageState = StorageState.saved;
         }
 
         public virtual void Save(string? parentStorageId = null)
         {
-            storageState = StorageState.saved;
         }
 
         public virtual void Delete(string? parentStorageId = null)
         {
-            storageState = StorageState.detached;
         }
 
     }
