@@ -126,7 +126,7 @@ namespace Programacion123
         {
             string spacesText = "";
             bool first = true;
-            foreach (CommonText s in a.SpaceResources.ToList()) { spacesText += (first ? "" : LineBreak) + s.Title; }
+            foreach (CommonText s in a.SpaceResources.ToList()) { spacesText += (first ? "" : LineBreak) + s.Title.Value; }
             return spacesText;
         }
 
@@ -134,7 +134,7 @@ namespace Programacion123
         {
             string materialsText = "";
             bool first = true;
-            foreach (CommonText s in a.MaterialResources.ToList()) { materialsText += (first ? "" : LineBreak) + s.Title; }
+            foreach (CommonText s in a.MaterialResources.ToList()) { materialsText += (first ? "" : LineBreak) + s.Title.Value; }
             return materialsText.Length > 0 ? materialsText : "-";
         }
 
@@ -159,7 +159,7 @@ namespace Programacion123
         {
             string capacitiesText = "";
             bool first = true;
-            foreach (CommonText capacity in a.KeyCompetences.ToList()) { capacitiesText += (first ? "" : LineBreak) + capacity.Title; first = false; }
+            foreach (CommonText capacity in a.KeyCompetences.ToList()) { capacitiesText += (first ? "" : LineBreak) + capacity.Title.Value; first = false; }
 
             return capacitiesText.Length > 0 ? capacitiesText : "-";
         }

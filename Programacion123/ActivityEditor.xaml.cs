@@ -289,7 +289,7 @@ namespace Programacion123
 
                     if (canFormat)
                     {
-                        return String.Format("{0}: {1}", capacityIndex + 1, c.Title);
+                        return String.Format("{0}: {1}", capacityIndex + 1, c.Title.Value);
                     }
                     else
                     {

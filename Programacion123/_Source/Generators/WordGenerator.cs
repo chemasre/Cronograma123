@@ -89,7 +89,7 @@ namespace Programacion123
 
                    .If(!String.IsNullOrEmpty(Style.CoverBase64), (d) => d.WithCoverImageElement(Style.CoverBase64, DocumentCoverElementId.Cover))
                    .If(!String.IsNullOrEmpty(Style.LogoBase64), (d) => d.WithCoverImageElement(Style.LogoBase64, DocumentCoverElementId.Logo))
-                   .WithCoverTextElement("Módulo profesional " + subjectTemplate.SubjectCode, DocumentTextElementId.CoverSubjectCode, DocumentCoverElementId.SubjectCode)
+                   .WithCoverTextElement("Módulo profesional " + subjectTemplate.SubjectCode.Value, DocumentTextElementId.CoverSubjectCode, DocumentCoverElementId.SubjectCode)
                    .WithCoverTextElement(subjectTemplate.SubjectName.Value, DocumentTextElementId.CoverSubjectName, DocumentCoverElementId.SubjectName)
                    .WithCoverTextElement(gradeTemplate.GradeName.Value, DocumentTextElementId.CoverGradeName, DocumentCoverElementId.GradeName)
                    .WithCoverTextElement(GetGradeTypeName(), DocumentTextElementId.CoverGradeTypeName, DocumentCoverElementId.GradeTypeName)
@@ -111,17 +111,17 @@ namespace Programacion123
                    .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header1ModuleOrganization), addParagraph)
 
                     .WithTable(5, 3)
-                    .WithCellSpan(1, 1, 1, 3).WithCellHeader1(1, 1, GetGradeTypeName() + " - " + gradeTemplate.GradeName)
-                    .WithCellSpan(2, 1, 1, 3).WithCellHeader2(2, 1, "Módulo profesional:MP" + subjectTemplate.SubjectCode + " - " + subjectTemplate.SubjectName)
-                    .WithCell(3, 1, "Horas centro educativo: " + subjectTemplate.GradeClassroomHours)
-                    .WithCell(3, 2, "Horas empresa: " + subjectTemplate.GradeCompanyHours)
+                    .WithCellSpan(1, 1, 1, 3).WithCellHeader1(1, 1, GetGradeTypeName() + " - " + gradeTemplate.GradeName.Value)
+                    .WithCellSpan(2, 1, 1, 3).WithCellHeader2(2, 1, "Módulo profesional:MP" + subjectTemplate.SubjectCode.Value + " - " + subjectTemplate.SubjectName.Value)
+                    .WithCell(3, 1, "Horas centro educativo: " + subjectTemplate.GradeClassroomHours.Value)
+                    .WithCell(3, 2, "Horas empresa: " + subjectTemplate.GradeCompanyHours.Value)
                     .WithCell(3, 3, "Horas totales: " + (subjectTemplate.GradeClassroomHours.Value + subjectTemplate.GradeCompanyHours.Value))
                     .WithCellSpan(4, 1, 1, 2).WithCell(4, 1, "Modalidad: Presencial")
                     .WithCell(4, 2, "Régimen: Anual")
-                    .WithCellSpan(5, 1, 1, 3).WithCell(5, 1, "Familia profesional: " + gradeTemplate.GradeFamilyName)
+                    .WithCellSpan(5, 1, 1, 3).WithCell(5, 1, "Familia profesional: " + gradeTemplate.GradeFamilyName.Value)
 
                     .WithTable(2 + Subject.Blocks.Count, 6)
-                    .WithCellSpan(1, 1, 1, 6).WithCellHeader1(1, 1, subjectTemplate.SubjectCode + ": " + subjectTemplate.SubjectName)
+                    .WithCellSpan(1, 1, 1, 6).WithCellHeader1(1, 1, subjectTemplate.SubjectCode.Value + ": " + subjectTemplate.SubjectName.Value)
                     .WithCellHeader2(2, 1, "Bloques de enseñanza").WithCellHeader2(2, 2, "RAs").WithCellHeader2(2, 3, "CEs")
                     .WithCellHeader2(2, 4, "Duración").WithCellHeader2(2, 5, "Fecha de inicio").WithCellHeader2(2, 6, "Fecha de fin")
                     .Foreach<Block>(Subject.Blocks.ToList(),
@@ -157,7 +157,7 @@ namespace Programacion123
                             }
 
 
-                            d.WithCell(3 + i, 1, String.Format("Bloque {0}: {1}", i + 1, b.Title));
+                            d.WithCell(3 + i, 1, String.Format("Bloque {0}: {1}", i + 1, b.Title.Value));
                             d.WithCell(3 + i, 2, rasText);
                             d.WithCell(3 + i, 3, criteriasText);
                             d.WithCell(3 + i, 4, String.Format("{0}h", hours));
@@ -195,7 +195,7 @@ namespace Programacion123
                         (o, i, d) =>
                         {
                             int index = subjectTemplate.GradeTemplate.Value.GeneralObjectives.ToList().FindIndex(_o => _o.StorageId == o.StorageId);
-                            d.WithParagraph(String.Format("{0}. {1}", Utils.FormatLetterPrefixLowercase(index), o.Description));
+                            d.WithParagraph(String.Format("{0}. {1}", Utils.FormatLetterPrefixLowercase(index), o.Description.Value));
 
                         }                   
                    )
@@ -208,7 +208,7 @@ namespace Programacion123
                         (c, i, d) =>
                         {
                             int index = subjectTemplate.GradeTemplate.Value.GeneralCompetences.ToList().FindIndex(_c => _c.StorageId == c.StorageId);
-                            d.WithParagraph(String.Format("{0}. {1}", Utils.FormatLetterPrefixLowercase(index), c.Description));
+                            d.WithParagraph(String.Format("{0}. {1}", Utils.FormatLetterPrefixLowercase(index), c.Description.Value));
                         }                   
                    )
 
@@ -365,12 +365,12 @@ namespace Programacion123
                    .Foreach<LearningResult>(subjectTemplate.LearningResults.ToList(),
                         (r, i, d) =>
                         {
-                            d.WithParagraph(String.Format("RA{0}: ", i + 1) + r.Description)
+                            d.WithParagraph(String.Format("RA{0}: ", i + 1) + r.Description.Value)
                             .WithParagraph("Criterios")
                             .Foreach<CommonText>(subjectTemplate.LearningResults.ToList()[i].Criterias.ToList(),
                                 (c, j, d) =>
                                 {
-                                    d.WithParagraph(String.Format("{0}.{1}: ", i + 1, j + 1) + c.Description);
+                                    d.WithParagraph(String.Format("{0}.{1}: ", i + 1, j + 1) + c.Description.Value);
                                 }
                             );
                         }
@@ -383,11 +383,11 @@ namespace Programacion123
                     .Foreach<Content>(subjectTemplate.Contents.ToList(),
                         (c, i, d) =>
                         {
-                            d.WithParagraph(String.Format("{0}: ", i + 1) + c.Description);
+                            d.WithParagraph(String.Format("{0}: ", i + 1) + c.Description.Value);
                             d.Foreach<CommonText>(subjectTemplate.Contents.ToList()[i].Points.ToList(),
                                 (p, j, d) =>
                                 {
-                                    d.WithParagraph(String.Format("{0}.{1}: ", i + 1, j + 1) + p.Description);
+                                    d.WithParagraph(String.Format("{0}.{1}: ", i + 1, j + 1) + p.Description.Value);
                                 }
                             );
                         }
@@ -398,7 +398,7 @@ namespace Programacion123
                     .Foreach<string>(GetSubjectCommonTextParagraphs(CommonTextId.header2Blocks), addParagraph)
 
                     .WithTable(2 * Subject.Blocks.Count + 3, 6)
-                    .WithCellSpan(1, 1, 1, 5).WithCellHeader1(1, 1, String.Format("{0}: {1}", subjectTemplate.SubjectCode, subjectTemplate.SubjectName))
+                    .WithCellSpan(1, 1, 1, 5).WithCellHeader1(1, 1, String.Format("{0}: {1}", subjectTemplate.SubjectCode.Value, subjectTemplate.SubjectName.Value))
                     .WithCellHeader1(1, 2, String.Format("Horas: {0}", subjectTemplate.GradeClassroomHours.Value + subjectTemplate.GradeCompanyHours.Value))
                     .WithCellHeader2(2, 1, "Bloque de enseñanza-aprendizaje")
                     .WithCellHeader2(2, 2, "")
@@ -498,7 +498,7 @@ namespace Programacion123
                                     .WithCellHeader2(3, 4, "Fecha de fin")
 
                                     .WithCell(4, 1, a.Metodology.Value.Title.Value)
-                                    .WithCell(4, 2, String.Format(CultureInfo.InvariantCulture, "{0:0}h ({1} sesiones)", a.Duration, GetSessionsCountText(a, schedule)))
+                                    .WithCell(4, 2, String.Format(CultureInfo.InvariantCulture, "{0:0}h ({1} sesiones)", a.Duration.Value, GetSessionsCountText(a, schedule)))
                                     .WithCell(4, 3, Utils.FormatStartDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).start, Subject.WeekSchedule.Value))
                                     .WithCell(4, 4, Utils.FormatEndDayHour(schedule.Find(_a => _a.activity.StorageId == a.StorageId).end, Subject.WeekSchedule.Value))
 
@@ -548,7 +548,7 @@ namespace Programacion123
                     .Foreach<CommonText>(Subject.Citations.ToList(),
                         (c, i, d) =>
                         {
-                            d.WithParagraph(String.Format("{0}- {1}", i + 1, c.Description));
+                            d.WithParagraph(String.Format("{0}- {1}", i + 1, c.Description.Value));
                         }
                     )
 
