@@ -375,7 +375,6 @@ namespace Programacion123
             Dictionary<string, int> activityStorageIdToActivityIndex = new();
 
             int bIndex = 0;
-            int aIndex = 0;
             entity.Blocks.ToList().ForEach(
             b =>
             {
@@ -384,14 +383,14 @@ namespace Programacion123
                 {
                     if (a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
                     {
+                        int aIndex = b.Activities.ToList().Where(a2 => a2.EvaluationType.Value == a.EvaluationType.Value).ToList().FindIndex(a3 => a3.StorageId == a.StorageId);
+
                         activityStorageIdToBlockIndex.Add(a.StorageId, bIndex);
                         activityStorageIdToActivityIndex.Add(a.StorageId, aIndex);
-                        aIndex++;
                     }
 
                     activities.Add(a);
                 });
-                aIndex = 0;
                 bIndex++;
             });
 
@@ -420,12 +419,22 @@ namespace Programacion123
             {
                 DataRow row = dataTableActivitiesSchedule.NewRow();
 
-                row["Actividad"] = a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable ?
-                                        String.Format("B{0:00}-A{1:00}",
+                string activityName;
+
+                if(a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
+                {
+                    activityName = String.Format(a.EvaluationType.Value == ActivityEvaluationType.Continous ?
+                                        "B{0:00}-A{1:00}" : "B{0:00}-EX{1:00}",
                                         activityStorageIdToBlockIndex[a.StorageId] + 1,
-                                        activityStorageIdToActivityIndex[a.StorageId] + 1) :
-                                        a.Title.Value.Substring(0, Math.Min(a.Title.Value.Length, 20)) +
+                                        activityStorageIdToActivityIndex[a.StorageId] + 1);
+                }
+                else
+                {
+                    activityName = a.Title.Value.Substring(0, Math.Min(a.Title.Value.Length, 20)) +
                                         (a.Title.Value.Length > 20 ? "..." : "");
+                }
+
+                row["Actividad"] = activityName;
 
                 row["Horas"] = a.Duration.Value;
 
