@@ -285,7 +285,7 @@
                 if (sum != 100) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectLearningResultsWeightNotHundredPercent)); }
             }
 
-            if(Flags.Test(validationFlags, flagTemplate | flagBlocks | flagLearningResultsWeights) || force)
+            if (Flags.Test(validationFlags, flagTemplate | flagBlocks | flagLearningResultsWeights) || force)
             {
                 Utils.PrintLine("[template,blocks] => Checking all learning results are referenced by activities");
                 Utils.PrintLine("[template,blocks] => Checking activities learning results' weights sum 100 for all learning results");
@@ -293,74 +293,80 @@
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectLearningResultNotReferencedByActivities);
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectActivitiesLearningResultWeightNotHundredPercent);
 
-                List<LearningResult> learningResultsList = Template.Value.LearningResults.ToList();
-                HashSet<string> referencedLearningResults = new();
-                Dictionary<string, float> learningResultsWeights = new();
-
-                List<Block> blocksList = Blocks.ToList();
-
-                foreach (Block b in blocksList)
+                if(Template.Value != null)
                 {
-                    List<Activity> activitiesList = b.Activities.ToList();
+                    List<LearningResult> learningResultsList = Template.Value.LearningResults.ToList();
+                    HashSet<string> referencedLearningResults = new();
+                    Dictionary<string, float> learningResultsWeights = new();
 
-                    foreach (Activity a in activitiesList)
+                    List<Block> blocksList = Blocks.ToList();
+
+                    foreach (Block b in blocksList)
                     {
-                        List<CommonText> criteriasList = a.Criterias.ToList();
+                        List<Activity> activitiesList = b.Activities.ToList();
 
-                        criteriasList.ForEach(c => referencedLearningResults.Add(Storage.FindParentStorageId(c.StorageId, c.StorageClassId)));
-
-                        if (a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
+                        foreach (Activity a in activitiesList)
                         {
-                            List<KeyValuePair<LearningResult, float>> weightsList = a.LearningResultsWeights.ToList();
+                            List<CommonText> criteriasList = a.Criterias.ToList();
 
-                            weightsList.ForEach(
-                                r =>
-                                {
-                                    if (!learningResultsWeights.ContainsKey(r.Key.StorageId))
-                                    { learningResultsWeights.Add(r.Key.StorageId, 0); }
+                            criteriasList.ForEach(c => referencedLearningResults.Add(Storage.FindParentStorageId(c.StorageId, c.StorageClassId)));
 
-                                    learningResultsWeights[r.Key.StorageId] += r.Value;
+                            if (a.EvaluationType.Value != ActivityEvaluationType.NotEvaluable)
+                            {
+                                List<KeyValuePair<LearningResult, float>> weightsList = a.LearningResultsWeights.ToList();
 
-                                });
+                                weightsList.ForEach(
+                                    r =>
+                                    {
+                                        if (!learningResultsWeights.ContainsKey(r.Key.StorageId))
+                                        { learningResultsWeights.Add(r.Key.StorageId, 0); }
+
+                                        learningResultsWeights[r.Key.StorageId] += r.Value;
+
+                                    });
+                            }
                         }
+                    }
+
+                    for (int i = 0; i < learningResultsList.Count; i++)
+                    {
+                        if (!referencedLearningResults.Contains(learningResultsList[i].StorageId)) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectLearningResultNotReferencedByActivities).WithIndex(i)); }
+                    }
+
+                    foreach (KeyValuePair<string, float> r in learningResultsWeights)
+                    {
+                        int index = learningResultsList.FindIndex(r2 => r2.StorageId == r.Key);
+                        if (index >= 0 && r.Value != 100) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectActivitiesLearningResultWeightNotHundredPercent).WithIndex(index)); }
                     }
                 }
 
-                for (int i = 0; i < learningResultsList.Count; i++)
-                {
-                    if (!referencedLearningResults.Contains(learningResultsList[i].StorageId)) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectLearningResultNotReferencedByActivities).WithIndex(i)); }
-                }
-
-                foreach (KeyValuePair<string, float> r in learningResultsWeights)
-                {
-                    int index = learningResultsList.FindIndex(r2 => r2.StorageId == r.Key);
-                    if (index >= 0 && r.Value != 100) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectActivitiesLearningResultWeightNotHundredPercent).WithIndex(index)); }
-                }
-
             }
-            
-            if(Flags.Test(validationFlags, flagCalendar | flagWeekSchedule | flagBlocks) || force)
+
+            if (Flags.Test(validationFlags, flagCalendar | flagWeekSchedule | flagBlocks) || force)
             {
                 Utils.PrintLine("[calendar,weekSchedule,blocks] => Checking at least one school day exists");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectCalendarAndWeekScheduleLeaveNoSchoolDays);
 
-                bool foundSchoolDay = false;
-                DateTime d = Calendar.Value.StartDay.Value;
-                while (d <= Calendar.Value.EndDay.Value && !foundSchoolDay)
+                if(Calendar.Value != null && WeekSchedule.Value != null)
                 {
-                    if (d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday)
+                    bool foundSchoolDay = false;
+                    DateTime d = Calendar.Value.StartDay.Value;
+                    while (d <= Calendar.Value.EndDay.Value && !foundSchoolDay)
                     {
-                        if (!Calendar.Value.FreeDays.Contains(d) && WeekSchedule.Value.HoursPerWeekDay[d.DayOfWeek] > 0) { foundSchoolDay = true; }
+                        if (d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday)
+                        {
+                            if (!Calendar.Value.FreeDays.Contains(d) && WeekSchedule.Value.HoursPerWeekDay[d.DayOfWeek] > 0) { foundSchoolDay = true; }
+                        }
+
+                        if (!foundSchoolDay)
+                        {
+                            d = d.AddDays(1);
+                        }
                     }
 
-                    if (!foundSchoolDay)
-                    {
-                        d = d.AddDays(1);
-                    }
+                    if (!foundSchoolDay) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectCalendarAndWeekScheduleLeaveNoSchoolDays)); }
                 }
-
-                if (!foundSchoolDay) { validationFails.Add(ValidationResult.Create(ValidationCode.subjectCalendarAndWeekScheduleLeaveNoSchoolDays)); }
             }
 
             if(Flags.Test(validationFlags, flagCommonTexts) || force)
@@ -462,9 +468,9 @@
             Title.Value = data.Title;
             Description.Value = data.Description;
 
-            Template.Value = data.SubjectTemplateWeakStorageId != null ? Storage.LoadOrCreateEntity<SubjectTemplate>(data.SubjectTemplateWeakStorageId, null) : null;
-            Calendar.Value = data.CalendarWeakStorageId != null ? Storage.LoadOrCreateEntity<Calendar>(data.CalendarWeakStorageId, null) : null;
-            WeekSchedule.Value = data.WeekScheduleWeakStorageId != null ? Storage.LoadOrCreateEntity<WeekSchedule>(data.WeekScheduleWeakStorageId, null) : null;
+            Template.Value = data.SubjectTemplateWeakStorageId != null ? Storage.FindEntity<SubjectTemplate>(data.SubjectTemplateWeakStorageId, null) : null;
+            Calendar.Value = data.CalendarWeakStorageId != null ? Storage.FindEntity<Calendar>(data.CalendarWeakStorageId, null) : null;
+            WeekSchedule.Value = data.WeekScheduleWeakStorageId != null ? Storage.FindEntity<WeekSchedule>(data.WeekScheduleWeakStorageId, null) : null;
 
             Metodologies.Set(Storage.LoadOrCreateEntities<CommonText>(data.MetodologiesStorageIds, storageId));
 
@@ -477,14 +483,17 @@
 
             Blocks.Set(Storage.LoadOrCreateEntities<Block>(data.BlocksStorageIds, storageId));
 
-            List<KeyValuePair<string, float>> resultsWithIds = data.LearningResultsWeakStorageIdsWeights;
-            List<KeyValuePair<LearningResult, float>> resultsList = new();
-            foreach (var r in resultsWithIds)
+            if(Template.Value != null)
             {
-                LearningResult? result = Storage.FindChildEntity<LearningResult>(r.Key);
-                if (result != null) { resultsList.Add(new KeyValuePair<LearningResult, float>(result, r.Value)); }
+                List<KeyValuePair<string, float>> resultsWithIds = data.LearningResultsWeakStorageIdsWeights;
+                List<KeyValuePair<LearningResult, float>> resultsList = new();
+                foreach (var r in resultsWithIds)
+                {
+                    LearningResult? result = Storage.FindChildEntity<LearningResult>(r.Key);
+                    if (result != null) { resultsList.Add(new KeyValuePair<LearningResult, float>(result, r.Value)); }
+                }
+                LearningResultsWeights.Set(resultsList);
             }
-            LearningResultsWeights.Set(resultsList);
 
             foreach (KeyValuePair<CommonTextId, string> keyValue in data.CommonTextsStorageIds)
             { CommonTexts.Set(keyValue.Key, Storage.LoadOrCreateEntity<CommonText>(keyValue.Value, storageId)); }

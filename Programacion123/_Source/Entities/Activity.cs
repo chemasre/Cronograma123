@@ -381,24 +381,43 @@
             string subjectStorageId = Storage.FindParentStorageId(Storage.FindParentStorageId(StorageId, StorageClassId), new Block().StorageClassId);
             Metodology.Value = data.MetodologyWeakStorageId != null ? Storage.FindEntity<CommonText>(data.MetodologyWeakStorageId, subjectStorageId) : null;
 
-            ContentPoints.Set(Storage.FindChildEntities<CommonText>(data.ContentPointsWeakStorageIds));
-            KeyCompetences.Set(Storage.FindChildEntities<CommonText>(data.KeyCompetencesWeakStorageIds));
-            SpaceResources.Set(Storage.FindChildEntities<CommonText>(data.SpaceResourcesWeakStorageIds));
-            MaterialResources.Set(Storage.FindChildEntities<CommonText>(data.MaterialResourcesWeakStorageIds));
+            SubjectData subjectData = Storage.FindData<SubjectData>(subjectStorageId, new Subject().StorageClassId);
+            SubjectTemplateData? subjectTemplateData = subjectData.SubjectTemplateWeakStorageId != null ? Storage.FindData<SubjectTemplateData>(subjectData.SubjectTemplateWeakStorageId, new SubjectTemplate().StorageClassId) : null;
+
+            if(subjectTemplateData != null)
+            {
+                ContentPoints.Set(Storage.FindSiblingEntities<CommonText>(data.ContentPointsWeakStorageIds, subjectTemplateData.ContentsStorageIds));
+            }
+
+            GradeTemplateData? gradeTemplateData = subjectTemplateData?.GradeTemplateWeakStorageId != null ? Storage.FindData<GradeTemplateData>(subjectTemplateData.GradeTemplateWeakStorageId, new GradeTemplate().StorageClassId) : null;
+
+            if(gradeTemplateData != null)
+            {
+                KeyCompetences.Set(Storage.FindSiblingEntities<CommonText>(data.KeyCompetencesWeakStorageIds, subjectTemplateData.GradeTemplateWeakStorageId));
+            }
+
+            SpaceResources.Set(Storage.FindSiblingEntities<CommonText>(data.SpaceResourcesWeakStorageIds, subjectStorageId));
+            MaterialResources.Set(Storage.FindSiblingEntities<CommonText>(data.MaterialResourcesWeakStorageIds, subjectStorageId));
 
             EvaluationType.Value = data.EvaluationType;
 
             EvaluationInstrumentType.Value = data.EvaluationInstrumentTypeWeakStorageId != null ? Storage.FindEntity<CommonText>(data.EvaluationInstrumentTypeWeakStorageId, subjectStorageId) : null;
-            Criterias.Set(Storage.FindChildEntities<CommonText>(data.CriteriasWeakStorageIds));
-
-            List<KeyValuePair<string, float>> resultsWithIds = data.LearningResultsWeakStorageIdsWeights;
-            List<KeyValuePair<LearningResult, float>> resultsList = new();
-            foreach (var r in resultsWithIds)
+            
+            if(subjectTemplateData != null)
             {
-                LearningResult result = Storage.FindChildEntity<LearningResult>(r.Key);
-                resultsList.Add(new KeyValuePair<LearningResult, float>(result, r.Value));
+                Criterias.Set(Storage.FindSiblingEntities<CommonText>(data.CriteriasWeakStorageIds, subjectTemplateData.LearningResultsStorageIds));
+
+                List<KeyValuePair<string, float>> resultsWithIds = data.LearningResultsWeakStorageIdsWeights;
+                List<KeyValuePair<LearningResult, float>> resultsList = new();
+                foreach (var r in resultsWithIds)
+                {
+                    LearningResult? result = Storage.FindEntity<LearningResult>(r.Key, subjectData.SubjectTemplateWeakStorageId);
+                    if(result != null) { resultsList.Add(new KeyValuePair<LearningResult, float>(result, r.Value)); }
+                }
+                LearningResultsWeights.Set(resultsList);
+
             }
-            LearningResultsWeights.Set(resultsList);
+
 
         }
 

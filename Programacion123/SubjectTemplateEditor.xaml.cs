@@ -276,6 +276,8 @@ namespace Programacion123
 
         private void GradeTemplateController_Changed(WeakReferenceFieldController<GradeTemplate, EntityPicker<GradeTemplate>> controller)
         {
+            generalObjectivesController.Clear();    
+            generalCompetencesController.Clear();    
             UpdateEntity(flagUpdateGradeTemplate);
             Validate();
         }
@@ -363,12 +365,12 @@ namespace Programacion123
                 entity.GradeTemplate.Value = gradeTemplateController.GetEntity();
             }
 
-            if(Flags.Test(flags, flagUpdateObjectives))
+            if(Flags.Test(flags, flagUpdateObjectives | flagUpdateGradeTemplate))
             {
                 entity.GeneralObjectives.Set(generalObjectivesController.GetSelectedEntities());
             }
 
-            if(Flags.Test(flags, flagUpdateCompetences))
+            if(Flags.Test(flags, flagUpdateCompetences | flagUpdateGradeTemplate))
             {
                 entity.GeneralCompetences.Set(generalCompetencesController.GetSelectedEntities());
             }

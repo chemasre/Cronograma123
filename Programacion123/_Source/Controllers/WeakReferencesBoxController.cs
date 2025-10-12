@@ -93,6 +93,15 @@ namespace Programacion123
 
         }
 
+        public void Clear()
+        {
+            listBox.SelectedIndex = -1;
+            storageIds.Clear();
+            Changed?.Invoke(this);
+            UpdateList();
+            UpdateButtonAvailability();
+        }
+
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateButtonAvailability();

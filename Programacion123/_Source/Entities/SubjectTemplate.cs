@@ -75,11 +75,12 @@
 
             if(Flags.Test(validationFlags, flagGradeTemplate) || force)
             {
-                Utils.PrintLine("[gradeTemplate] => Validating grade template linked");
+                Utils.PrintLine("[gradeTemplate] => Validating grade template linked and valid");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.templateSubjectNotLinkedToGradeTemplate);
 
                 if (GradeTemplate.Value == null) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectNotLinkedToGradeTemplate)); }
+                else if(GradeTemplate.Value.Validate(force).code != ValidationCode.success) { validationFails.Add(ValidationResult.Create(ValidationCode.templateSubjectLinkedGradeTemplateInvalid)); }
             }
 
             if(Flags.Test(validationFlags, flagSubjectName) || force)
@@ -221,16 +222,18 @@
             Title.Value = data.Title;
             Description.Value = data.Description;
 
-            GradeTemplate.Value = data.GradeTemplateWeakStorageId != null ? Storage.LoadOrCreateEntity<GradeTemplate>(data.GradeTemplateWeakStorageId, null) : null;
+            GradeTemplate.Value = data.GradeTemplateWeakStorageId != null ? Storage.FindEntity<GradeTemplate>(data.GradeTemplateWeakStorageId, null) : null;
 
             SubjectName.Value = data.SubjectName;
             SubjectCode.Value = data.SubjectCode;
             GradeClassroomHours.Value = data.GradeClassroomHours;
             GradeCompanyHours.Value = data.GradeCompanyHours;
 
-            GeneralObjectives.Set(Storage.FindChildEntities<CommonText>(data.GeneralObjectivesWeakStorageIds));
-
-            GeneralCompetences.Set(Storage.FindChildEntities<CommonText>(data.GeneralCompetencesWeakStorageIds));
+            if(GradeTemplate.Value != null)
+            {
+                GeneralObjectives.Set(Storage.FindSiblingEntities<CommonText>(data.GeneralObjectivesWeakStorageIds, GradeTemplate.Value.StorageId));
+                GeneralCompetences.Set(Storage.FindSiblingEntities<CommonText>(data.GeneralCompetencesWeakStorageIds, GradeTemplate.Value.StorageId));
+            }
 
             LearningResults.Set(Storage.LoadOrCreateEntities<LearningResult>(data.LearningResultsStorageIds, storageId));
 

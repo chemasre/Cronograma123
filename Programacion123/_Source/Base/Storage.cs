@@ -60,6 +60,35 @@ namespace Programacion123
 
         }
 
+        public static List<T> FindSiblingEntities<T>(List<string> storageIds, List<string> parentStorageIds) where T: Entity, new()
+        {
+            List<T> result = new List<T?>();
+            parentStorageIds.ForEach(
+                p =>
+                {
+                    List<T> thisParentResult = FindSiblingEntities<T>(storageIds, p);
+                    result.AddRange(thisParentResult);
+                }
+            );
+            return result;
+        }
+
+        /// <summary>
+        /// Finds a list of entities that share the same parent
+        /// </summary>
+        public static List<T> FindSiblingEntities<T>(List<string> storageIds, string parentStorageId) where T: Entity, new()
+        {
+            List<T> result = new List<T?>();
+            storageIds.ForEach(
+                    e =>
+                    {
+                        T? entity = FindEntity<T>(e, parentStorageId);
+                        if(entity != null) { result.Add(entity); }
+                    }
+                );
+            return result;
+        }
+
         /// <summary>
         /// Finds an entity by its storageId. The entities must have parents different from null and not necesarily the same.
         /// </summary>
@@ -105,6 +134,12 @@ namespace Programacion123
         public static T? FindEntity<T>(string storageId, string? parentStorageId) where T : Entity, new()
         {
             if (ExistsEntity<T>(storageId, parentStorageId)) { return LoadOrCreateEntity<T>(storageId, parentStorageId); }
+            else { return null; }
+        }
+
+        public static T? FindData<T>(string storageId, string storageClassId, string? parentStorageId = null) where T : StorageData
+        {
+            if(ExistsData<T>(storageId, storageClassId, parentStorageId)) { return LoadData<T>(storageId, storageClassId, parentStorageId); }
             else { return null; }
         }
 

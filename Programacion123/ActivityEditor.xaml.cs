@@ -753,24 +753,28 @@ namespace Programacion123
             dataTableResultsWeight.Rows.Clear();
             dataTableResultsWeight.Columns.Clear();
 
-            List<LearningResult> learningResultList = subject.Template.Value.LearningResults.ToList();
-            for (int i = 0; i < learningResultList.Count; i++)
+            if(subject.Template.Value != null)
             {
-                string columnName = String.Format("RA{0}", i + 1);
-                dataTableResultsWeight.Columns.Add(columnName, typeof(float));
+                List<LearningResult> learningResultList = subject.Template.Value.LearningResults.ToList();
+                for (int i = 0; i < learningResultList.Count; i++)
+                {
+                    string columnName = String.Format("RA{0}", i + 1);
+                    dataTableResultsWeight.Columns.Add(columnName, typeof(float));
+                }
+
+                List<KeyValuePair<LearningResult, float>> learningResultsWeightList = entity.LearningResultsWeights.ToList();
+
+                DataRow row = dataTableResultsWeight.NewRow();
+
+                for (int i = 0; i < learningResultList.Count; i++)
+                {
+                    string columnName = String.Format("RA{0}", i + 1);
+                    row[columnName] = learningResultsWeightList[i].Value;
+                }
+
+                dataTableResultsWeight.Rows.Add(row);
             }
 
-            List<KeyValuePair<LearningResult, float>> learningResultsWeightList = entity.LearningResultsWeights.ToList();
-
-            DataRow row = dataTableResultsWeight.NewRow();
-
-            for (int i = 0; i < learningResultList.Count; i++)
-            {
-                string columnName = String.Format("RA{0}", i + 1);
-                row[columnName] = learningResultsWeightList[i].Value;
-            }
-
-            dataTableResultsWeight.Rows.Add(row);
         }
 
         public Activity GetEntity()
