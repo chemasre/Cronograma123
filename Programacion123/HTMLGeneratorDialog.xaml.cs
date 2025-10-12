@@ -27,6 +27,11 @@ namespace Programacion123
         bool webPreviewValid;
 
 
+        const uint flagUpdateSubject = 1 << 0;
+
+        const uint flagUpdateNone = 0U;
+        const uint flagUpdateAll = ~0U;
+
         public HTMLGeneratorDialog()
         {
             InitializeComponent();
@@ -187,7 +192,6 @@ namespace Programacion123
             ComboDocumentMarginBottom.SelectionChanged += ComboDocumentMarginBottom_SelectionChanged;
             ComboDocumentMarginLeft.SelectionChanged += ComboDocumentMarginLeft_SelectionChanged;
             ComboDocumentMarginRight.SelectionChanged += ComboDocumentMarginRight_SelectionChanged;
-
 
             Validate(true);
 
@@ -510,56 +514,56 @@ namespace Programacion123
 
         private void ComboTextElementAlign_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboCoverElementPositionTop_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboCoverElementPositionLeft_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboTableElementPaddingRight_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboTableElementPaddingLeft_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboTableElementPaddingBottom_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboTableElementPaddingTop_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboTableElementColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdateDocumentTableElementColorUI();
             UpdatePreviewUI();
@@ -572,77 +576,77 @@ namespace Programacion123
 
         private void ComboTextElementMarginTop_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboTextElementMarginBottom_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboTextElementMarginLeft_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboTextElementMarginRight_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void CheckboxTextElementUnderscore_Unchecked(object sender, RoutedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void CheckboxTextElementUnderscore_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void CheckboxTextElementItalic_Unchecked(object sender, RoutedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void CheckboxTextElementItalic_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void CheckboxTextElementBold_Unchecked(object sender, RoutedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void CheckboxTextElementBold_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboTextElementFontColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdateDocumentTextElementColorUI();
             UpdatePreviewUI();
@@ -650,14 +654,14 @@ namespace Programacion123
 
         private void ComboTextElementFontSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboTextElementFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
@@ -675,35 +679,35 @@ namespace Programacion123
 
         private void ComboDocumentMarginRight_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboDocumentMarginLeft_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboDocumentMarginBottom_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboDocumentMarginTop_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdatePreviewUI();
         }
 
         private void ComboDocumentOrientation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdateDocumentDimensionsUI();
             UpdatePreviewUI();
@@ -711,7 +715,7 @@ namespace Programacion123
 
         private void ComboDocumentSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
             UpdateDocumentDimensionsUI();
             UpdatePreviewUI();
@@ -891,7 +895,7 @@ namespace Programacion123
                 string base64 = Convert.ToBase64String(bytes);
                 SetBase64ImageInUI(target, base64);
 
-                UpdateGenerator();
+                UpdateGenerator(flagUpdateNone);
                 Validate();
 
                 UpdatePreviewUI();
@@ -901,7 +905,7 @@ namespace Programacion123
 
         private void SubjectController_Changed(WeakReferenceFieldController<Subject, EntityPicker<Subject>> controller)
         {
-            UpdateGenerator();
+            UpdateGenerator(flagUpdateNone);
             Validate();
 
             UpdatePreviewUI();
@@ -917,9 +921,12 @@ namespace Programacion123
 
         }
 
-        void UpdateGenerator()
+        void UpdateGenerator(uint flags)
         {
-            previewGenerator.Subject = subjectController.GetEntity();
+            if(Flags.Test(flags, flagUpdateSubject))
+            {
+                previewGenerator.Subject = subjectController.GetEntity();
+            }
 
             Debug.Assert(previewGenerator.Style != null);
 
