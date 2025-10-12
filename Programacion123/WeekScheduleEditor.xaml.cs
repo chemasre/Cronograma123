@@ -97,7 +97,7 @@ namespace Programacion123
             Validate();
         }
 
-        public void InitEditor(WeekSchedule _weekSchedule, string? _parentStorageId)
+        async public Task InitEditorAsync(WeekSchedule _weekSchedule, string? _parentStorageId)
         {
             _weekSchedule.Save(_parentStorageId);
 

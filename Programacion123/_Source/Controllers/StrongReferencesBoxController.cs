@@ -263,7 +263,7 @@ namespace Programacion123
 
         }
 
-        void ButtonEdit_Click(object sender, RoutedEventArgs e)
+        async void ButtonEdit_Click(object sender, RoutedEventArgs e)
         {
             bool openEditor = false;
             int index = -1;
@@ -293,14 +293,18 @@ namespace Programacion123
                 if (titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
                 if (editorTitle != null) { editor.SetEditorTitle(editorTitle); }
                 if (blocker != null) { blocker.Visibility = Visibility.Visible; }
-                editor.InitEditor(entity, parentStorageId);
+                LongTaskDialog longTask = new();
+                longTask.Init("Abriendo editor");
+                longTask.Show();
+                await editor.InitEditorAsync(entity, parentStorageId);
+                longTask.Hide();
                 editor.Closed += OnDialogClosed;
                 editor.ShowDialog();
             }
 
         }
 
-        void ButtonNew_Click(object sender, RoutedEventArgs e)
+        async void ButtonNew_Click(object sender, RoutedEventArgs e)
         {
             TEntity entity = new();
             if (entityInitializer != null) { entityInitializer.Invoke(entity); }
@@ -308,7 +312,12 @@ namespace Programacion123
             if (titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
             if (editorTitle != null) { editor.SetEditorTitle(editorTitle); }
             if (blocker != null) { blocker.Visibility = Visibility.Visible; }
-            editor.InitEditor(entity, parentStorageId);
+
+            LongTaskDialog longTask = new();
+            longTask.Init("Abriendo editor");
+            longTask.Show();
+            await editor.InitEditorAsync(entity, parentStorageId);
+            longTask.Hide();
             storageIds.Add(entity.StorageId);
             Changed?.Invoke(this);
             editor.Closed += OnDialogClosed;

@@ -54,6 +54,16 @@ namespace Programacion123
             OnUpdated?.Invoke(this);
         }
 
+        public async Task<ValidationResult> ValidateAsync(bool force)
+        {
+            Task<ValidationResult> task = new Task<ValidationResult>(() => { return Validate(force); });
+
+            task.Start();            
+            await task;
+
+            return task.Result;
+        }
+
         public virtual ValidationResult Validate(bool force = false)
         {
             Utils.PrintLine("***************************************************");

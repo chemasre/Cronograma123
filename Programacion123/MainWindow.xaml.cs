@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Input;
@@ -12,7 +13,7 @@ namespace Programacion123
     {
         void SetEntityTitleEditable(bool editable);
         void SetEditorTitle(string title);
-        void InitEditor(T entity, string? _parentStorageId);
+        Task InitEditorAsync(T entity, string? _parentStorageId);
         T GetEntity();
     }
 

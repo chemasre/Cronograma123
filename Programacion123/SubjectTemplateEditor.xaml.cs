@@ -43,7 +43,7 @@ namespace Programacion123
             return entity;
         }
 
-        public void InitEditor(SubjectTemplate _subjectTemplate, string? _parentStorageId)
+        async public Task InitEditorAsync(SubjectTemplate _subjectTemplate, string? _parentStorageId)
         {
             _subjectTemplate.Save(_parentStorageId);
 

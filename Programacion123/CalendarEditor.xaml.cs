@@ -40,7 +40,7 @@ namespace Programacion123
             return calendar;
         }
 
-        public void InitEditor(Calendar entity, string? _parentStorageId = null)
+        async public Task InitEditorAsync(Calendar entity, string? _parentStorageId = null)
         {
             entity.Save(_parentStorageId);
 

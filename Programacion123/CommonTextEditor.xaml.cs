@@ -27,7 +27,7 @@ namespace Programacion123
             titleEditable = true;
         }
 
-        public void InitEditor(CommonText _entity, string? _parentStorageId = null)
+        async public Task InitEditorAsync(CommonText _entity, string? _parentStorageId = null)
         {
             _entity.Save(_parentStorageId);
 

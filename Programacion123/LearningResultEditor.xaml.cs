@@ -25,7 +25,7 @@ namespace Programacion123
             InitializeComponent();
         }
 
-        public void InitEditor(LearningResult _entity, string? _parentStorageId = null)
+        async public Task InitEditorAsync(LearningResult _entity, string? _parentStorageId = null)
         {
             _entity.Save(_parentStorageId);
 

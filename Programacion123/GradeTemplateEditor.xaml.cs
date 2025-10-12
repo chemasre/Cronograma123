@@ -38,7 +38,7 @@ namespace Programacion123
             return entity;
         }
 
-        public void InitEditor(GradeTemplate _gradeTemplate, string? _parentStorageId)
+        async public Task InitEditorAsync(GradeTemplate _gradeTemplate, string? _parentStorageId)
         {
             _gradeTemplate.Save(_parentStorageId);
 

@@ -61,7 +61,7 @@ namespace Programacion123
             return entity;
         }
 
-        public void InitEditor(Subject _subject, string? _parentStorageId)
+        async public Task InitEditorAsync(Subject _subject, string? _parentStorageId)
         {
             _subject.Save(_parentStorageId);
 
@@ -265,7 +265,16 @@ namespace Programacion123
             UpdateScheduleUIFromEntity();
 
 
-            Validate(true);
+            ValidationResult result = await ValidateAsync(true);
+            ShowResult(result);
+
+        }
+
+        void ShowResult(ValidationResult result)
+        {
+            string colorResource = (result.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
+            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
+            TextValidation.Text = result.ToString();
 
         }
 
@@ -797,14 +806,17 @@ namespace Programacion123
             entity.Save(parentStorageId);
         }
 
-        void Validate(bool force = false)
+        async Task<ValidationResult> ValidateAsync(bool force = false)
+        {
+            Task<ValidationResult> task = new(() => { return Validate(force); });
+            task.Start();
+            return await task;
+        }
+
+        ValidationResult Validate(bool force = false)
         {
             ValidationResult validation = entity.Validate(force);
-
-            string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
-            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
-            TextValidation.Text = validation.ToString();
-
+            return validation;
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)

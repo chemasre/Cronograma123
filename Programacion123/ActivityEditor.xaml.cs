@@ -147,7 +147,7 @@ namespace Programacion123
         }
 
 
-        public void InitEditor(Activity _entity, string? _parentStorageId)
+        async public Task InitEditorAsync(Activity _entity, string? _parentStorageId)
         {
             _entity.Save(_parentStorageId);
 
