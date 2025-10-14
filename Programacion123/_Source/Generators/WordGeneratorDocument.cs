@@ -504,6 +504,13 @@ namespace Programacion123
             fill.Visible = (MsoTriState)TriState.False;
             line.Visible = (MsoTriState)TriState.False;
 
+            float rightEdge = pageSetup.PageWidth - pageSetup.RightMargin - pageSetup.LeftMargin;
+            if(shape.Left <= rightEdge && 
+               shape.Left + shape.Width > rightEdge)
+            {
+                shape.Width -= (shape.Left + shape.Width) - rightEdge; 
+            }
+
             return this;
         }
 
