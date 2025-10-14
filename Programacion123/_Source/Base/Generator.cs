@@ -65,6 +65,8 @@ namespace Programacion123
     {
         public Subject? Subject { get; set; }
         public DocumentStyle? Style { get; set; }
+        public IProgress<string>? ProgressLabel { get; set; }
+        public IProgress<float>? ProgressValue { get; set; }
 
         protected string LineBreak { get; set; } = "\n";
         protected string NonBreakingSpace { get; set; } = " ";

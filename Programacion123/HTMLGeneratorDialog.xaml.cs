@@ -1083,6 +1083,9 @@ namespace Programacion123
                     dialogTask.Init("Generando documento");
                     Blocker.Visibility = Visibility.Visible;
 
+                    generator.ProgressLabel = new Progress<string>((s) => { dialogTask.Name = s; });
+                    generator.ProgressValue = new Progress<float>((v) => { dialogTask.Value = v; });
+
                     dialogTask.Show();
 
 
