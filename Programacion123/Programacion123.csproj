@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="_Source\Utils\UtilsTasks.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="BotonNew.png" />
     <None Remove="ButtonClose.png" />
     <None Remove="ButtonMoveDown.png" />

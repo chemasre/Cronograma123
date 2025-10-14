@@ -36,6 +36,7 @@ namespace Programacion123
         public string? editorTitle;
         public UIElement? blocker;
         public string? deleteConfirmQuestion;
+        public bool asyncEditorInit;
 
         public static StrongReferencesBoxConfiguration<TEntity> CreateForCombo(ComboBox _combo) { StrongReferencesBoxConfiguration<TEntity> c = new(); c.comboBox = _combo; c.storageIds = new(); return c; }
         public static StrongReferencesBoxConfiguration<TEntity> CreateForList(ListBox _list) { StrongReferencesBoxConfiguration<TEntity> c = new(); c.listBox = _list; c.storageIds = new(); return c; }
@@ -52,7 +53,7 @@ namespace Programacion123
         public StrongReferencesBoxConfiguration<TEntity> WithEditorTitle(string _editorTitle) { editorTitle = _editorTitle; return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithBlocker(UIElement? _blocker) { blocker = _blocker; return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithDeleteConfirmQuestion(string _question) { deleteConfirmQuestion = _question; return this; }
-
+        public StrongReferencesBoxConfiguration<TEntity> WithAsyncEditorInit(bool _asyncInit) { asyncEditorInit = _asyncInit; return this; }
     }
 
     public class StrongReferencesBoxController<TEntity, TEditor> where TEntity : Entity, new()
@@ -83,6 +84,7 @@ namespace Programacion123
         string? editorTitle;
         UIElement? blocker;
         TEditor editor;
+        bool asyncEditorInit;
 
         public StrongReferencesBoxController(StrongReferencesBoxConfiguration<TEntity> configuration)
         {
@@ -104,6 +106,7 @@ namespace Programacion123
             titleEditable = configuration.titleEditable;
             editorTitle = configuration.editorTitle;
             blocker = configuration.blocker;
+            asyncEditorInit = configuration.asyncEditorInit;
 
             if (comboBox != null) { comboBox.SelectionChanged += ComboBox_SelectionChanged; }
             if (listBox != null) { listBox.SelectionChanged += ListBox_SelectionChanged; }
@@ -263,7 +266,7 @@ namespace Programacion123
 
         }
 
-        void ButtonEdit_Click(object sender, RoutedEventArgs e)
+        async void ButtonEdit_Click(object sender, RoutedEventArgs e)
         {
             bool openEditor = false;
             int index = -1;
@@ -293,14 +296,23 @@ namespace Programacion123
                 if (titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
                 if (editorTitle != null) { editor.SetEditorTitle(editorTitle); }
                 if (blocker != null) { blocker.Visibility = Visibility.Visible; }
-                editor.InitEditor(entity, parentStorageId);
+
+                if(asyncEditorInit)
+                {
+                    await editor.InitEditorAsync(entity, parentStorageId);
+                }
+                else
+                {
+                    editor.InitEditor(entity, parentStorageId);
+                }
+    
                 editor.Closed += OnDialogClosed;
                 editor.ShowDialog();
             }
 
         }
 
-        void ButtonNew_Click(object sender, RoutedEventArgs e)
+        async void ButtonNew_Click(object sender, RoutedEventArgs e)
         {
             TEntity entity = new();
             if (entityInitializer != null) { entityInitializer.Invoke(entity); }
@@ -308,7 +320,16 @@ namespace Programacion123
             if (titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
             if (editorTitle != null) { editor.SetEditorTitle(editorTitle); }
             if (blocker != null) { blocker.Visibility = Visibility.Visible; }
-            editor.InitEditor(entity, parentStorageId);
+            
+            if(asyncEditorInit)
+            {
+                await editor.InitEditorAsync(entity, parentStorageId);
+            }
+            else
+            {
+                editor.InitEditor(entity, parentStorageId);
+            }
+
             storageIds.Add(entity.StorageId);
             Changed?.Invoke(this);
             editor.Closed += OnDialogClosed;

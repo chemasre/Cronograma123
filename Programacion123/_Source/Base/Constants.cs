@@ -5,10 +5,11 @@
         public const string appName = "Programabara";
         public const string contactName = "Chema";
         public const string contactEmail = "chema.sre@gmail.com";
-        public const string version = "0.9.3";
+        public const string version = "0.9.4";
         public const string configFileName = "Config.json";
-        public const float restartWaitTime = 2.0f;
-        public const float informativeTaskWaitTime = 2.0f;
+        public const float resetTaskMinDuration = 2.0f;
+        public const float setupTaskMinDuration = 2.0f;
+        public const float validationTaskMinDuration = 0.5f;
 
         public const string helpUrl = "https://youtube.com";
         public const string homeUrl = "https://sinestesiagamedesign.es/teaching";

@@ -32,6 +32,8 @@ namespace Programacion123
         const uint flagUpdateNone = 0U;
         const uint flagUpdateAll = ~0U;
 
+        LongTaskController longTaskController;
+
         public HTMLGeneratorDialog()
         {
             InitializeComponent();
@@ -40,7 +42,29 @@ namespace Programacion123
 
         }
 
+        async public Task InitAsync(Subject? _subject, DocumentStyle? _style, Action<bool> _closeAction)
+        {
+            // This is an early initialization that does just
+            // the minimum needed to call validate async before
+            // InitCommon. This  dissimulates the blocking that
+            // InitCommon causes due to the WebPreview initialization
+            // giving more time to the progress bar of the caller to show
+            longTaskController = new();
+            longTaskController.Init(Blocker);
+            previewGenerator = new HTMLGenerator();
+            previewGenerator.Subject = _subject;
+            previewGenerator.Style = _style;
+            await ValidateAsync(true);
+            InitCommon(_subject, _style, _closeAction);
+        }
+
         public void Init(Subject? _subject, DocumentStyle? _style, Action<bool> _closeAction)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        void InitCommon(Subject? _subject, DocumentStyle? _style, Action<bool> _closeAction)
         {
             previewGenerator = new HTMLGenerator();
 
@@ -193,7 +217,8 @@ namespace Programacion123
             ComboDocumentMarginLeft.SelectionChanged += ComboDocumentMarginLeft_SelectionChanged;
             ComboDocumentMarginRight.SelectionChanged += ComboDocumentMarginRight_SelectionChanged;
 
-            Validate(true);
+            longTaskController = new();
+            longTaskController.Init(Blocker);
 
             webPreviewLastScrollPosition = null;
             webPreviewReady = false;
@@ -903,23 +928,33 @@ namespace Programacion123
             }
         }
 
-        private void SubjectController_Changed(WeakReferenceFieldController<Subject, EntityPicker<Subject>> controller)
+        async private void SubjectController_Changed(WeakReferenceFieldController<Subject, EntityPicker<Subject>> controller)
         {
-            UpdateGenerator(flagUpdateNone);
-            Validate();
+            UpdateGenerator(flagUpdateSubject);
+            await ValidateAsync();
 
             UpdatePreviewUI();
         }
 
-        void Validate(bool force = false)
+        void UpdateValidationResultUI(GeneratorValidationResult result)
         {
-            GeneratorValidationResult result = previewGenerator.Validate(force);
-
             string colorResource = (result.code == GeneratorValidationCode.success ? "ColorValid" : "ColorInvalid");
             BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
             TextValidation.Text = result.ToString();
-
         }
+
+        async Task ValidateAsync(bool force = false)
+        {
+            GeneratorValidationResult validation = await longTaskController.ExecuteAsync<GeneratorValidationResult>("Validando programación", () => previewGenerator.Validate(force), Constants.validationTaskMinDuration);
+            UpdateValidationResultUI(validation);
+        }
+
+        void Validate(bool force = false)
+        {
+            GeneratorValidationResult validation = previewGenerator.Validate(force);
+            UpdateValidationResultUI(validation);
+        }
+
 
         void UpdateGenerator(uint flags)
         {

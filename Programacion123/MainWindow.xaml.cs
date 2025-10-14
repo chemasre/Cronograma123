@@ -13,6 +13,7 @@ namespace Programacion123
         void SetEntityTitleEditable(bool editable);
         void SetEditorTitle(string title);
         void InitEditor(T entity, string? _parentStorageId);
+        Task InitEditorAsync(T entity, string? _parentStorageId);
         T GetEntity();
     }
 
@@ -243,7 +244,8 @@ namespace Programacion123
                                                    .WithEdit(ButtonSubjectEdit)
                                                    .WithDelete(ButtonSubjectDelete)
                                                    .WithDeleteConfirmQuestion("Esto eliminará permanentemente el módulo seleccionada junto con los bloques y otros elementos definidos en ella. ¿Estás seguro/a?")
-                                                   .WithBlocker(Blocker);
+                                                   .WithBlocker(Blocker)
+                                                   .WithAsyncEditorInit(true);
 
 
 
@@ -317,7 +319,7 @@ namespace Programacion123
 
                         CreatDefaultStyleIfNotPresent();
 
-                        await RunInformativeTask("Reiniciando la aplicación", Constants.restartWaitTime);
+                        await RunInformativeTask("Reiniciando la aplicación", Constants.resetTaskMinDuration);
 
                         RestartUI();
 
@@ -523,16 +525,21 @@ namespace Programacion123
             InitUI();
         }
 
-        private void ButtonGenerateDocument_Click(object sender, RoutedEventArgs e)
+        async private void ButtonGenerateDocument_Click(object sender, RoutedEventArgs e)
         {
             Blocker.Visibility = Visibility.Visible;
 
             Subject? subject = subjectsController.GetSelectedEntity();
             if (subject != null)
             {
-                HTMLGeneratorDialog generatorDialog = new();
 
-                generatorDialog.Init(subject, style, (b) => { Blocker.Visibility = Visibility.Hidden; });
+                LongTaskController controller = new();
+                LongTaskDialog longTaskDialog= new();
+                longTaskDialog.Init("Abriendo generador");
+                longTaskDialog.Show();
+                HTMLGeneratorDialog generatorDialog = new();
+                await generatorDialog.InitAsync(subject, style, (b) => { Blocker.Visibility = Visibility.Hidden; });
+                longTaskDialog.Hide();
                 generatorDialog.ShowDialog();
 
             }
@@ -570,7 +577,7 @@ namespace Programacion123
             Blocker.Visibility = Visibility.Hidden;
         }
 
-        private async Task RunInformativeTask(string title, float duration = Constants.informativeTaskWaitTime)
+        private async Task RunInformativeTask(string title, float duration = Constants.setupTaskMinDuration)
         {
             await RunLongTaskAsync(title, () => { Thread.Sleep((int)(duration * 1000)); });
         }

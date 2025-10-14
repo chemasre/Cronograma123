@@ -138,5 +138,10 @@ namespace Programacion123
                 DragMove();
             }
         }
+
+        public Task InitEditorAsync(Content entity, string? _parentStorageId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

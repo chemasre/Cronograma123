@@ -49,6 +49,8 @@ namespace Programacion123
 
         const uint flagUpdateAll = ~0U;
 
+        LongTaskController longTaskController;
+
         public SubjectEditor()
         {
             InitializeComponent();
@@ -61,7 +63,7 @@ namespace Programacion123
             return entity;
         }
 
-        public void InitEditor(Subject _subject, string? _parentStorageId)
+        void InitEditorCommon(Subject _subject, string? _parentStorageId)
         {
             _subject.Save(_parentStorageId);
 
@@ -192,7 +194,8 @@ namespace Programacion123
                                                         .WithUpDown(ButtonBlockUp, ButtonBlockDown)
                                                         .WithDeleteConfirmQuestion("Esto eliminará permanentemente el bloque seleccionado junto con todas las actividades definidas en él. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Bloque")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithAsyncEditorInit(true);
 
             blocksController = new(configBlocks);
 
@@ -260,14 +263,29 @@ namespace Programacion123
             dataTableActivitiesWeight.RowChanged += DataTableActivitiesWeight_RowChanged;
             dataTableActivitiesSchedule.RowChanged += DataTableActivitiesSchedule_RowChanged;
 
+            longTaskController = new();
+            longTaskController.Init(Blocker);
+
             UpdateActivityWeightsUIFromEntity();
             UpdateWeightsUIFromEntity();
             UpdateScheduleUIFromEntity();
 
+        }
 
+        public void InitEditor(Subject _entity, string? _parentStorageId = null)
+        {
+            InitEditorCommon(_entity, _parentStorageId);
             Validate(true);
+        }
+
+        async public Task InitEditorAsync(Subject _entity, string? _parentStorageId = null)
+        {
+            InitEditorCommon(_entity, _parentStorageId);
+            await ValidateAsync(true);
 
         }
+
+
 
         void UpdateWeightsUIFromEntity()
         {
@@ -523,48 +541,48 @@ namespace Programacion123
             Validate();
         }
 
-        private void DataTableActivitiesWeight_RowChanged(object sender, DataRowChangeEventArgs e)
+        async private void DataTableActivitiesWeight_RowChanged(object sender, DataRowChangeEventArgs e)
         {
             UpdateEntity(flagUpdateActivitiesWeights);
-            Validate();
+            await ValidateAsync();
         }
 
-        private void DataTableResultsWeight_RowChanged(object sender, DataRowChangeEventArgs e)
+        async private void DataTableResultsWeight_RowChanged(object sender, DataRowChangeEventArgs e)
         {
             UpdateEntity(flagUpdateResultsWeights);
-            Validate();
+            await ValidateAsync();
         }
 
-        private void DataTableActivitiesSchedule_RowChanged(object sender, DataRowChangeEventArgs e)
+        async private void DataTableActivitiesSchedule_RowChanged(object sender, DataRowChangeEventArgs e)
         {
             UpdateEntity(flagUpdateActivitiesSchedule);
             UpdateScheduleUIFromEntity(true);
-            Validate();
+            await ValidateAsync();
         }
 
-        private void WeekScheduleController_Changed(WeakReferenceFieldController<WeekSchedule, EntityPicker<WeekSchedule>> controller)
+        async private void WeekScheduleController_Changed(WeakReferenceFieldController<WeekSchedule, EntityPicker<WeekSchedule>> controller)
         {
             UpdateEntity(flagUpdateWeekSchedule);
             UpdateScheduleUIFromEntity();
-            Validate();
+            await ValidateAsync();
         }
 
-        private void CalendarController_Changed(WeakReferenceFieldController<Calendar, EntityPicker<Calendar>> controller)
+        async private void CalendarController_Changed(WeakReferenceFieldController<Calendar, EntityPicker<Calendar>> controller)
         {
             UpdateEntity(flagUpdateCalendar);
             UpdateScheduleUIFromEntity();
-            Validate();
+            await ValidateAsync();
         }
 
-        private void SubjectTemplateController_Changed(WeakReferenceFieldController<SubjectTemplate, EntityPicker<SubjectTemplate>> controller)
+        async void SubjectTemplateController_Changed(WeakReferenceFieldController<SubjectTemplate, EntityPicker<SubjectTemplate>> controller)
         {
             UpdateEntity(flagUpdateTemplate);
-            Validate();
+            await ValidateAsync();
             UpdateWeightsUIFromEntity();
             UpdateActivityWeightsUIFromEntity();
         }
 
-        void BlocksController_Changed(StrongReferencesBoxController<Block, BlockEditor> controller)
+        async void BlocksController_Changed(StrongReferencesBoxController<Block, BlockEditor> controller)
         {
             // Reload blocks because activities may have changed
             entity.Blocks.Set(Storage.LoadOrCreateEntities<Block>(blocksController.StorageIds, entity.StorageId));
@@ -572,7 +590,7 @@ namespace Programacion123
             UpdateActivityWeightsUIFromEntity();
             UpdateScheduleUIFromEntity();
             UpdateEntity(flagUpdateBlocks);
-            Validate();
+            await ValidateAsync();
 
         }
 
@@ -797,15 +815,25 @@ namespace Programacion123
             entity.Save(parentStorageId);
         }
 
+        void UpdateValidationResultUI(ValidationResult result)
+        {
+            string colorResource = (result.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
+            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
+            TextValidation.Text = result.ToString();
+        }
+
+        async Task ValidateAsync(bool force = false)
+        {
+            ValidationResult validation = await longTaskController.ExecuteAsync<ValidationResult>("Validando programación", () => entity.Validate(force), Constants.validationTaskMinDuration);
+            UpdateValidationResultUI(validation);
+        }
+
         void Validate(bool force = false)
         {
             ValidationResult validation = entity.Validate(force);
-
-            string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
-            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
-            TextValidation.Text = validation.ToString();
-
+            UpdateValidationResultUI(validation);
         }
+
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {

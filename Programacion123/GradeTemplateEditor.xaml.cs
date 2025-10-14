@@ -230,6 +230,11 @@ namespace Programacion123
                 DragMove();
             }
         }
+
+        public Task InitEditorAsync(GradeTemplate entity, string? _parentStorageId)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

@@ -148,5 +148,10 @@ namespace Programacion123
                 DragMove();
             }
         }
+
+        Task IEntityEditor<CommonText>.InitEditorAsync(CommonText entity, string? _parentStorageId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

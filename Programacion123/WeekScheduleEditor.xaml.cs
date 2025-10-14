@@ -173,5 +173,9 @@ namespace Programacion123
             TextEditorTitle.Content = title;
         }
 
+        public Task InitEditorAsync(WeekSchedule entity, string? _parentStorageId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

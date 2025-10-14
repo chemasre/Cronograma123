@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -21,12 +22,14 @@ namespace Programacion123
 
         const uint flagUpdateAll = ~0U;
 
+        LongTaskController longTaskController;
+
         public BlockEditor()
         {
             InitializeComponent();
         }
 
-        public void InitEditor(Block _entity, string? _parentStorageId = null)
+        void InitEditorCommon(Block _entity, string? _parentStorageId = null)
         {
             _entity.Save(_parentStorageId);
 
@@ -65,7 +68,8 @@ namespace Programacion123
                                                         .WithDeleteConfirmQuestion("Esto eliminará  permanentemente la actividad seleccionada. ¿Estás seguro/a?")
                                                         .WithUpDown(ButtonPointUp, ButtonPointDown)
                                                         .WithEditorTitle("Actividad")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithAsyncEditorInit(true);
 
             activitiesController = new(configActivities);
             activitiesController.Changed += ActivitiesController_Changed;
@@ -80,14 +84,28 @@ namespace Programacion123
             TextTitle.TextChanged += TextTitle_TextChanged;
             TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
 
-            Validate();
+            longTaskController = new();
+            longTaskController.Init(Blocker);
 
         }
 
-        private void ActivitiesController_Changed(StrongReferencesBoxController<Activity, ActivityEditor> controller)
+        public void InitEditor(Block _entity, string? _parentStorageId = null)
+        {
+            InitEditorCommon(_entity, _parentStorageId);
+            Validate(true);
+        }
+
+        async public Task InitEditorAsync(Block _entity, string? _parentStorageId = null)
+        {
+            InitEditorCommon(_entity, _parentStorageId);
+            await ValidateAsync(true);
+
+        }
+
+        async private void ActivitiesController_Changed(StrongReferencesBoxController<Activity, ActivityEditor> controller)
         {
             UpdateEntity(flagUpdateActivities);
-            Validate(true);
+            await ValidateAsync(true);
         }
 
         public Block GetEntity()
@@ -106,14 +124,23 @@ namespace Programacion123
             entity.Save(parentStorageId);
         }
 
+        void UpdateValidationResultUI(ValidationResult result)
+        {
+            string colorResource = (result.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
+            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
+            TextValidation.Text = result.ToString();
+        }
+
+        async Task ValidateAsync(bool force = false)
+        {
+            ValidationResult validation = await longTaskController.ExecuteAsync<ValidationResult>("Validando bloque", () => entity.Validate(force), Constants.validationTaskMinDuration);
+            UpdateValidationResultUI(validation);
+        }
+
         void Validate(bool force = false)
         {
             ValidationResult validation = entity.Validate(force);
-
-            string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
-            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
-            TextValidation.Text = validation.ToString();
-
+            UpdateValidationResultUI(validation);
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)

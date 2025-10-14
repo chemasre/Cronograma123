@@ -51,6 +51,8 @@ namespace Programacion123
 
         const uint flagUpdateAll = ~0U;
 
+        LongTaskController longTaskController;
+
 
         public ActivityEditor()
         {
@@ -136,18 +138,27 @@ namespace Programacion123
 
         }
 
+        void UpdateValidationResultUI(ValidationResult result)
+        {
+            string colorResource = (result.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
+            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
+            TextValidation.Text = result.ToString();
+        }
+
+        async Task ValidateAsync(bool force = false)
+        {
+            ValidationResult validation = await longTaskController.ExecuteAsync<ValidationResult>("Validando actividad", () => entity.Validate(force), Constants.validationTaskMinDuration);
+            UpdateValidationResultUI(validation);
+        }
+
         void Validate(bool force = false)
         {
             ValidationResult validation = entity.Validate(force);
-
-            string colorResource = (validation.code == ValidationCode.success ? "ColorValid" : "ColorInvalid");
-            BorderValidation.Background = new SolidColorBrush((Color)Application.Current.Resources[colorResource]);
-            TextValidation.Text = validation.ToString();
-
+            UpdateValidationResultUI(validation);
         }
 
 
-        public void InitEditor(Activity _entity, string? _parentStorageId)
+        void InitEditorCommon(Activity _entity, string? _parentStorageId)
         {
             _entity.Save(_parentStorageId);
 
@@ -496,13 +507,27 @@ namespace Programacion123
 
             dataTableResultsWeight.RowChanged += DataTableResultsWeight_RowChanged;
 
+            longTaskController = new();
+            longTaskController.Init(Blocker);
+
             UpdateStartTypeUI();
             UpdateActivityCodeUI();
             UpdateActivityScheduleUI();
             UpdateEvaluableUI();
             UpdateResultsWeightTableUI();
 
-            Validate();
+        }
+
+        public void InitEditor(Activity _entity, string? _parentStorageId = null)
+        {
+            InitEditorCommon(_entity, _parentStorageId);
+            Validate(true);
+        }
+
+        async public Task InitEditorAsync(Activity _entity, string? _parentStorageId = null)
+        {
+            InitEditorCommon(_entity, _parentStorageId);
+            await ValidateAsync(true);
 
         }
 
@@ -539,27 +564,27 @@ namespace Programacion123
             UpdateActivityScheduleUI();
         }
 
-        private void ComboStartType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        async private void ComboStartType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateEntity(flagUpdateStartType);
-            Validate();
+            await ValidateAsync();
 
             UpdateStartTypeUI();
             UpdateActivityScheduleUI();
 
         }
 
-        private void CheckboxNoActivitiesAfter_Unchecked(object sender, RoutedEventArgs e)
+        async private void CheckboxNoActivitiesAfter_Unchecked(object sender, RoutedEventArgs e)
         {
             UpdateEntity(flagUpdateNoActivitiesAfter);
-            Validate();
+            await ValidateAsync();
             UpdateActivityScheduleUI();
         }
 
-        private void CheckboxNoActivitiesAfter_Checked(object sender, RoutedEventArgs e)
+        async private void CheckboxNoActivitiesAfter_Checked(object sender, RoutedEventArgs e)
         {
             UpdateEntity(flagUpdateNoActivitiesAfter);
-            Validate();
+            await ValidateAsync();
             UpdateActivityScheduleUI();
         }
 
@@ -579,7 +604,7 @@ namespace Programacion123
 
         }
 
-        private void ComboDurationFraction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        async private void ComboDurationFraction_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CombosDurationApplyLimits();
 
@@ -588,26 +613,26 @@ namespace Programacion123
             UpdateActivityScheduleUI();
         }
 
-        private void ComboDuration_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        async private void ComboDuration_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CombosDurationApplyLimits();
 
             UpdateEntity(flagUpdateDuration);
-            Validate();
+            await ValidateAsync();
             UpdateActivityScheduleUI();
         }
 
-        private void CheckboxNoActivitiesBefore_Unchecked(object sender, RoutedEventArgs e)
+        async private void CheckboxNoActivitiesBefore_Unchecked(object sender, RoutedEventArgs e)
         {
             UpdateEntity(flagUpdateNoActivitiesBefore);
-            Validate();
+            await ValidateAsync();
             UpdateActivityScheduleUI();
         }
 
-        private void CheckboxNoActivitiesBefore_Checked(object sender, RoutedEventArgs e)
+        async private void CheckboxNoActivitiesBefore_Checked(object sender, RoutedEventArgs e)
         {
             UpdateEntity(flagUpdateNoActivitiesBefore);
-            Validate();
+            await ValidateAsync();
             UpdateActivityScheduleUI();
         }
 
@@ -623,10 +648,10 @@ namespace Programacion123
             Validate();
         }
 
-        private void DataTableResultsWeight_RowChanged(object sender, DataRowChangeEventArgs e)
+        async private void DataTableResultsWeight_RowChanged(object sender, DataRowChangeEventArgs e)
         {
             UpdateEntity(flagUpdateLearningResultsWeights);
-            Validate();
+            await ValidateAsync();
         }
 
         void SpaceResourcesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
@@ -641,10 +666,10 @@ namespace Programacion123
             Validate();
         }
 
-        void CriteriasController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
+        async void CriteriasController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity(flagUpdateCriterias);
-            Validate();
+            await ValidateAsync();
             UpdateResultsWeightTableUI();
         }
 
@@ -672,10 +697,10 @@ namespace Programacion123
             Validate();
         }
 
-        private void ComboEvaluationType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        async private void ComboEvaluationType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateEntity(flagUpdateEvaluationType);
-            Validate();
+            await ValidateAsync();
             UpdateActivityCodeUI();
             UpdateEvaluableUI();
             UpdateResultsWeightTableUI();
@@ -768,8 +793,9 @@ namespace Programacion123
 
                 for (int i = 0; i < learningResultList.Count; i++)
                 {
+                    int raIndex = learningResultsWeightList.FindIndex(r => r.Key.StorageId == learningResultList[i].StorageId);
                     string columnName = String.Format("RA{0}", i + 1);
-                    row[columnName] = learningResultsWeightList[i].Value;
+                    row[columnName] = learningResultsWeightList[raIndex].Value;
                 }
 
                 dataTableResultsWeight.Rows.Add(row);
