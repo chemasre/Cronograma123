@@ -83,8 +83,8 @@ namespace Programacion123
 
         void UpdateEntity(uint flags)
         {
-            if(Flags.Test(flags, flagUpdateTitle)) { entity.Title.Value = TextTitle.Text.Trim(); }
-            if(Flags.Test(flags, flagUpdateDescription)) { entity.Description.Value = (titleEditable ? TextBoxDescription.Text : NoTitleTextBoxDescription.Text).Trim(); }
+            if(Flags.Test(flags, flagUpdateTitle)) { entity.Title.Value = TextTitle.Text.Trim(); Utils.Log("Updated", "title"); }
+            if(Flags.Test(flags, flagUpdateDescription)) { entity.Description.Value = (titleEditable ? TextBoxDescription.Text : NoTitleTextBoxDescription.Text).Trim(); Utils.Log("Updated", "description"); }
             
             entity.Save(parentStorageId);
 

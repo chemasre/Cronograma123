@@ -24,11 +24,9 @@
         {
             base.Validate(force);
 
-            Utils.PrintLine(Title.Value + ": Block validation start");
-
             if(Flags.Test(validationFlags, flagActivities) || force)
             {
-                Utils.PrintLine("[activities] => Checking activities exist and are valid");
+                Utils.Log("Checking activities exist and are valid", "activities");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.blockNoActivities);
                 validationFails.RemoveAll(e => e.code == ValidationCode.blockActivityInvalid);
@@ -50,8 +48,7 @@
 
             Flags.Remove(ref validationFlags, flagActivities);
 
-            Utils.PrintLine(Title.Value + ": Block validation end");
-            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+            foreach(ValidationResult fail in validationFails) { Utils.Log(fail.ToString() + " (" + fail.index + ")", "FAILED"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }

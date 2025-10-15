@@ -46,12 +46,9 @@
         {
             base.Validate(force);
 
-            Utils.PrintLine(Title.Value + ": Calendar validation start");
-
-
             if (Flags.Test(validationFlags, flagStartDay | flagEndDay) || force)
             {
-                Utils.PrintLine("Checking start or end day");
+                Utils.Log("Checking start day after end day", "startDay, endDay");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.calendarStartDayAfterEndDay);
 
@@ -64,7 +61,7 @@
 
             if (Flags.Test(validationFlags, flagStartDay | flagEndDay | flagFreeDays) || force)
             {
-                Utils.PrintLine("Checking start, end or free days");
+                Utils.Log("Checking free days outside start or end day", "startDay, endDay, freeDays");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.calendarFreeDayBeforeStartOrAfterEnd);
 
@@ -85,7 +82,7 @@
 
             if (Flags.Test(validationFlags, flagStartDay | flagEndDay | flagFreeDays) || force)
             {
-                Utils.PrintLine("Checking start, end or free days");
+                Utils.Log("Checking no school days", "startDay, endDay, freeDays");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.calendarNoSchoolDays);
 
@@ -108,9 +105,7 @@
             Flags.Remove(ref validationFlags, flagEndDay);
             Flags.Remove(ref validationFlags, flagFreeDays);
 
-            Utils.PrintLine(Title.Value + ": Calendar validation end");
-            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
-
+            foreach(ValidationResult fail in validationFails) { Utils.Log(fail.ToString() + " (" + fail.index + ")", "FAILED"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }

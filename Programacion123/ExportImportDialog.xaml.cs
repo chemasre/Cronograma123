@@ -57,7 +57,9 @@ namespace Programacion123
                                                         .WithFormat(EntityFormatContent.Title)
                                                         .WithPick(ButtonGradeTemplateReferenceAdd, ButtonGradeTemplateReferenceRemove)
                                                         .WithPickerTitle("Plantillas de ciclo")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
+
 
             gradeTemplatesController = new(configGradeTemplates);
 
@@ -66,7 +68,9 @@ namespace Programacion123
                                                         .WithFormat(EntityFormatContent.Title)
                                                         .WithPick(ButtonSubjectTemplateReferenceAdd, ButtonSubjectTemplateReferenceRemove)
                                                         .WithPickerTitle("Plantillas de módulo")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
+
 
             subjectTemplatesController = new(configSubjectTemplates);
 
@@ -75,7 +79,9 @@ namespace Programacion123
                                                         .WithFormat(EntityFormatContent.Title)
                                                         .WithPick(ButtonCalendarReferenceAdd, ButtonCalendarReferenceRemove)
                                                         .WithPickerTitle("Calendarios")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
+
 
             calendarsController = new(configCalendars);
 
@@ -84,7 +90,9 @@ namespace Programacion123
                                                         .WithFormat(EntityFormatContent.Title)
                                                         .WithPick(ButtonWeekScheduleReferenceAdd, ButtonWeekScheduleReferenceRemove)
                                                         .WithPickerTitle("Horarios")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
+
 
             weekSchedulesController = new(configWeekSchedules);
 
@@ -93,7 +101,9 @@ namespace Programacion123
                                                         .WithFormat(EntityFormatContent.Title)
                                                         .WithPick(ButtonSubjectReferenceAdd, ButtonSubjectReferenceRemove)
                                                         .WithPickerTitle("Programaciones")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
+
 
             subjectsController = new(configSubjects);
 

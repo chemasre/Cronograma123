@@ -38,6 +38,7 @@ namespace Programacion123
             if(Flags.Test(flags, flagUpdateTitle))
             {
                 entity.Title.Value = TextTitle.Text.Trim();
+                Utils.Log("Updated", "title");
             }
 
             if(Flags.Test(flags, flagHoursPerWeekDayUpdated))
@@ -48,6 +49,8 @@ namespace Programacion123
                 entity.HoursPerWeekDay.Add(DayOfWeek.Wednesday, (int)dataTable.Rows[2]["Horas"]);
                 entity.HoursPerWeekDay.Add(DayOfWeek.Thursday, (int)dataTable.Rows[3]["Horas"]);
                 entity.HoursPerWeekDay.Add(DayOfWeek.Friday, (int)dataTable.Rows[4]["Horas"]);
+
+                Utils.Log("Updated", "hoursPerWeekDay");
             }
 
             entity.Save(parentStorageId);

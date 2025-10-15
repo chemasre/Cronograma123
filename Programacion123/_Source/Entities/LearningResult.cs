@@ -25,11 +25,9 @@
         {
             base.Validate(force);
 
-            Utils.PrintLine(Title.Value + ": Learning result validation start");
-
             if(Flags.Test(validationFlags, flagCriterias) || force)
             {
-                Utils.PrintLine("[criterias] => Validating some criteria exist and criterias valid");
+                Utils.Log("Validating some criteria exist and criterias valid", "criterias");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.learningResultNoCriterias);
                 validationFails.RemoveAll(e => e.code == ValidationCode.learningResultCriteriaInvalid);
@@ -40,8 +38,7 @@
 
             Flags.Remove(ref validationFlags, flagCriterias);
 
-            Utils.PrintLine(Title.Value + ": Learning result validation end");
-            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+            foreach(ValidationResult fail in validationFails) { Utils.Log(fail.ToString() + " (" + fail.index + ")", "FAILED"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }

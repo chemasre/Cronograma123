@@ -57,6 +57,13 @@ namespace Programacion123
         public ActivityEditor()
         {
             InitializeComponent();
+
+            Loaded += ActivityEditor_Loaded;
+        }
+
+        private void ActivityEditor_Loaded(object sender, RoutedEventArgs e)
+        {
+            longTaskController.Owner = this;
         }
 
         void ButtonClose_Click(object sender, RoutedEventArgs e)
@@ -87,31 +94,31 @@ namespace Programacion123
 
         public void UpdateEntity(uint flags)
         {
-            if(Flags.Test(flags, flagUpdateTitle)) { entity.Title.Value = TextTitle.Text; }
+            if(Flags.Test(flags, flagUpdateTitle)) { entity.Title.Value = TextTitle.Text; Utils.Log("Updated", "title"); }
             if(Flags.Test(flags, flagUpdateDescription)) { entity.Description.Value = TextBoxDescription.Text; }
 
-            if(Flags.Test(flags, flagUpdateStartType)) { entity.StartType.Value = (ActivityStartType)ComboStartType.SelectedIndex; }
-            if(Flags.Test(flags, flagUpdateStartDate)) { entity.StartDate.Value = DateStartDate.SelectedDate.Value; }
-            if(Flags.Test(flags, flagUpdateStartDayOfWeek)) { entity.StartDayOfWeek.Value = (DayOfWeek)(ComboStartWeekDay.SelectedIndex + 1); }
+            if(Flags.Test(flags, flagUpdateStartType)) { entity.StartType.Value = (ActivityStartType)ComboStartType.SelectedIndex; Utils.Log("Updated", "startType"); }
+            if(Flags.Test(flags, flagUpdateStartDate)) { entity.StartDate.Value = DateStartDate.SelectedDate.Value; Utils.Log("Updated", "startDate"); }
+            if(Flags.Test(flags, flagUpdateStartDayOfWeek)) { entity.StartDayOfWeek.Value = (DayOfWeek)(ComboStartWeekDay.SelectedIndex + 1); Utils.Log("Updated", "startDayOfWeek"); }
 
-            if(Flags.Test(flags, flagUpdateDuration)) { entity.Duration.Value = ComboDuration.SelectedIndex + ComboDurationFraction.SelectedIndex * 0.25f; }
+            if(Flags.Test(flags, flagUpdateDuration)) { entity.Duration.Value = ComboDuration.SelectedIndex + ComboDurationFraction.SelectedIndex * 0.25f; Utils.Log("Updated", "duration"); }
 
-            if(Flags.Test(flags, flagUpdateNoActivitiesBefore)) { entity.NoActivitiesBefore.Value = CheckboxNoActivitiesBefore.IsChecked.GetValueOrDefault(); }
-            if(Flags.Test(flags, flagUpdateNoActivitiesAfter)) { entity.NoActivitiesAfter.Value = CheckboxNoActivitiesAfter.IsChecked.GetValueOrDefault(); }
+            if(Flags.Test(flags, flagUpdateNoActivitiesBefore)) { entity.NoActivitiesBefore.Value = CheckboxNoActivitiesBefore.IsChecked.GetValueOrDefault(); Utils.Log("Updated", "noActivitiesBefore");}
+            if(Flags.Test(flags, flagUpdateNoActivitiesAfter)) { entity.NoActivitiesAfter.Value = CheckboxNoActivitiesAfter.IsChecked.GetValueOrDefault(); Utils.Log("Updated", "noActivitiesAfter");}
 
 
-            if(Flags.Test(flags, flagUpdateMetodology)) { entity.Metodology.Value = metodologyController.GetEntity(); }
+            if(Flags.Test(flags, flagUpdateMetodology)) { entity.Metodology.Value = metodologyController.GetEntity(); Utils.Log("Updated", "metodology");}
 
-            if(Flags.Test(flags, flagUpdateContentPoints)) { entity.ContentPoints.Set(contentPointsController.GetSelectedEntities()); }
-            if(Flags.Test(flags, flagUpdateKeyCompetences)) { entity.KeyCompetences.Set(keyCompetencesController.GetSelectedEntities()); }
+            if(Flags.Test(flags, flagUpdateContentPoints)) { entity.ContentPoints.Set(contentPointsController.GetSelectedEntities()); Utils.Log("Updated", "contentPoints");}
+            if(Flags.Test(flags, flagUpdateKeyCompetences)) { entity.KeyCompetences.Set(keyCompetencesController.GetSelectedEntities()); Utils.Log("Updated", "keyCompetences"); }
 
-            if(Flags.Test(flags, flagUpdateSpaceResources)) { entity.SpaceResources.Set(spaceResourcesController.GetSelectedEntities()); }
-            if(Flags.Test(flags, flagUpdateMaterialResources)) { entity.MaterialResources.Set(materialResourcesController.GetSelectedEntities()); }
+            if(Flags.Test(flags, flagUpdateSpaceResources)) { entity.SpaceResources.Set(spaceResourcesController.GetSelectedEntities()); Utils.Log("Updated", "spaceResources"); }
+            if(Flags.Test(flags, flagUpdateMaterialResources)) { entity.MaterialResources.Set(materialResourcesController.GetSelectedEntities()); Utils.Log("Updated", "materialResources"); }
 
-            if(Flags.Test(flags, flagUpdateEvaluationType)) { entity.EvaluationType.Value = (ActivityEvaluationType)ComboEvaluationType.SelectedIndex; }
+            if(Flags.Test(flags, flagUpdateEvaluationType)) { entity.EvaluationType.Value = (ActivityEvaluationType)ComboEvaluationType.SelectedIndex; Utils.Log("Updated", "evaluationType"); }
 
-            if(Flags.Test(flags, flagUpdateEvaluationInstrumentType)) { entity.EvaluationInstrumentType.Value = evaluationInstrumentController.GetEntity(); }
-            if(Flags.Test(flags, flagUpdateCriterias)) { entity.Criterias.Set(criteriasController.GetSelectedEntities()); }
+            if(Flags.Test(flags, flagUpdateEvaluationInstrumentType)) { entity.EvaluationInstrumentType.Value = evaluationInstrumentController.GetEntity(); Utils.Log("Updated", "evaluationInstrumentType"); }
+            if(Flags.Test(flags, flagUpdateCriterias)) { entity.Criterias.Set(criteriasController.GetSelectedEntities()); Utils.Log("Updated", "criterias"); }
             
             if(Flags.Test(flags, flagUpdateLearningResultsWeights))
             { 
@@ -127,6 +134,8 @@ namespace Programacion123
                         resultIndex++;
                     }
                 }
+
+                Utils.Log("Updated", "learningResultsWeights");
             }
 
             entity.Save(parentStorageId);
@@ -185,7 +194,8 @@ namespace Programacion123
                                                .WithPickerTitle("Elige una metodología")
                                                .WithFormat(EntityFormatContent.Title)
                                                .WithPickListQuery(() => Storage.GetStorageIds<CommonText>(subject.Metodologies.ToList()))
-                                               .WithBlocker(Blocker);
+                                               .WithBlocker(Blocker)
+                                               .WithDialogsOwner(this);
 
             metodologyController = new(configMetodology);
 
@@ -314,7 +324,9 @@ namespace Programacion123
                                                         .WithPick(ButtonContentReferenceAdd, ButtonContentReferenceRemove)
                                                         .WithPickListQuery(pickContentPointsQuery)
                                                         .WithPickerTitle("Puntos de contenido")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                       .WithDialogsOwner(this);
+
 
             contentPointsController = new(configContents);
 
@@ -324,7 +336,9 @@ namespace Programacion123
                                                         .WithPick(ButtonKeyCompetenceReferenceAdd, ButtonKeyCompetenceReferenceRemove)
                                                         .WithPickListQuery(pickKeyCompetenceQuery)
                                                         .WithPickerTitle("Competencias clave")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
+
 
             keyCompetencesController = new(configKeyCompetences);
 
@@ -334,7 +348,9 @@ namespace Programacion123
                                                         .WithPick(ButtonSpaceResourceReferenceAdd, ButtonSpaceResourceReferenceRemove)
                                                         .WithPickListQuery(() => Storage.GetStorageIds<CommonText>(subject.SpaceResources.ToList()))
                                                         .WithPickerTitle("Espacios")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
+
 
             spaceResourcesController = new(configSpaceResources);
 
@@ -344,7 +360,9 @@ namespace Programacion123
                                                         .WithPick(ButtonMaterialResourceReferenceAdd, ButtonMaterialResourceReferenceRemove)
                                                         .WithPickListQuery(() => Storage.GetStorageIds<CommonText>(subject.MaterialResources.ToList()))
                                                         .WithPickerTitle("Recursos materiales")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
+
 
             materialResourcesController = new(configMaterialResources);
 
@@ -356,7 +374,8 @@ namespace Programacion123
                                                .WithPickerTitle("Elige un instrumento de evaluación")
                                                .WithFormat(EntityFormatContent.Title)
                                                .WithPickListQuery(() => Storage.GetStorageIds<CommonText>(subject.EvaluationInstrumentsTypes.ToList()))
-                                               .WithBlocker(Blocker);
+                                               .WithBlocker(Blocker)
+                                               .WithDialogsOwner(this);
 
             evaluationInstrumentController = new(configEvaluationInstrument);
 
@@ -430,7 +449,9 @@ namespace Programacion123
                                                         .WithPick(ButtonCriteriaReferenceAdd, ButtonCriteriaReferenceRemove)
                                                         .WithPickListQuery(pickCriteriasQuery)
                                                         .WithPickerTitle("Criterios")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
+
 
             criteriasController = new(configCriterias);
 

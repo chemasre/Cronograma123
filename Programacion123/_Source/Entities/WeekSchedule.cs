@@ -26,11 +26,9 @@
         {
             base.Validate(force);
 
-            Utils.PrintLine(Title.Value + ": WeekSchedule validation start");
-
             if(Flags.Test(validationFlags, flagHoursPerWeekDay) || force)
             {
-                Utils.PrintLine("Checking hoursPerWeekDay");
+                Utils.Log("Checking week schedule has at least one hour", "hoursPerWeekDay");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.weekScheduleOneHourMinimum);
                 int total = 0;
@@ -45,8 +43,7 @@
 
             Flags.Remove(ref validationFlags, flagHoursPerWeekDay);
 
-            Utils.PrintLine(Title.Value + ": WeekSchedule validation end");
-            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+            foreach(ValidationResult fail in validationFails) { Utils.Log(fail.ToString() + " (" + fail.index + ")", "FAILED"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }

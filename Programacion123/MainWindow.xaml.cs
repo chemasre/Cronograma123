@@ -34,6 +34,9 @@ namespace Programacion123
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static MainWindow Instance { get { return instance; } }
+        static MainWindow instance;
+
         StrongReferencesBoxController<WeekSchedule, WeekScheduleEditor> weekSchedulesController;
         StrongReferencesBoxController<Calendar, CalendarEditor> calendarsController;
         StrongReferencesBoxController<SubjectTemplate, SubjectTemplateEditor> subjectTemplatesController;
@@ -59,8 +62,20 @@ namespace Programacion123
 
             CreatDefaultStyleIfNotPresent();
 
-            InitUI();
+            Utils.LogInit();
 
+            if(Switches.debugLogEnabled) { LogPanel.Instance.Show(); }
+
+
+            Loaded += MainWindow_Loaded; ;
+
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            instance = this;
+
+            InitUI();
             LaunchFirstRunDialogs();
 
         }
@@ -85,6 +100,7 @@ namespace Programacion123
                         AboutDialog about = new();
 
                         Blocker.Visibility = Visibility.Visible;
+                        about.Owner = this;
                         about.ShowDialog();
                         Blocker.Visibility = Visibility.Hidden;
 
@@ -101,6 +117,7 @@ namespace Programacion123
                         if (!wordFound)
                         {
                             ConfirmDialog wordCheckFailed = new ConfirmDialog();
+                            wordCheckFailed.Owner = this;
 
                             wordCheckFailed.Init(ConfirmIconType.warning, "Word no encontrado",
                                         "¡Vaya! No se ha podido encontrar una versión compatible de Microsoft Word en el equipo, " +
@@ -115,6 +132,7 @@ namespace Programacion123
                         else
                         {
                             ConfirmDialog wordCheckSuccess = new ConfirmDialog();
+                            wordCheckSuccess.Owner = this;
 
                             wordCheckSuccess.Init(ConfirmIconType.info, "Word encontrado",
                                         "¡Felicidades! Se ha encontrado una versión compatible de Microsoft Word en el equipo, " +
@@ -127,6 +145,7 @@ namespace Programacion123
                         }
 
                         ConfirmDialog tutorialQuestion = new ConfirmDialog();
+                        tutorialQuestion.Owner = this;
 
                         tutorialQuestion.Init(ConfirmIconType.question, "Ver tutorial",
                                 "Parece que es la primera vez que arrancas la aplicación ¿quieres ver el tutorial?\n" +
@@ -138,6 +157,7 @@ namespace Programacion123
                                     else
                                     {
                                         ConfirmDialog checkLater = new();
+                                        checkLater.Owner = this;
 
                                         checkLater.Init(ConfirmIconType.info, "Ver más tarde", "Si quieres ver el tutorial más adelante, " +
                                             "pulsa el botón Ayuda en la ventana principal de la aplicación.",
@@ -195,7 +215,8 @@ namespace Programacion123
                                                    .WithEdit(ButtonGradeTemplateEdit)
                                                    .WithDelete(ButtonGradeTemplateDelete)
                                                    .WithDeleteConfirmQuestion("Esto eliminará permanentemente la plantilla de ciclo seleccionada junto con los elementos curriculares definidos en ella. ¿Estás seguro/a?")
-                                                   .WithBlocker(Blocker);
+                                                   .WithBlocker(Blocker)
+                                                   .WithDialogsOwner(this);
 
             var configWeeks = StrongReferencesBoxConfiguration<WeekSchedule>.CreateForCombo(ComboWeekSchedules)
                                                    .WithStorageIds(Storage.GetStorageIds<WeekSchedule>(Storage.LoadAllEntities<WeekSchedule>()))
@@ -203,7 +224,8 @@ namespace Programacion123
                                                    .WithEdit(ButtonWeekScheduleEdit)
                                                    .WithDelete(ButtonWeekScheduleDelete)
                                                    .WithDeleteConfirmQuestion("Esto eliminará permanentemente el horario seleccionado. ¿Estás seguro/a?")
-                                                   .WithBlocker(Blocker);
+                                                   .WithBlocker(Blocker)
+                                                   .WithDialogsOwner(this);
 
             var configCalendars = StrongReferencesBoxConfiguration<Calendar>.CreateForCombo(ComboBoxCalendars)
                                                    .WithStorageIds(Storage.GetStorageIds<Calendar>(Storage.LoadAllEntities<Calendar>()))
@@ -211,7 +233,9 @@ namespace Programacion123
                                                    .WithEdit(ButtonCalendarEdit)
                                                    .WithDelete(ButtonCalendarDelete)
                                                    .WithDeleteConfirmQuestion("Esto eliminará permanentemente el calendario seleccionado. ¿Estás seguro/a?")
-                                                   .WithBlocker(Blocker);
+                                                   .WithBlocker(Blocker)
+                                                   .WithDialogsOwner(this);
+
 
             var configSubjectTemplates = StrongReferencesBoxConfiguration<SubjectTemplate>.CreateForCombo(ComboSubjectTemplates)
                                                    .WithStorageIds(Storage.GetStorageIds<SubjectTemplate>(Storage.LoadAllEntities<SubjectTemplate>()))
@@ -224,7 +248,8 @@ namespace Programacion123
                                                    .WithEdit(ButtonSubjectTemplateEdit)
                                                    .WithDelete(ButtonSubjectTemplateDelete)
                                                    .WithDeleteConfirmQuestion("Esto eliminará permanentemente la plantilla de módulo seleccionada junto con los elementos curriculares definidos en ella. ¿Estás seguro/a?")
-                                                   .WithBlocker(Blocker);
+                                                   .WithBlocker(Blocker)
+                                                   .WithDialogsOwner(this);
 
             weekSchedulesController = new(configWeeks);
             calendarsController = new(configCalendars);
@@ -245,9 +270,8 @@ namespace Programacion123
                                                    .WithDelete(ButtonSubjectDelete)
                                                    .WithDeleteConfirmQuestion("Esto eliminará permanentemente el módulo seleccionada junto con los bloques y otros elementos definidos en ella. ¿Estás seguro/a?")
                                                    .WithBlocker(Blocker)
-                                                   .WithAsyncEditorInit(true);
-
-
+                                                   .WithAsyncEditorInit(true)
+                                                   .WithDialogsOwner(this);
 
             subjectsController = new(configSubjects);
 
@@ -259,8 +283,6 @@ namespace Programacion123
             ButtonAbout.ToolTip = "Ver información acerca de la aplicación";
             ButtonReset.ToolTip = "Borrar todos los datos";
 
-            Topmost = false;
-
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
@@ -268,6 +290,10 @@ namespace Programacion123
             configuration.FirstRun = false;
 
             SaveConfiguration();
+
+            Utils.LogFinish();
+
+            if(Switches.debugLogEnabled) { LogPanel.Instance.Close(); }
 
             Close();
         }
@@ -285,6 +311,7 @@ namespace Programacion123
             Blocker.Visibility = Visibility.Visible;
 
             ConfirmDialog question = new();
+            question.Owner = this;
 
             question.Init(ConfirmIconType.info,
                 "Abrir navegador",
@@ -302,6 +329,7 @@ namespace Programacion123
             Blocker.Visibility = Visibility.Visible;
 
             ConfirmDialog confirm = new();
+            confirm.Owner = this;
             confirm.Init(ConfirmIconType.warning, "Confirmación",
                         "Esto eliminará TODOS los elementos y ajustes guardados y reiniciará " +
                         "la aplicación ¿estás seguro/a?",
@@ -419,6 +447,7 @@ namespace Programacion123
                 };
 
                 ExportImportDialog dialog = new();
+                dialog.Owner = this;
 
                 dialog.Init(config);
 
@@ -442,6 +471,7 @@ namespace Programacion123
             Blocker.Visibility = Visibility.Visible;
 
             ExportImportDialog dialog = new();
+            dialog.Owner = this;
 
             Func<bool, ExportImportDialog, bool> closeAction =
             (accepted, exportDialog) =>
@@ -535,9 +565,12 @@ namespace Programacion123
 
                 LongTaskController controller = new();
                 LongTaskDialog longTaskDialog= new();
+                longTaskDialog.Owner = this;
                 longTaskDialog.Init("Abriendo generador");
                 longTaskDialog.Show();
                 HTMLGeneratorDialog generatorDialog = new();
+                generatorDialog.Owner = this;
+
                 await generatorDialog.InitAsync(subject, style, (b) => { Blocker.Visibility = Visibility.Hidden; });
                 longTaskDialog.Hide();
                 generatorDialog.ShowDialog();
@@ -546,6 +579,7 @@ namespace Programacion123
             else
             {
                 ConfirmDialog dialog = new();
+                dialog.Owner = this;
                 dialog.Init(ConfirmIconType.warning, "Aviso", "No se puede generar el documento porque no se ha seleccionado una programación", ConfirmChooseType.acceptOnly, (b) => Blocker.Visibility = Visibility.Hidden);
                 dialog.ShowDialog();
             }
@@ -556,7 +590,7 @@ namespace Programacion123
             Blocker.Visibility = Visibility.Visible;
 
             AboutDialog dialog = new();
-
+            dialog.Owner = this;
             dialog.ShowDialog();
 
             Blocker.Visibility = Visibility.Hidden;
@@ -565,7 +599,7 @@ namespace Programacion123
         private async Task RunLongTaskAsync(string title, Action action)
         {
             LongTaskDialog longTask = new();
-
+            longTask.Owner = this;
             longTask.Init(title);
 
             Blocker.Visibility = Visibility.Visible;
@@ -586,6 +620,7 @@ namespace Programacion123
         {
             Blocker.Visibility = Visibility.Visible;
             ConfirmDialog confirm = new();
+            confirm.Owner = this;
             confirm.Init(ConfirmIconType.info, title,text,
                         ConfirmChooseType.acceptOnly, (b)=>{ });
             confirm.ShowDialog();

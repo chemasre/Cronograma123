@@ -9,6 +9,6 @@ namespace Programacion123
     class Switches
     {
         public static bool debugMakeWordVisible = false;
-        public static bool debugConsole = false;
+        public static bool debugLogEnabled = true;
     }
 }

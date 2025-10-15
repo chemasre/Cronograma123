@@ -54,7 +54,8 @@ namespace Programacion123
                                                         .WithDeleteConfirmQuestion("Esto eliminará permanentemente el criterio seleccionado. ¿Estás seguro/a?")
                                                         .WithUpDown(ButtonCriteriaUp, ButtonCriteriaDown)
                                                         .WithEditorTitle("Criterio")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
 
             criteriasController = new(configCriterias);
 
@@ -87,11 +88,13 @@ namespace Programacion123
             {
                 entity.Description.Value = TextBoxDescription.Text;
                 //entity.Description = TextBoxDescription.Document.ToString().Trim();
+                Utils.Log("Updated", "description");
             }
 
             if(Flags.Test(flags, flagUpdateCriterias))
             {
                 entity.Criterias.Set(Storage.LoadOrCreateEntities<CommonText>(criteriasController.StorageIds, entity.StorageId));
+                Utils.Log("Updated", "criterias");
             }
 
             entity.Save(parentStorageId);

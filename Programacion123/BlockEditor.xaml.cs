@@ -69,7 +69,8 @@ namespace Programacion123
                                                         .WithUpDown(ButtonPointUp, ButtonPointDown)
                                                         .WithEditorTitle("Actividad")
                                                         .WithBlocker(Blocker)
-                                                        .WithAsyncEditorInit(true);
+                                                        .WithAsyncEditorInit(true)
+                                                        .WithDialogsOwner(this);
 
             activitiesController = new(configActivities);
             activitiesController.Changed += ActivitiesController_Changed;
@@ -87,6 +88,13 @@ namespace Programacion123
             longTaskController = new();
             longTaskController.Init(Blocker);
 
+            Loaded += BlockEditor_Loaded;
+
+        }
+
+        private void BlockEditor_Loaded(object sender, RoutedEventArgs e)
+        {
+            longTaskController.Owner = this;
         }
 
         public void InitEditor(Block _entity, string? _parentStorageId = null)
@@ -115,11 +123,11 @@ namespace Programacion123
 
         void UpdateEntity(uint flags)
         {
-            if(Flags.Test(flags, flagUpdateTitle)) { entity.Title.Value = TextTitle.Text.Trim(); }            
-            if(Flags.Test(flags, flagUpdateDescription)) { entity.Description.Value = TextBoxDescription.Text; }
+            if(Flags.Test(flags, flagUpdateTitle)) { entity.Title.Value = TextTitle.Text.Trim(); Utils.Log("Updated", "title"); }            
+            if(Flags.Test(flags, flagUpdateDescription)) { entity.Description.Value = TextBoxDescription.Text; Utils.Log("Updated", "description"); }
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
-            if(Flags.Test(flags, flagUpdateActivities)) { entity.Activities.Set(Storage.LoadOrCreateEntities<Activity>(activitiesController.StorageIds, entity.StorageId)); }
+            if(Flags.Test(flags, flagUpdateActivities)) { entity.Activities.Set(Storage.LoadOrCreateEntities<Activity>(activitiesController.StorageIds, entity.StorageId)); Utils.Log("Updated", "activities"); }
 
             entity.Save(parentStorageId);
         }

@@ -38,8 +38,6 @@ namespace Programacion123
         {
             InitializeComponent();
 
-            Topmost = false;
-
         }
 
         async public Task InitAsync(Subject? _subject, DocumentStyle? _style, Action<bool> _closeAction)
@@ -49,6 +47,9 @@ namespace Programacion123
             // InitCommon. This  dissimulates the blocking that
             // InitCommon causes due to the WebPreview initialization
             // giving more time to the progress bar of the caller to show
+
+            Show(); Hide();
+
             longTaskController = new();
             longTaskController.Init(Blocker);
             previewGenerator = new HTMLGenerator();
@@ -56,6 +57,13 @@ namespace Programacion123
             previewGenerator.Style = _style;
             await ValidateAsync(true);
             InitCommon(_subject, _style, _closeAction);
+
+            Loaded += HTMLGeneratorDialog_Loaded;
+        }
+
+        private void HTMLGeneratorDialog_Loaded(object sender, RoutedEventArgs e)
+        {
+            longTaskController.Owner = this;
         }
 
         public void Init(Subject? _subject, DocumentStyle? _style, Action<bool> _closeAction)
@@ -80,7 +88,9 @@ namespace Programacion123
                                                        .WithPick(ButtonSubjectPick)
                                                        .WithFormat(EntityFormatContent.Title)
                                                        .WithPickerTitle("Selecciona una programación de módulo")
-                                                       .WithBlocker(Blocker);
+                                                       .WithBlocker(Blocker)
+                                                       .WithDialogsOwner(this);
+
 
             subjectController = new(configSubject);
 
@@ -218,7 +228,7 @@ namespace Programacion123
             ComboDocumentMarginRight.SelectionChanged += ComboDocumentMarginRight_SelectionChanged;
 
             longTaskController = new();
-            longTaskController.Init(Blocker);
+            longTaskController.Init(Blocker, this);
 
             webPreviewLastScrollPosition = null;
             webPreviewReady = false;
@@ -1040,6 +1050,7 @@ namespace Programacion123
             if (previewGenerator.Validate(true).code != GeneratorValidationCode.success)
             {
                 ConfirmDialog dialog = new();
+               
                 dialog.Init(ConfirmIconType.warning,
                             "Advertencia",
                             "No se puede generar el documento porque la programación del módulo presenta algún problema",
@@ -1079,6 +1090,7 @@ namespace Programacion123
                     generator.Subject = previewGenerator.Subject;
 
                     LongTaskDialog dialogTask = new();
+                    dialogTask.Owner = this;
 
                     dialogTask.Init("Generando documento");
                     Blocker.Visibility = Visibility.Visible;

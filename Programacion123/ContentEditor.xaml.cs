@@ -55,7 +55,8 @@ namespace Programacion123
                                                         .WithUpDown(ButtonPointUp, ButtonPointDown)
                                                         .WithDeleteConfirmQuestion("Esto eliminará la actividad seleccionada. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Punto de contenido")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
 
             pointsController = new(configPoints);
 
@@ -85,11 +86,11 @@ namespace Programacion123
 
         void UpdateEntity(uint flags)
         {
-            if(Flags.Test(flags, flagUpdateDescription)) { entity.Description.Value = TextBoxDescription.Text; }
+            if(Flags.Test(flags, flagUpdateDescription)) { entity.Description.Value = TextBoxDescription.Text; Utils.Log("Updated", "description"); }
 
             //entity.Description = TextBoxDescription.Document.ToString().Trim();
 
-            if(Flags.Test(flags, flagUpdatePoints)) { entity.Points.Set(Storage.LoadOrCreateEntities<CommonText>(pointsController.StorageIds, entity.StorageId)); }
+            if(Flags.Test(flags, flagUpdatePoints)) { entity.Points.Set(Storage.LoadOrCreateEntities<CommonText>(pointsController.StorageIds, entity.StorageId)); Utils.Log("Updated", "contentPoints"); }
 
             entity.Save(parentStorageId);
         }

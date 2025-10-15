@@ -56,7 +56,8 @@ namespace Programacion123
                                                         .WithUpDown(ButtonGeneralObjectiveUp, ButtonGeneralObjectiveDown)
                                                         .WithDeleteConfirmQuestion("Esto eliminará permanentemente el objetivo seleccionado. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Objetivo general")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
 
             generalObjectivesController = new(configObjectives);
 
@@ -73,7 +74,8 @@ namespace Programacion123
                                                         .WithUpDown(ButtonGeneralCompetenceUp, ButtonGeneralCompetenceDown)
                                                         .WithDeleteConfirmQuestion("Esto eliminará permanentemente la competencia general seleccionada. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Competencias profesionales, personales y sociales")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
 
             generalCompetencesController = new(configCompetences);
 
@@ -89,7 +91,8 @@ namespace Programacion123
                                                         .WithUpDown(ButtonKeyCapacitiesUp, ButtonKeyCapacitiesDown)
                                                         .WithDeleteConfirmQuestion("Esto eliminará permanentemente la capacidad clave seleccionada. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Capacidad clave")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
 
             keyCapacitiesController = new(configKeyCapacities);
 
@@ -107,7 +110,8 @@ namespace Programacion123
                                                         .WithTitleEditable(false)
                                                         .WithEdit(ButtonCommonTextsEdit)
                                                         .WithEditorTitle("Texto común")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
 
             commonTextsController = new(configCommonTexts);
 
@@ -124,9 +128,16 @@ namespace Programacion123
             TextTitle.TextChanged += TextTitle_TextChanged;
             TextName.TextChanged += TextName_TextChanged;
             TextFamilyName.TextChanged += TextFamilyName_TextChanged;
+            ComboType.SelectionChanged += ComboType_SelectionChanged;
 
             Validate(true);
 
+        }
+
+        private void ComboType_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            UpdateEntity(flagUpdateType);
+            Validate();
         }
 
         private void CommonTextsController_Changed(StrongReferencesBoxController<CommonText, CommonTextEditor> controller)
@@ -185,20 +196,22 @@ namespace Programacion123
 
         private void UpdateEntity(uint flags)
         {
-            if(Flags.Test(flags, flagUpdateTitle)) { entity.Title.Value = TextTitle.Text; }
-            if(Flags.Test(flags, flagUpdateObjectives)) { entity.GeneralObjectives.Set(Storage.LoadOrCreateEntities<CommonText>(generalObjectivesController.StorageIds, entity.StorageId)); }
-            if(Flags.Test(flags, flagUpdateCompetences)) { entity.GeneralCompetences.Set(Storage.LoadOrCreateEntities<CommonText>(generalCompetencesController.StorageIds, entity.StorageId)); }
-            if(Flags.Test(flags, flagUpdateCapacities)) { entity.KeyCapacities.Set(Storage.LoadOrCreateEntities<CommonText>(keyCapacitiesController.StorageIds, entity.StorageId)); }
+            if(Flags.Test(flags, flagUpdateTitle)) { entity.Title.Value = TextTitle.Text; Utils.Log("Updated", "title"); }
+            if(Flags.Test(flags, flagUpdateObjectives)) { entity.GeneralObjectives.Set(Storage.LoadOrCreateEntities<CommonText>(generalObjectivesController.StorageIds, entity.StorageId)); Utils.Log("Updated", "generalObjectives"); }
+            if(Flags.Test(flags, flagUpdateCompetences)) { entity.GeneralCompetences.Set(Storage.LoadOrCreateEntities<CommonText>(generalCompetencesController.StorageIds, entity.StorageId)); Utils.Log("Updated", "generalCompetences"); }
+            if(Flags.Test(flags, flagUpdateCapacities)) { entity.KeyCapacities.Set(Storage.LoadOrCreateEntities<CommonText>(keyCapacitiesController.StorageIds, entity.StorageId)); Utils.Log("Updated", "keyCapacities"); }
 
             if(Flags.Test(flags, flagUpdateCommonTexts))
             {
                 for (int i = 0; i < commonTextsController.StorageIds.Count; i++)
                 { entity.CommonTexts.Set((CommonTextId)i, Storage.LoadOrCreateEntity<CommonText>(commonTextsController.StorageIds[i], entity.StorageId)); }
+
+                Utils.Log("Updated", "commonTexts");
             }
 
-            if(Flags.Test(flags, flagUpdateName)) { entity.GradeName.Value = TextName.Text; }
-            if(Flags.Test(flags, flagUpdateType)) { entity.GradeType.Value = (GradeType)(ComboType.SelectedIndex >= 0 ? ComboType.SelectedIndex : 0); }
-            if(Flags.Test(flags, flagUpdateFamilyName)) { entity.GradeFamilyName.Value = TextFamilyName.Text; }
+            if(Flags.Test(flags, flagUpdateName)) { entity.GradeName.Value = TextName.Text; Utils.Log("Updated", "gradeName"); }
+            if(Flags.Test(flags, flagUpdateType)) { entity.GradeType.Value = (GradeType)(ComboType.SelectedIndex >= 0 ? ComboType.SelectedIndex : 0); Utils.Log("Updated", "gradeType"); }
+            if(Flags.Test(flags, flagUpdateFamilyName)) { entity.GradeFamilyName.Value = TextFamilyName.Text; Utils.Log("Updated", "gradeFamilyName"); }
 
             entity.Save(parentStorageId);
         }

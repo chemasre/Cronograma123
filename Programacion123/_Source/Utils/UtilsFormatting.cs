@@ -155,5 +155,23 @@ namespace Programacion123
         {
             return String.Format("{0}.{1}", learningResultIndex + 1, criteriaIndex + 1);
         }
+
+        internal static string FormatToFit(string text, int length = 12, bool allowEnlarge = true, bool allowShrink = true)
+        {
+            string result = text;
+            if(text.Length < 3) { result = text; }
+            else if(text.Length - 3 < length) { result = text; }
+            else if(allowShrink) { result = text.Substring(0, length - 3) + "..."; }
+
+            if(result.Length < length && allowEnlarge)
+            {
+                while(result.Length < length)
+                {
+                    result = result + ' ';
+                }
+            }
+
+            return result;
+        }
     }
 }

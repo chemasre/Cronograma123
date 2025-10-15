@@ -13,7 +13,6 @@ namespace Programacion123
             InitializeComponent();
 
             TextTitle.Text = "Acerca de " + Constants.appName;
-            Topmost = true;
         }
 
         private void ButtonAccept_Click(object sender, RoutedEventArgs e)

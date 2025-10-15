@@ -37,6 +37,7 @@ namespace Programacion123
         public UIElement? blocker;
         public string? deleteConfirmQuestion;
         public bool asyncEditorInit;
+        public Window? dialogsOwner;
 
         public static StrongReferencesBoxConfiguration<TEntity> CreateForCombo(ComboBox _combo) { StrongReferencesBoxConfiguration<TEntity> c = new(); c.comboBox = _combo; c.storageIds = new(); return c; }
         public static StrongReferencesBoxConfiguration<TEntity> CreateForList(ListBox _list) { StrongReferencesBoxConfiguration<TEntity> c = new(); c.listBox = _list; c.storageIds = new(); return c; }
@@ -54,6 +55,7 @@ namespace Programacion123
         public StrongReferencesBoxConfiguration<TEntity> WithBlocker(UIElement? _blocker) { blocker = _blocker; return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithDeleteConfirmQuestion(string _question) { deleteConfirmQuestion = _question; return this; }
         public StrongReferencesBoxConfiguration<TEntity> WithAsyncEditorInit(bool _asyncInit) { asyncEditorInit = _asyncInit; return this; }
+        public StrongReferencesBoxConfiguration<TEntity> WithDialogsOwner(Window _owner) { dialogsOwner = _owner; return this; }
     }
 
     public class StrongReferencesBoxController<TEntity, TEditor> where TEntity : Entity, new()
@@ -85,6 +87,7 @@ namespace Programacion123
         UIElement? blocker;
         TEditor editor;
         bool asyncEditorInit;
+        Window? dialogsOwner;
 
         public StrongReferencesBoxController(StrongReferencesBoxConfiguration<TEntity> configuration)
         {
@@ -107,6 +110,7 @@ namespace Programacion123
             editorTitle = configuration.editorTitle;
             blocker = configuration.blocker;
             asyncEditorInit = configuration.asyncEditorInit;
+            dialogsOwner = configuration.dialogsOwner;
 
             if (comboBox != null) { comboBox.SelectionChanged += ComboBox_SelectionChanged; }
             if (listBox != null) { listBox.SelectionChanged += ListBox_SelectionChanged; }
@@ -217,6 +221,7 @@ namespace Programacion123
             {
                 if (blocker != null) { blocker.Visibility = Visibility.Visible; }
                 ConfirmDialog confirm = new ConfirmDialog();
+                if(dialogsOwner != null) { confirm.Owner = dialogsOwner; }
                 confirm.Init(ConfirmIconType.warning, "Confirma eliminación", deleteConfirmQuestion, ConfirmChooseType.acceptAndCancel,
                     (b) =>
                     {
@@ -293,6 +298,7 @@ namespace Programacion123
                 var entity = Storage.LoadOrCreateEntity<TEntity>(storageIds[index], parentStorageId);
 
                 editor = new TEditor();
+                if(dialogsOwner != null) { editor.Owner = dialogsOwner; }
                 if (titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
                 if (editorTitle != null) { editor.SetEditorTitle(editorTitle); }
                 if (blocker != null) { blocker.Visibility = Visibility.Visible; }
@@ -317,6 +323,7 @@ namespace Programacion123
             TEntity entity = new();
             if (entityInitializer != null) { entityInitializer.Invoke(entity); }
             editor = new TEditor();
+            if(dialogsOwner != null) { editor.Owner = dialogsOwner; }
             if (titleEditable != null) { editor.SetEntityTitleEditable(titleEditable.Value); }
             if (editorTitle != null) { editor.SetEditorTitle(editorTitle); }
             if (blocker != null) { blocker.Visibility = Visibility.Visible; }

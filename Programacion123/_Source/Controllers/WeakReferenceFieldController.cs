@@ -20,6 +20,7 @@ namespace Programacion123
         public Func<List<string>>? pickListQuery;
         public List<string>? pickList;
         public UIElement? blocker;
+        public Window? dialogsOwner;
 
         public static WeakReferenceFieldConfiguration<TEntity> CreateForTextBox(TextBox _textBox) { WeakReferenceFieldConfiguration<TEntity> c = new(); c.textBox = _textBox; return c; }
         public WeakReferenceFieldConfiguration<TEntity> WithStorageId(string _storageId) { storageId = _storageId; return this; }
@@ -33,6 +34,7 @@ namespace Programacion123
         public WeakReferenceFieldConfiguration<TEntity> WithPick(Button _buttonPick) { buttonPick = _buttonPick; return this; }
         public WeakReferenceFieldConfiguration<TEntity> WithPickListQuery(Func<List<string>> _pickListQuery) { pickListQuery = _pickListQuery; return this; }
         public WeakReferenceFieldConfiguration<TEntity> WithPickList(List<string> _pickList) { pickList = _pickList; return this; }
+        public WeakReferenceFieldConfiguration<TEntity> WithDialogsOwner(Window _owner) { dialogsOwner = _owner; return this; }
     }
 
     public class WeakReferenceFieldController<TEntity, TPicker> where TEntity : Entity, new()
@@ -56,6 +58,7 @@ namespace Programacion123
         Func<List<string>>? pickListQuery;
         List<string>? pickList;
         UIElement? blocker;
+        Window? dialogsOwner;
 
         TPicker? picker;
 
@@ -79,6 +82,8 @@ namespace Programacion123
             pickList = configuration.pickList;
 
             blocker = configuration.blocker;
+
+            dialogsOwner = configuration.dialogsOwner;
 
             if (buttonPick != null) { buttonPick.Click += ButtonPick_Click; buttonPick.ToolTip = "Elegir"; }
 
@@ -117,6 +122,7 @@ namespace Programacion123
             }
 
             picker = new TPicker();
+            if(dialogsOwner != null) { picker.Owner = dialogsOwner; }
             if (pickerTitle != null) { picker.SetPickerTitle(pickerTitle); }
             picker.SetFormat(formatContent, formatIndex);
             picker.SetFormatter(formatter);

@@ -56,19 +56,18 @@ namespace Programacion123
 
         public virtual ValidationResult Validate(bool force = false)
         {
-            Utils.PrintLine("***************************************************");
-            Utils.PrintLine(Title.Value + ": Entity validation start");
+            Utils.Log(Utils.FormatToFit(Title.Value, 20) + " (" + StorageClassId + ")", "VALIDATION");
 
             if(Flags.Test(validationFlags, flagTitle) || force)
             {
-                Utils.PrintLine("[title] => Checking not empty");
+                Utils.Log("Checking not empty", "title");
                 validationFails.RemoveAll((v) => v.code == ValidationCode.entityTitleEmpty);
                 if(Title.Value.Trim().Length <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.entityTitleEmpty)); }
             }
 
             if(Flags.Test(validationFlags, flagDescription) || force)
             {
-                Utils.PrintLine("[description] => Checking not empty");
+                Utils.Log("Checking not empty", "description");
                 validationFails.RemoveAll((v) => v.code == ValidationCode.entityDescriptionEmpty);
                 if(Description.Value.Trim().Length <= 0) { validationFails.Add(ValidationResult.Create(ValidationCode.entityDescriptionEmpty)); }
             }
@@ -78,8 +77,7 @@ namespace Programacion123
             Flags.Remove(ref validationFlags, flagTitle);
             Flags.Remove(ref validationFlags, flagDescription);
 
-            Utils.PrintLine(Title.Value + ": Entity validation end");
-            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+            foreach(ValidationResult fail in validationFails) { Utils.Log(fail.ToString() + " (" + fail.index + ")", "FAILED"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }

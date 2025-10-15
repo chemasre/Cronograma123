@@ -55,7 +55,9 @@ namespace Programacion123
                                                .WithPick(ButtonGradeTemplatePick)
                                                .WithFormat(EntityFormatContent.Title)
                                                .WithPickerTitle("Selecciona una plantilla de ciclo")
-                                               .WithBlocker(Blocker);
+                                               .WithBlocker(Blocker)
+                                               .WithDialogsOwner(this);
+
 
             gradeTemplateController = new(configGradeTemplate);
 
@@ -113,7 +115,9 @@ namespace Programacion123
                                                         .WithPick(ButtonGeneralObjectiveReferenceAdd, ButtonGeneralObjectiveReferenceRemove)
                                                         .WithPickListQuery(pickObjectivesQuery)
                                                         .WithPickerTitle("Objetivos generales")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
+
 
             generalObjectivesController = new(configObjectives);
 
@@ -171,7 +175,9 @@ namespace Programacion123
                                                         .WithPick(ButtonGeneralCompetenceReferenceAdd, ButtonGeneralCompetenceReferenceRemove)
                                                         .WithPickListQuery(pickCompetencesQuery)
                                                         .WithPickerTitle("Competencias generales")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
+
 
             generalCompetencesController = new(configCompetences);
 
@@ -233,7 +239,8 @@ namespace Programacion123
                                                         .WithUpDown(ButtonLearningResultsUp, ButtonLearningResultsDown)
                                                         .WithDeleteConfirmQuestion("Esto eliminará permanentemente el resultado de aprendizaje seleccionado junto con los criterios definidos en él. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Resultado de aprendizaje")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
 
             learningResultsController = new(configLearningResults);
 
@@ -249,7 +256,8 @@ namespace Programacion123
                                                         .WithUpDown(ButtonContentsUp, ButtonContentsDown)
                                                         .WithDeleteConfirmQuestion("Esto eliminará permanentemente el contenido seleccionado junto con los puntos definidos en él. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Contenido")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
 
             contentsController = new(configContents);
 
@@ -358,53 +366,64 @@ namespace Programacion123
             if(Flags.Test(flags, flagUpdateTitle))
             {
                 entity.Title.Value = TextTitle.Text;
+                Utils.Log("Updated", "title");
             }
 
             if(Flags.Test(flags, flagUpdateGradeTemplate))
             {
                 entity.GradeTemplate.Value = gradeTemplateController.GetEntity();
+                Utils.Log("Updated", "gradeTemplate");
             }
 
             if(Flags.Test(flags, flagUpdateObjectives | flagUpdateGradeTemplate))
             {
                 entity.GeneralObjectives.Set(generalObjectivesController.GetSelectedEntities());
+                Utils.Log("Updated", "generalObjectives");
             }
 
             if(Flags.Test(flags, flagUpdateCompetences | flagUpdateGradeTemplate))
             {
                 entity.GeneralCompetences.Set(generalCompetencesController.GetSelectedEntities());
+                Utils.Log("Updated", "generalCompetences");
             }
 
             if(Flags.Test(flags, flagUpdateLearningResults))
             {
                 entity.LearningResults.Set(Storage.LoadOrCreateEntities<LearningResult>(learningResultsController.StorageIds, entity.StorageId));
+                Utils.Log("Updated", "learningResults");
             }
 
             if(Flags.Test(flags, flagUpdateContents))
             {
                 entity.Contents.Set(Storage.LoadOrCreateEntities<Content>(contentsController.StorageIds, entity.StorageId));
+                Utils.Log("Updated", "contents");
             }
 
             if(Flags.Test(flags, flagUpdateSubjectName))
             {
                 entity.SubjectName.Value = TextSubjectName.Text;
+                Utils.Log("Updated", "subjectName");
             }
 
             if(Flags.Test(flags, flagUpdateSubjectCode))
             {
                 entity.SubjectCode.Value = TextSubjectCode.Text;
+                Utils.Log("Updated", "subjectCode");
             }
 
             if(Flags.Test(flags, flagUpdateGradeClassroomHours))
             {
                 int number;
                 entity.GradeClassroomHours.Value = Int32.TryParse(TextGradeClassroomHours.Text, out number) ? number : 0;
+                Utils.Log("Updated", "gradeClassRoomHours");
+
             }
 
             if(Flags.Test(flags, flagUpdateGradeCompanyHours))
             {
                 int number;
                 entity.GradeCompanyHours.Value = Int32.TryParse(TextGradeCompanyHours.Text, out number) ? number : 0;
+                Utils.Log("Updated", "gradeCompanyHours");
             }
 
             entity.Save(parentStorageId);

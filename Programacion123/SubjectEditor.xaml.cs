@@ -75,7 +75,9 @@ namespace Programacion123
                                                .WithPick(ButtonTemplatePick)
                                                .WithFormat(EntityFormatContent.Title)
                                                .WithPickerTitle("Selecciona una plantilla")
-                                               .WithBlocker(Blocker);
+                                               .WithBlocker(Blocker)
+                                               .WithDialogsOwner(this);
+
 
             subjectTemplateController = new(configTemplate);
 
@@ -86,7 +88,9 @@ namespace Programacion123
                                                .WithPick(ButtonCalendarPick)
                                                .WithFormat(EntityFormatContent.Title)
                                                .WithPickerTitle("Selecciona un calendario")
-                                               .WithBlocker(Blocker);
+                                               .WithBlocker(Blocker)
+                                               .WithDialogsOwner(this);
+
 
             calendarController = new(configCalendar);
 
@@ -97,7 +101,9 @@ namespace Programacion123
                                                .WithPick(ButtonWeekSchedulePick)
                                                .WithFormat(EntityFormatContent.Title)
                                                .WithPickerTitle("Selecciona un horario")
-                                               .WithBlocker(Blocker);
+                                               .WithBlocker(Blocker)
+                                               .WithDialogsOwner(this);
+
 
             weekScheduleController = new(configWeekSchedule);
 
@@ -113,7 +119,8 @@ namespace Programacion123
                                                         .WithUpDown(ButtonMetodologyUp, ButtonMetodologyDown)
                                                         .WithDeleteConfirmQuestion("Esto eliminará permanentemente la metodología seleccionada. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Metodología")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
 
             metodologiesController = new(configMetodologies);
 
@@ -129,7 +136,8 @@ namespace Programacion123
                                                         .WithUpDown(ButtonSpaceResourceUp, ButtonSpaceResourceDown)
                                                         .WithDeleteConfirmQuestion("Esto eliminará permanentemente el espacio seleccionado. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Espacio")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
 
             spaceResourcesController = new(configSpaceResources);
 
@@ -145,7 +153,8 @@ namespace Programacion123
                                                         .WithUpDown(ButtonMaterialResourceUp, ButtonMaterialResourceDown)
                                                         .WithDeleteConfirmQuestion("Esto eliminará permanentemente el material seleccionado. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Material")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
 
             materialResourcesController = new(configMaterialResources);
 
@@ -161,7 +170,8 @@ namespace Programacion123
                                                         .WithUpDown(ButtonEvaluationInstrumentTypeUp, ButtonEvaluationInstrumentTypeDown)
                                                         .WithDeleteConfirmQuestion("Esto eliminará el tipo de instrumento de evaluación seleccionado. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Tipo de instrumento de evaluación")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
 
             evaluationInstrumentTypesController = new(configEvaluationInstrumentTypes);
 
@@ -178,7 +188,8 @@ namespace Programacion123
                                                         .WithUpDown(ButtonCitationUp, ButtonCitationDown)
                                                         .WithDeleteConfirmQuestion("Esto eliminará permanentemente la referencia bibliográfia seleccionada. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Referencia bibliográfica")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
 
             citationsController = new(configCitations);
 
@@ -195,7 +206,8 @@ namespace Programacion123
                                                         .WithDeleteConfirmQuestion("Esto eliminará permanentemente el bloque seleccionado junto con todas las actividades definidas en él. ¿Estás seguro/a?")
                                                         .WithEditorTitle("Bloque")
                                                         .WithBlocker(Blocker)
-                                                        .WithAsyncEditorInit(true);
+                                                        .WithAsyncEditorInit(true)
+                                                        .WithDialogsOwner(this);
 
             blocksController = new(configBlocks);
 
@@ -214,7 +226,9 @@ namespace Programacion123
                                                         .WithTitleEditable(false)
                                                         .WithEdit(ButtonCommonTextsEdit)
                                                         .WithEditorTitle("Texto común")
-                                                        .WithBlocker(Blocker);
+                                                        .WithBlocker(Blocker)
+                                                        .WithDialogsOwner(this);
+
 
             commonTextsController = new(configCommonTexts);
 
@@ -270,6 +284,13 @@ namespace Programacion123
             UpdateWeightsUIFromEntity();
             UpdateScheduleUIFromEntity();
 
+            Loaded += SubjectEditor_Loaded;
+
+        }
+
+        private void SubjectEditor_Loaded(object sender, RoutedEventArgs e)
+        {
+            longTaskController.Owner = this;
         }
 
         public void InitEditor(Subject _entity, string? _parentStorageId = null)
@@ -282,7 +303,6 @@ namespace Programacion123
         {
             InitEditorCommon(_entity, _parentStorageId);
             await ValidateAsync(true);
-
         }
 
 
@@ -599,57 +619,68 @@ namespace Programacion123
             if(Flags.Test(flags, flagUpdateTitle))
             {
                 entity.Title.Value = TextTitle.Text;
+                Utils.Log("Updated", "title");
             }
 
             if(Flags.Test(flags, flagUpdateTemplate))
             {
                 entity.Template.Value = subjectTemplateController.GetEntity();
+                Utils.Log("Updated", "subjectTemplate");
             }
 
             if(Flags.Test(flags, flagUpdateCalendar))
             {
                 entity.Calendar.Value = calendarController.GetEntity();
-            }
+                Utils.Log("Updated", "calendar");
+                }
 
             if(Flags.Test(flags, flagUpdateWeekSchedule))
             {
                 entity.WeekSchedule.Value = weekScheduleController.GetEntity();
+                Utils.Log("Updated", "weekSchedule");
             }
 
             if(Flags.Test(flags, flagUpdateCommonTexts))
             {
                 for (int i = 0; i < commonTextsController.StorageIds.Count; i++)
                 { entity.CommonTexts.Set((CommonTextId)i, Storage.LoadOrCreateEntity<CommonText>(commonTextsController.StorageIds[i], entity.StorageId)); }
+                Utils.Log("Updated", "commonTexts");
             }
 
             if(Flags.Test(flags, flagUpdateMetodologies))
             {
                 entity.Metodologies.Set(Storage.LoadOrCreateEntities<CommonText>(metodologiesController.StorageIds, entity.StorageId));
+                Utils.Log("Updated", "metodologies");
             }
 
             if(Flags.Test(flags, flagUpdateSpaceResources))
             {
                 entity.SpaceResources.Set(Storage.LoadOrCreateEntities<CommonText>(spaceResourcesController.StorageIds, entity.StorageId));
+                Utils.Log("Updated", "spaceResources");
             }
 
             if(Flags.Test(flags, flagUpdateMaterialResources))
             {
                 entity.MaterialResources.Set(Storage.LoadOrCreateEntities<CommonText>(materialResourcesController.StorageIds, entity.StorageId));
+                Utils.Log("Updated", "materialResources");
             }
 
             if(Flags.Test(flags, flagUpdateEvaluationInstrumentTypes))
             {
                 entity.EvaluationInstrumentsTypes.Set(Storage.LoadOrCreateEntities<CommonText>(evaluationInstrumentTypesController.StorageIds, entity.StorageId));
+                Utils.Log("Updated", "evaluationInstrumentTypes");
             }
 
             if(Flags.Test(flags, flagUpdateCitations))
             {
                 entity.Citations.Set(Storage.LoadOrCreateEntities<CommonText>(citationsController.StorageIds, entity.StorageId));
+                Utils.Log("Updated", "citations");
             }
 
             if(Flags.Test(flags, flagUpdateBlocks))
             {
                 entity.Blocks.Set(Storage.LoadOrCreateEntities<Block>(blocksController.StorageIds, entity.StorageId));
+                Utils.Log("Updated", "blocks");
             }
 
             if(Flags.Test(flags, flagUpdateResultsWeights))
@@ -671,6 +702,9 @@ namespace Programacion123
                 {
                     entity.LearningResultsWeights.Clear();
                 }
+
+                Utils.Log("Updated", "resultWeights");
+
             }
 
             if(Flags.Test(flags, flagUpdateActivitiesWeights))
@@ -715,6 +749,9 @@ namespace Programacion123
 
                     }
                 }
+
+                Utils.Log("Updated", "activitiesLearningResultsWeights");
+
             }
 
 
@@ -741,6 +778,9 @@ namespace Programacion123
                         activityScheduleIndex++;
                     }
                 }
+
+                Utils.Log("Updated", "activityDurations");
+
             }
 
 
@@ -750,6 +790,8 @@ namespace Programacion123
             {
                 UpdateEntityTemplateReferences();
                 referencesUpdated = true;
+                Utils.Log("Updated", "learningResultsWeights");
+                Utils.Log("Updated", "activitiesLearningResultsWeights");
             }
 
             // Not always needed as UpdateEntityTemplateReferences already does that

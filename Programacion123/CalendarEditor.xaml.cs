@@ -108,22 +108,26 @@ namespace Programacion123
             if(Flags.Test(flags, flagUpdateTitle))
             {
                 calendar.Title.Value = TextTitle.Text.Trim();
+                Utils.Log("Updated", "title");
             }
 
             if(Flags.Test(flags, flagUpdateStartDay))
             {
                 calendar.StartDay.Value = DateStart.SelectedDate.GetValueOrDefault();
+                Utils.Log("Updated", "startDay");
             }
 
             if(Flags.Test(flags, flagUpdateEndDay))
             {
                 calendar.EndDay.Value = DateEnd.SelectedDate.GetValueOrDefault();
+                Utils.Log("Updated", "endDay");
             }
 
             if(Flags.Test(flags, flagUpdateFreeDays))
             {
                 calendar.FreeDays.Clear();
                 calendar.FreeDays.Add(freeDaysList);
+                Utils.Log("Updated", "freeDays");
             }
 
             calendar.Save(parentStorageId);

@@ -10,17 +10,24 @@ namespace Programacion123
 {
     public class LongTaskController
     {
-        UIElement? blocker;
+        public  Window? Owner { get { return dialogsOwner; } set { dialogsOwner = value; } }
 
-        public void Init(UIElement? _blocker)
+        UIElement? blocker;
+        Window? dialogsOwner;
+
+        public void Init(UIElement? _blocker, Window? _dialogsOwner = null)
         {
             blocker = _blocker;
+            dialogsOwner = _dialogsOwner;
         }
 
         async public Task ExecuteAsync(string title, Action action, float minWaitTime)
         {
             if(blocker != null) { blocker.Visibility = Visibility.Visible; }
             LongTaskDialog dialog = new();
+            if(dialogsOwner != null)  { dialog.Owner = dialogsOwner; }
+            else { dialog.Owner = MainWindow.Instance; }
+
             dialog.Init(title);
             Stopwatch timer = new();
             timer.Start();
@@ -40,6 +47,8 @@ namespace Programacion123
             TResult result;
             if(blocker != null) { blocker.Visibility = Visibility.Visible; }
             LongTaskDialog dialog = new();
+            if(dialogsOwner != null)  { dialog.Owner = dialogsOwner; }
+            else { dialog.Owner = MainWindow.Instance; }
             dialog.Init(title);
             Stopwatch timer = new();
             timer.Start();

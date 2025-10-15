@@ -161,12 +161,9 @@
         {
             base.Validate(force);
 
-            Utils.PrintLine(Title.Value + ": Subject validation start");
-
-
             if(Flags.Test(validationFlags, flagTemplate) || force)
             {
-                Utils.PrintLine("[template] => Checking linked to valid template");
+                Utils.Log("Checking linked to valid template", "template");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectNotLinkedToTemplate);
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectTemplateInvalid);
@@ -178,7 +175,7 @@
 
             if(Flags.Test(validationFlags, flagCalendar) || force)
             {
-                Utils.PrintLine("[calendar] => Checking linked to valid calendar");
+                Utils.Log("Checking linked to valid calendar", "calendar");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectNotLinkedToCalendar);
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectCalendarInvalid);
@@ -189,7 +186,7 @@
 
             if(Flags.Test(validationFlags, flagWeekSchedule) || force)
             {
-                Utils.PrintLine("[weekSchedule] => Checking linked to valid week schedule");
+                Utils.Log("Checking linked to valid week schedule", "weekSchedule");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectNotLinkedToWeekSchedule);
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectWeekScheduleInvalid);
@@ -200,7 +197,7 @@
 
             if(Flags.Test(validationFlags, flagMetodologies) || force)
             {
-                Utils.PrintLine("[metodologies] => Checking has at least one metodology and all metodologies are valid");
+                Utils.Log("Checking has at least one metodology and all metodologies are valid", "metodologies");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectNoMetodologies);
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectMetodologiesInvalid);
@@ -212,7 +209,7 @@
 
             if(Flags.Test(validationFlags, flagSpaceResources) || force)
             {
-                Utils.PrintLine("[spaceResources] => Checking has at least one space resource and all space resources are valid");
+                Utils.Log("Checking has at least one space resource and all space resources are valid", "spaceResources");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectNoSpaces);
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectSpaceResourceInvalid);
@@ -224,7 +221,7 @@
 
             if(Flags.Test(validationFlags, flagMaterialResources) || force)
             {
-                Utils.PrintLine("[materialResources] => Checking all material resources are valid");
+                Utils.Log("Checking all material resources are valid", "materialResources");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectMaterialResourceInvalid);
 
@@ -234,7 +231,7 @@
 
             if(Flags.Test(validationFlags, flagEvaluationInstrumentTypes) || force)
             {
-                Utils.PrintLine("[evaluationInstrumentTypes] => Checking has at least one evaluation instrument type and all evaluation instrument types are valid");
+                Utils.Log("Checking has at least one evaluation instrument type and all evaluation instrument types are valid", "evaluationInstrumentTypes");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectNoEvaluationInstrumentTypes);
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectInstrumentTypeInvalid);
@@ -246,7 +243,7 @@
 
             if(Flags.Test(validationFlags, flagCitations) || force)
             {
-                Utils.PrintLine("[materialResources] => Checking all citations are valid");
+                Utils.Log("Checking all citations are valid", "materialResources");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectCitationInvalid);
 
@@ -256,7 +253,7 @@
 
             if(Flags.Test(validationFlags, flagBlocks | flagCalendar | flagWeekSchedule | flagLearningResultsWeights) || force)
             {
-                Utils.PrintLine("[blocks] => Checking has at least one block and all blocks are valid");
+                Utils.Log("Checking has at least one block and all blocks are valid", "blocks");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectNoBlocks);
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectBlockInvalid);
@@ -269,7 +266,7 @@
 
             if(Flags.Test(validationFlags, flagLearningResultsWeights) || force)
             {
-                Utils.PrintLine("[learningResultsWeights] => Checking the sum of all learning results' weights is 100");
+                Utils.Log("Checking the sum of all learning results' weights is 100", "learningResultsWeights");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectLearningResultsWeightNotHundredPercent);
 
@@ -287,8 +284,8 @@
 
             if (Flags.Test(validationFlags, flagTemplate | flagBlocks | flagLearningResultsWeights) || force)
             {
-                Utils.PrintLine("[template,blocks] => Checking all learning results are referenced by activities");
-                Utils.PrintLine("[template,blocks] => Checking activities learning results' weights sum 100 for all learning results");
+                Utils.Log("Checking all learning results are referenced by activities", "template,blocks");
+                Utils.Log("Checking activities learning results' weights sum 100 for all learning results", "template,blocks");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectLearningResultNotReferencedByActivities);
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectActivitiesLearningResultWeightNotHundredPercent);
@@ -344,7 +341,7 @@
 
             if (Flags.Test(validationFlags, flagCalendar | flagWeekSchedule | flagBlocks) || force)
             {
-                Utils.PrintLine("[calendar,weekSchedule,blocks] => Checking at least one school day exists");
+                Utils.Log("Checking at least one school day exists", "calendar,weekSchedule,blocks");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectCalendarAndWeekScheduleLeaveNoSchoolDays);
 
@@ -371,7 +368,7 @@
 
             if(Flags.Test(validationFlags, flagCommonTexts) || force)
             {
-                Utils.PrintLine("[commonTexts] => Checking all commontexts are valid");
+                Utils.Log("Checking all commontexts are valid", "commonTexts");
 
                 validationFails.RemoveAll(e => e.code == ValidationCode.subjectCommonTextInvalid);
 
@@ -396,8 +393,7 @@
             Flags.Remove(ref validationFlags, flagCommonTexts);
 
 
-            Utils.PrintLine(Title.Value + ": Subject validation end");
-            foreach(ValidationResult fail in validationFails) { Utils.PrintLine("FAILED: " + fail.code + "(" + fail.index + ")"); }
+            foreach(ValidationResult fail in validationFails) { Utils.Log(fail.ToString() + " (" + fail.index + ")", "FAILED"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }

@@ -19,6 +19,8 @@ namespace Programacion123
         public Func<List<string>>? pickListQuery;
         public List<string>? pickList;
         public UIElement? blocker;
+        public Window? dialogsOwner;
+
 
         public static WeakReferencesBoxConfiguration<TEntity> CreateForList(ListBox _list) { WeakReferencesBoxConfiguration<TEntity> c = new(); c.listBox = _list; c.storageIds = new(); return c; }
         public WeakReferencesBoxConfiguration<TEntity> WithStorageIds(List<string> _storageIds) { storageIds.AddRange(_storageIds); return this; }
@@ -31,6 +33,8 @@ namespace Programacion123
         public WeakReferencesBoxConfiguration<TEntity> WithPickerTitle(string title) { pickerTitle = title; return this; }
         public WeakReferencesBoxConfiguration<TEntity> WithBlocker(UIElement? _blocker) { blocker = _blocker; return this; }
         public WeakReferencesBoxConfiguration<TEntity> WithPickList(List<string> _pickList) { pickList = _pickList; return this; }
+        public WeakReferencesBoxConfiguration<TEntity> WithDialogsOwner(Window _owner) { dialogsOwner = _owner; return this; }
+
     }
 
     public class WeakReferencesBoxController<TEntity, TPicker> where TEntity : Entity, new()
@@ -57,6 +61,7 @@ namespace Programacion123
         List<string>? pickList;
         UIElement? blocker;
         TPicker picker;
+        Window? dialogsOwner;
 
         public WeakReferencesBoxController(WeakReferencesBoxConfiguration<TEntity> configuration)
         {
@@ -74,6 +79,7 @@ namespace Programacion123
             pickListQuery = configuration.pickListQuery;
             pickList = configuration.pickList;
             blocker = configuration.blocker;
+            dialogsOwner = configuration.dialogsOwner;
 
             listBox.SelectionChanged += ListBox_SelectionChanged;
 
@@ -138,6 +144,7 @@ namespace Programacion123
         private void ButtonPickAdd_Click(object sender, RoutedEventArgs e)
         {
             picker = new TPicker();
+            if(dialogsOwner != null) { picker.Owner = dialogsOwner; }
             if (pickerTitle != null) { picker.SetPickerTitle(pickerTitle); }
             if (formatter != null) { picker.SetFormatter(formatter); }
             picker.SetFormat(formatContent, formatIndex);
