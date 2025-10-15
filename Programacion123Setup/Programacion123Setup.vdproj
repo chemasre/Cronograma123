@@ -148,6 +148,17 @@
         }
         "Folder"
         {
+            "{1525181F-901A-416C-8A58-119130FE478E}:_0AD19BDE6C7D4268BFB53CED4E5C48D4"
+            {
+            "Name" = "8:#1915"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:AppDataFolder"
+                "Folders"
+                {
+                }
+            }
             "{1525181F-901A-416C-8A58-119130FE478E}:_466453A89E2B4E8DBA28457594AE3EC2"
             {
             "Name" = "8:#1916"
@@ -199,7 +210,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Programabara"
         "ProductCode" = "8:{0893E979-BAF7-437E-B580-B49F90069DCA}"
-        "PackageCode" = "8:{788055A2-E07F-4A4A-9E41-916CE0A991F9}"
+        "PackageCode" = "8:{94782D8E-E74F-4509-9CE6-03A411BFD7B2}"
         "UpgradeCode" = "8:{85DBB90D-2EFC-464C-89C1-F83315A34F90}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -329,7 +340,7 @@
             "Transitive" = "11:FALSE"
             "Target" = "8:_B128C40801724CF79161E3E476D43519"
             "Folder" = "8:_F83442B9D57646BFA5988BDD803B99C1"
-            "WorkingFolder" = "8:_87AE6586EF4F407CBB91763608E6B837"
+            "WorkingFolder" = "8:_0AD19BDE6C7D4268BFB53CED4E5C48D4"
             "Icon" = "8:_EDD126CFBBD84D92BE2B0138C8875067"
             "Feature" = "8:"
             }
@@ -343,7 +354,7 @@
             "Transitive" = "11:FALSE"
             "Target" = "8:_B128C40801724CF79161E3E476D43519"
             "Folder" = "8:_466453A89E2B4E8DBA28457594AE3EC2"
-            "WorkingFolder" = "8:_87AE6586EF4F407CBB91763608E6B837"
+            "WorkingFolder" = "8:_0AD19BDE6C7D4268BFB53CED4E5C48D4"
             "Icon" = "8:_EDD126CFBBD84D92BE2B0138C8875067"
             "Feature" = "8:"
             }
@@ -746,6 +757,34 @@
         }
         "ProjectOutput"
         {
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_11FD6CABFC3D4B2C97DCA1A17F9074B0"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_0AD19BDE6C7D4268BFB53CED4E5C48D4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:ContentFiles"
+            "OutputProjectGuid" = "8:{6BA511AC-2410-4277-959E-BC37B7FE8FF7}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B128C40801724CF79161E3E476D43519"
             {
             "SourcePath" = "8:..\\Programacion123\\obj\\Release\\net8.0-windows\\apphost.exe"
