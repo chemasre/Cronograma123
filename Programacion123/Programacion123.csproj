@@ -40,6 +40,10 @@
     <None Remove="Fonts\Roboto-BoldItalic.ttf" />
     <None Remove="Fonts\Roboto-Italic.ttf" />
     <None Remove="Fonts\Roboto-Regular.ttf" />
+    <None Remove="Fonts\RobotoMono-Bold.ttf" />
+    <None Remove="Fonts\RobotoMono-BoldItalic.ttf" />
+    <None Remove="Fonts\RobotoMono-Italic.ttf" />
+    <None Remove="Fonts\RobotoMono-Regular.ttf" />
     <None Remove="IconEdit.png" />
     <None Remove="Images\Background.jpg" />
     <None Remove="Images\Background04.jpg" />
@@ -152,6 +156,18 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Fonts\Roboto-Regular.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\RobotoMono-Bold.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\RobotoMono-BoldItalic.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\RobotoMono-Italic.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\RobotoMono-Regular.ttf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Background.jpg">

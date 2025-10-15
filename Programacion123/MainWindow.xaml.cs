@@ -64,10 +64,7 @@ namespace Programacion123
 
             Utils.LogInit();
 
-            if(Switches.debugLogEnabled) { LogPanel.Instance.Show(); }
-
-
-            Loaded += MainWindow_Loaded; ;
+            Loaded += MainWindow_Loaded;
 
         }
 
@@ -75,9 +72,25 @@ namespace Programacion123
         {
             instance = this;
 
+            EventManager.RegisterClassHandler(typeof(Window), Keyboard.PreviewKeyDownEvent, new KeyEventHandler(AnyWindow_PreviewKeyDown));
+
             InitUI();
             LaunchFirstRunDialogs();
 
+        }
+
+        private void AnyWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.F11)
+            {
+                if(Switches.debugLogEnabled)
+                {
+                    if(!LogPanel.Instance.IsVisible) { LogPanel.Instance.Show(); }
+                    else { LogPanel.Instance.Hide(); }
+                    e.Handled = true;
+                    
+                }
+            }
         }
 
         private void CreatDefaultStyleIfNotPresent()
@@ -562,17 +575,9 @@ namespace Programacion123
             Subject? subject = subjectsController.GetSelectedEntity();
             if (subject != null)
             {
-
-                LongTaskController controller = new();
-                LongTaskDialog longTaskDialog= new();
-                longTaskDialog.Owner = this;
-                longTaskDialog.Init("Abriendo generador");
-                longTaskDialog.Show();
                 HTMLGeneratorDialog generatorDialog = new();
                 generatorDialog.Owner = this;
-
                 await generatorDialog.InitAsync(subject, style, (b) => { Blocker.Visibility = Visibility.Hidden; });
-                longTaskDialog.Hide();
                 generatorDialog.ShowDialog();
 
             }

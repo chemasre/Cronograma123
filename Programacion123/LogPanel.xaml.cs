@@ -19,8 +19,10 @@ namespace Programacion123
     /// </summary>
     public partial class LogPanel : Window
     {
+
         public static LogPanel Instance { get { if(instance == null) { instance = new(); } return instance; } }
 
+        List<string> lines;
         StringBuilder stringBuilder;
 
         static LogPanel? instance = null;
@@ -30,12 +32,27 @@ namespace Programacion123
         {
             InitializeComponent();
 
+            lines = new();
             stringBuilder = new();
 
         }
 
-        public void Clear() { stringBuilder.Clear();  TextContent.Text = stringBuilder.ToString(); TextContent.ScrollToEnd();}
-        public void Log(string s) { stringBuilder.AppendLine(s); TextContent.Text = stringBuilder.ToString(); TextContent.ScrollToEnd(); }
+        public void Clear() { lines.Clear(); stringBuilder.Clear();  TextContent.Text = ""; TextContent.ScrollToEnd();}
+        public void Log(string s)
+        {
+            if(lines.Count + 1 > Constants.logMaxLineBlocks * Constants.logLineBlockSize)
+            {
+                lines.RemoveRange(0, Constants.logLineBlockSize);
+                stringBuilder.Clear();
+                lines.ForEach((s) => stringBuilder.AppendLine(s));
+            }
+
+            lines.Add(s);
+            stringBuilder.AppendLine(s);
+
+            TextContent.Text = stringBuilder.ToString();
+            TextContent.ScrollToEnd();
+        }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -45,6 +62,9 @@ namespace Programacion123
             }
         }
 
-        
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            Hide();
+        }
     }
 }

@@ -48,10 +48,11 @@ namespace Programacion123
             // InitCommon causes due to the WebPreview initialization
             // giving more time to the progress bar of the caller to show
 
-            Show(); Hide();
-
             longTaskController = new();
-            longTaskController.Init(Blocker);
+
+            // If a long task is asked before the window is loaded,
+            // the long task dialog will be owned by the main window
+            longTaskController.Init(Blocker, MainWindow.Instance);
             previewGenerator = new HTMLGenerator();
             previewGenerator.Subject = _subject;
             previewGenerator.Style = _style;
@@ -228,13 +229,17 @@ namespace Programacion123
             ComboDocumentMarginRight.SelectionChanged += ComboDocumentMarginRight_SelectionChanged;
 
             longTaskController = new();
-            longTaskController.Init(Blocker, this);
+
+            // If a long task is asked before the window is loaded,
+            // the long task dialog will be owned by the main window
+            longTaskController.Init(Blocker, MainWindow.Instance);
 
             webPreviewLastScrollPosition = null;
             webPreviewReady = false;
             webPreviewValid = false;
             WebPreview.LoadCompleted += WebPreview_LoadCompleted;
             UpdatePreviewUI();
+
 
         }
 
@@ -953,16 +958,19 @@ namespace Programacion123
             TextValidation.Text = result.ToString();
         }
 
-        async Task ValidateAsync(bool force = false)
+        async Task<GeneratorValidationResult> ValidateAsync(bool force = false)
         {
             GeneratorValidationResult validation = await longTaskController.ExecuteAsync<GeneratorValidationResult>("Validando programación", () => previewGenerator.Validate(force), Constants.validationTaskMinDuration);
             UpdateValidationResultUI(validation);
+
+            return validation;
         }
 
-        void Validate(bool force = false)
+        GeneratorValidationResult Validate(bool force = false)
         {
             GeneratorValidationResult validation = previewGenerator.Validate(force);
             UpdateValidationResultUI(validation);
+            return validation;
         }
 
 
@@ -1047,7 +1055,9 @@ namespace Programacion123
 
         private async void ButtonAccept_Click(object sender, RoutedEventArgs e)
         {
-            if (previewGenerator.Validate(true).code != GeneratorValidationCode.success)
+            GeneratorValidationResult validationResult = Validate();
+
+            if (validationResult.code != GeneratorValidationCode.success)
             {
                 ConfirmDialog dialog = new();
                
@@ -1101,7 +1111,7 @@ namespace Programacion123
                     dialogTask.Show();
 
 
-                    GeneratorResult result = await Task.Run<GeneratorResult>(
+                    GeneratorResult generatorResult = await Task.Run<GeneratorResult>(
                         () =>
                         {
                             GeneratorResult result;
@@ -1113,11 +1123,11 @@ namespace Programacion123
 
                     dialogTask.Close();
 
-                    if (result.code != GeneratorResultCode.success)
+                    if (generatorResult.code != GeneratorResultCode.success)
                     {
                         ConfirmDialog errorDialog = new();
 
-                        errorDialog.Init(ConfirmIconType.warning, "Error", result.ToString(), ConfirmChooseType.acceptOnly, (b) => { });
+                        errorDialog.Init(ConfirmIconType.warning, "Error", generatorResult.ToString(), ConfirmChooseType.acceptOnly, (b) => { });
                         errorDialog.ShowDialog();
                     }
                     else

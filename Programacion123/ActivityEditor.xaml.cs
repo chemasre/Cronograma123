@@ -529,7 +529,10 @@ namespace Programacion123
             dataTableResultsWeight.RowChanged += DataTableResultsWeight_RowChanged;
 
             longTaskController = new();
-            longTaskController.Init(Blocker);
+
+            // If a long task is asked before the window is loaded,
+            // the long task dialog will be owned by the main window
+            longTaskController.Init(Blocker, MainWindow.Instance);
 
             UpdateStartTypeUI();
             UpdateActivityCodeUI();
@@ -630,7 +633,7 @@ namespace Programacion123
             CombosDurationApplyLimits();
 
             UpdateEntity(flagUpdateDuration);
-            Validate();
+            await ValidateAsync();
             UpdateActivityScheduleUI();
         }
 

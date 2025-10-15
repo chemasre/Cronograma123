@@ -26,7 +26,12 @@
                         </LinearGradientBrush>
                     </TextBlock.Foreground></TextBlock>
             </Border>
-            <TextBox x:Name="TextContent" Canvas.Left="41" Canvas.Top="120" Width="798" Height="222" AcceptsReturn="True" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="{DynamicResource NormalTextSize}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" FontFamily="Consolas"/>
+            <TextBox x:Name="TextContent" Canvas.Left="41" Canvas.Top="120" Width="798" Height="222" AcceptsReturn="True" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="{DynamicResource NormalTextSize}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" FontFamily="{DynamicResource MonospaceFont}"/>
+            <Button Effect="{DynamicResource EffectDropShadow}" x:Name="ButtonClose" Content="" Height="40" Width="40" Click="ButtonClose_Click" Canvas.Left="834" BorderBrush="{x:Null}" Canvas.Top="10" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/ButtonClose.png"/>
+                </Button.Background>
+            </Button>
 
         </Canvas>
     </Border>

@@ -86,7 +86,10 @@ namespace Programacion123
             TextBoxDescription.TextChanged += TextBoxDescription_TextChanged;
 
             longTaskController = new();
-            longTaskController.Init(Blocker);
+
+            // If a long task is asked before the window is loaded,
+            // the long task dialog will be owned by the main window
+            longTaskController.Init(Blocker, MainWindow.Instance);
 
             Loaded += BlockEditor_Loaded;
 

@@ -278,7 +278,10 @@ namespace Programacion123
             dataTableActivitiesSchedule.RowChanged += DataTableActivitiesSchedule_RowChanged;
 
             longTaskController = new();
-            longTaskController.Init(Blocker);
+
+            // If a long task is asked before the window is loaded,
+            // the long task dialog will be owned by the main window
+            longTaskController.Init(Blocker, MainWindow.Instance);
 
             UpdateActivityWeightsUIFromEntity();
             UpdateWeightsUIFromEntity();

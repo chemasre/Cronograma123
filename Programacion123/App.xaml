@@ -56,6 +56,7 @@
         <FontFamily x:Key="TitleFont">pack://application:,,,/Fonts/#Germano</FontFamily>
         <SolidColorBrush x:Key="FreeLabel" Color="#FF000000"/>
         <FontFamily x:Key="Font">pack://application:,,,/Fonts/#Roboto</FontFamily>
+        <FontFamily x:Key="MonospaceFont">pack://application:,,,/Fonts/#Roboto Mono</FontFamily>
         <FontFamily x:Key="WindowTitleFont">pack://application:,,,/Fonts/#Comic Relief</FontFamily>
         <ImageBrush x:Key="TabBackground" ImageSource="/Images/BackgroundSteps.jpg" Stretch="UniformToFill"/>
         <SolidColorBrush x:Key="FreeLabelMainWindow" Color="#B200506B"/>

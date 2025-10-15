@@ -26,7 +26,6 @@ namespace Programacion123
             if(blocker != null) { blocker.Visibility = Visibility.Visible; }
             LongTaskDialog dialog = new();
             if(dialogsOwner != null)  { dialog.Owner = dialogsOwner; }
-            else { dialog.Owner = MainWindow.Instance; }
 
             dialog.Init(title);
             Stopwatch timer = new();
