@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cronograma123", "Cronograma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programacion123", "Programacion123\Programacion123.csproj", "{9E107DE6-BB1F-4F6D-9485-F52454AE3B0A}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Cronograma123Setup", "Cronograma123Setup\Cronograma123Setup.vdproj", "{4FBBBFDB-57E4-4AA9-962C-82069860B1A8}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Programacion123Setup", "Programacion123Setup\Programacion123Setup.vdproj", "{F961BB65-7018-496B-AE74-80A95E694BE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,12 @@ Global
 		{9E107DE6-BB1F-4F6D-9485-F52454AE3B0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E107DE6-BB1F-4F6D-9485-F52454AE3B0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E107DE6-BB1F-4F6D-9485-F52454AE3B0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FBBBFDB-57E4-4AA9-962C-82069860B1A8}.Debug|Any CPU.ActiveCfg = Debug
+		{4FBBBFDB-57E4-4AA9-962C-82069860B1A8}.Debug|Any CPU.Build.0 = Debug
+		{4FBBBFDB-57E4-4AA9-962C-82069860B1A8}.Release|Any CPU.ActiveCfg = Release
+		{4FBBBFDB-57E4-4AA9-962C-82069860B1A8}.Release|Any CPU.Build.0 = Release
+		{F961BB65-7018-496B-AE74-80A95E694BE0}.Debug|Any CPU.ActiveCfg = Debug
+		{F961BB65-7018-496B-AE74-80A95E694BE0}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
