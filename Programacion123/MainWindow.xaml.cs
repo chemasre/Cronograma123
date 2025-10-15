@@ -65,6 +65,16 @@ namespace Programacion123
             Utils.LogInit();
 
             Loaded += MainWindow_Loaded;
+            Closed += MainWindow_Closed;
+
+        }
+
+        private void MainWindow_Closed(object? sender, EventArgs e)
+        {
+            configuration.FirstRun = false;
+            SaveConfiguration();
+            Utils.LogFinish();
+            if (Switches.debugLogEnabled) { LogPanel.Instance.Close(); }
 
         }
 
@@ -300,14 +310,6 @@ namespace Programacion123
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-            configuration.FirstRun = false;
-
-            SaveConfiguration();
-
-            Utils.LogFinish();
-
-            if(Switches.debugLogEnabled) { LogPanel.Instance.Close(); }
-
             Close();
         }
 

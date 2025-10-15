@@ -13,6 +13,7 @@ namespace Programacion123
             InitializeComponent();
 
             TextTitle.Text = "Acerca de " + Constants.appName;
+            LabelVersion.Content = "v" + Constants.version;
         }
 
         private void ButtonAccept_Click(object sender, RoutedEventArgs e)
