@@ -308,7 +308,7 @@
             </Border>
             <Button x:Name="ButtonOpenStorage" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="183" Canvas.Top="810" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" Click="ButtonOpenStorage_Click" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Button.Background>
-                    <ImageBrush ImageSource="/Images/ButtonFolder.png"/>
+                    <ImageBrush ImageSource="/Images/ButtonStorageFolder.png"/>
                 </Button.Background>
                 <Button.Foreground>
                     <ImageBrush ImageSource="/Images/ButtonNew.png"/>

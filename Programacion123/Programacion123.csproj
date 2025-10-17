@@ -67,6 +67,7 @@
     <None Remove="Images\ButtonPick.png" />
     <None Remove="Images\ButtonReferenceAddBig.png" />
     <None Remove="Images\ButtonReset.png" />
+    <None Remove="Images\ButtonStorageFolder.png" />
     <None Remove="Images\ButtonYes.png" />
     <None Remove="Images\ButtonZipExport.png" />
     <None Remove="Images\ButtonZipImport.png" />
@@ -252,6 +253,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\ButtonReset.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ButtonStorageFolder.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\ButtonWarning.png">
