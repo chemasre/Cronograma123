@@ -20,6 +20,8 @@
         public const string logFileName = "Log.txt";
         public const int logLineBlockSize = 1000;
         public const int logMaxLineBlocks = 3;
+
+        public static string storageBasePath = "Storage\\";
     }
 
 }

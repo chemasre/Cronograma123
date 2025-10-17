@@ -17,5 +17,15 @@ namespace Programacion123
             Process.Start(info);
         }
 
+        public static void OpenFolder(string folder)
+        {
+            ProcessStartInfo info = new();
+            info.FileName = folder;
+            info.UseShellExecute = true;
+            Process.Start(info);
+        }
+
+
+
     }
 }

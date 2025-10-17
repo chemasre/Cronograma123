@@ -5,7 +5,7 @@ namespace Programacion123
 {
     internal partial class Storage
     {
-        static string basePath = "Storage\\";
+        static string basePath = Constants.storageBasePath;
 
         public static void Init()
         {

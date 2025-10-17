@@ -633,5 +633,25 @@ namespace Programacion123
             confirm.ShowDialog();
             Blocker.Visibility = Visibility.Hidden;
         }
+
+        private void ButtonOpenStorage_Click(object sender, RoutedEventArgs e)
+        {
+            Blocker.Visibility = Visibility.Visible;
+
+            ConfirmDialog question = new();
+            question.Owner = this;
+
+            question.Init(ConfirmIconType.warning,
+                "Abrir carpeta de almacenaje",
+                "Esto abrirá la carpeta de almacenaje para que puedas crear y restaurar copias de seguridad de tus ficheros manualmente. " +
+                "Te recomendamos que no manipules sus contenidos mientras la aplicación está abierta.",
+                ConfirmChooseType.acceptAndCancel,
+                (b) => { if (b) { Utils.OpenFolder(Constants.storageBasePath); } });
+
+            question.ShowDialog();
+
+            Blocker.Visibility = Visibility.Hidden;
+
+        }
     }
 }
