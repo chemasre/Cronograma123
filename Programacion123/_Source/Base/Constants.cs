@@ -13,6 +13,9 @@
 
         public const string helpUrl = "https://youtube.com";
         public const string homeUrl = "https://sinestesiagamedesign.es/teaching";
+        public const string sendMailUrl = "mailto:someone@example.com?subject=" +
+                                          "Estoy%20usando%20Programabara%20" +
+                                          "&body=Estoy%20usando%20Programabara%20para%20crear%20mis%20programaciones%20did%C3%A1cticas.";
 
         public const float buttonNotAvailableOpacity = 0.25f;
         public const string buttonAvailableEffect = "EffectDropShadow";

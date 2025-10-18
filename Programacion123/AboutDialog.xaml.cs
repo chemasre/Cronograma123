@@ -48,6 +48,31 @@ namespace Programacion123
         private void IconApp_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
+        private void ButtonVisitWeb_Click(object sender, RoutedEventArgs e)
+        {
+            ConfirmDialog question = new();
+            question.Owner = this;
+
+            question.Init(ConfirmIconType.info,
+                "Abrir navegador",
+                "Esto abrirá tu navegador por defecto y te dirigirá a la página web de la aplicación",
+                (b) => { if (b) { Utils.OpenUrl(Constants.homeUrl); } });
+
+            question.ShowDialog();
+        }
+
+        private void ButtonSendEmail_Click(object sender, RoutedEventArgs e)
+        {
+            ConfirmDialog question = new();
+            question.Owner = this;
+
+            question.Init(ConfirmIconType.info,
+                "Enviar correo",
+                "Esto abrirá tu aplicación de correo por defecto para que puedas enviarme un mail",
+                ConfirmChooseType.acceptAndCancel,
+                (b) => { if (b) { Utils.OpenUrl(Constants.sendMailUrl); } });
+
+            question.ShowDialog();
         }
 
         //private void ButtonHome_Click(object sender, RoutedEventArgs e)
