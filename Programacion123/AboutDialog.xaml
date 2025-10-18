@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programacion123"
         mc:Ignorable="d"
-        Title="About" Height="521" Width="604" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" Foreground="{x:Null}" Background="{x:Null}" WindowStyle="None" AllowsTransparency="True" MouseDown="Window_MouseDown" HorizontalAlignment="Right" FontFamily="{DynamicResource Font}" ResizeMode="NoResize">
+        Title="About" Height="524" Width="604" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" Foreground="{x:Null}" Background="{x:Null}" WindowStyle="None" AllowsTransparency="True" MouseDown="Window_MouseDown" HorizontalAlignment="Right" FontFamily="{DynamicResource Font}" ResizeMode="NoResize" MinWidth="604" MinHeight="524">
     <Border x:Name="BorderWindow" Padding="5" BorderThickness="3,3,3,3" CornerRadius="30" BorderBrush="{DynamicResource WindowBorder}" >
         <Border.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="/Images/BackgroundClouds.jpg"/>
@@ -46,7 +46,6 @@
                 </Button.Background>
             </Button>
             <Border BorderThickness="1" Height="8" Width="293" Canvas.Left="30" Canvas.Top="458" CornerRadius="30,30,30,30" Background="#99EDEBB1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Border x:Name="Blocker" Padding="5" Background="#7F000000" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="531" Width="862" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" />
             <Label x:Name="LabelVersion" Content="v0.0.0" FontSize="{DynamicResource NormalTextSize}" Width="102" Canvas.Left="438" Canvas.Top="377" FontFamily="{DynamicResource Font}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Foreground="#33000000" HorizontalContentAlignment="Right"/>
             <TabControl Height="306" Width="511" Canvas.Top="90" Canvas.Left="39" BorderBrush="#00ACACAC" Opacity="0.985" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Background="{x:Null}">
                 <TabItem Header="Presentación">
@@ -69,7 +68,7 @@
                     <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
                         <TextBlock TextWrapping="Wrap" Height="105" Foreground="Black" FontSize="16" Canvas.Left="194" Canvas.Top="24" Width="308" HorizontalAlignment="Center" VerticalAlignment="Top"><Run Text="Esta aplicación se distribuye "/><Run Text="bajo"/><Run Language="es-es" Text=" una licencia "/><Run FontWeight="Bold" Language="es-es" Text="Creative Commons"/><Run Text=" que "/><Run Text="permite "/><Run Text="su uso "/><Run FontWeight="Bold" Text="no comercial"/><Run Text=", así como su copia y distribución, siempre y cuando "/><Run FontWeight="Bold" Text="se acredite al autor y no se realicen modificaciones"/><Run Text="."/></TextBlock>
                         <TextBlock TextWrapping="Wrap" Height="133" Foreground="Black" FontSize="16" Canvas.Left="2" Canvas.Top="134" Width="500" HorizontalAlignment="Center" VerticalAlignment="Top"><Run Text="Licencias de "/><Run Text="recursos de terceros:"/><LineBreak/><Run Text="--------------------------------------------------------------------------------------------------------"/><LineBreak/><Run Text="Fotografía "/><Run FontWeight="Bold" Text="&quot;Capybara&quot;"/><Run Text=" por "/><Run FontWeight="Bold" Text="lorentey"/><Run Text=" usada bajo licencia "/><Run FontWeight="Bold" Text="CC BY 2.0"/><Run Text="."/><LineBreak/><Run Text="--------------------------------------------------------------------------------------------------------"/><LineBreak/><Run Text="Fotografía "/><Run FontWeight="Bold" Text="&quot;Texture Maple Wood plank stock photo wall Floor&quot;"/><Run Text=" por "/><Run FontWeight="Bold" Text="TextureX.com"/><Run Text=" "/><Run Text="usada bajo licencia "/><Run FontWeight="Bold" Text="CC BY 2.0"/><Run Text="."/></TextBlock>
-                        <Image x:Name="IconLicense" Height="52" Canvas.Left="20" Canvas.Top="38" Width="150" Source="/Images/ImageLicense.png" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" Cursor="Hand" Effect="{DynamicResource EffectDropShadow}">
+                        <Image x:Name="IconLicense" Height="52" Canvas.Left="20" Canvas.Top="38" Width="150" Source="/Images/ImageLicense.png" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" Cursor="Hand" Effect="{DynamicResource EffectDropShadow}" MouseDown="IconLicense_MouseDown">
                             <Image.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -119,6 +118,7 @@
                     </Canvas>
                 </TabItem>
             </TabControl>
+            <Border x:Name="Blocker" Padding="5" Background="#7F000000" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="524" Width="604" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
 
         </Canvas>
     </Border>
