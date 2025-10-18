@@ -5,7 +5,7 @@
         public const string appName = "Programabara";
         public const string contactName = "Chema";
         public const string contactEmail = "chema.sre@gmail.com";
-        public const string version = "0.9.8";
+        public const string version = "0.9.9";
         public const string configFileName = "Config.json";
         public const float resetTaskMinDuration = 2.0f;
         public const float setupTaskMinDuration = 2.0f;

@@ -79,14 +79,19 @@
     <None Remove="Images\CaptionPaddingTop.png" />
     <None Remove="Images\CaptionPositionX.png" />
     <None Remove="Images\CaptionPositionY.png" />
+    <None Remove="Images\CaptionRedArrow.png" />
     <None Remove="Images\CaptionSeparationBottom.png" />
     <None Remove="Images\CaptionSeparationLeft.png" />
     <None Remove="Images\CaptionSeparationRight.png" />
     <None Remove="Images\CaptionSeparationTop.png" />
     <None Remove="Images\CaptionWidth.png" />
     <None Remove="Images\IconInfo.png" />
+    <None Remove="Images\IconMiniBoyColor.png" />
+    <None Remove="Images\IconProgramabara.png" />
     <None Remove="Images\IconQuestion.png" />
+    <None Remove="Images\IconTurtleSandbox.png" />
     <None Remove="Images\IconWarning.png" />
+    <None Remove="Images\ImageLicense.png" />
     <None Remove="Images\ValidatorCapyBig.png" />
     <None Remove="Packages\Tutorial.zip" />
   </ItemGroup>
@@ -294,6 +299,9 @@
     <Resource Include="Images\CaptionPositionY.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\CaptionRedArrow.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\CaptionSeparationBottom.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -312,10 +320,22 @@
     <Resource Include="Images\IconInfo.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\IconMiniBoyColor.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\IconProgramabara.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\IconQuestion.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\IconTurtleSandbox.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\IconWarning.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ImageLicense.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\ValidatorCapyBig.png">

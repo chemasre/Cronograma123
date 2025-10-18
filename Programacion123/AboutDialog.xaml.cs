@@ -35,6 +35,21 @@ namespace Programacion123
 
         }
 
+        private void IconOtherApp1_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void IconOtherApp2_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void IconApp_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
         //private void ButtonHome_Click(object sender, RoutedEventArgs e)
         //{
         //    Blocker.Visibility = Visibility.Visible;
