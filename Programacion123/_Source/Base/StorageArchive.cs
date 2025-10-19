@@ -10,7 +10,7 @@ namespace Programacion123
 
         public static void Archive_Open(string archivePath)
         {
-            archiveExtractionPath = Path.GetTempPath() + "Programacion123" + Guid.NewGuid().ToString() + "\\";
+            archiveExtractionPath = Path.GetTempPath() + Constants.appName + Guid.NewGuid().ToString() + "\\";
             Directory.CreateDirectory(archiveExtractionPath);
             ZipFile.ExtractToDirectory(archivePath, archiveExtractionPath);
             isArchiveOpen = true;

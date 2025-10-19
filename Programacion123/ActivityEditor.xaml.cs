@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Programacion123
 {
@@ -58,10 +59,20 @@ namespace Programacion123
         {
             InitializeComponent();
 
+            if (Switches.featureChristmasThemeEnabled)
+            {
+                if (Utils.IsChristmas()) { ChristmasThemeApply(); }
+            }
+
             Loaded += ActivityEditor_Loaded;
         }
 
-        private void ActivityEditor_Loaded(object sender, RoutedEventArgs e)
+        void ChristmasThemeApply()
+        {
+            ValidatorCapy.Source = new BitmapImage(new Uri("pack://application:,,,/Images/ValidatorCapyBig_Winter.png"));
+        }
+
+        void ActivityEditor_Loaded(object sender, RoutedEventArgs e)
         {
             longTaskController.Owner = this;
         }
@@ -557,7 +568,7 @@ namespace Programacion123
 
 
 
-        private void UpdateEvaluableUI()
+        void UpdateEvaluableUI()
         {
             Visibility visibility = (entity.EvaluationType.Value != ActivityEvaluationType.NotEvaluable) ? Visibility.Visible : Visibility.Hidden;
             LabelActivityCode.Visibility = visibility;
@@ -574,21 +585,21 @@ namespace Programacion123
 
         }
 
-        private void DateStartDate_SelectedDateChanged(object? sender, SelectionChangedEventArgs e)
+        void DateStartDate_SelectedDateChanged(object? sender, SelectionChangedEventArgs e)
         {
             UpdateEntity(flagUpdateStartDate);
             Validate();
             UpdateActivityScheduleUI();
         }
 
-        private void ComboStartWeekDay_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        void ComboStartWeekDay_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateEntity(flagUpdateStartDayOfWeek);
             Validate();
             UpdateActivityScheduleUI();
         }
 
-        async private void ComboStartType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        async void ComboStartType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateEntity(flagUpdateStartType);
             await ValidateAsync();
@@ -598,14 +609,14 @@ namespace Programacion123
 
         }
 
-        async private void CheckboxNoActivitiesAfter_Unchecked(object sender, RoutedEventArgs e)
+        async void CheckboxNoActivitiesAfter_Unchecked(object sender, RoutedEventArgs e)
         {
             UpdateEntity(flagUpdateNoActivitiesAfter);
             await ValidateAsync();
             UpdateActivityScheduleUI();
         }
 
-        async private void CheckboxNoActivitiesAfter_Checked(object sender, RoutedEventArgs e)
+        async void CheckboxNoActivitiesAfter_Checked(object sender, RoutedEventArgs e)
         {
             UpdateEntity(flagUpdateNoActivitiesAfter);
             await ValidateAsync();
@@ -628,7 +639,7 @@ namespace Programacion123
 
         }
 
-        async private void ComboDurationFraction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        async void ComboDurationFraction_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CombosDurationApplyLimits();
 
@@ -637,7 +648,7 @@ namespace Programacion123
             UpdateActivityScheduleUI();
         }
 
-        async private void ComboDuration_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        async void ComboDuration_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CombosDurationApplyLimits();
 
@@ -646,33 +657,33 @@ namespace Programacion123
             UpdateActivityScheduleUI();
         }
 
-        async private void CheckboxNoActivitiesBefore_Unchecked(object sender, RoutedEventArgs e)
+        async void CheckboxNoActivitiesBefore_Unchecked(object sender, RoutedEventArgs e)
         {
             UpdateEntity(flagUpdateNoActivitiesBefore);
             await ValidateAsync();
             UpdateActivityScheduleUI();
         }
 
-        async private void CheckboxNoActivitiesBefore_Checked(object sender, RoutedEventArgs e)
+        async void CheckboxNoActivitiesBefore_Checked(object sender, RoutedEventArgs e)
         {
             UpdateEntity(flagUpdateNoActivitiesBefore);
             await ValidateAsync();
             UpdateActivityScheduleUI();
         }
 
-        private void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
+        void TextTitle_TextChanged(object sender, TextChangedEventArgs e)
         {
             UpdateEntity(flagUpdateTitle);
             Validate();
         }
 
-        private void TextBoxDescription_TextChanged(object sender, TextChangedEventArgs e)
+        void TextBoxDescription_TextChanged(object sender, TextChangedEventArgs e)
         {
             UpdateEntity(flagUpdateDescription);
             Validate();
         }
 
-        async private void DataTableResultsWeight_RowChanged(object sender, DataRowChangeEventArgs e)
+        async void DataTableResultsWeight_RowChanged(object sender, DataRowChangeEventArgs e)
         {
             UpdateEntity(flagUpdateLearningResultsWeights);
             await ValidateAsync();
@@ -715,13 +726,13 @@ namespace Programacion123
             Validate();
         }
 
-        private void KeyCompetencesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
+        void KeyCompetencesController_Changed(WeakReferencesBoxController<CommonText, EntityPicker<CommonText>> controller)
         {
             UpdateEntity(flagUpdateKeyCompetences);
             Validate();
         }
 
-        async private void ComboEvaluationType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        async void ComboEvaluationType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateEntity(flagUpdateEvaluationType);
             await ValidateAsync();

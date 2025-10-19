@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Programacion123
 {
@@ -25,7 +26,19 @@ namespace Programacion123
         public WeekScheduleEditor()
         {
             InitializeComponent();
+
+            if (Switches.featureChristmasThemeEnabled)
+            {
+                if (Utils.IsChristmas()) { ChristmasThemeApply(); }
+            }
         }
+
+
+        void ChristmasThemeApply()
+        {
+            ValidatorCapy.Source = new BitmapImage(new Uri("pack://application:,,,/Images/ValidatorCapyBig_Winter.png"));
+        }
+
 
         private void DataTable_RowChanged(object sender, DataRowChangeEventArgs e)
         {

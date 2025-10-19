@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Security.Cryptography;
 using System.Text.Json;
 
 namespace Programacion123
@@ -143,7 +144,70 @@ namespace Programacion123
             else { return null; }
         }
 
-        public static bool ExistsData<T>(string storageId, string storageClassId, string? parentStorageId = null) where T : StorageData
+        public static string Checksum_Calculate(string storageId, string storageClassId, string? parentStorageId = null)
+        {
+            string result = "";
+
+            string folder;
+
+            if (parentStorageId != null)
+            {
+                folder = parentStorageId + "\\";
+            }
+            else { folder = ""; }
+
+            MD5 checksumGenerator;
+            checksumGenerator = MD5.Create();
+
+            MemoryStream memoryStream = new();
+
+            List<string> files = new();
+            files.Add(GetBasePath() + folder + storageId + "." + storageClassId);
+
+            List<string> descendants = Checksum_FindDescendants(storageId);
+            files.AddRange(descendants);
+            
+            files.Sort();
+
+            files.ForEach( (f) => { byte[] bytes = File.ReadAllBytes(f); memoryStream.Write(bytes); } );
+
+            byte[] allBytes = new byte[memoryStream.Length];
+            memoryStream.Position = 0;
+            memoryStream.Read(allBytes);
+
+            byte[] md5 = checksumGenerator.ComputeHash(allBytes);
+            result = Convert.ToHexString(md5);
+
+            Utils.Log("" + storageId + "->" + result, "CHECKSUM");
+
+            return result;
+
+
+        }
+
+        static List<string> Checksum_FindDescendants(string storageId)
+        {
+            List<string> files = new();
+            Checksum_AddDescendantsRecursive(storageId, files);
+
+            return files;
+        }
+
+        static void Checksum_AddDescendantsRecursive(string storageId, List<string> results)
+        {
+            if(Directory.Exists(GetBasePath() + storageId))
+            {
+                string[] files = Directory.GetFiles(GetBasePath() + storageId);
+                foreach(string f in files)
+                {
+                    results.Add(f);
+                    Checksum_AddDescendantsRecursive(Path.GetFileNameWithoutExtension(f), results);
+                }
+
+            }
+        }
+
+        public static bool ExistsData(string storageId, string storageClassId, string? parentStorageId = null)
         {
             bool result = true;
             string folder;
@@ -161,7 +225,11 @@ namespace Programacion123
             }
 
             return result;
+        }
 
+        public static bool ExistsData<T>(string storageId, string storageClassId, string? parentStorageId = null) where T : StorageData
+        {
+            return ExistsData(storageId, storageClassId, parentStorageId);
         }
 
         public static void SaveData<T>(string storageId, string storageClassId, T data, string? parentStorageId = null) where T : StorageData

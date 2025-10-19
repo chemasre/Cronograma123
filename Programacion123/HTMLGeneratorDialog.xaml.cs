@@ -38,7 +38,19 @@ namespace Programacion123
         {
             InitializeComponent();
 
+            if (Switches.featureChristmasThemeEnabled)
+            {
+                if (Utils.IsChristmas()) { ChristmasThemeApply(); }
+            }
+
         }
+
+
+        void ChristmasThemeApply()
+        {
+            ValidatorCapy.Source = new BitmapImage(new Uri("pack://application:,,,/Images/ValidatorCapyBig_Winter.png"));
+        }
+
 
         async public Task InitAsync(Subject? _subject, DocumentStyle? _style, Action<bool> _closeAction)
         {

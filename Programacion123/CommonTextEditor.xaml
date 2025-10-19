@@ -46,7 +46,7 @@
                     </TextBlock.Foreground>
                 </TextBlock>
             </Border>
-            <Image Height="100" Canvas.Left="12" Canvas.Top="488" Width="150" Source="/Images/ValidatorCapyBig.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Image x:Name="ValidatorCapy" Height="100" Canvas.Left="12" Canvas.Top="488" Width="150" Source="/Images/ValidatorCapyBig.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         </Canvas>
     </Border>

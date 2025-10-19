@@ -26,7 +26,7 @@
             </Border>
             <TextBox x:Name="TextTitle" Canvas.Left="102" Canvas.Top="89" Width="319" HorizontalAlignment="Left" VerticalAlignment="Center" Effect="{DynamicResource EffectDropShadow}"/>
             <Label Content="Título" Canvas.Left="27" Canvas.Top="85" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Foreground="{DynamicResource FreeLabel}"/>
-            <Image Height="100" Canvas.Left="15" Canvas.Top="338" Width="150" Source="/Images/ValidatorCapyBig.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Image x:Name="ValidatorCapy" Height="100" Canvas.Left="15" Canvas.Top="338" Width="150" Source="/Images/ValidatorCapyBig.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         </Canvas>
     </Border>

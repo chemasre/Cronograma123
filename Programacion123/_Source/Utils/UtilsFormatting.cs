@@ -102,21 +102,6 @@ namespace Programacion123
             return (index / letters.Length > 0 ? FormatLetterPrefixLowercase(index / letters.Length) : "") + letters[index % letters.Length];
         }
 
-        public static bool IsSchoolDay(DateTime day, Calendar calendar, WeekSchedule weekSchedule)
-        {
-            if (day >= calendar.StartDay.Value && day <= calendar.EndDay.Value &&
-               day.DayOfWeek != DayOfWeek.Saturday && day.DayOfWeek != DayOfWeek.Sunday &&
-               weekSchedule.HoursPerWeekDay[day.DayOfWeek] > 0 &&
-               !calendar.FreeDays.Contains(day))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public static string FormatStartDayHour(Subject.SchoolDayHour dayHour, WeekSchedule weekSchedule)
         {
             return FormatStartDayHour(dayHour.day, dayHour.hour, weekSchedule);

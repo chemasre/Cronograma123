@@ -35,7 +35,7 @@ namespace Programacion123
             task.Start();
             await task;
             timer.Stop();
-            int minTime = (int)(Constants.validationTaskMinDuration * 1000);
+            int minTime = (int)(minWaitTime * 1000);
             if(timer.ElapsedMilliseconds < minTime) { await Task.Delay((int)(minTime - timer.ElapsedMilliseconds)); }
             dialog.Hide();
             if(blocker != null) { blocker.Visibility = Visibility.Hidden; }
@@ -56,7 +56,7 @@ namespace Programacion123
             task.Start();
             result = await task;
             timer.Stop();
-            int minTime = (int)(Constants.validationTaskMinDuration * 1000);
+            int minTime = (int)(minWaitTime * 1000);
             if(timer.ElapsedMilliseconds < minTime) { await Task.Delay((int)(minTime - timer.ElapsedMilliseconds)); }
             dialog.Hide();
             if(blocker != null) { blocker.Visibility = Visibility.Hidden; }

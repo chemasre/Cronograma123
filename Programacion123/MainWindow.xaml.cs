@@ -1,9 +1,12 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.Office.Core;
+using Microsoft.Win32;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using static Programacion123.ExportImportDialog;
 
 namespace Programacion123
@@ -51,6 +54,11 @@ namespace Programacion123
         {
             InitializeComponent();
 
+            if(Switches.featureChristmasThemeEnabled)
+            {
+                if(Utils.IsChristmas()) { ChristmasThemeApply(); }
+            }
+
             string title = Constants.appName;
             Title = title;
             LabelTitle.Content = title;
@@ -69,7 +77,15 @@ namespace Programacion123
 
         }
 
-        private void MainWindow_Closed(object? sender, EventArgs e)
+        void ChristmasThemeApply()
+        {
+            ImageBrush backgroundImage = (ImageBrush)Background.Background;
+            backgroundImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Images/Background_Winter.jpg"));
+
+            BackgroundCapy.Source = new BitmapImage(new Uri("pack://application:,,,/Images/ValidatorCapyBig_Winter.png"));
+        }
+
+        void MainWindow_Closed(object? sender, EventArgs e)
         {
             configuration.FirstRun = false;
             SaveConfiguration();
@@ -78,7 +94,7 @@ namespace Programacion123
 
         }
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             instance = this;
 
@@ -89,7 +105,7 @@ namespace Programacion123
 
         }
 
-        private void AnyWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        void AnyWindow_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.F11)
             {
@@ -103,7 +119,7 @@ namespace Programacion123
             }
         }
 
-        private void CreatDefaultStyleIfNotPresent()
+        void CreatDefaultStyleIfNotPresent()
         {
             List<DocumentStyle> styles = Storage.LoadAllEntities<DocumentStyle>();
             Debug.Assert(styles.Count <= 1, "More than one style found");
@@ -126,6 +142,23 @@ namespace Programacion123
                         about.Owner = this;
                         about.ShowDialog();
                         Blocker.Visibility = Visibility.Hidden;
+
+                        LongTaskController longTaskController = new();
+                        longTaskController.Init(Blocker, this);
+                        longTaskController.Owner = this;
+                        await longTaskController.ExecuteAsync("Importando materiales de ejemplo",
+                            () => { Utils.ImportTutorial(); },
+                            Constants.setupTaskMinDuration
+                        );
+
+                        List<DocumentStyle> styles = Storage.LoadAllEntities<DocumentStyle>();
+                        Debug.Assert(styles.Count <= 1, "More than one style found");
+
+                        // Keep updated the style
+                        style = styles[0];
+
+
+                        RestartUI();
 
                         bool wordFound = false;
 
@@ -171,19 +204,19 @@ namespace Programacion123
                         tutorialQuestion.Owner = this;
 
                         tutorialQuestion.Init(ConfirmIconType.question, "Ver tutorial",
-                                "Parece que es la primera vez que arrancas la aplicación ¿quieres ver el tutorial?\n" +
+                                "Parece que es la primera vez que inicias la aplicación ¿quieres ver ahora el tutorial?\n" +
                                 "(se abrirá en tu navegador por defecto).",
                                 ConfirmChooseType.yesAndNo,
                                 (b) =>
                                 {
-                                    if (b) { Utils.OpenUrl(Constants.helpUrl); }
+                                    if (b) { Utils.OpenUrl(Constants.tutorialUrl); }
                                     else
                                     {
                                         ConfirmDialog checkLater = new();
                                         checkLater.Owner = this;
 
                                         checkLater.Init(ConfirmIconType.info, "Ver más tarde", "Si quieres ver el tutorial más adelante, " +
-                                            "pulsa el botón Ayuda en la ventana principal de la aplicación.",
+                                            "pulsa el botón Ayuda/Tutorial en la ventana principal de la aplicación.",
                                             ConfirmChooseType.acceptOnly, (b) => { });
 
                                         checkLater.ShowDialog();
@@ -308,12 +341,12 @@ namespace Programacion123
 
         }
 
-        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
@@ -321,25 +354,67 @@ namespace Programacion123
             }
         }
 
-        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        async void ButtonHelp_Click(object sender, RoutedEventArgs e)
         {
             Blocker.Visibility = Visibility.Visible;
 
-            ConfirmDialog question = new();
+            ConfirmDialog question;
+
+            bool tutorialImported = false;
+
+            if (!Utils.IsTutorialImported() || !Utils.IsTutorialComplete())
+            {
+                question = new();
+                question.Owner = this;
+
+                bool importTutorial = false;
+
+                question.Init(ConfirmIconType.info,
+                    "Importar materiales de ejemplo",
+                    "Parece que has borrado o cambiado los materiales de ejemplo ¿quieres volver a importarlos antes de ver el tutorial?",
+                    ConfirmChooseType.acceptAndCancel,
+                    (b) => { importTutorial = b; });
+
+                question.ShowDialog();
+
+                if(importTutorial)
+                {
+                    LongTaskController longTaskController = new();
+                    longTaskController.Init(Blocker, this);
+                    longTaskController.Owner = this;
+                    await longTaskController.ExecuteAsync("Importando materiales de ejemplo",
+                        () => { Utils.ImportTutorial(); },
+                        Constants.setupTaskMinDuration
+                    );
+
+                    List<DocumentStyle> styles = Storage.LoadAllEntities<DocumentStyle>();
+                    Debug.Assert(styles.Count <= 1, "More than one style found");
+
+                    // Keep updated the style
+                    style = styles[0];
+
+                    RestartUI();
+
+                    tutorialImported = true;
+                }
+
+            }
+
+            question = new();
             question.Owner = this;
 
             question.Init(ConfirmIconType.info,
                 "Abrir navegador",
-                "Esto abrirá tu navegador por defecto y te dirigirá al tutorial de la aplicación",
+                (tutorialImported ? "Ahora se abrirá " : "Esto abrirá ") + "tu navegador por defecto, que te dirigirá al tutorial de la aplicación",
                 ConfirmChooseType.acceptAndCancel,
-                (b) => { if (b) { Utils.OpenUrl(Constants.helpUrl); } });
+                (b) => { if (b) { Utils.OpenUrl(Constants.tutorialUrl); } });
 
             question.ShowDialog();
 
             Blocker.Visibility = Visibility.Hidden;
         }
 
-        async private void ButtonReset_Click(object sender, RoutedEventArgs e)
+        async void ButtonReset_Click(object sender, RoutedEventArgs e)
         {
             Blocker.Visibility = Visibility.Visible;
 
@@ -383,7 +458,7 @@ namespace Programacion123
 
         }
 
-        async private void ButtonImport_Click(object sender, RoutedEventArgs e)
+        async void ButtonImport_Click(object sender, RoutedEventArgs e)
         {
 
             OpenFileDialog openFileDialog = new();
@@ -398,6 +473,7 @@ namespace Programacion123
                 Storage.Archive_Open(openFileDialog.FileName);
 
                 List<DocumentStyle> styles = Storage.LoadAllEntities<DocumentStyle>();
+                Debug.Assert(styles.Count <= 1, "More than one style found");
                 bool hasStyle = (styles.Count > 0);
 
                 ExportImportDialogConfiguration config = new()
@@ -570,7 +646,7 @@ namespace Programacion123
             InitUI();
         }
 
-        async private void ButtonGenerateDocument_Click(object sender, RoutedEventArgs e)
+        async void ButtonGenerateDocument_Click(object sender, RoutedEventArgs e)
         {
             Blocker.Visibility = Visibility.Visible;
 
@@ -592,7 +668,7 @@ namespace Programacion123
             }
         }
 
-        private void ButtonAbout_Click(object sender, RoutedEventArgs e)
+        void ButtonAbout_Click(object sender, RoutedEventArgs e)
         {
             Blocker.Visibility = Visibility.Visible;
 
@@ -603,7 +679,7 @@ namespace Programacion123
             Blocker.Visibility = Visibility.Hidden;
         }
 
-        private async Task RunLongTaskAsync(string title, Action action)
+        async Task RunLongTaskAsync(string title, Action action)
         {
             LongTaskDialog longTask = new();
             longTask.Owner = this;
@@ -618,12 +694,12 @@ namespace Programacion123
             Blocker.Visibility = Visibility.Hidden;
         }
 
-        private async Task RunInformativeTask(string title, float duration = Constants.setupTaskMinDuration)
+        async Task RunInformativeTask(string title, float duration = Constants.setupTaskMinDuration)
         {
             await RunLongTaskAsync(title, () => { Thread.Sleep((int)(duration * 1000)); });
         }
 
-        private void ShowMessageDialog(string title, string text)
+        void ShowMessageDialog(string title, string text)
         {
             Blocker.Visibility = Visibility.Visible;
             ConfirmDialog confirm = new();
@@ -634,7 +710,7 @@ namespace Programacion123
             Blocker.Visibility = Visibility.Hidden;
         }
 
-        private void ButtonOpenStorage_Click(object sender, RoutedEventArgs e)
+        void ButtonOpenStorage_Click(object sender, RoutedEventArgs e)
         {
             Blocker.Visibility = Visibility.Visible;
 

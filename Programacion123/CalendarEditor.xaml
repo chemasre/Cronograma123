@@ -49,7 +49,7 @@
             <ListBox x:Name="ListBoxFreeDays" Height="112" Width="272" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="190" Canvas.Top="482"/>
             <Rectangle Height="181" Width="433" Canvas.Left="29" Canvas.Top="136" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="#33000000"/>
             <Calendar x:Name="CalendarPreview" Canvas.Left="154" Canvas.Top="143" HorizontalAlignment="Left" VerticalAlignment="Center" IsTodayHighlighted="False" SelectionMode="None" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="#99FFF5C6" DisplayDateChanged="CalendarPreview_DisplayDateChanged" FontSize="{DynamicResource NormalTextSize}"/>
-            <Image Height="100" Canvas.Left="22" Canvas.Top="642" Width="143" Source="/Images/ValidatorCapyBig.png" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Image x:Name="ValidatorCapy" Height="100" Canvas.Left="22" Canvas.Top="642" Width="143" Source="/Images/ValidatorCapyBig.png" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
         </Canvas>
     </Border>

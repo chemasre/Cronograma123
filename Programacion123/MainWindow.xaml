@@ -59,7 +59,7 @@
                     <ImageBrush ImageSource="/Images/ButtonClose.png" Opacity="1"/>
                 </Button.Background>
             </Button>
-            <Border BorderThickness="1" Height="613" Width="762" Canvas.Left="692" Canvas.Top="131" CornerRadius="30,30,30,30" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Border x:Name="Background" BorderThickness="1" Height="613" Width="762" Canvas.Left="692" Canvas.Top="131" CornerRadius="30,30,30,30" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Border.Background>
                     <ImageBrush ImageSource="/Images/Background.jpg" Stretch="UniformToFill"/>
                 </Border.Background>
@@ -189,19 +189,19 @@
                     <ImageBrush ImageSource="/Images/BackgroundSteps.jpg" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
-            <Border BorderThickness="1" Height="63" Width="194" Canvas.Left="1220" Canvas.Top="803" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Border BorderThickness="1" Height="63" Width="210" Canvas.Left="1204" Canvas.Top="803" CornerRadius="30,30,30,30" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Border.Background>
                     <ImageBrush ImageSource="/Images/BackgroundSteps.jpg" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
-            <Label Content="Ayuda" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="128" Canvas.Left="1250" Canvas.Top="813" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Border BorderThickness="1" Height="63" Width="194" Canvas.Left="1021" Canvas.Top="803" CornerRadius="30,30,30,30" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Label Content="Ayuda/Tutorial" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="128" Canvas.Left="1228" Canvas.Top="813" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Border BorderThickness="1" Height="63" Width="194" Canvas.Left="1005" Canvas.Top="803" CornerRadius="30,30,30,30" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Border.Background>
                     <ImageBrush ImageSource="/Images/BackgroundSteps.jpg" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
-            <Label Content="Acerca de" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="128" Canvas.Left="1051" Canvas.Top="813" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Button x:Name="ButtonAbout" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="1158" Canvas.Top="810" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ButtonAbout_Click">
+            <Label Content="Acerca de" FontSize="24" FontFamily="{DynamicResource TitleFont}" Width="128" Canvas.Left="1035" Canvas.Top="813" Foreground="{DynamicResource FreeLabelMainWindow}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Button x:Name="ButtonAbout" Content="" Width="48" Height="48" BorderBrush="{x:Null}" Canvas.Left="1142" Canvas.Top="810" Effect="{DynamicResource EffectDropShadow}" Style="{DynamicResource PushableButton}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="ButtonAbout_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ButtonAbout.png"/>
                 </Button.Background>
@@ -289,7 +289,7 @@
                     <ImageBrush ImageSource="/Images/ButtonNew.png"/>
                 </Button.Foreground>
             </Button>
-            <Image Height="150" Canvas.Left="1112" Canvas.Top="531" Width="200" Source="/Images/ValidatorCapyBig.png" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Image x:Name="BackgroundCapy" Height="150" Canvas.Left="1112" Canvas.Top="531" Width="200" Source="/Images/ValidatorCapyBig.png" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Image.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>

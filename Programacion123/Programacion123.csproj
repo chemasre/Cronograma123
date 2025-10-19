@@ -51,6 +51,7 @@
     <None Remove="Images\BackgroundClouds.jpg" />
     <None Remove="Images\BackgroundSteps.jpg" />
     <None Remove="Images\BackgroundTitle.png" />
+    <None Remove="Images\Background_Winter.jpg" />
     <None Remove="Images\ButonReferenceAdd.png" />
     <None Remove="Images\ButonReferenceRemove.png" />
     <None Remove="Images\ButonReferenceSetBig.png" />
@@ -93,6 +94,8 @@
     <None Remove="Images\IconWarning.png" />
     <None Remove="Images\ImageLicense.png" />
     <None Remove="Images\ValidatorCapyBig.png" />
+    <None Remove="Images\ValidatorCapyBig_Winter.png" />
+    <None Remove="Packages\Ejemplos.zip" />
     <None Remove="Packages\Tutorial.zip" />
   </ItemGroup>
 
@@ -128,7 +131,7 @@
 
   <ItemGroup>
     <Content Include="Icon.ico" />
-    <Content Include="Packages\Tutorial.zip">
+    <Content Include="Packages\Ejemplos.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -189,6 +192,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\BackgroundTitle.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Background_Winter.jpg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\ButonReferenceAdd.png">
@@ -339,6 +345,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\ValidatorCapyBig.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ValidatorCapyBig_Winter.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

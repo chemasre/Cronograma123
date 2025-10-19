@@ -194,7 +194,7 @@
             </TabControl>
             <Label Content="Bloque vinculado" Canvas.Left="26" Canvas.Top="127" Width="169" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{DynamicResource FreeLabel}"/>
             <TextBox x:Name="TextBlock" Canvas.Left="212" Canvas.Top="131" Width="288" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="{DynamicResource Font}" IsReadOnly="True"/>
-            <Image Height="100" Canvas.Left="17" Canvas.Top="732" Width="150" Source="/Images/ValidatorCapyBig.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Image x:Name="ValidatorCapy" Height="100" Canvas.Left="17" Canvas.Top="732" Width="150" Source="/Images/ValidatorCapyBig.png" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Border x:Name="Blocker" Padding="5" Background="#7F000000" CornerRadius="30" Canvas.Left="-8" Canvas.Top="-8" Height="866" Width="673" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" />
         </Canvas>
     </Border>

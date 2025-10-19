@@ -63,7 +63,7 @@
             <Border x:Name="BorderValidation" Padding="5" BorderThickness="0" Background="AntiqueWhite" CornerRadius="10" Canvas.Left="154" Canvas.Top="713" Width="292" HorizontalAlignment="Center" VerticalAlignment="Top" Height="71">
                 <TextBlock x:Name="TextValidation" TextWrapping="Wrap" Text="TextBlock" Height="52" Canvas.Left="29" Canvas.Top="303" VerticalAlignment="Center" Foreground="Black" Margin="5,0,5,0"/>
             </Border>
-            <Image Height="100" Canvas.Left="19" Canvas.Top="707" Width="150" Source="/Images/ValidatorCapyBig.png" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Image x:Name="ValidatorCapy" Height="100" Canvas.Left="19" Canvas.Top="707" Width="150" Source="/Images/ValidatorCapyBig.png" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Rectangle Height="680" Width="982" Canvas.Left="471" Canvas.Top="104" Fill="#33000000" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <WebBrowser x:Name="WebPreview" Height="641" Canvas.Left="493" Canvas.Top="126" Width="940" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <ComboBox x:Name="Heading1Size_Copiar3" Width="58" Canvas.Left="148" Canvas.Top="382" Effect="{DynamicResource EffectDropShadow}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
