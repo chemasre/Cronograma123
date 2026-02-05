@@ -28,11 +28,11 @@
 
         public const string tutorialPackageName = "Ejemplos.zip";
         public static readonly List<Tuple<string, string, string> > tutorialPackageInfo = new() {
-                new("gradeTemplate", "b917baf5-dd9f-4f0e-89b3-ba55a1dfc963", "078331D2B148FD545B018721BDD21C0E"),
-                new("subjecttemplate", "874c5a67-3bae-424f-b58e-732993426265", "AE6A9AB4F54A5A356C782D4B94C6B854"),
-                new ("calendar", "198dadc6-4763-41c9-a4a4-6974a99df247", "44BE47D2D812782F0249166F6667DE38"),
-                new ("weekschedule", "8e18fc0c-1b8e-48cb-b0fc-1860430b8b64", "AAD553ACB20B1C5C2289934980C7AB19"),
-                new("subject", "89065e34-6721-4bdc-8068-5569a41203a6", "557AB10E860139D3D9509D058BE4A706")
+                new("gradeTemplate", "b917baf5-dd9f-4f0e-89b3-ba55a1dfc963", "7DEBF10CD3859FAEF5FB6C45E02DE762"),
+                new("subjecttemplate", "874c5a67-3bae-424f-b58e-732993426265", "AC08083E3B3AF216DD6A8A241423F455"),
+                new ("calendar", "198dadc6-4763-41c9-a4a4-6974a99df247", "ED57F14BC4B45C1625ED5414E88F9C4B"),
+                new ("weekschedule", "8e18fc0c-1b8e-48cb-b0fc-1860430b8b64", "29A3FC23C55968FF57A810262FB8E5C1"),
+                new("subject", "89065e34-6721-4bdc-8068-5569a41203a6", "6CE471C682A29CB4358254E15B7B37A1")
         };
 
         public const string logFileName = "Log.txt";

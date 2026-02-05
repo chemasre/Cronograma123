@@ -178,7 +178,7 @@ namespace Programacion123
             byte[] md5 = checksumGenerator.ComputeHash(allBytes);
             result = Convert.ToHexString(md5);
 
-            Utils.Log("" + storageId + "->" + result, "CHECKSUM");
+            Utils.Log(storageClassId + ":" + storageId + "->" + result, "CHECKSUM");
 
             return result;
 

@@ -96,7 +96,6 @@
     <None Remove="Images\ValidatorCapyBig.png" />
     <None Remove="Images\ValidatorCapyBig_Winter.png" />
     <None Remove="Packages\Ejemplos.zip" />
-    <None Remove="Packages\Tutorial.zip" />
   </ItemGroup>
 
   <ItemGroup>
