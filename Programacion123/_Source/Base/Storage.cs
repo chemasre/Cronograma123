@@ -6,14 +6,16 @@ namespace Programacion123
 {
     internal partial class Storage
     {
-        static string basePath = Constants.storageBasePath;
+        static string basePath;
 
         public static void Init()
         {
+            basePath = Utils.GetAppDataPath() + Constants.storageBasePath;
+
             if (!Directory.Exists(basePath)) { Directory.CreateDirectory(basePath); }
         }
 
-        static string GetBasePath()
+        public static string GetBasePath()
         {
             return (isArchiveOpen ? archiveExtractionPath : basePath);
         }

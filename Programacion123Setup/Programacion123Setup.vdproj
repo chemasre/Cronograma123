@@ -15,13 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_B128C40801724CF79161E3E476D43519"
+        "MsmKey" = "8:_EDD126CFBBD84D92BE2B0138C8875067"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_EDD126CFBBD84D92BE2B0138C8875067"
+        "MsmKey" = "8:_F6EC424AFD61434387D60F537A537A3B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -33,7 +33,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\Programacion123Setup.msi"
+        "OutputFilename" = "8:Programabara-0.9.13-x64.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -65,7 +65,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\Programacion123Setup.msi"
+        "OutputFilename" = "8:Programabara-0.9.13-x64.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -157,6 +157,17 @@
             "Property" = "8:AppDataFolder"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_13471F3E8A104B92A7E689726814EA54"
+                    {
+                    "Name" = "8:Programabara"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_F31AE196437D40AB8DB16A4D4643E775"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_466453A89E2B4E8DBA28457594AE3EC2"
@@ -209,15 +220,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Programabara"
-        "ProductCode" = "8:{0893E979-BAF7-437E-B580-B49F90069DCA}"
-        "PackageCode" = "8:{94782D8E-E74F-4509-9CE6-03A411BFD7B2}"
+        "ProductCode" = "8:{3A6C50F0-C00B-4038-B5AE-DF9C17FA6397}"
+        "PackageCode" = "8:{0F7D0C62-6635-4660-BB08-9FCF2A2E2696}"
         "UpgradeCode" = "8:{85DBB90D-2EFC-464C-89C1-F83315A34F90}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.9.6"
+        "ProductVersion" = "8:0.9.7"
         "Manufacturer" = "8:Sinestesia Game Design"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://sinestesiagamedesign.es/teaching"
@@ -338,9 +349,9 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_B128C40801724CF79161E3E476D43519"
+            "Target" = "8:_F6EC424AFD61434387D60F537A537A3B"
             "Folder" = "8:_F83442B9D57646BFA5988BDD803B99C1"
-            "WorkingFolder" = "8:_0AD19BDE6C7D4268BFB53CED4E5C48D4"
+            "WorkingFolder" = "8:_13471F3E8A104B92A7E689726814EA54"
             "Icon" = "8:_EDD126CFBBD84D92BE2B0138C8875067"
             "Feature" = "8:"
             }
@@ -352,9 +363,9 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_B128C40801724CF79161E3E476D43519"
+            "Target" = "8:_F6EC424AFD61434387D60F537A537A3B"
             "Folder" = "8:_466453A89E2B4E8DBA28457594AE3EC2"
-            "WorkingFolder" = "8:_0AD19BDE6C7D4268BFB53CED4E5C48D4"
+            "WorkingFolder" = "8:_13471F3E8A104B92A7E689726814EA54"
             "Icon" = "8:_EDD126CFBBD84D92BE2B0138C8875067"
             "Feature" = "8:"
             }
@@ -757,12 +768,12 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_11FD6CABFC3D4B2C97DCA1A17F9074B0"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_7A07AC2640614B5F8DC9D607B0924085"
             {
             "SourcePath" = "8:"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_0AD19BDE6C7D4268BFB53CED4E5C48D4"
+            "Folder" = "8:_13471F3E8A104B92A7E689726814EA54"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -779,13 +790,13 @@
             "ProjectOutputGroupRegister" = "3:1"
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:ContentFiles"
-            "OutputProjectGuid" = "8:{6BA511AC-2410-4277-959E-BC37B7FE8FF7}"
+            "OutputProjectGuid" = "8:{9E107DE6-BB1F-4F6D-9485-F52454AE3B0A}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B128C40801724CF79161E3E476D43519"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_F6EC424AFD61434387D60F537A537A3B"
             {
             "SourcePath" = "8:..\\Programacion123\\obj\\Release\\net8.0-windows\\apphost.exe"
             "TargetName" = "8:"

@@ -25,6 +25,23 @@ namespace Programacion123
             Process.Start(info);
         }
 
+        public static string GetAppDataPath()
+        {
+            string path;
+            
+            if(Switches.buildModePortable)
+            {
+                path = "";
+            }
+            else
+            {
+               path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\" +
+                       Constants.appFolderName + "\\";
+            }
+
+            return path;
+        }
+
 
 
     }

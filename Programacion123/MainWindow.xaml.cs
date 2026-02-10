@@ -238,9 +238,11 @@ namespace Programacion123
         {
             configuration = new Configuration();
 
-            if (File.Exists(Constants.configFileName))
+            string configPath = Utils.GetAppDataPath() + Constants.configFileName;
+
+            if (File.Exists(configPath))
             {
-                string text = File.ReadAllText(Constants.configFileName);
+                string text = File.ReadAllText(configPath);
                 Configuration? loaded = JsonSerializer.Deserialize<Configuration>(text);
                 if (loaded != null) { configuration = loaded; }
             }
@@ -251,16 +253,21 @@ namespace Programacion123
         {
             configuration = new Configuration();
 
-            if (File.Exists(Constants.configFileName))
+            string configPath = Utils.GetAppDataPath() + Constants.configFileName;
+
+            if (File.Exists(configPath))
             {
-                File.Delete(Constants.configFileName);
+                File.Delete(configPath);
             }
         }
 
         void SaveConfiguration()
         {
             string text = JsonSerializer.Serialize<Configuration>(configuration);
-            File.WriteAllText(Constants.configFileName, text);
+
+            string configPath = Utils.GetAppDataPath() + Constants.configFileName;
+
+            File.WriteAllText(configPath, text);
         }
 
         void InitUI()
@@ -722,7 +729,7 @@ namespace Programacion123
                 "Esto abrirá la carpeta de almacenaje para que puedas crear y restaurar copias de seguridad de tus ficheros manualmente. " +
                 "Te recomendamos que no manipules sus contenidos mientras la aplicación está abierta.",
                 ConfirmChooseType.acceptAndCancel,
-                (b) => { if (b) { Utils.OpenFolder(Constants.storageBasePath); } });
+                (b) => { if (b) { Utils.OpenFolder(Storage.GetBasePath()); } });
 
             question.ShowDialog();
 
