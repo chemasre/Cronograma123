@@ -12,5 +12,6 @@ namespace Programacion123
         public static bool debugLogEnabled = true;
 
         public static bool featureChristmasThemeEnabled = true;
+
     }
 }

@@ -77,7 +77,8 @@ namespace Programacion123
             Flags.Remove(ref validationFlags, flagTitle);
             Flags.Remove(ref validationFlags, flagDescription);
 
-            foreach(ValidationResult fail in validationFails) { Utils.Log(fail.ToString() + " (" + fail.index + ")", "FAILED"); }
+            // FIX: Causes an exception randomly
+            // foreach(ValidationResult fail in validationFails) { Utils.Log(fail.ToString() + " (" + fail.index + ")", "FAILED"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }
