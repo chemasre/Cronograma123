@@ -38,7 +38,8 @@
 
             Flags.Remove(ref validationFlags, flagPoints);
 
-            foreach(ValidationResult fail in validationFails) { Utils.Log(fail.ToString() + " (" + fail.index + ")", "FAILED"); }
+            // FIX: Causes an exception (randomly)
+            //foreach(ValidationResult fail in validationFails) { Utils.Log(fail.ToString() + " (" + fail.index + ")", "FAILED"); }
 
             if(validationFails.Count == 0) { return ValidationResult.Create(ValidationCode.success); }
             else { return validationFails[0]; }
