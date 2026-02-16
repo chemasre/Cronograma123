@@ -137,12 +137,34 @@ namespace Programacion123
                 blocks = _blocks;
                 blockIndex = 0;
                 activityIndex = 0;
+
+                SkipEmptyBlocks(ref blockIndex);
+            }
+
+            void SkipEmptyBlocks(ref int blockIndex)
+            {
+                bool foundActivity = false;
+                while(blockIndex < blocks.Count && !foundActivity)
+                {
+                    if(blocks[blockIndex].Activities.Count > 0)
+                    {
+                        foundActivity = true;
+                    }
+                    else
+                    {
+                        blockIndex ++;
+                    }
+                }
+
             }
 
             public void Reset()
             {
                 blockIndex = 0;
                 activityIndex = 0;
+
+                SkipEmptyBlocks(ref blockIndex);
+
             }
 
             public void Next()
@@ -157,6 +179,9 @@ namespace Programacion123
                 {
                     activityIndex = 0;
                     blockIndex++;
+
+                    SkipEmptyBlocks(ref blockIndex);
+
                 }
             }
 
