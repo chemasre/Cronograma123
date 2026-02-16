@@ -153,7 +153,11 @@ namespace Programacion123
 
                 activityIndex++;
 
-                if (activityIndex >= blocks[blockIndex].Activities.Count) { activityIndex = 0; blockIndex++; }
+                if(activityIndex >= blocks[blockIndex].Activities.Count)
+                {
+                    activityIndex = 0;
+                    blockIndex++;
+                }
             }
 
         };
@@ -165,7 +169,7 @@ namespace Programacion123
             else if (WeekSchedule.Value == null) { return false; }
             else if (WeekSchedule.Value.Validate(force).code != ValidationCode.success) { return false; }
             else if (Blocks.Count <= 0) { return false; }
-            else if (!Blocks.ToList().TrueForAll(b => b.Activities.Count > 0 && b.Activities.ToList().TrueForAll(a => a.Duration.Value > 0))) { return false; }
+            else if (!Blocks.ToList().TrueForAll(b =>  b.Activities.Count == 0 || b.Activities.Count > 0 && b.Activities.ToList().TrueForAll(a => a.Duration.Value > 0))) { return false; }
 
             return true;
         }

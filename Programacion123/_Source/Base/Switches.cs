@@ -13,6 +13,6 @@ namespace Programacion123
 
         public static bool featureChristmasThemeEnabled = true;
 
-        public static bool buildModePortable = true;
+        public static bool buildModePortable = false;
     }
 }
