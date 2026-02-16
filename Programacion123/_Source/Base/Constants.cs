@@ -11,7 +11,7 @@
         public const float setupTaskMinDuration = 2.0f;
         public const float validationTaskMinDuration = 0.5f;
 
-        public const string tutorialUrl = "https://youtube.com";
+        public const string tutorialUrl = "https://www.youtube.com/watch?v=VaI0sMlEeZ4&list=PLACmNd6XmIJ0snX7z9p2fWkYNfvidA2-v";
         public const string licenseUrl = "https://creativecommons.org/licenses/by-nc-nd/4.0/";
         public const string projectsUrl = "https://sinestesiagamedesign.es/teaching/projects";
         public const string otherApp1Url = "https://sinestesiagamedesign.es/teaching/projects/turtlesandbox";
